@@ -1,0 +1,76 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.24720.0
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{8062883C-9446-46BD-9A0B-49A1670048AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{8FC5A942-FC3A-4C58-AF45-3A26F492A99B}"
+	ProjectSection(SolutionItems) = preProject
+		global.json = global.json
+	EndProjectSection
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MobileSecondHand", "src\Mobile2ndHand\MobileSecondHand.xproj", "{1C56093F-9A7F-4C55-A999-1F1509196FC4}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MobileSecondHand.Api.Models", "src\Mobile2ndHand.Api.Models\MobileSecondHand.Api.Models.xproj", "{13FB3B65-B6F7-40DF-97CE-DB89D9126FCD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "API", "API", "{2E61F84B-B1AA-4E59-9FF7-3BD5F11F83BD}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MobileSecondHand.Api.Services", "MobileSecondHand.Api.Services\MobileSecondHand.Api.Services.xproj", "{BB209B11-9A51-490E-B53F-BDB28E231071}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "DB", "DB", "{1CB3566E-A6A0-44B8-BCDA-DCB6CB2EB081}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MobileSecondHand.Db.Models", "MobileSecondHand.Db.Models\MobileSecondHand.Db.Models.xproj", "{EA0EC5C4-4631-4461-9589-3AFFF4E99830}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MobileSecondHand.Db.Services", "MobileSecondHand.Db.Services\MobileSecondHand.Db.Services.xproj", "{5206E132-A4C1-481D-9948-A92F89E3E731}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{CD8F18A5-8D59-40EE-8A6B-304D7F532E7A}"
+EndProject
+Project("{8BB2217D-0F2D-49D1-97BC-3654ED321F3B}") = "MobileSecondHand.Common", "MobileSecondHand.Common\MobileSecondHand.Common.xproj", "{258EA945-6288-4C34-B553-C2308D80C59B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{1C56093F-9A7F-4C55-A999-1F1509196FC4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1C56093F-9A7F-4C55-A999-1F1509196FC4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1C56093F-9A7F-4C55-A999-1F1509196FC4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1C56093F-9A7F-4C55-A999-1F1509196FC4}.Release|Any CPU.Build.0 = Release|Any CPU
+		{13FB3B65-B6F7-40DF-97CE-DB89D9126FCD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{13FB3B65-B6F7-40DF-97CE-DB89D9126FCD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{13FB3B65-B6F7-40DF-97CE-DB89D9126FCD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{13FB3B65-B6F7-40DF-97CE-DB89D9126FCD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BB209B11-9A51-490E-B53F-BDB28E231071}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BB209B11-9A51-490E-B53F-BDB28E231071}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BB209B11-9A51-490E-B53F-BDB28E231071}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BB209B11-9A51-490E-B53F-BDB28E231071}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA0EC5C4-4631-4461-9589-3AFFF4E99830}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA0EC5C4-4631-4461-9589-3AFFF4E99830}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA0EC5C4-4631-4461-9589-3AFFF4E99830}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA0EC5C4-4631-4461-9589-3AFFF4E99830}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5206E132-A4C1-481D-9948-A92F89E3E731}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5206E132-A4C1-481D-9948-A92F89E3E731}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5206E132-A4C1-481D-9948-A92F89E3E731}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5206E132-A4C1-481D-9948-A92F89E3E731}.Release|Any CPU.Build.0 = Release|Any CPU
+		{258EA945-6288-4C34-B553-C2308D80C59B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{258EA945-6288-4C34-B553-C2308D80C59B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{258EA945-6288-4C34-B553-C2308D80C59B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{258EA945-6288-4C34-B553-C2308D80C59B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1C56093F-9A7F-4C55-A999-1F1509196FC4} = {8062883C-9446-46BD-9A0B-49A1670048AB}
+		{13FB3B65-B6F7-40DF-97CE-DB89D9126FCD} = {2E61F84B-B1AA-4E59-9FF7-3BD5F11F83BD}
+		{2E61F84B-B1AA-4E59-9FF7-3BD5F11F83BD} = {8062883C-9446-46BD-9A0B-49A1670048AB}
+		{BB209B11-9A51-490E-B53F-BDB28E231071} = {2E61F84B-B1AA-4E59-9FF7-3BD5F11F83BD}
+		{1CB3566E-A6A0-44B8-BCDA-DCB6CB2EB081} = {8062883C-9446-46BD-9A0B-49A1670048AB}
+		{EA0EC5C4-4631-4461-9589-3AFFF4E99830} = {1CB3566E-A6A0-44B8-BCDA-DCB6CB2EB081}
+		{5206E132-A4C1-481D-9948-A92F89E3E731} = {1CB3566E-A6A0-44B8-BCDA-DCB6CB2EB081}
+		{CD8F18A5-8D59-40EE-8A6B-304D7F532E7A} = {8062883C-9446-46BD-9A0B-49A1670048AB}
+		{258EA945-6288-4C34-B553-C2308D80C59B} = {CD8F18A5-8D59-40EE-8A6B-304D7F532E7A}
+	EndGlobalSection
+EndGlobal
