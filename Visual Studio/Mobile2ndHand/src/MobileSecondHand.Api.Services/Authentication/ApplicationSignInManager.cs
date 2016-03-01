@@ -26,7 +26,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 			this.tokenAuthorizationOptions = tokenAuthorizationOptions;
 		}
 
-		public async Task<string> Register(RegisterViewModel registerViewModel) {
+		public async Task<TokenModel> Register(RegisterViewModel registerViewModel) {
 			if (registerViewModel.Email == null || registerViewModel.Password == null) {
 				throw new Exception("Register model is invalid");
 			}
@@ -34,7 +34,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 			return GetToken(user, DateTime.UtcNow.AddMinutes(30));
 		}
 
-		public async Task<string> LoginStandard(LoginViewModel loginStandardViewModel) {
+		public async Task<TokenModel> LoginStandard(LoginViewModel loginStandardViewModel) {
 			if (loginStandardViewModel.Email == null || loginStandardViewModel.Password == null) {
 				throw new Exception("Login model is invalid");
 			}
@@ -49,7 +49,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 			return GetToken(user, DateTime.UtcNow.AddMinutes(30));
 		}
 
-		public async Task<string> LoginWithFacebook(string facebookToken) {
+		public async Task<TokenModel> LoginWithFacebook(string facebookToken) {
 			FacebookUserCredentialsResponse facebookResponse = await facebookApiManager.GetUserCredentials(facebookToken);
 
 			if (facebookResponse.email != null) {
@@ -86,7 +86,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 
 			return user;
 		}
-		private string GetToken(ApplicationUser user, DateTime? expires) {
+		private TokenModel GetToken(ApplicationUser user, DateTime? expires) {
 			var handler = new JwtSecurityTokenHandler();
 
 			ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.Email, "TokenAuth"), new[] { new Claim("UserId", user.Id.ToString(), ClaimValueTypes.Integer) });
@@ -99,7 +99,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 				expires: expires
 				);
 
-			return handler.WriteToken(securityToken);
+			return new TokenModel { Token = handler.WriteToken(securityToken) };
 		}
 	}
 }

@@ -29,8 +29,8 @@ namespace MobileSecondHand.Controllers {
 		[Route("LoginWithFacebook")]
 		public async Task<IActionResult> LoginWithFacebook(string facebookToken) {
 			try {
-				await this.applicationSignInManager.LoginWithFacebook(facebookToken);
-				return Json("Ok");
+				var token = await this.applicationSignInManager.LoginWithFacebook(facebookToken);
+				return Json(token);
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json("Wystąpił błąd: " + exc.Message);
@@ -41,8 +41,8 @@ namespace MobileSecondHand.Controllers {
 		[Route("LoginStandard")]
 		public async Task<IActionResult> LoginStandard(LoginViewModel loginViewModel) {
 			try {
-				await this.applicationSignInManager.LoginStandard(loginViewModel);
-				return Json("Ok");
+				var token = await this.applicationSignInManager.LoginStandard(loginViewModel);
+				return Json(token);
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json("Wystąpił błąd: " + exc.Message);
@@ -53,8 +53,8 @@ namespace MobileSecondHand.Controllers {
 		[Route("Register")]
 		public async Task<IActionResult> Register(RegisterViewModel registerViewModel) {
 			try {
-				await this.applicationSignInManager.Register(registerViewModel);
-				return Json("Ok");
+				var token = await this.applicationSignInManager.Register(registerViewModel);
+				return Json(token);
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json("Wystąpił błąd: " + exc.Message);
