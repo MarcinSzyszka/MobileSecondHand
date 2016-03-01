@@ -1,14 +1,13 @@
 package marcin_szyszka.mobileseconndhand.services;
 
-import android.content.Context;
-
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import java.util.Map;
 
-import marcin_szyszka.mobileseconndhand.AppConstant;
+import marcin_szyszka.mobileseconndhand.common.AppConstant;
 
 /**
  * Created by marcianno on 2016-02-12.
@@ -17,7 +16,7 @@ public class HttpRequestsService {
     private static final String WEB_API_BASE_URL = AppConstant.WEB_API_URL;
     private static AsyncHttpClient client = new AsyncHttpClient();
 
-    public static void get(String url, RequestParams params, Map<String, String> headers, AsyncHttpResponseHandler responseHandler) {
+    public static void get(String url, RequestParams params, Map<String, String> headers, JsonHttpResponseHandler responseHandler) {
         if (headers != null){
             AddHeadersToClient(headers);
         }
@@ -31,14 +30,14 @@ public class HttpRequestsService {
         client.post(getAbsoluteUrl(url), params, responseHandler);
     }
 
-    public static void getByUrl(String url, RequestParams params, Map<String, String> headers, AsyncHttpResponseHandler responseHandler) {
+    public static void getByUrl(String url, RequestParams params, Map<String, String> headers, JsonHttpResponseHandler responseHandler) {
         if (headers != null){
             AddHeadersToClient(headers);
         }
         client.get(url, params, responseHandler);
     }
 
-    public static void postByUrl(String url, RequestParams params, AsyncHttpResponseHandler responseHandler) {
+    public static void postByUrl(String url, RequestParams params, JsonHttpResponseHandler responseHandler) {
         client.post(url, params, responseHandler);
     }
 

@@ -26,4 +26,5 @@
     <string name="inpt_email_hint">email</string>
     <string name="input_password_hint">hasło (min 6)</string>
     <string name="input_confirm_password_hint">potwierdź hasło</string>
+    <string name="error_passwords_are_incorrect">Wprowadzone hasła są różne</string>
 </resources>

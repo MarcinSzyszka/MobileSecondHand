@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#4cd5d8"
-    tools:context="marcin_szyszka.mobileseconndhand.StartActivity">
+    tools:context=".activities.StartActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
          is needed to present your content, e.g. VideoView, SurfaceView,

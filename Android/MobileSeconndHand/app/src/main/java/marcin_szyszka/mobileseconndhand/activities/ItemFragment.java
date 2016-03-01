@@ -1,4 +1,4 @@
-package marcin_szyszka.mobileseconndhand;
+package marcin_szyszka.mobileseconndhand.activities;
 
 import android.content.Context;
 import android.os.Bundle;
@@ -10,11 +10,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import marcin_szyszka.mobileseconndhand.dummy.DummyContent;
+import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.dummy.DummyContent.DummyItem;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * A fragment representing a list of Items.

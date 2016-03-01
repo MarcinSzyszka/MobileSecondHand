@@ -1,4 +1,4 @@
-package marcin_szyszka.mobileseconndhand;
+package marcin_szyszka.mobileseconndhand.activities;
 
 import android.content.Intent;
 import android.content.res.Configuration;
@@ -22,10 +22,15 @@ import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 
+import org.json.JSONObject;
+
+import marcin_szyszka.mobileseconndhand.R;
+import marcin_szyszka.mobileseconndhand.common.IJsonObjectReceiveDelegate;
+
 /**
  * A login screen that offers login via email/password.
  */
-public class LoginActivity extends AppCompatActivity  {
+public class LoginActivity extends AppCompatActivity implements IJsonObjectReceiveDelegate {
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
@@ -117,7 +122,6 @@ public class LoginActivity extends AppCompatActivity  {
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
-
     }
 
     private void ShowMessage(String message) {
@@ -185,6 +189,10 @@ public class LoginActivity extends AppCompatActivity  {
         return password.length() > 6;
     }
 
+    @Override
+    public void onDataReceived(int statusCode, JSONObject response) {
+
+    }
 
 
     /**

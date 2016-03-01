@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context="marcin_szyszka.mobileseconndhand.MainActivity"
+    tools:context=".activities.MainActivity"
     android:baselineAligned="false"
     android:orientation="vertical">
 
@@ -35,7 +35,7 @@
         <fragment
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:name="marcin_szyszka.mobileseconndhand.ItemFragment"
+            android:name="marcin_szyszka.mobileseconndhand.activities.ItemFragment"
             android:id="@+id/fragment"
             android:layout_alignParentTop="true"
             android:layout_centerInParent="true" />

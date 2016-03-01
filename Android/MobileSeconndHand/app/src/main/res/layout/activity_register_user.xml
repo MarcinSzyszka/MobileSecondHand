@@ -7,7 +7,7 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".RegisterUserActivity"
+    tools:context=".activities.RegisterUserActivity"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -73,12 +73,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Zarejestruj się"
-                android:id="@+id/register_register_button"
+                android:id="@+id/register_button"
                 android:layout_below="@+id/registerInputConfirmPassword"
                 android:layout_centerHorizontal="true"
                 android:textAlignment="center" />
 
+
+
         </RelativeLayout>
+        <ProgressBar
+            style="?android:attr/progressBarStyleLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/progressBar"
+            android:layout_gravity="center_horizontal|bottom"
+            android:progressDrawable="@drawable/circular_progress_bar"
+            android:layout_centerInParent="true"
+            android:layout_alignParentBottom="true" />
 
     </RelativeLayout>
 

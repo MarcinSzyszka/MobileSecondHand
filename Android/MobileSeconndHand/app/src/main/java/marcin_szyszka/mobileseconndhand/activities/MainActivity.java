@@ -1,11 +1,10 @@
-package marcin_szyszka.mobileseconndhand;
+package marcin_szyszka.mobileseconndhand.activities;
 
-import android.content.Intent;
 import android.support.v4.app.FragmentActivity;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.dummy.DummyContent;
 
 public class MainActivity extends FragmentActivity implements ItemFragment.OnListFragmentInteractionListener {
