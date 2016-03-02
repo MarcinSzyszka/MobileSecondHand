@@ -15,6 +15,7 @@ using Microsoft.AspNet.Identity;
 using MobileSecondHand.Api.Services.OutsideApisManagers;
 using MobileSecondHand.Api.Services.Authentication;
 using System.Net;
+using MobileSecondHand.Api.Models.CustomResponsesModels;
 
 namespace MobileSecondHand.Controllers {
 	[Route("api/[controller]")]
@@ -33,31 +34,31 @@ namespace MobileSecondHand.Controllers {
 				return Json(token);
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				return Json("Wystąpił błąd: " + exc.Message);
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
 		}
 
 		[HttpPost]
 		[Route("LoginStandard")]
-		public async Task<IActionResult> LoginStandard(LoginViewModel loginViewModel) {
+		public async Task<IActionResult> LoginStandard([FromBody]LoginViewModel loginViewModel) {
 			try {
 				var token = await this.applicationSignInManager.LoginStandard(loginViewModel);
 				return Json(token);
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				return Json("Wystąpił błąd: " + exc.Message);
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
 		}
 
 		[HttpPost]
 		[Route("Register")]
-		public async Task<IActionResult> Register(RegisterViewModel registerViewModel) {
+		public async Task<IActionResult> Register([FromBody]RegisterViewModel registerViewModel) {
 			try {
 				var token = await this.applicationSignInManager.Register(registerViewModel);
 				return Json(token);
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				return Json("Wystąpił błąd: " + exc.Message);
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
 		}
 

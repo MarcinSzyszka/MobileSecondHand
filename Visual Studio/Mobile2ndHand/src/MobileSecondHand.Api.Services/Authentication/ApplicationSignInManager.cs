@@ -40,11 +40,11 @@ namespace MobileSecondHand.Api.Services.Authentication {
 			}
 			ApplicationUser user = await applicationUserManager.GetUser(loginStandardViewModel.Email);
 			if (user == null) {
-				throw new Exception("User not exist");
+				throw new Exception("Użytkownik o podanym adresie email nieistnieje");
 			}
 			var passwordIsValid = await applicationUserManager.PasswordIsValid(user, loginStandardViewModel.Password);
 			if (!passwordIsValid) {
-				throw new Exception("Password is incorrect");
+				throw new Exception("Hasło jest nieprawidłowe");
 			}
 			return GetToken(user, DateTime.UtcNow.AddMinutes(30));
 		}
