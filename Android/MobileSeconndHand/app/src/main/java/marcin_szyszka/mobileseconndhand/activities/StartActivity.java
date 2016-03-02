@@ -79,7 +79,7 @@ public class StartActivity extends AppCompatActivity implements IJsonObjectRecei
             startActivity(mainActivity);
         }
         else{
-            Toast.makeText(this, "Coś poszło nie tak. Nastąpi zamknięcie aplikacji", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Coś poszło nie tak. Nie mogę połączyć się z serwerem", Toast.LENGTH_LONG).show();
             this.finish();
         }
     }

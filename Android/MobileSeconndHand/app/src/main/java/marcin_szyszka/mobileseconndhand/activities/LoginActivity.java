@@ -21,39 +21,43 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
+import com.google.gson.Gson;
 
 import org.json.JSONObject;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.common.IJsonObjectReceiveDelegate;
+import marcin_szyszka.mobileseconndhand.models.ErrorResponse;
+import marcin_szyszka.mobileseconndhand.models.LoginModel;
+import marcin_szyszka.mobileseconndhand.models.TokenModel;
+import marcin_szyszka.mobileseconndhand.services.SignInService;
 
 /**
  * A login screen that offers login via email/password.
  */
 public class LoginActivity extends AppCompatActivity implements IJsonObjectReceiveDelegate {
 
-    /**
-     * Keep track of the login task to ensure we can cancel it if requested.
-     */
-    private UserLoginTask mAuthTask = null;
-
     // UI references.
     private EditText mEmailTextView;
     private EditText mPasswordTextView;
+    private View mProgressBar;
+    private View focusView;
     private CallbackManager callbackManager;
     private AccessToken accessToken;
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
-
         callbackManager = CallbackManager.Factory.create();
-        setContentView(R.layout.activity_login);
 
+        setContentView(R.layout.activity_login);
         mEmailTextView = (EditText) findViewById(R.id.inputEmail);
         mPasswordTextView = (EditText) findViewById(R.id.inputPassword);
+        mProgressBar = findViewById(R.id.progressBar);
+        mProgressBar.setVisibility(View.INVISIBLE);
 
         Button mEmailSignInButton = (Button) findViewById(R.id.loginFormSubmit);
         mEmailSignInButton.setOnClickListener(new OnClickListener() {
@@ -109,10 +113,9 @@ public class LoginActivity extends AppCompatActivity implements IJsonObjectRecei
         super.onConfigurationChanged(newConfig);
         setContentView(R.layout.activity_login);
         TextView text = (TextView) findViewById(R.id.otherFacebookInfo);
-        if (newConfig.screenHeightDp > 350){
+        if (newConfig.screenHeightDp > 350) {
             text.setVisibility(View.VISIBLE);
-        }
-        else{
+        } else {
             text.setVisibility(View.INVISIBLE);
         }
     }
@@ -134,122 +137,91 @@ public class LoginActivity extends AppCompatActivity implements IJsonObjectRecei
      * errors are presented and no actual login attempt is made.
      */
     private void attemptLogin() {
-        if (mAuthTask != null) {
-            return;
+        boolean loginFormIsValid = validateRegisterForm();
+
+        if (!loginFormIsValid) {
+            focusView.requestFocus();
+        } else {
+            mProgressBar.setVisibility(View.VISIBLE);
+            String email = mEmailTextView.getText().toString();
+            String password = mPasswordTextView.getText().toString();
+            LoginModel loginModel = new LoginModel();
+            loginModel.Email = email;
+            loginModel.Password = password;
+
+            try {
+                SignInService.getInstance().loginUser(this, loginModel, getBaseContext(), this);
+            } catch (Exception exc) {
+                String message = exc.getMessage();
+            }
         }
+    }
 
-        // Reset errors.
-        mEmailTextView.setError(null);
-        mPasswordTextView.setError(null);
-
-        // Store values at the time of the login attempt.
+    private boolean validateRegisterForm() {
         String email = mEmailTextView.getText().toString();
         String password = mPasswordTextView.getText().toString();
 
-        boolean cancel = false;
-        View focusView = null;
-
-        // Check for a valid password, if the user entered one.
-        if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordTextView.setError(getString(R.string.error_invalid_password));
-            focusView = mPasswordTextView;
-            cancel = true;
-        }
-
-        // Check for a valid email address.
         if (TextUtils.isEmpty(email)) {
             mEmailTextView.setError(getString(R.string.error_field_required));
             focusView = mEmailTextView;
-            cancel = true;
+            return false;
         } else if (!isEmailValid(email)) {
             mEmailTextView.setError(getString(R.string.error_invalid_email));
-            cancel = true;
-        }
-
-        if (cancel) {
-            // There was an error; don't attempt login and focus the first
-            // form field with an error.
-            focusView.requestFocus();
+            focusView = mEmailTextView;
+            return false;
+        } else if (TextUtils.isEmpty(password)) {
+            mPasswordTextView.setError(getString(R.string.error_field_required));
+            focusView = mPasswordTextView;
+            return false;
+        } else if (!isPasswordValid(password)) {
+            mPasswordTextView.setError(getString(R.string.error_invalid_password));
+            focusView = mPasswordTextView;
+            return false;
         } else {
-            // Show a progress spinner, and kick off a background task to
-            // perform the user login attempt.
-            //logowanko
-            mAuthTask = new UserLoginTask(email, password);
-            mAuthTask.execute((Void) null);
+            return true;
         }
     }
 
     private boolean isEmailValid(String email) {
-        //TODO: Replace this with your own logic
-        return email.contains("@");
+        Matcher matcher = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE).matcher(email);
+        return matcher.find();
     }
 
     private boolean isPasswordValid(String password) {
-        //TODO: Replace this with your own logic
-        return password.length() > 6;
+        if (password.length() < 6) return false;
+        Matcher bigCaseMatcher = Pattern.compile("[A-Z]+").matcher(password);
+        Matcher digitMatcher = Pattern.compile("\\d+").matcher(password);
+        Matcher nonLetterOrDigitMatcher = Pattern.compile("\\W+").matcher(password);
+        if (!bigCaseMatcher.find()) return false;
+        if (!digitMatcher.find()) return false;
+        if (!nonLetterOrDigitMatcher.find()) return false;
+
+        return true;
     }
 
     @Override
     public void onDataReceived(int statusCode, JSONObject response) {
+        mProgressBar.setVisibility(View.INVISIBLE);
+        if (statusCode == 200) {
+            TokenModel tokenModel = new Gson().fromJson(response.toString(), TokenModel.class);
 
+            //zapis tokenu
+            /*SharedPreferences preferences = this.getBaseContext().getSharedPreferences(getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
+            SharedPreferences.Editor editor  = preferences.edit();
+            editor.putString(getString(R.string.authentication_token), tokenModel.Token);
+            editor.commit();*/
+
+            Toast.makeText(this, "Token jest ok", Toast.LENGTH_LONG).show();
+            // startMainActivity();
+            this.finish();
+            Intent mainActivity = new Intent(this, MainActivity.class);
+            startActivity(mainActivity);
+        } else {
+            ErrorResponse errorResponse = new Gson().fromJson(response.toString(), ErrorResponse.class);
+            Toast.makeText(this, errorResponse.ErrorMessage, Toast.LENGTH_LONG).show();
+            //this.finish();
+        }
     }
 
-
-    /**
-     * Represents an asynchronous login/registration task used to authenticate
-     * the user.
-     */
-    public class UserLoginTask extends AsyncTask<Void, Void, Boolean> {
-
-        private final String mEmail;
-        private final String mPassword;
-
-        UserLoginTask(String email, String password) {
-            mEmail = email;
-            mPassword = password;
-        }
-
-        @Override
-        protected Boolean doInBackground(Void... params) {
-            // TODO: attempt authentication against a network service.
-
-            try {
-                // Simulate network access.
-                Thread.sleep(2000);
-            } catch (InterruptedException e) {
-                return false;
-            }
-
-          /*  for (String credential : DUMMY_CREDENTIALS) {
-                String[] pieces = credential.split(":");
-                if (pieces[0].equals(mEmail)) {
-                    // Account exists, return true if the password matches.
-                    return pieces[1].equals(mPassword);
-                }
-            }*/
-
-            // TODO: register the new account here.
-            return true;
-        }
-
-        @Override
-        protected void onPostExecute(final Boolean success) {
-            mAuthTask = null;
-
-            if (success) {
-                finish();
-            } else {
-                mPasswordTextView.setError(getString(R.string.error_incorrect_password));
-                mPasswordTextView.requestFocus();
-            }
-        }
-
-        @Override
-        protected void onCancelled() {
-            mAuthTask = null;
-        }
-
-
-    }
 }
 
