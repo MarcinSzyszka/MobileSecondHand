@@ -1,6 +1,7 @@
 package marcin_szyszka.mobileseconndhand.services;
 
 import android.content.Context;
+import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.AccessToken;
 import com.google.gson.Gson;
@@ -13,13 +14,20 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
 import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
+import cz.msebera.android.httpclient.HttpEntity;
+import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import marcin_szyszka.mobileseconndhand.activities.LoginActivity;
+import marcin_szyszka.mobileseconndhand.activities.RegisterUserActivity;
 import marcin_szyszka.mobileseconndhand.common.IDataReceiveDelegate;
 import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.common.IJsonObjectReceiveDelegate;
+import marcin_szyszka.mobileseconndhand.models.LoginModel;
+import marcin_szyszka.mobileseconndhand.models.RegisterUserModel;
 import marcin_szyszka.mobileseconndhand.models.TokenModel;
 
 /**
@@ -38,20 +46,21 @@ public class SignInService {
 
 
         //w developmencie
-        raiseListenerCallback(401, new JSONObject());
-
-
-        String authenticationToken = SharedPreferencesService.getInstance().getSpecificSharedPreferenceString(context, R.string.authentication_token);
-        if (authenticationToken == null) {
-            AccessToken facebookToken = AccessToken.getCurrentAccessToken();
-            if (facebookToken != null) {
-                signInWithFacebook(facebookToken.getToken(), dataReceiveObject);
-            } else {
-                raiseListenerCallback(401, new JSONObject());
-            }
+        if (true) {
+            raiseListenerCallback(401, new JSONObject());
         }
-        else{
-            isTokenValid(authenticationToken);
+        else {
+            String authenticationToken = SharedPreferencesService.getInstance().getSpecificSharedPreferenceString(context, R.string.authentication_token);
+            if (authenticationToken == null) {
+                AccessToken facebookToken = AccessToken.getCurrentAccessToken();
+                if (facebookToken != null) {
+                    signInWithFacebook(facebookToken.getToken(), dataReceiveObject);
+                } else {
+                    raiseListenerCallback(401, new JSONObject());
+                }
+            } else {
+                isTokenValid(authenticationToken);
+            }
         }
     }
 
@@ -93,7 +102,41 @@ public class SignInService {
         });
     }
 
+    public void registerUser(AppCompatActivity userActivity, RegisterUserModel registerModel, Context baseContext, IJsonObjectReceiveDelegate dataReceiveObject) throws UnsupportedEncodingException {
+        mDataReceiveObject = dataReceiveObject;
+        String model = new Gson().toJson(registerModel);
+        HttpEntity entity = new ByteArrayEntity(model.getBytes("UTF-8"));
+        HttpRequestsService.postWithData(userActivity, "WebApiAccount/Register", entity, "application/json", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                raiseListenerCallback(statusCode, response);
+            }
 
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                raiseListenerCallback(statusCode, errorResponse);
+            }
+        });
+    }
+
+    public void loginUser(AppCompatActivity userActivity, LoginModel loginModel, Context baseContext, IJsonObjectReceiveDelegate dataReceiveObject) throws UnsupportedEncodingException {
+        mDataReceiveObject = dataReceiveObject;
+        String model = new Gson().toJson(loginModel);
+        HttpEntity entity = new ByteArrayEntity(model.getBytes("UTF-8"));
+        HttpRequestsService.postWithData(userActivity, "WebApiAccount/LoginStandard", entity, "application/json", new JsonHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
+                raiseListenerCallback(statusCode, response);
+            }
+
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                raiseListenerCallback(statusCode, errorResponse);
+            }
+        });
+    }
     private void raiseListenerCallback(int statusCode, JSONObject response) {
         mDataReceiveObject.onDataReceived(statusCode, response);
     }

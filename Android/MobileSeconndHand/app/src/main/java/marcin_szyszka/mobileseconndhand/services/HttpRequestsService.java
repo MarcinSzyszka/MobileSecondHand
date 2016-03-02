@@ -1,12 +1,16 @@
 package marcin_szyszka.mobileseconndhand.services;
 
+import android.content.Context;
+
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
 
 import java.util.Map;
 
+import cz.msebera.android.httpclient.HttpEntity;
 import marcin_szyszka.mobileseconndhand.common.AppConstant;
 
 /**
@@ -21,6 +25,10 @@ public class HttpRequestsService {
             AddHeadersToClient(headers);
         }
         client.get(getAbsoluteUrl(url), params, responseHandler);
+    }
+
+    public static  void postWithData(Context context, String url, HttpEntity entity, String contentType, AsyncHttpResponseHandler responseHandler){
+        client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
     }
 
     public static void post(String url, RequestParams params, Map<String, String> headers, AsyncHttpResponseHandler responseHandler) {
