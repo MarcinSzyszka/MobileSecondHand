@@ -1,0 +1,15 @@
+{
+  "version": "1.0.0-*",
+  "description": "MobileSecondHand.Db.Services Class Library",
+  "authors": [ "marcianno" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+    "frameworks": {
+        "net451": { }
+    },
+    "dependencies": {
+        "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
+        "MobileSecondHand.Db.Models": "1.0.0-*"
+    }
+}

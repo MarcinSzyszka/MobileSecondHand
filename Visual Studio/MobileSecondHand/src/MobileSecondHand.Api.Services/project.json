@@ -1,0 +1,21 @@
+{
+  "version": "1.0.0-*",
+  "description": "MobileSecondHand.Api.Services Class Library",
+  "authors": [ "marcianno" ],
+  "tags": [ "" ],
+  "projectUrl": "",
+  "licenseUrl": "",
+    "frameworks": {
+        "net451": {
+            "frameworkAssemblies": {
+                "System.Web.Extensions": "4.0.0.0"
+            }
+        }
+    },
+    "dependencies": {
+        "MobileSecondHand.Api.Models": "1.0.0-*",
+        "MobileSecondHand.Db.Models": "1.0.0-*",
+        "MobileSecondHand.Db.Services": "1.0.0-*",
+        "System.IdentityModel.Tokens.Jwt": "5.0.0-rc1-211161024"
+    }
+}
