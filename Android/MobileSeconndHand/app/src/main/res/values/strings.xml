@@ -18,7 +18,7 @@
     <string name="action_sign_in">Sign in or register</string>
     <string name="action_sign_in_short">Sign in</string>
     <string name="error_invalid_email">Email jest błędny</string>
-    <string name="error_invalid_password">Hasło jest za krótkie</string>
+    <string name="error_invalid_password">Hasło musi składać się z min 6 znaków w tym wielkich liter i cyfr oraz innego znaku</string>
     <string name="error_incorrect_password">Hasło jest niepoprawne</string>
     <string name="error_field_required">To pole jest wymagane</string>
     <string name="facebook_activity_name">Zaloguj się z facebookiem</string>
