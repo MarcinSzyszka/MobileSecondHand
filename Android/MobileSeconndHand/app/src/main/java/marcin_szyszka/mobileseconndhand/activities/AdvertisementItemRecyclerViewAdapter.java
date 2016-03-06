@@ -13,15 +13,15 @@ import java.util.List;
 
 /**
  * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link ItemFragment.OnListFragmentInteractionListener}.
+ * specified {@link AdvertisementItemFragment.OnListFragmentInteractionListener}.
  * TODO: Replace the implementation with code for your data type.
  */
-public class MyItemRecyclerViewAdapter extends RecyclerView.Adapter<MyItemRecyclerViewAdapter.ViewHolder> {
+public class AdvertisementItemRecyclerViewAdapter extends RecyclerView.Adapter<AdvertisementItemRecyclerViewAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
-    private final ItemFragment.OnListFragmentInteractionListener mListener;
+    private final AdvertisementItemFragment.OnListFragmentInteractionListener mListener;
 
-    public MyItemRecyclerViewAdapter(List<DummyItem> items, ItemFragment.OnListFragmentInteractionListener listener) {
+    public AdvertisementItemRecyclerViewAdapter(List<DummyItem> items, AdvertisementItemFragment.OnListFragmentInteractionListener listener) {
         mValues = items;
         mListener = listener;
     }

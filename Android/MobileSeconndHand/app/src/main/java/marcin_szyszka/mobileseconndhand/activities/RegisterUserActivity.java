@@ -1,6 +1,8 @@
 package marcin_szyszka.mobileseconndhand.activities;
 
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.TextUtils;
@@ -136,20 +138,18 @@ public class RegisterUserActivity extends AppCompatActivity implements IJsonObje
         return true;
     }
 
-    @Override
+
     public void onDataReceived(int statusCode, JSONObject response) {
         mProgressBar.setVisibility(View.INVISIBLE);
         if (statusCode == 200) {
             TokenModel tokenModel = new Gson().fromJson(response.toString(), TokenModel.class);
 
-            //zapis tokenu
-            /*SharedPreferences preferences = this.getBaseContext().getSharedPreferences(getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
+            SharedPreferences preferences = this.getBaseContext().getSharedPreferences(getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
             SharedPreferences.Editor editor  = preferences.edit();
             editor.putString(getString(R.string.authentication_token), tokenModel.Token);
-            editor.commit();*/
+            editor.commit();
 
             Toast.makeText(this, "Token jest ok", Toast.LENGTH_LONG).show();
-            // startMainActivity();
             this.finish();
             Intent mainActivity = new Intent(this, MainActivity.class);
             startActivity(mainActivity);

@@ -44,23 +44,20 @@ public class SignInService {
     public void checkIsUserLogged(Context context, IJsonObjectReceiveDelegate dataReceiveObject) {
         mDataReceiveObject = dataReceiveObject;
 
-
-        //w developmencie
-        if (true) {
-            raiseListenerCallback(401, new JSONObject());
+        String authenticationToken = SharedPreferencesService.getInstance().getSpecificSharedPreferenceString(context, R.string.authentication_token);
+        if (authenticationToken == null) {
+            tryWithFacebook();
+        } else {
+            isTokenValid(authenticationToken);
         }
-        else {
-            String authenticationToken = SharedPreferencesService.getInstance().getSpecificSharedPreferenceString(context, R.string.authentication_token);
-            if (authenticationToken == null) {
-                AccessToken facebookToken = AccessToken.getCurrentAccessToken();
-                if (facebookToken != null) {
-                    signInWithFacebook(facebookToken.getToken(), dataReceiveObject);
-                } else {
-                    raiseListenerCallback(401, new JSONObject());
-                }
-            } else {
-                isTokenValid(authenticationToken);
-            }
+    }
+
+    private void tryWithFacebook() {
+        AccessToken facebookToken = AccessToken.getCurrentAccessToken();
+        if (facebookToken != null) {
+            signInWithFacebook(facebookToken.getToken());
+        } else {
+            raiseListenerCallback(401, new JSONObject());
         }
     }
 
@@ -76,14 +73,28 @@ public class SignInService {
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                raiseListenerCallback(statusCode, errorResponse);
+            public void onSuccess(int statusCode, Header[] headers, String responseString) {
+                if (statusCode != 200){
+                    tryWithFacebook();
+                }
+                else{
+                    raiseListenerCallback(statusCode, null);
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                if (statusCode != 200){
+                    tryWithFacebook();
+                }
+                else{
+                    raiseListenerCallback(statusCode, null);
+                }
             }
         });
     }
 
-    public void signInWithFacebook(String token, IJsonObjectReceiveDelegate dataReceiveObject) {
-        mDataReceiveObject = dataReceiveObject;
+    public void signInWithFacebook(String token) {
         RequestParams params = new RequestParams();
         params.put("facebookToken", token);
 
@@ -137,6 +148,7 @@ public class SignInService {
             }
         });
     }
+
     private void raiseListenerCallback(int statusCode, JSONObject response) {
         mDataReceiveObject.onDataReceived(statusCode, response);
     }

@@ -41,12 +41,6 @@ public class StartActivity extends AppCompatActivity implements IJsonObjectRecei
             Toast.makeText(this, "Brak internetu", Toast.LENGTH_LONG).show();
         }
 
-        //wpisuje zeby bylo null dla developmentu
-        SharedPreferences preferences = this.getBaseContext().getSharedPreferences(getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor  = preferences.edit();
-        editor.putString(getString(R.string.authentication_token), null);
-        editor.commit();
-
         SignInService.getInstance().checkIsUserLogged(getBaseContext(), this);
     }
 
@@ -58,22 +52,21 @@ public class StartActivity extends AppCompatActivity implements IJsonObjectRecei
 
     @Override
     public void onDataReceived(int statusCode, JSONObject response) {
-        if (statusCode == 401) {
+        if (statusCode == 401 || statusCode == 500) {
             Toast.makeText(this, "Musisz się zalogować", Toast.LENGTH_LONG).show();
             this.finish();
             Intent intent = new Intent(this, LoginActivity.class);
             startActivity(intent);
         } else if (statusCode == 200) {
-            TokenModel tokenModel = new Gson().fromJson(response.toString(), TokenModel.class);
-
-            //zapis tokenu
-            /*SharedPreferences preferences = this.getBaseContext().getSharedPreferences(getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
-            SharedPreferences.Editor editor  = preferences.edit();
-            editor.putString(getString(R.string.authentication_token), tokenModel.Token);
-            editor.commit();*/
+            if (response != null){
+                TokenModel tokenModel = new Gson().fromJson(response.toString(), TokenModel.class);
+                SharedPreferences preferences = this.getBaseContext().getSharedPreferences(getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
+                SharedPreferences.Editor editor  = preferences.edit();
+                editor.putString(getString(R.string.authentication_token), tokenModel.Token);
+                editor.commit();
+            }
 
             Toast.makeText(this, "Token jest ok", Toast.LENGTH_LONG).show();
-            // startMainActivity();
             this.finish();
             Intent mainActivity = new Intent(this, MainActivity.class);
             startActivity(mainActivity);
