@@ -1,21 +1,13 @@
 ﻿using Microsoft.AspNet.Mvc;
-using MobileSecondHand.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
 using System.Threading.Tasks;
-using System.Web.Script.Serialization;
 using Microsoft.AspNet.Authorization;
 using MobileSecondHand.Api.Models.Security;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using System.Security.Principal;
-using Microsoft.AspNet.Identity;
-using MobileSecondHand.Api.Services.OutsideApisManagers;
 using MobileSecondHand.Api.Services.Authentication;
 using System.Net;
 using MobileSecondHand.Api.Models.CustomResponsesModels;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
 
 namespace MobileSecondHand.Controllers {
 	[Route("api/[controller]")]
@@ -81,9 +73,7 @@ namespace MobileSecondHand.Controllers {
 			//	var time = handler.TokenLifetimeInMinutes;
 			//	handler.TokenLifetimeInMinutes = 100;
 			//	var time2 = handler.TokenLifetimeInMinutes;
-			//	handler.CreateSecurityTokenReference()
 			//	var claims = (ClaimsIdentity)User.Identity;
-			//	var list = claims.Claims.ToList();
 			//}
 			return Json("Ok");
 		}

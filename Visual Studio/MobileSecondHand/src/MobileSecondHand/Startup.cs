@@ -1,27 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.AspNet.Builder;
 using Microsoft.AspNet.Hosting;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using MobileSecondHand.Services;
-using System.Security.Cryptography;
-using System.IdentityModel.Tokens;
 using MobileSecondHand.Api.Models.Security;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Authentication.JwtBearer;
 using Microsoft.AspNet.Cors.Infrastructure;
 using MobileSecondHand.Db.Services.Configuration;
-using MobileSecondHand.Db.Models;
 using MobileSecondHand.Db.Services;
-using System.IO;
-using System.Reflection;
-using Microsoft.AspNet.Http.Features;
 using MobileSecondHand.Api.Services.Configuration;
 
 namespace MobileSecondHand {
@@ -110,13 +99,11 @@ namespace MobileSecondHand {
 
 			app.UseStaticFiles();
 
-
 			app.UseJwtBearerAuthentication(options => {
 				// Basic settings - signing key to validate with, audience and issuer.
 				options.TokenValidationParameters.IssuerSigningKey = tokenAuthorizationOptions.SigningCredentials.Key;
 				options.TokenValidationParameters.ValidAudience = tokenAuthorizationOptions.Audience;
 				options.TokenValidationParameters.ValidIssuer = tokenAuthorizationOptions.Issuer;
-
 				// When receiving a token, check that we've signed it.
 				options.TokenValidationParameters.ValidateSignature = true;
 
@@ -129,10 +116,8 @@ namespace MobileSecondHand {
 				// time, this can be set to zero. Where external tokens are used, some leeway here 
 				// could be useful.
 				options.TokenValidationParameters.ClockSkew = TimeSpan.Zero;
-				
+
 			});
-
-
 
 			app.UseIdentity();
 
@@ -152,8 +137,6 @@ namespace MobileSecondHand {
 			});
 
 			app.UseCors("myPolicy");
-
-
 			context.Database.EnsureCreated();
 		}
 
