@@ -74,20 +74,27 @@ public class SignInService {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                if (statusCode != 200){
+                if (statusCode != 200) {
                     tryWithFacebook();
-                }
-                else{
+                } else {
                     raiseListenerCallback(statusCode, null);
                 }
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                if (statusCode != 200){
+                if (statusCode != 200) {
                     tryWithFacebook();
+                } else {
+                    raiseListenerCallback(statusCode, null);
                 }
-                else{
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                if (statusCode != 200) {
+                    tryWithFacebook();
+                } else {
                     raiseListenerCallback(statusCode, null);
                 }
             }
@@ -102,6 +109,11 @@ public class SignInService {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 raiseListenerCallback(statusCode, response);
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                raiseListenerCallback(statusCode, null);
             }
 
 

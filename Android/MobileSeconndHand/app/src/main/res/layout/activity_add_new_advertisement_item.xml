@@ -44,7 +44,7 @@
                     android:layout_marginRight="5dp" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/editTextTitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentBottom="false"
@@ -68,7 +68,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentStart="false"
-                    android:layout_below="@+id/editText"
+                    android:layout_below="@+id/editTextTitle"
                     android:layout_centerHorizontal="true"
                     android:text="Dodatkowe informacje o przedmiocie"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -78,7 +78,7 @@
                     android:layout_marginRight="5dp" />
 
                 <EditText
-                    android:id="@+id/editText2"
+                    android:id="@+id/editTextDescription"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
@@ -99,7 +99,7 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="false"
                     android:layout_alignParentStart="false"
-                    android:layout_below="@+id/editText2"
+                    android:layout_below="@+id/editTextDescription"
                     android:layout_centerHorizontal="true"
                     android:text="Cena"
                     android:textAppearance="?android:attr/textAppearanceMedium"
@@ -110,7 +110,7 @@
                     android:id="@+id/relativeLayout3"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/editText3"
+                    android:layout_below="@+id/editTextPrice"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="10dp">
 
@@ -137,7 +137,7 @@
                 </RelativeLayout>
 
                 <EditText
-                    android:id="@+id/editText3"
+                    android:id="@+id/editTextPrice"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/textView7"
