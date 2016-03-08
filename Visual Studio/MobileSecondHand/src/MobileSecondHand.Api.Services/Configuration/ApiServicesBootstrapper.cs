@@ -7,20 +7,19 @@ using System.Security.Cryptography;
 using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MobileSecondHand.Api.Models.Security;
+using MobileSecondHand.Api.Services.Advertisement;
 using MobileSecondHand.Api.Services.Authentication;
 using MobileSecondHand.Api.Services.OutsideApisManagers;
 
 namespace MobileSecondHand.Api.Services.Configuration {
 	public class ApiServicesBootstrapper {
-
 		public static void RegisterServices(IServiceCollection services) {
 			RegisterTokenAuthorizationOptions(services);
 			services.AddTransient<IApplicationUserManager, ApplicationUserManager>();
 			services.AddTransient<IApplicationSignInManager, ApplicationSignInManager>();
 			services.AddTransient<IFacebookApiManager, FacebookApiManager>();
+			services.AddTransient<IAdvertisementItemPhotosUploader, AdvertisementItemPhotosUploader>();
 			
-
-
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {

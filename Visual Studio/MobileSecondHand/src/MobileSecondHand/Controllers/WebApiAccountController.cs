@@ -8,6 +8,8 @@ using System.Net;
 using MobileSecondHand.Api.Models.CustomResponsesModels;
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using MobileSecondHand.Api.Models.Advertisement;
+using System.IO;
 
 namespace MobileSecondHand.Controllers {
 	[Route("api/[controller]")]

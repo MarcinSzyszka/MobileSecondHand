@@ -12,6 +12,7 @@ using Microsoft.AspNet.Cors.Infrastructure;
 using MobileSecondHand.Db.Services.Configuration;
 using MobileSecondHand.Db.Services;
 using MobileSecondHand.Api.Services.Configuration;
+using MobileSecondHand.Common.Configuration;
 
 namespace MobileSecondHand {
 	public class Startup {
@@ -56,6 +57,7 @@ namespace MobileSecondHand {
 
 			DbServicesBootstrapper.RegisterServices(services);
 			ApiServicesBootstrapper.RegisterServices(services);
+			CommonServicesBootstrapper.RegisterServices(services);
 			services.AddMvc();
 
 			var policy = new CorsPolicy();
