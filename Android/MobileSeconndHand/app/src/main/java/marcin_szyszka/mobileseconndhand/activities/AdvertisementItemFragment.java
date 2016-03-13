@@ -1,5 +1,6 @@
 package marcin_szyszka.mobileseconndhand.activities;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -11,7 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import marcin_szyszka.mobileseconndhand.R;
-import marcin_szyszka.mobileseconndhand.dummy.DummyContent.DummyItem;
+import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
 
 import java.util.ArrayList;
 
@@ -28,6 +29,7 @@ public class AdvertisementItemFragment extends Fragment {
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
+    private ProgressDialog progress;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -49,7 +51,8 @@ public class AdvertisementItemFragment extends Fragment {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        /*ProgressDialog progress = new ProgressDialog(this.getContext());
+        showProgressBar();*/
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -60,6 +63,7 @@ public class AdvertisementItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
+
         // Set the adapter
         if (view instanceof RecyclerView) {
             Context context = view.getContext();
@@ -69,12 +73,17 @@ public class AdvertisementItemFragment extends Fragment {
             } else {
                 recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
             }
-            ArrayList<DummyItem> list = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-                list.add(new DummyItem("" + i, "Test" + i, "Detale" + i));
-            }
 
-            recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener));
+            ArrayList<AdvertisementItemShortModel> list = new ArrayList<>();
+            for (int i = 0; i < 20; i++) {
+                AdvertisementItemShortModel model = new AdvertisementItemShortModel();
+                model.AdvertisementTitle = "tytuł nr " + i;
+                int price = 3 * i;
+                model.AdvertisementPrice = price;
+                model.Distance = 0.155 * i;
+                list.add(model);
+            }
+            recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext()));
         }
         return view;
     }
@@ -109,6 +118,14 @@ public class AdvertisementItemFragment extends Fragment {
      */
     public interface OnListFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onListFragmentInteraction(DummyItem item);
+        void onListFragmentInteraction(AdvertisementItemShortModel item);
+    }
+
+    private void showProgressBar() {
+        progress.setMessage("Pobieram ogłosszenia...");
+        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progress.setIndeterminate(false);
+        progress.setProgress(99);
+        progress.show();
     }
 }

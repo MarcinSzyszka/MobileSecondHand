@@ -121,14 +121,14 @@
                         android:layout_centerHorizontal="true">
 
                         <RadioButton
-                            android:id="@+id/radioButton"
+                            android:id="@+id/rdBtnOnlyForSell"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Chcę tylko sprzedać"
                             android:checked="true" />
 
                         <RadioButton
-                            android:id="@+id/radioButton2"
+                            android:id="@+id/rdBtnForSellAndChange"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:text="Chcę sprzedać, ale też chętnie sie wymienię" />

@@ -74,7 +74,7 @@ public class SignInService {
 
             @Override
             public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                if (statusCode != 200) {
+                if (statusCode == 401) {
                     tryWithFacebook();
                 } else {
                     raiseListenerCallback(statusCode, null);
@@ -92,7 +92,7 @@ public class SignInService {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                if (statusCode != 200) {
+                if (statusCode == 401) {
                     tryWithFacebook();
                 } else {
                     raiseListenerCallback(statusCode, null);

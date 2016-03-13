@@ -76,28 +76,23 @@ public class AdvertisementItemsService {
         String model = new Gson().toJson(newAdvertisementItem);
 
         HttpEntity entity = new ByteArrayEntity(model.getBytes("UTF-8"));
-        /*HttpRequestsService.postWithData(callingActivity, "WebApiAccount/Register", entity, "application/json", new JsonHttpResponseHandler() {
+        HttpRequestsService.postWithData(callingActivity, "AdvertisementItem/CreateAdvertisementItem", entity, "application/json", new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
-                raiseListenerCallback(statusCode, response);
+                raiseListenerCallback(statusCode, response, EventListenerType.onCreateNewAdvertisementItemRequestFinished);
             }
 
 
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
-                raiseListenerCallback(statusCode, errorResponse);
-            }
-
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, String responseString) {
-                raiseListenerCallback(statusCode, null);
+                raiseListenerCallback(statusCode, null, EventListenerType.onCreateNewAdvertisementItemRequestFinished);
             }
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                raiseListenerCallback(statusCode, null);
+                raiseListenerCallback(statusCode, null, EventListenerType.onCreateNewAdvertisementItemRequestFinished);
             }
-        });*/
+        });
     }
 
     private void raiseListenerCallback(int statusCode, JSONObject response, EventListenerType eventListenerType) {
@@ -106,7 +101,10 @@ public class AdvertisementItemsService {
                 mOnAddNewPhotosRequestFinishedListener.onAddNewAdvertisementItemPhotosRequestFinished(statusCode, response);
                 break;
             }
+            case onCreateNewAdvertisementItemRequestFinished: {
+                mDataReceiveObject.onDataReceived(statusCode, response);
+                break;
+            }
         }
-        //mDataReceiveObject.onDataReceived(statusCode, response);
     }
 }

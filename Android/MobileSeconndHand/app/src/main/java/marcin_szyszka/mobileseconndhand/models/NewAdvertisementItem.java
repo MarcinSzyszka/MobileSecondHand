@@ -1,5 +1,6 @@
 package marcin_szyszka.mobileseconndhand.models;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -10,10 +11,12 @@ public class NewAdvertisementItem {
     public String AdvertisementTitle;
     public String AdvertisementDescription;
     public int AdvertisementPrice;
-    public Coordinates AdvertisementCoordinates;
-    //public Map<String, byte[]> AdvertisementPhotos;
+    public boolean IsOnlyForSell;
+    public double Latitude;
+    public double Longitude;
+    public ArrayList<String> PhotosPaths;
 
     public NewAdvertisementItem(){
-        //AdvertisementPhotos = new HashMap<>();
+        PhotosPaths = new ArrayList<>();
     }
 }

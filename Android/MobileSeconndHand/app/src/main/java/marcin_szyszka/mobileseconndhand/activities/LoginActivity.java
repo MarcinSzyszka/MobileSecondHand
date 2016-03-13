@@ -80,8 +80,6 @@ public class LoginActivity extends AppCompatActivity implements IJsonObjectRecei
 
         LoginButton loginButton = (LoginButton) findViewById(R.id.login_facebook_button);
         loginButton.setReadPermissions("public_profile", "email");
-
-//        LoginManager.getInstance().logOut();
         loginButton.registerCallback(callbackManager, new FacebookCallback<LoginResult>() {
             @Override
             public void onSuccess(LoginResult loginResult) {
@@ -92,7 +90,6 @@ public class LoginActivity extends AppCompatActivity implements IJsonObjectRecei
                 } else {
                     ShowMessage("Token pusty");
                 }
-
             }
 
             @Override

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#4cd5d8"
+    android:background="#171717"
     tools:context=".activities.StartActivity">
 
     <!-- The primary full-screen view. This can be replaced with whatever view
@@ -16,7 +16,7 @@
         android:gravity="center"
         android:keepScreenOn="true"
         android:text="@string/start_activity_main_text"
-        android:textColor="#312c2c"
+        android:textColor="#dbdbdb"
         android:textSize="50sp"
         android:textStyle="bold"
         android:layout_gravity="center" />
@@ -34,7 +34,8 @@
         android:layout_gravity="center|bottom"
         android:textSize="25sp"
         android:visibility="visible"
-        android:gravity="top" />
+        android:gravity="top"
+        android:textColor="#dbdbdb" />
 
     <ProgressBar
         style="?android:attr/progressBarStyleLarge"
