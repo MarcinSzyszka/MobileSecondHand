@@ -8,11 +8,13 @@
     "frameworks": {
         "net451": {
             "frameworkAssemblies": {
+                "System.Drawing": "4.0.0.0",
                 "System.Web.Extensions": "4.0.0.0"
             }
         }
     },
     "dependencies": {
+        "AD.System.Web.Helpers.dll": "2.0.0",
         "MobileSecondHand.Api.Models": "1.0.0-*",
         "MobileSecondHand.Common": "1.0.0-*",
         "MobileSecondHand.Db.Models": "1.0.0-*",

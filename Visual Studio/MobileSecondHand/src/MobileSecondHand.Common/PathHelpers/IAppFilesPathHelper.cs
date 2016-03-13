@@ -8,6 +8,6 @@ namespace MobileSecondHand.Common.PathHelpers
     public interface IAppFilesPathHelper
     {
 		string GetAdvertisementPhotosMainPath();
-
+		string GetAdvertisementMinPhotosMainPath();
 	}
 }

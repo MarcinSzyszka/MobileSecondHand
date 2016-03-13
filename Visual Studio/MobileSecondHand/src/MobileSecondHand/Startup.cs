@@ -75,6 +75,8 @@ namespace MobileSecondHand {
 			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
 
+			
+
 			app.UseApplicationInsightsRequestTelemetry();
 
 			if (env.IsDevelopment()) {
@@ -100,6 +102,18 @@ namespace MobileSecondHand {
 			app.UseApplicationInsightsExceptionTelemetry();
 
 			app.UseStaticFiles();
+
+			app.Use(next => async ctx => {
+				try {
+					await next(ctx);
+				} catch (Exception exc) {
+					if (ctx.Response.HasStarted) {
+						throw exc;
+					}
+
+					ctx.Response.StatusCode = 401;
+				}
+			});
 
 			app.UseJwtBearerAuthentication(options => {
 				// Basic settings - signing key to validate with, audience and issuer.

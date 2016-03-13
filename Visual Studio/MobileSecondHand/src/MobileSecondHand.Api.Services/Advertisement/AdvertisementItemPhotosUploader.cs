@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Web.Helpers;
 using Microsoft.AspNet.Http;
 using MobileSecondHand.Api.Models.Advertisement;
 using MobileSecondHand.Common.FIleNamesHelpers;
@@ -23,14 +25,26 @@ namespace MobileSecondHand.Api.Services.Advertisement {
 			var filesCount = files.Count;
 			for (int i = 0; i < filesCount; i++) {
 				using (Stream readStream = files.GetFile(this.appFilesNamesHelper.GetPhotoNameInForm(i)).OpenReadStream()) {
-					var newFilePath = Path.Combine(this.appFilesPathHelper.GetAdvertisementPhotosMainPath(), this.appFilesNamesHelper.GetPhotoRandomUniqueName("jpg"));
+					var newFileName = this.appFilesNamesHelper.GetPhotoRandomUniqueName("jpg");
+					var newFilePath = String.Concat(this.appFilesPathHelper.GetAdvertisementPhotosMainPath(), newFileName);
 					using (FileStream fileStream = System.IO.File.Create(newFilePath)) {
 						await readStream.CopyToAsync(fileStream);
 						photosPathsModel.PhotosPaths.Add(newFilePath);
 					}
+					if (i==0) {
+						var minImage = CreateMinPhoto(readStream);
+						var newMinFilePath = String.Concat(this.appFilesPathHelper.GetAdvertisementMinPhotosMainPath(), newFileName);
+						minImage.Save(newMinFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+					}
 				}
 			}
 			return photosPathsModel;
+		}
+
+		private Bitmap CreateMinPhoto(Stream readStream) {
+			var image = Image.FromStream(readStream);
+			Bitmap bmpOriginal = new Bitmap(image, new Size(image.Width/3, image.Height/3));
+			return bmpOriginal;
 		}
 	}
 }

@@ -15,14 +15,16 @@ namespace MobileSecondHand.Controllers
     public class AdvertisementItemController : Controller
     {
 		IAdvertisementItemPhotosUploader advertisementItemPhotosUploader;
+		IAdvertisementItemService advertisementItemService;
 
-		public AdvertisementItemController(IAdvertisementItemPhotosUploader advertisementItemPhotosUploader) {
+		public AdvertisementItemController(IAdvertisementItemPhotosUploader advertisementItemPhotosUploader, IAdvertisementItemService advertisementItemService) {
 			this.advertisementItemPhotosUploader = advertisementItemPhotosUploader;
+			this.advertisementItemService = advertisementItemService;
 		}
 
 		[HttpPost]
 		[Route("UploadFiles")]
-		public async Task<IActionResult> UploadFiles() {
+		public async Task<IActionResult> UploadAdvertisementItemPhotos() {
 			try {
 				AdvertisementItemPhotosPaths photosPaths = await advertisementItemPhotosUploader.SaveAdvertisementPhotos(Request.Form.Files);
 				return Json(photosPaths);
@@ -31,5 +33,17 @@ namespace MobileSecondHand.Controllers
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
 		}
-    }
+
+		[HttpPost]
+		[Route("CreateAdvertisementItem")]
+		public IActionResult CreateAdvertisementItem([FromBody]NewAdvertisementItemModel newAdvertisementModel) {
+			try {
+				this.advertisementItemService.CreateNewAdvertisementItem(newAdvertisementModel);
+				return Json("Ok");
+			} catch (Exception exc) {
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
+			}
+		}
+	}
 }

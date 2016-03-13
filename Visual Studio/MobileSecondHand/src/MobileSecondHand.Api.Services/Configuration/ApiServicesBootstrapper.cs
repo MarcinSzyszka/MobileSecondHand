@@ -19,7 +19,10 @@ namespace MobileSecondHand.Api.Services.Configuration {
 			services.AddTransient<IApplicationSignInManager, ApplicationSignInManager>();
 			services.AddTransient<IFacebookApiManager, FacebookApiManager>();
 			services.AddTransient<IAdvertisementItemPhotosUploader, AdvertisementItemPhotosUploader>();
+			services.AddTransient<IAdvertisementItemService, AdvertisementItemService>();
 			
+
+
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {

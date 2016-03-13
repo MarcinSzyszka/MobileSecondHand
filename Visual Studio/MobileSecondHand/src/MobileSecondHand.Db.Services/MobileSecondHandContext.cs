@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Data.Entity;
 using MobileSecondHand.Db.Models;
+using MobileSecondHand.Db.Models.Advertisement;
 
 namespace MobileSecondHand.Db.Services
 {
@@ -19,5 +20,7 @@ namespace MobileSecondHand.Db.Services
         }
 
         public DbSet<ApplicationUser> ApplicationUser { get; set;}
-    }
+		public DbSet<AdvertisementItem> AdvertisementItem { get; set; }
+		public DbSet<AdvertisementPhoto> AdvertisementPhoto { get; set; }
+	}
 }
