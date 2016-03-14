@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.regex.Matcher;
@@ -157,5 +158,10 @@ public class RegisterUserActivity extends AppCompatActivity implements IJsonObje
             Toast.makeText(this, "Coś poszło nie tak. Nie mogę połączyć się z serwerem", Toast.LENGTH_LONG).show();
             this.finish();
         }
+    }
+
+    @Override
+    public void onDataReceived(int statusCode, JSONArray response) {
+
     }
 }

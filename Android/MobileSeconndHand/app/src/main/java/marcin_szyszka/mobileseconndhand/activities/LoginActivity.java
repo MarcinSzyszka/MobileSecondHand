@@ -25,6 +25,7 @@ import com.facebook.login.LoginResult;
 import com.facebook.login.widget.LoginButton;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.regex.Matcher;
@@ -222,12 +223,18 @@ public class LoginActivity extends AppCompatActivity implements IJsonObjectRecei
         } else {
             if (response != null) {
                 ErrorResponse errorResponse = new Gson().fromJson(response.toString(), ErrorResponse.class);
-                Toast.makeText(this, errorResponse.ErrorMessage, Toast.LENGTH_LONG).show();
+                String errorMessage = errorResponse != null ? errorResponse.ErrorMessage : "Wystąpił błąd";
+                Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show();
             }
             else{
                 Toast.makeText(this, "Wystąił nieoczekiwany błąd", Toast.LENGTH_LONG).show();
             }
         }
+    }
+
+    @Override
+    public void onDataReceived(int statusCode, JSONArray response) {
+
     }
 
 }
