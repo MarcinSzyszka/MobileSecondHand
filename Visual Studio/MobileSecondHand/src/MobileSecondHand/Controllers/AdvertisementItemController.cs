@@ -4,16 +4,16 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using MobileSecondHand.Api.Models.Advertisement;
+using MobileSecondHand.Api.Models.Coordinates;
 using MobileSecondHand.Api.Models.CustomResponsesModels;
 using MobileSecondHand.Api.Services.Advertisement;
 
-namespace MobileSecondHand.Controllers
-{
-    [Route("api/[controller]")]
-    public class AdvertisementItemController : Controller
-    {
+namespace MobileSecondHand.Controllers {
+	[Route("api/[controller]")]
+	public class AdvertisementItemController : Controller {
 		IAdvertisementItemPhotosUploader advertisementItemPhotosUploader;
 		IAdvertisementItemService advertisementItemService;
 
@@ -43,6 +43,19 @@ namespace MobileSecondHand.Controllers
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
+			}
+		}
+
+		[HttpGet]
+		[Authorize("Bearer")]
+		[Route("GetAdvertisements")]
+		public IEnumerable<AdvertisementItemShortModel> GetAdvertisements([FromBody]CoordinatesModel coordinatesModel) {
+			try {
+				var advertisements = this.advertisementItemService.GetAdvertisements(coordinatesModel);
+				return advertisements;
+			} catch (Exception exc) {
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return null;
 			}
 		}
 	}

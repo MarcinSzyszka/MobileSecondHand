@@ -31,6 +31,7 @@ namespace MobileSecondHand.Api.Services.Advertisement {
 						await readStream.CopyToAsync(fileStream);
 						photosPathsModel.PhotosPaths.Add(newFilePath);
 					}
+					//first file (name ends with "0") will be main photo
 					if (i==0) {
 						var minImage = CreateMinPhoto(readStream);
 						var newMinFilePath = String.Concat(this.appFilesPathHelper.GetAdvertisementMinPhotosMainPath(), newFileName);
@@ -43,7 +44,7 @@ namespace MobileSecondHand.Api.Services.Advertisement {
 
 		private Bitmap CreateMinPhoto(Stream readStream) {
 			var image = Image.FromStream(readStream);
-			Bitmap bmpOriginal = new Bitmap(image, new Size(image.Width/3, image.Height/3));
+			Bitmap bmpOriginal = new Bitmap(image, new Size(image.Width/6, image.Height/6));
 			return bmpOriginal;
 		}
 	}
