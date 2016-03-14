@@ -10,11 +10,28 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
+
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import marcin_szyszka.mobileseconndhand.R;
+import marcin_szyszka.mobileseconndhand.common.IAdvertisementItemsReceiver;
+import marcin_szyszka.mobileseconndhand.common.IJsonObjectReceiveDelegate;
 import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
+import marcin_szyszka.mobileseconndhand.models.CoordinatesModel;
+import marcin_szyszka.mobileseconndhand.services.AdvertisementItemsService;
+import marcin_szyszka.mobileseconndhand.services.GpsLocationService;
+import marcin_szyszka.mobileseconndhand.services.ToastService;
 
+import java.io.UnsupportedEncodingException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A fragment representing a list of Items.
@@ -22,7 +39,7 @@ import java.util.ArrayList;
  * Activities containing this fragment MUST implement the {@link OnListFragmentInteractionListener}
  * interface.
  */
-public class AdvertisementItemFragment extends Fragment {
+public class AdvertisementItemFragment extends Fragment implements IAdvertisementItemsReceiver {
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
@@ -30,6 +47,8 @@ public class AdvertisementItemFragment extends Fragment {
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
     private ProgressDialog progress;
+    private GpsLocationService gps;
+    RecyclerView recyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -56,6 +75,7 @@ public class AdvertisementItemFragment extends Fragment {
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
+        gps = new GpsLocationService(this.getContext());
     }
 
     @Override
@@ -63,27 +83,26 @@ public class AdvertisementItemFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
 
+        if (!gps.canGetLocation()) {
+            gps.showSettingsAlert();
+        } else {
+            // Set the adapter
+            if (view instanceof RecyclerView) {
+                Context context = view.getContext();
+                recyclerView = (RecyclerView) view;
+                if (mColumnCount <= 1) {
+                    recyclerView.setLayoutManager(new LinearLayoutManager(context));
+                } else {
+                    recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                }
 
-        // Set the adapter
-        if (view instanceof RecyclerView) {
-            Context context = view.getContext();
-            RecyclerView recyclerView = (RecyclerView) view;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
+                CoordinatesModel coordinatesModel = gps.getCoordinatesModel();
+                try {
+                    AdvertisementItemsService.getInstance().GetAdvertisementItems(coordinatesModel, getActivity(), this);
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }
-
-            ArrayList<AdvertisementItemShortModel> list = new ArrayList<>();
-            for (int i = 0; i < 20; i++) {
-                AdvertisementItemShortModel model = new AdvertisementItemShortModel();
-                model.AdvertisementTitle = "tytuł nr " + i;
-                int price = 3 * i;
-                model.AdvertisementPrice = price;
-                model.Distance = 0.155 * i;
-                list.add(model);
-            }
-            recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext()));
         }
         return view;
     }
@@ -104,6 +123,20 @@ public class AdvertisementItemFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onAdvertisementItemsReceived(int statusCode, JSONArray response) throws JSONException {
+        if (statusCode == 200) {
+            ArrayList<AdvertisementItemShortModel> list = new ArrayList<>();
+            Gson gson = new Gson();
+            for(int i = 0; i < response.length(); i++){
+                list.add(gson.fromJson(response.get(i).toString(), AdvertisementItemShortModel.class));
+            }
+            recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext()));
+        } else {
+            ToastService.getInstance().showToast(this.getContext(), "Wystąpił błąd podczas pobierania ogłoszeń");
+        }
     }
 
     /**

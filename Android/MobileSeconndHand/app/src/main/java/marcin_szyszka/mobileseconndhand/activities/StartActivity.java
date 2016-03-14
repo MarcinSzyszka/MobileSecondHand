@@ -11,6 +11,7 @@ import android.widget.Toast;
 import com.facebook.FacebookSdk;
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import marcin_szyszka.mobileseconndhand.R;
@@ -75,5 +76,10 @@ public class StartActivity extends AppCompatActivity implements IJsonObjectRecei
             Toast.makeText(this, "Coś poszło nie tak. Nie mogę połączyć się z serwerem", Toast.LENGTH_LONG).show();
             this.finish();
         }
+    }
+
+    @Override
+    public void onDataReceived(int statusCode, JSONArray response) {
+
     }
 }

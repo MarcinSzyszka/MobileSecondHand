@@ -5,5 +5,6 @@ package marcin_szyszka.mobileseconndhand.common;
  */
 public enum EventListenerType {
     onAddNewAdvertisementItemPhotosRequestFinished,
-    onCreateNewAdvertisementItemRequestFinished
+    onCreateNewAdvertisementItemRequestFinished,
+    onGetAdvertisementsItemsRequestFinished
 }

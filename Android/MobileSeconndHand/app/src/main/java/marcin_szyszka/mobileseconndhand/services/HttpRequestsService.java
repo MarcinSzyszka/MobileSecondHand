@@ -27,6 +27,13 @@ public class HttpRequestsService {
         client.get(getAbsoluteUrl(url), params, responseHandler);
     }
 
+    public static void getWithData(Context context, String url, Map<String, String> headers, HttpEntity entity, String contentType, ResponseHandlerInterface responseHandler) {
+        if (headers != null){
+            AddHeadersToClient(headers);
+        }
+        client.get(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
+    }
+
     public static  void postWithData(Context context, String url, HttpEntity entity, String contentType, AsyncHttpResponseHandler responseHandler){
         client.post(context, getAbsoluteUrl(url), entity, contentType, responseHandler);
     }
@@ -61,5 +68,6 @@ public class HttpRequestsService {
             client.addHeader(key, value);
         }
     }
+
 
 }

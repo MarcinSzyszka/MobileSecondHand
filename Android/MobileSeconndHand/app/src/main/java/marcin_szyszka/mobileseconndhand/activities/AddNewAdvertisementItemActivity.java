@@ -19,6 +19,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 
+import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.io.File;
@@ -234,7 +235,7 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
             NewAdvertisementItem model = createNewAdvertisementItemModel(advertisementItemPhotosPaths.PhotosPaths);
             AdvertisementItemsService.getInstance().CreateNewAdvertisementItem(model, this, this);
         } catch (Exception exc) {
-            onDataReceived(500, null);
+            onDataReceived(500, new JSONObject());
         }
     }
 
@@ -250,6 +251,11 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
         } else {
             Toast.makeText(this, "Coś poszło nie tak", Toast.LENGTH_LONG).show();
         }
+    }
+
+    @Override
+    public void onDataReceived(int statusCode, JSONArray response) {
+
     }
 }
 

@@ -119,4 +119,7 @@
         "when a user tries to pick up one of cards.\n\n"
     </string>
     <string name="action_settings">Settings</string>
+    <string name="homeLatitutde">home_latitude</string>
+    <string name="homeLongitude">home_longitude</string>
+    <string name="maxDistanceToAdvertisements">max_distance_to_advertisements</string>
 </resources>

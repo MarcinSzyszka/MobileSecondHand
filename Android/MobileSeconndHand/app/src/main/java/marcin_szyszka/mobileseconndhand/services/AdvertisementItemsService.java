@@ -7,18 +7,24 @@ import com.loopj.android.http.JsonHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.UnsupportedEncodingException;
+import java.util.HashMap;
+import java.util.Map;
 
 import cz.msebera.android.httpclient.Header;
 import cz.msebera.android.httpclient.HttpEntity;
 import cz.msebera.android.httpclient.entity.ByteArrayEntity;
+import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.common.EventListenerType;
 import marcin_szyszka.mobileseconndhand.common.IAddNewAdvertisementItemPhotosRequestFinished;
+import marcin_szyszka.mobileseconndhand.common.IAdvertisementItemsReceiver;
 import marcin_szyszka.mobileseconndhand.common.IJsonObjectReceiveDelegate;
+import marcin_szyszka.mobileseconndhand.models.CoordinatesModel;
 import marcin_szyszka.mobileseconndhand.models.NewAdvertisementItem;
 
 /**
@@ -33,17 +39,17 @@ public class AdvertisementItemsService {
         return ourInstance;
     }
 
-    public void UploadNewAdvertisementPhotos(String filePath, IAddNewAdvertisementItemPhotosRequestFinished eventListener){
+    public void UploadNewAdvertisementPhotos(String filePath, IAddNewAdvertisementItemPhotosRequestFinished eventListener) {
         mOnAddNewPhotosRequestFinishedListener = eventListener;
         //docelowo kolekcja plików
         File myFile = new File(filePath);
         RequestParams params = new RequestParams();
         try {
             params.put("photo0", myFile);
-        } catch(FileNotFoundException e) {
+        } catch (FileNotFoundException e) {
             raiseListenerCallback(500, null, EventListenerType.onAddNewAdvertisementItemPhotosRequestFinished);
         }
-        HttpRequestsService.post("AdvertisementItem/UploadFiles",params, null, new JsonHttpResponseHandler() {
+        HttpRequestsService.post("AdvertisementItem/UploadFiles", params, null, new JsonHttpResponseHandler() {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONObject response) {
                 raiseListenerCallback(statusCode, response, EventListenerType.onAddNewAdvertisementItemPhotosRequestFinished);
@@ -95,8 +101,47 @@ public class AdvertisementItemsService {
         });
     }
 
+    public void GetAdvertisementItems(CoordinatesModel coordinatesModel, FragmentActivity callingActivity, final IAdvertisementItemsReceiver dataReceiveObject) throws UnsupportedEncodingException {
+        String model = new Gson().toJson(coordinatesModel);
+        HttpEntity entity = new ByteArrayEntity(model.getBytes("UTF-8"));
+
+        String authenticationToken = SharedPreferencesService.getInstance().getSpecificSharedPreferenceString(callingActivity, R.string.authentication_token);
+        Map<String, String> headers = new HashMap<>();
+        headers.put("Authorization", "Bearer " + authenticationToken);
+
+        HttpRequestsService.getWithData(callingActivity, "AdvertisementItem/GetAdvertisements", headers, entity, "application/json", new JsonHttpResponseHandler() {
+
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
+                try {
+                    dataReceiveObject.onAdvertisementItemsReceived(statusCode, response);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
+                try {
+                    dataReceiveObject.onAdvertisementItemsReceived(statusCode, null);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
+                try {
+                    dataReceiveObject.onAdvertisementItemsReceived(statusCode, null);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
+
     private void raiseListenerCallback(int statusCode, JSONObject response, EventListenerType eventListenerType) {
-        switch (eventListenerType){
+        switch (eventListenerType) {
             case onAddNewAdvertisementItemPhotosRequestFinished: {
                 mOnAddNewPhotosRequestFinishedListener.onAddNewAdvertisementItemPhotosRequestFinished(statusCode, response);
                 break;
@@ -105,6 +150,15 @@ public class AdvertisementItemsService {
                 mDataReceiveObject.onDataReceived(statusCode, response);
                 break;
             }
+            case onGetAdvertisementsItemsRequestFinished: {
+                mDataReceiveObject.onDataReceived(statusCode, response);
+                break;
+            }
         }
     }
+
+    private void raiseListenerCallback(int statusCode, JSONArray response) {
+        mDataReceiveObject.onDataReceived(statusCode, response);
+    }
+
 }

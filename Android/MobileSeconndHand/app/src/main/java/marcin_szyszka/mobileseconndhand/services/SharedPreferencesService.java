@@ -19,4 +19,9 @@ public class SharedPreferencesService {
         SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
         return preferences.getString(context.getString(preferenceId), null);
     }
+
+    public int getSpecificSharedPreferenceInt(Context context, int preferenceId) {
+        SharedPreferences preferences = context.getSharedPreferences(context.getString(R.string.app_shared_preferences), Context.MODE_PRIVATE);
+        return preferences.getInt(context.getString(preferenceId), 0);
+    }
 }

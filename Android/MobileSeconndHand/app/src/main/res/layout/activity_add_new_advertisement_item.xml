@@ -41,7 +41,8 @@
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginRight="5dp"
+                    android:textAlignment="center" />
 
                 <EditText
                     android:id="@+id/editTextTitle"
@@ -75,7 +76,8 @@
                     android:textStyle="bold"
                     android:layout_marginTop="10dp"
                     android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp" />
+                    android:layout_marginRight="5dp"
+                    android:textAlignment="center" />
 
                 <EditText
                     android:id="@+id/editTextDescription"
