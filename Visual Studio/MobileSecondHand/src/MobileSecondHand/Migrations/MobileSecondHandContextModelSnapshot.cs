@@ -121,6 +121,8 @@ namespace MobileSecondHand.Migrations
 
                     b.Property<string>("Title");
 
+                    b.Property<string>("UserId");
+
                     b.HasKey("Id");
                 });
 
@@ -213,6 +215,13 @@ namespace MobileSecondHand.Migrations
                         .WithMany()
                         .HasForeignKey("RoleId");
 
+                    b.HasOne("MobileSecondHand.Db.Models.ApplicationUser")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+                });
+
+            modelBuilder.Entity("MobileSecondHand.Db.Models.Advertisement.AdvertisementItem", b =>
+                {
                     b.HasOne("MobileSecondHand.Db.Models.ApplicationUser")
                         .WithMany()
                         .HasForeignKey("UserId");
