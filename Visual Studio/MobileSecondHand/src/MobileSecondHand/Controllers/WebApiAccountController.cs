@@ -10,6 +10,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using MobileSecondHand.Api.Models.Advertisement;
 using System.IO;
+using System.Linq;
 
 namespace MobileSecondHand.Controllers {
 	[Route("api/[controller]")]
@@ -67,19 +68,8 @@ namespace MobileSecondHand.Controllers {
 		[Authorize("Bearer")]
 		[Route("TokenIsActual")]
 		public JsonResult TokenIsActual() {
-			//var handler = new JwtSecurityTokenHandler();
-			//if (User.Identity.IsAuthenticated) {
-			//	string tokenHeader = Request.Headers["Authorization"];
-			//	string stringToken = tokenHeader.Substring(7);
-			//	var token = handler.ReadJwtToken(stringToken);
-			//	var time = handler.TokenLifetimeInMinutes;
-			//	handler.TokenLifetimeInMinutes = 100;
-			//	var time2 = handler.TokenLifetimeInMinutes;
-			//	var claims = (ClaimsIdentity)User.Identity;
-			//}
+			//nothing, only check if jwt bearer middleware will allow user to entry
 			return Json("Ok");
 		}
-
-
 	}
 }

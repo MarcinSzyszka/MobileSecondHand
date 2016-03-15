@@ -10,16 +10,20 @@ using MobileSecondHand.Api.Models.Advertisement;
 using MobileSecondHand.Api.Models.Coordinates;
 using MobileSecondHand.Api.Models.CustomResponsesModels;
 using MobileSecondHand.Api.Services.Advertisement;
+using MobileSecondHand.Api.Services.Authentication;
 
 namespace MobileSecondHand.Controllers {
+	[Authorize("Bearer")]
 	[Route("api/[controller]")]
 	public class AdvertisementItemController : Controller {
-		IAdvertisementItemPhotosUploader advertisementItemPhotosUploader;
+		IAdvertisementItemPhotosService advertisementItemPhotosUploader;
 		IAdvertisementItemService advertisementItemService;
+		IIdentityService identityService;
 
-		public AdvertisementItemController(IAdvertisementItemPhotosUploader advertisementItemPhotosUploader, IAdvertisementItemService advertisementItemService) {
+		public AdvertisementItemController(IAdvertisementItemPhotosService advertisementItemPhotosUploader, IAdvertisementItemService advertisementItemService, IIdentityService identityService) {
 			this.advertisementItemPhotosUploader = advertisementItemPhotosUploader;
 			this.advertisementItemService = advertisementItemService;
+			this.identityService = identityService;
 		}
 
 		[HttpPost]
@@ -38,7 +42,8 @@ namespace MobileSecondHand.Controllers {
 		[Route("CreateAdvertisementItem")]
 		public IActionResult CreateAdvertisementItem([FromBody]NewAdvertisementItemModel newAdvertisementModel) {
 			try {
-				this.advertisementItemService.CreateNewAdvertisementItem(newAdvertisementModel);
+				var userId = this.identityService.GetUserId(User.Identity);
+				this.advertisementItemService.CreateNewAdvertisementItem(newAdvertisementModel, userId);
 				return Json("Ok");
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
@@ -47,11 +52,11 @@ namespace MobileSecondHand.Controllers {
 		}
 
 		[HttpGet]
-		[Authorize("Bearer")]
 		[Route("GetAdvertisements")]
-		public IEnumerable<AdvertisementItemShortModel> GetAdvertisements([FromBody]CoordinatesModel coordinatesModel) {
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements([FromBody]CoordinatesModel coordinatesModel) {
 			try {
-				var advertisements = this.advertisementItemService.GetAdvertisements(coordinatesModel);
+				var userId = this.identityService.GetUserId(User.Identity);
+				var advertisements = await this.advertisementItemService.GetAdvertisements(coordinatesModel, userId);
 				return advertisements;
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;

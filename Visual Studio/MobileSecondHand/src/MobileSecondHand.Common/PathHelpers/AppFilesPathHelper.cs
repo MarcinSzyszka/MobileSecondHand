@@ -7,10 +7,10 @@ using System.Threading.Tasks;
 namespace MobileSecondHand.Common.PathHelpers
 {
     public class AppFilesPathHelper : IAppFilesPathHelper {
-		const string ADVERTISEMENT_PHOTOS_MAIN_PATH = @"./images/advertisementItem/" + PHOTOS_DIRECTORY_NAME + "/";
-		const string ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH = ADVERTISEMENT_PHOTOS_MAIN_PATH + MIN_PHOTOS_DIRECTORY_NAME + "/";
-		public const string MIN_PHOTOS_DIRECTORY_NAME = "min";
-		public const string PHOTOS_DIRECTORY_NAME = "photos";
+		const string ADVERTISEMENT_PHOTOS_MAIN_PATH = @"./images/advertisementItem/" + PHOTOS_DIRECTORY_NAME;
+		public const string ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH = ADVERTISEMENT_PHOTOS_MAIN_PATH + "/" + MIN_PHOTOS_DIRECTORY_NAME;
+		const string MIN_PHOTOS_DIRECTORY_NAME = "min";
+		const string PHOTOS_DIRECTORY_NAME = "photos";
 
 		public string GetAdvertisementPhotosMainPath() {
 			CreateDirectoryIfNotExists(ADVERTISEMENT_PHOTOS_MAIN_PATH);

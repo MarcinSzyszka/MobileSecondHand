@@ -18,9 +18,12 @@ namespace MobileSecondHand.Api.Services.Configuration {
 			services.AddTransient<IApplicationUserManager, ApplicationUserManager>();
 			services.AddTransient<IApplicationSignInManager, ApplicationSignInManager>();
 			services.AddTransient<IFacebookApiManager, FacebookApiManager>();
-			services.AddTransient<IAdvertisementItemPhotosUploader, AdvertisementItemPhotosUploader>();
+			services.AddTransient<IAdvertisementItemPhotosService, AdvertisementItemPhotosService>();
 			services.AddTransient<IAdvertisementItemService, AdvertisementItemService>();
+			services.AddTransient<IIdentityService, IdentityService>();
 			
+
+
 
 
 		}

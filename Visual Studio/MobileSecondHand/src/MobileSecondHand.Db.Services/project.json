@@ -10,6 +10,7 @@
     },
     "dependencies": {
         "EntityFramework.MicrosoftSqlServer": "7.0.0-rc1-final",
+        "MobileSecondHand.Common": "1.0.0-*",
         "MobileSecondHand.Db.Models": "1.0.0-*"
     }
 }
