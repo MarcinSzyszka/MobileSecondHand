@@ -4,6 +4,7 @@ using System.IO;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using System.Web.Script.Serialization;
 using Microsoft.AspNet.Authorization;
 using Microsoft.AspNet.Mvc;
 using MobileSecondHand.Api.Models.Advertisement;
@@ -53,11 +54,15 @@ namespace MobileSecondHand.Controllers {
 
 		[HttpGet]
 		[Route("GetAdvertisements")]
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements([FromBody]CoordinatesModel coordinatesModel) {
+		public async Task<string> GetAdvertisements([FromBody]CoordinatesModel coordinatesModel) {
 			try {
 				var userId = this.identityService.GetUserId(User.Identity);
 				var advertisements = await this.advertisementItemService.GetAdvertisements(coordinatesModel, userId);
-				return advertisements;
+				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				var adverts = serializer.Serialize(advertisements);
+				var resp = Json(advertisements);
+					
+				return adverts;
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return null;
