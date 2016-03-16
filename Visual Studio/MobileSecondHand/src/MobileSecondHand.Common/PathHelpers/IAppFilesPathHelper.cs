@@ -9,5 +9,6 @@ namespace MobileSecondHand.Common.PathHelpers
     {
 		string GetAdvertisementPhotosMainPath();
 		string GetAdvertisementMinPhotosMainPath();
+		bool IsMiniaturePhotoDirectory(string path);
 	}
 }

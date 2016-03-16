@@ -16,11 +16,13 @@ namespace MobileSecondHand.Api.Services.Advertisement
 		IAdvertisementItemDbService advertisementItemDbService;
 		ICoordinatesCalculator coordinatesCalculator;
 		IAdvertisementItemPhotosService advertisementItemPhotosService;
+		IAppFilesPathHelper appFilesPathHelper;
 
-		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService) {
+		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper) {
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
 			this.advertisementItemPhotosService = advertisementItemPhotosService;
+			this.appFilesPathHelper = appFilesPathHelper;
 		}
 
 		public void CreateNewAdvertisementItem(NewAdvertisementItemModel newAdvertisementModel, string userId) {
@@ -75,7 +77,7 @@ namespace MobileSecondHand.Api.Services.Advertisement
 				var model = new AdvertisementPhoto();
 				model.PhotoPath = photoPath;
 				var a = Path.GetDirectoryName(photoPath);
-				model.IsMainPhoto = Path.GetDirectoryName(photoPath) == AppFilesPathHelper.ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH;
+				model.IsMainPhoto = this.appFilesPathHelper.IsMiniaturePhotoDirectory(photoPath);
 				photosDbModelsList.Add(model);
 			}
 

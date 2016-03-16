@@ -23,7 +23,7 @@ namespace MobileSecondHand.Common.CoordinatesHelpers
 		public double GetDistanceBetweenTwoLocalizations(double latitude1, double longitude1, double latitude2, double longitude2) {
 			var firstLocation = new GeoCoordinate(latitude1, longitude1);
 			var secondLocation = new GeoCoordinate(latitude2, longitude2);
-			var distance = Math.Round(firstLocation.GetDistanceTo(secondLocation), 2);
+			var distance = Math.Round(firstLocation.GetDistanceTo(secondLocation) / 1000, 2);
 
 			return distance;
 		}

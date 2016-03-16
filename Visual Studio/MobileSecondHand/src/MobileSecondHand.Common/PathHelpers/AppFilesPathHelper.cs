@@ -21,10 +21,17 @@ namespace MobileSecondHand.Common.PathHelpers
 			return ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH;
 		}
 
+		public bool IsMiniaturePhotoDirectory(string path) {
+			var photoDirectory = Path.GetDirectoryName(path);
+			return photoDirectory.Replace('\\', '/') == ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH;
+		}
+
 		private void CreateDirectoryIfNotExists(string path) {
 			if (!Directory.Exists(path)) {
 				Directory.CreateDirectory(path);
 			}
 		}
+
+
 	}
 }
