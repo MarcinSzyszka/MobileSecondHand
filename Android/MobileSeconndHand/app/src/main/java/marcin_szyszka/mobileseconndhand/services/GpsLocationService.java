@@ -264,8 +264,8 @@ public class GpsLocationService extends Service implements LocationListener {
         }
         coordinatesModel.Latitude = latitude;
         coordinatesModel.Longitude = longitude;
-        coordinatesModel.MaxDistance = SharedPreferencesService.getInstance().getSpecificSharedPreferenceInt(mContext, R.string.maxDistanceToAdvertisements);
-
+        coordinatesModel.MaxDistance = 3;
+//SharedPreferencesService.getInstance().getSpecificSharedPreferenceInt(mContext, R.string.maxDistanceToAdvertisements);
         return coordinatesModel;
     }
 

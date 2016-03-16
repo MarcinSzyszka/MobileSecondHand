@@ -8,7 +8,7 @@ public class AdvertisementItemShortModel {
         public int AdvertisementPrice;
         public boolean IsOnlyForSell;
         public double Distance;
-        public byte[] MainPhoo;
+        public byte[] MainPhoto;
 
         public AdvertisementItemShortModel(){
         }

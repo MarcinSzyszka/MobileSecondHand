@@ -130,13 +130,24 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
         if (statusCode == 200) {
             ArrayList<AdvertisementItemShortModel> list = new ArrayList<>();
             Gson gson = new Gson();
-            for(int i = 0; i < response.length(); i++){
-                list.add(gson.fromJson(response.get(i).toString(), AdvertisementItemShortModel.class));
+            Type advertisementType = new TypeToken<AdvertisementItemShortModel>(){}.getType();
+
+            for (int i = 0; i < response.length(); i++) {
+                AdvertisementItemShortModel model = gson.fromJson(response.get(i).toString(), advertisementType);
+                list.add(model);
             }
+
+           /* for(int i = 0; i < response.length(); i++){
+                list.add(gson.fromJson(response.get(i).toString(), AdvertisementItemShortModel.class));
+            }*/
             recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext()));
         } else {
             ToastService.getInstance().showToast(this.getContext(), "Wystąpił błąd podczas pobierania ogłoszeń");
         }
+    }
+
+    public void getAdvertisements() throws UnsupportedEncodingException {
+        AdvertisementItemsService.getInstance().GetAdvertisementItems(gps.getCoordinatesModel(), getActivity(), this);
     }
 
     /**

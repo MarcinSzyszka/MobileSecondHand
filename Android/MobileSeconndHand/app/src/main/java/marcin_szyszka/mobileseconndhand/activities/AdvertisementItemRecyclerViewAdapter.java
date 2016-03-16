@@ -1,7 +1,6 @@
 package marcin_szyszka.mobileseconndhand.activities;
 
 import android.content.Context;
-import android.content.res.Resources;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,7 +8,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import cz.msebera.android.httpclient.client.cache.Resource;
 import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
 import marcin_szyszka.mobileseconndhand.services.BitmapOperationService;
@@ -40,7 +38,7 @@ private Context context;
         holder.mTitleTextView.setText(mValues.get(position).AdvertisementTitle);
         holder.mPriceTextView.setText(mValues.get(position).AdvertisementPrice + " zł");
         holder.mDistanceTextView.setText(String.valueOf(mValues.get(position).Distance) + " km");
-        holder.mAdvertisementMainPhoto.setImageBitmap(BitmapOperationService.ResizeImage(context.getResources(), R.mipmap.add_photo_image, holder.mAdvertisementMainPhoto.getWidth(), holder.mAdvertisementMainPhoto.getHeight()));
+        holder.mAdvertisementMainPhoto.setImageBitmap(BitmapOperationService.ResizeImage(mValues.get(position).MainPhoto, holder.mAdvertisementMainPhoto.getWidth(), holder.mAdvertisementMainPhoto.getHeight()));
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

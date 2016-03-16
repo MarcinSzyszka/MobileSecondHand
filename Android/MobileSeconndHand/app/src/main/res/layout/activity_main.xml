@@ -25,6 +25,15 @@
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:textIsSelectable="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/getAdvertisementsBtn"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
     </RelativeLayout>
 
     <RelativeLayout
