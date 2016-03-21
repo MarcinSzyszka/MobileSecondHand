@@ -89,7 +89,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 		private TokenModel GetToken(ApplicationUser user, DateTime? expires) {
 			var handler = new JwtSecurityTokenHandler();
 
-			ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.Email, "TokenAuth"), new[] { new Claim("UserId", user.Id.ToString(), ClaimValueTypes.Integer) });
+			ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.Email, "TokenAuth"), new[] { new Claim("UserId", user.Id, ClaimValueTypes.String) });
 
 			var securityToken = handler.CreateToken(
 				issuer: tokenAuthorizationOptions.Issuer,

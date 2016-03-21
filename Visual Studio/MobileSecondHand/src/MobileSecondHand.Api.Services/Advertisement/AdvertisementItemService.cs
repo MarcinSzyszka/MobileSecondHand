@@ -61,7 +61,6 @@ namespace MobileSecondHand.Api.Services.Advertisement
 				viewModel.Id = dbModel.Id;
 				viewModel.AdvertisementTitle = dbModel.Title;
 				viewModel.AdvertisementPrice = dbModel.Price;
-				viewModel.IsOnlyForSell = dbModel.IsOnlyForSell;
 				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoPath);
 				viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
 
