@@ -59,8 +59,8 @@ namespace MobileSecondHand.Controllers {
 				var userId = this.identityService.GetUserId(User.Identity);
 				var advertisements = await this.advertisementItemService.GetAdvertisements(coordinatesModel, userId);
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
+				serializer.MaxJsonLength = int.MaxValue;
 				var adverts = serializer.Serialize(advertisements);
-				var resp = Json(advertisements);
 					
 				return adverts;
 			} catch (Exception exc) {
