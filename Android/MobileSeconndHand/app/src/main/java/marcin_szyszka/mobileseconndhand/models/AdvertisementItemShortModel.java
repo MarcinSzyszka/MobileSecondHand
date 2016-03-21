@@ -6,7 +6,6 @@ package marcin_szyszka.mobileseconndhand.models;
 public class AdvertisementItemShortModel {
         public String AdvertisementTitle;
         public int AdvertisementPrice;
-        public boolean IsOnlyForSell;
         public double Distance;
         public byte[] MainPhoto;
 
