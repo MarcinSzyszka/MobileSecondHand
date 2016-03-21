@@ -46,9 +46,9 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private OnListFragmentInteractionListener mListener;
-    private ProgressDialog progress;
     private GpsLocationService gps;
     RecyclerView recyclerView;
+    private MainActivity mMainActivity;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -70,8 +70,6 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        /*ProgressDialog progress = new ProgressDialog(this.getContext());
-        showProgressBar();*/
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
@@ -96,9 +94,8 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
                     recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
                 }
 
-                CoordinatesModel coordinatesModel = gps.getCoordinatesModel();
                 try {
-                    AdvertisementItemsService.getInstance().GetAdvertisementItems(coordinatesModel, getActivity(), this);
+                    getAdvertisements();
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -141,6 +138,7 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
                 list.add(gson.fromJson(response.get(i).toString(), AdvertisementItemShortModel.class));
             }*/
             recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext()));
+            mMainActivity.onPreparedData();
         } else {
             ToastService.getInstance().showToast(this.getContext(), "Wystąpił błąd podczas pobierania ogłoszeń");
         }
@@ -148,6 +146,10 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
 
     public void getAdvertisements() throws UnsupportedEncodingException {
         AdvertisementItemsService.getInstance().GetAdvertisementItems(gps.getCoordinatesModel(), getActivity(), this);
+    }
+
+    public void setListener(MainActivity mainActivity) {
+        mMainActivity = mainActivity;
     }
 
     /**
@@ -165,11 +167,4 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
         void onListFragmentInteraction(AdvertisementItemShortModel item);
     }
 
-    private void showProgressBar() {
-        progress.setMessage("Pobieram ogłosszenia...");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(false);
-        progress.setProgress(99);
-        progress.show();
-    }
 }

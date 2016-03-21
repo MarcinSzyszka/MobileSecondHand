@@ -9,31 +9,46 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context=".activities.MainActivity"
     android:baselineAligned="false"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:background="#000000">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="8">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="sratatta"
-            android:id="@+id/textView2"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:textIsSelectable="true" />
+        android:layout_weight="8"
+        android:background="@drawable/background_border">
 
         <ImageButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:id="@+id/getAdvertisementsBtn"
-            android:layout_alignParentBottom="true"
+            android:id="@+id/btnRefreshAdvertisementsList"
+            android:layout_alignParentBottom="false"
+            android:layout_alignParentRight="false"
+            android:layout_alignParentEnd="false"
+            android:src="@android:drawable/stat_notify_sync"
+            android:layout_centerInParent="true" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnShowConversations"
+            android:layout_alignParentTop="false"
+            android:src="@android:drawable/stat_notify_chat"
+            android:layout_alignParentEnd="false"
+            android:layout_alignParentLeft="true"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="5dp" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/btnSettings"
+            android:layout_alignParentTop="false"
+            android:src="@android:drawable/stat_notify_sdcard_prepare"
+            android:layout_centerInParent="true"
+            android:layout_alignParentLeft="false"
             android:layout_alignParentRight="true"
-            android:layout_alignParentEnd="true"
-            android:src="@drawable/abc_ic_search_api_mtrl_alpha" />
+            android:layout_marginRight="5dp" />
     </RelativeLayout>
 
     <RelativeLayout
@@ -47,7 +62,10 @@
             android:name="marcin_szyszka.mobileseconndhand.activities.AdvertisementItemFragment"
             android:id="@+id/fragment"
             android:layout_alignParentTop="true"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            tools:layout="@layout/fragment_item_list"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="2dp" />
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
             android:layout_width="wrap_content"
