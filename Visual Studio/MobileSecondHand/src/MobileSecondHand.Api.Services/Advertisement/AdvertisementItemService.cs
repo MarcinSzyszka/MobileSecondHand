@@ -48,10 +48,6 @@ namespace MobileSecondHand.Api.Services.Advertisement
 			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, coordinatesModel);
 
 			return advertisementsViewModels;
-			//hardcoded data
-			//for (int i = 0; i < 10; i++) {
-			//	yield return new AdvertisementItemShortModel { AdvertisementTitle = "lalalal", AdvertisementPrice = 5 };
-			//}
 		}
 
 		private async Task<IEnumerable<AdvertisementItemShortModel>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesModel coordinatesModel) {
