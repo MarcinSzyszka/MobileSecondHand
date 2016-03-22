@@ -12,12 +12,17 @@ import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
 import marcin_szyszka.mobileseconndhand.services.BitmapOperationService;
 
+import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.List;
 
 public class AdvertisementItemRecyclerViewAdapter extends RecyclerView.Adapter<AdvertisementItemRecyclerViewAdapter.ViewHolder> {
 private Context context;
     private final List<AdvertisementItemShortModel> mValues;
     private final AdvertisementItemFragment.OnListFragmentInteractionListener mListener;
+    private ViewHolder lastHolder;
+    private int lastPosition;
+    private boolean loadingData = false;
 
     public AdvertisementItemRecyclerViewAdapter(List<AdvertisementItemShortModel> items, AdvertisementItemFragment.OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
@@ -44,17 +49,40 @@ private Context context;
             @Override
             public void onClick(View v) {
                 if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
                     mListener.onListFragmentInteraction(holder.mItem);
                 }
             }
         });
+        checkIfThisItemIsLastAndRaiseOnInfinityScroll(holder, position);
+    }
+
+    private void checkIfThisItemIsLastAndRaiseOnInfinityScroll(ViewHolder holder, int position) {
+        int lastFragmentIndex = this.mValues.size() - 1;
+        AdvertisementItemShortModel item = holder.mItem;
+        int index = this.mValues.indexOf(item);
+        if (lastFragmentIndex == index && !loadingData){
+            lastHolder = holder;
+            lastPosition = position;
+            try{
+                loadingData = true;
+                mListener.onInfinityScroll();
+            }
+            catch (Exception exc){
+                exc.printStackTrace();
+            }
+
+        }
     }
 
     @Override
     public int getItemCount() {
         return mValues.size();
+    }
+
+    public void addItems(ArrayList<AdvertisementItemShortModel> advertisementsList) {
+        this.mValues.addAll(advertisementsList);
+        this.bindViewHolder(lastHolder, lastPosition);
+        loadingData = false;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
@@ -65,6 +93,7 @@ private Context context;
         private final ImageView mAdvertisementMainPhoto;
         public AdvertisementItemShortModel mItem;
 
+
         public ViewHolder(View view) {
             super(view);
             mView = view;
@@ -72,11 +101,6 @@ private Context context;
             mPriceTextView = (TextView) view.findViewById(R.id.advertisementPriceTextView);
             mDistanceTextView = (TextView) view.findViewById(R.id.advertisementDistanceTextView);
             mAdvertisementMainPhoto = (ImageView) view.findViewById(R.id.advertisementMinPhoto);
-        }
-
-        @Override
-        public String toString() {
-            return super.toString() + " '" + mTitleTextView.getText() + "'";
         }
     }
 }

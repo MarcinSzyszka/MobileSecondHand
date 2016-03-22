@@ -12,20 +12,17 @@ import android.widget.Toast;
 import java.io.UnsupportedEncodingException;
 
 import marcin_szyszka.mobileseconndhand.R;
+import marcin_szyszka.mobileseconndhand.common.ProgressDialogAsync;
 import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
 
 public class MainActivity extends FragmentActivity implements AdvertisementItemFragment.OnListFragmentInteractionListener {
     AdvertisementItemFragment mAdvertisementFragment;
-    private ProgressDialog progress;
-
+    ProgressDialogAsync progressDialogAsync;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        progress = new ProgressDialog(this);
-        showProgressBar();
         mAdvertisementFragment = (AdvertisementItemFragment) getSupportFragmentManager().findFragmentById(R.id.fragment);
-        mAdvertisementFragment.setListener(this);
         FloatingActionButton addNewItemButton = (FloatingActionButton) findViewById(R.id.fab);
         addNewItemButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,15 +58,19 @@ public class MainActivity extends FragmentActivity implements AdvertisementItemF
         Toast.makeText(this, "Bum", Toast.LENGTH_LONG).show();
     }
 
-    public void onPreparedData() {
-        progress.hide();
+    @Override
+    public void onInfinityScroll() throws UnsupportedEncodingException {
+        mAdvertisementFragment.getAdvertisements();
     }
-    private void showProgressBar() {
-        progress.setMessage("Pobieram ogłoszenia...");
-        progress.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progress.setIndeterminate(false);
-        progress.setProgress(99);
-        progress.show();
+
+    public void onPreparedData() {
+        progressDialogAsync.stop();
+    }
+
+    @Override
+    public void onStartDownloading() {
+        progressDialogAsync = new ProgressDialogAsync(this, "Pobieranie ogłoszeń");
+        progressDialogAsync.execute();
     }
 
 }

@@ -1,6 +1,5 @@
 package marcin_szyszka.mobileseconndhand.activities;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -10,28 +9,23 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
 import org.json.JSONException;
-import org.json.JSONObject;
-
-import marcin_szyszka.mobileseconndhand.R;
-import marcin_szyszka.mobileseconndhand.common.IAdvertisementItemsReceiver;
-import marcin_szyszka.mobileseconndhand.common.IJsonObjectReceiveDelegate;
-import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
-import marcin_szyszka.mobileseconndhand.models.CoordinatesModel;
-import marcin_szyszka.mobileseconndhand.services.AdvertisementItemsService;
-import marcin_szyszka.mobileseconndhand.services.GpsLocationService;
-import marcin_szyszka.mobileseconndhand.services.ToastService;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
-import java.util.List;
+
+import marcin_szyszka.mobileseconndhand.R;
+import marcin_szyszka.mobileseconndhand.common.IAdvertisementItemsReceiver;
+import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
+import marcin_szyszka.mobileseconndhand.services.AdvertisementItemsService;
+import marcin_szyszka.mobileseconndhand.services.GpsLocationService;
+import marcin_szyszka.mobileseconndhand.services.ToastService;
 
 /**
  * A fragment representing a list of Items.
@@ -48,8 +42,7 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
     private OnListFragmentInteractionListener mListener;
     private GpsLocationService gps;
     RecyclerView recyclerView;
-    private MainActivity mMainActivity;
-
+    AdvertisementItemRecyclerViewAdapter fragmentListAdapter;
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -133,38 +126,29 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
                 AdvertisementItemShortModel model = gson.fromJson(response.get(i).toString(), advertisementType);
                 list.add(model);
             }
-
-           /* for(int i = 0; i < response.length(); i++){
-                list.add(gson.fromJson(response.get(i).toString(), AdvertisementItemShortModel.class));
-            }*/
-            recyclerView.setAdapter(new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext()));
-            mMainActivity.onPreparedData();
+            if(fragmentListAdapter == null){
+                fragmentListAdapter = new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext());
+                recyclerView.setAdapter(fragmentListAdapter);
+            }
+            else{
+                fragmentListAdapter.addItems(list);
+            }
+            mListener.onPreparedData();
         } else {
             ToastService.getInstance().showToast(this.getContext(), "Wystąpił błąd podczas pobierania ogłoszeń");
         }
     }
 
     public void getAdvertisements() throws UnsupportedEncodingException {
+        mListener.onStartDownloading();
         AdvertisementItemsService.getInstance().GetAdvertisementItems(gps.getCoordinatesModel(), getActivity(), this);
     }
 
-    public void setListener(MainActivity mainActivity) {
-        mMainActivity = mainActivity;
-    }
-
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p/>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
     public interface OnListFragmentInteractionListener {
-        // TODO: Update argument type and name
         void onListFragmentInteraction(AdvertisementItemShortModel item);
+        void onInfinityScroll() throws UnsupportedEncodingException;
+        void onPreparedData();
+        void onStartDownloading();
     }
 
 }
