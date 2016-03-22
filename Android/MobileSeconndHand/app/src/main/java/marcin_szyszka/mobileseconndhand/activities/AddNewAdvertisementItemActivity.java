@@ -2,9 +2,7 @@ package marcin_szyszka.mobileseconndhand.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.content.res.Resources;
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -41,7 +39,7 @@ import marcin_szyszka.mobileseconndhand.services.GpsLocationService;
 
 public class AddNewAdvertisementItemActivity extends FragmentActivity implements IAddNewAdvertisementItemPhotosRequestFinished, IJsonObjectReceiveDelegate {
     String mCurrentPhotoPath;
-    ImageView mPhotoView;
+    ImageView mPhotoView1;
     private String mPhotoPath;
     Button mButtonTakePicture;
     View focusView;
@@ -50,7 +48,6 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
     EditText advertisementPrice;
     private ProgressDialog progress;
     GpsLocationService gps;
-    private String mOtherPath;
     private RadioButton rdBtnOnlyForSell;
 
     @Override
@@ -64,7 +61,7 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
         advertisementTitle = (EditText) findViewById(R.id.editTextTitle);
         advertisementDescription = (EditText) findViewById(R.id.editTextDescription);
         advertisementPrice = (EditText) findViewById(R.id.editTextPrice);
-        mPhotoView = (ImageView) findViewById(R.id.photoView);
+        mPhotoView1 = (ImageView) findViewById(R.id.photoView1);
         mButtonTakePicture = (Button) findViewById(R.id.buttonTakePicture);
         mButtonTakePicture.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -180,17 +177,17 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
         Uri pathUri = Uri.parse(mCurrentPhotoPath);
         if (requestCode == AppConstant.REQUEST_TAKE_PHOTO) {
             setPhoto();
-            //mPhotoView.setImageURI(pathUri);
+            //mPhotoView1.setImageURI(pathUri);
         }
     }
 
     private void setPhoto() {
         // Get the dimensions of the View
-        int targetW = mPhotoView.getWidth();
-        int targetH = mPhotoView.getHeight();
+        int targetW = mPhotoView1.getWidth();
+        int targetH = mPhotoView1.getHeight();
 
         Bitmap resizedImage = BitmapOperationService.ResizeImage(mPhotoPath, targetW, targetH);
-        mPhotoView.setImageBitmap(resizedImage);
+        mPhotoView1.setImageBitmap(resizedImage);
         mButtonTakePicture.setText("Zrób inne zdjęcie");
     }
 
@@ -210,7 +207,6 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
         // Save a file: path for use with ACTION_VIEW intents
         mCurrentPhotoPath = "file:" + image.getAbsolutePath();
         mPhotoPath = image.getAbsolutePath();
-        mOtherPath = image.getPath();
         return image;
     }
 
