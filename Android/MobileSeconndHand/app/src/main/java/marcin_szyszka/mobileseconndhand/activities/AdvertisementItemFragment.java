@@ -69,10 +69,16 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
         gps = new GpsLocationService(this.getContext());
     }
 
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
+        if (savedInstanceState != null){
+            return view;
+        }
+
+
 
         if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
@@ -143,6 +149,12 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
         mListener.onStartDownloading();
         AdvertisementItemsService.getInstance().GetAdvertisementItems(gps.getCoordinatesModel(), getActivity(), this);
     }
+    @Override
+    public void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        outState.putAll(outState);
+    }
+
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(AdvertisementItemShortModel item);

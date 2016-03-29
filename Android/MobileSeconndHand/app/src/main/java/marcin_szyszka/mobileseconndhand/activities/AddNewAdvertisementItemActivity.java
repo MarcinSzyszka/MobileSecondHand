@@ -2,7 +2,9 @@ package marcin_szyszka.mobileseconndhand.activities;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.graphics.Bitmap;
+import android.graphics.Point;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
@@ -13,6 +15,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RadioButton;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -48,7 +51,17 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
     EditText advertisementPrice;
     private ProgressDialog progress;
     GpsLocationService gps;
+    private boolean photoIsTaking = false;
     private RadioButton rdBtnOnlyForSell;
+    private static final int imageViewDefaultWidth = 300;
+    private static final int imageViewDefaultHeight = 230;
+    private static final String keyAdvertisementTitleText = "advertisementTitleText";
+    private static final String keyRdBtnOnlyForSellValue = "rdBtnOnlyForSellValue";
+    private static final String keyAdvertisementDescriptionText = "advertisementDescriptionText";
+    private static final String keyAdvertisementPriceValue = "advertisementPriceValue";
+    private static final String keyPhotoView1Path = "mPhotoView1Path";
+    private static final String keyPhotoIsTakingValue = "keyPhotoIsTakingValue";
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +69,10 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
         setContentView(R.layout.activity_add_new_advertisement_item);
         gps = new GpsLocationService(this);
 
+        setViewFields(savedInstanceState);
+    }
+
+    private void setViewFields(Bundle savedInstanceState) {
         rdBtnOnlyForSell = (RadioButton) findViewById(R.id.rdBtnOnlyForSell);
         progress = new ProgressDialog(this);
         advertisementTitle = (EditText) findViewById(R.id.editTextTitle);
@@ -76,6 +93,35 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
                 publishAdvertisement();
             }
         });
+
+        setImageViewsSize();
+        if (savedInstanceState != null) {
+            restoreViewFieldsValues(savedInstanceState);
+        }
+    }
+
+    private void setImageViewsSize() {
+        Point screenSize = new Point();
+        getWindowManager().getDefaultDisplay().getSize(screenSize);
+        int width = screenSize.x;
+        int result = (width - 20) - imageViewDefaultWidth;
+        if (result > 0) {
+            mPhotoView1.getLayoutParams().width = imageViewDefaultWidth + result;
+            mPhotoView1.getLayoutParams().height = imageViewDefaultHeight + result;
+        }
+
+    }
+
+    private void restoreViewFieldsValues(Bundle savedInstanceState) {
+        advertisementTitle.setText(savedInstanceState.getString(keyAdvertisementTitleText, AppConstant.EMPTY_STRING));
+        advertisementDescription.setText(savedInstanceState.getString(keyAdvertisementDescriptionText, AppConstant.EMPTY_STRING));
+        advertisementPrice.setText(savedInstanceState.getString(keyAdvertisementPriceValue, AppConstant.EMPTY_STRING));
+        rdBtnOnlyForSell.setChecked(savedInstanceState.getBoolean(keyRdBtnOnlyForSellValue, false));
+        mPhotoPath = savedInstanceState.getString(keyPhotoView1Path, null);
+        photoIsTaking = savedInstanceState.getBoolean(keyPhotoIsTakingValue, true);
+        if (mPhotoPath != null && !photoIsTaking) {
+            setPhoto();
+        }
     }
 
     private void publishAdvertisement() {
@@ -164,6 +210,7 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
             }
             // Continue only if the File was successfully created
             if (photoFile != null) {
+                photoIsTaking = true;
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT,
                         Uri.fromFile(photoFile));
                 startActivityForResult(takePictureIntent, AppConstant.REQUEST_TAKE_PHOTO);
@@ -174,22 +221,22 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
-        Uri pathUri = Uri.parse(mCurrentPhotoPath);
         if (requestCode == AppConstant.REQUEST_TAKE_PHOTO) {
             setPhoto();
-            //mPhotoView1.setImageURI(pathUri);
+            photoIsTaking = false;
         }
     }
 
     private void setPhoto() {
-        // Get the dimensions of the View
+        photoIsTaking = true;
         int targetW = mPhotoView1.getWidth();
         int targetH = mPhotoView1.getHeight();
-
         Bitmap resizedImage = BitmapOperationService.ResizeImage(mPhotoPath, targetW, targetH);
         mPhotoView1.setImageBitmap(resizedImage);
         mButtonTakePicture.setText("Zrób inne zdjęcie");
+        photoIsTaking = false;
     }
+
 
     private File createImageFile() throws IOException {
         // Create an image file name
@@ -252,6 +299,23 @@ public class AddNewAdvertisementItemActivity extends FragmentActivity implements
     @Override
     public void onDataReceived(int statusCode, JSONArray response) {
 
+    }
+
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+        saveViewFieldsValues(outState);
+    }
+
+    private void saveViewFieldsValues(Bundle outState) {
+        outState.putAll(outState);
+        outState.putString(keyAdvertisementTitleText, advertisementTitle.getText().toString());
+        outState.putString(keyAdvertisementDescriptionText, advertisementDescription.getText().toString());
+        outState.putBoolean(keyRdBtnOnlyForSellValue, rdBtnOnlyForSell.isChecked());
+        outState.putString(keyAdvertisementPriceValue, advertisementPrice.getText().toString());
+        outState.putString(keyPhotoView1Path, mPhotoPath);
+        outState.putBoolean(keyPhotoIsTakingValue, photoIsTaking);
     }
 }
 

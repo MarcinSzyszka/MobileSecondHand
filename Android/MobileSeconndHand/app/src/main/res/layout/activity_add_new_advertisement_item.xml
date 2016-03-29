@@ -157,8 +157,8 @@
                 android:layout_marginTop="10dp">
 
                 <ImageView
-                    android:layout_width="350dp"
-                    android:layout_height="300dp"
+                    android:layout_width="300dp"
+                    android:layout_height="230dp"
                     android:id="@+id/photoView1"
                     android:layout_centerHorizontal="true"
                     android:src="@mipmap/add_photo_image"

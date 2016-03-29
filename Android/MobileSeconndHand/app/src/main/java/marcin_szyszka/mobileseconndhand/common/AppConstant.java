@@ -6,4 +6,5 @@ package marcin_szyszka.mobileseconndhand.common;
 public class AppConstant {
     public static final String WEB_API_URL = "http://192.168.8.104:81/api/";
     public static final int REQUEST_TAKE_PHOTO = 1;
+    public static final String EMPTY_STRING = "";
 }
