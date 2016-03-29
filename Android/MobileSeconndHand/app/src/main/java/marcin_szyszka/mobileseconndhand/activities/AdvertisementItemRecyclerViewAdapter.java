@@ -43,7 +43,13 @@ private Context context;
         holder.mTitleTextView.setText(mValues.get(position).AdvertisementTitle);
         holder.mPriceTextView.setText(mValues.get(position).AdvertisementPrice + " zł");
         holder.mDistanceTextView.setText(String.valueOf(mValues.get(position).Distance) + " km");
-        holder.mAdvertisementMainPhoto.setImageBitmap(BitmapOperationService.ResizeImage(mValues.get(position).MainPhoto, holder.mAdvertisementMainPhoto.getWidth(), holder.mAdvertisementMainPhoto.getHeight()));
+        holder.mAdvertisementMainPhoto.setImageBitmap(
+                BitmapOperationService.ResizeImage(
+                        mValues.get(position).MainPhoto,
+                        holder.mAdvertisementMainPhoto.getWidth(),
+                        holder.mAdvertisementMainPhoto.getHeight()
+                )
+        );
 
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override

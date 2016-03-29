@@ -101,7 +101,7 @@ public class AdvertisementItemsService {
         });
     }
 
-    public void GetAdvertisementItems(CoordinatesModel coordinatesModel, FragmentActivity callingActivity, final IAdvertisementItemsReceiver dataReceiveObject) throws UnsupportedEncodingException {
+    public void GetAdvertisementItems(CoordinatesModel coordinatesModel, FragmentActivity callingActivity, final IAdvertisementItemsReceiver dataReceiveListener) throws UnsupportedEncodingException {
         String model = new Gson().toJson(coordinatesModel);
         HttpEntity entity = new ByteArrayEntity(model.getBytes("UTF-8"));
 
@@ -114,7 +114,7 @@ public class AdvertisementItemsService {
             @Override
             public void onSuccess(int statusCode, Header[] headers, JSONArray response) {
                 try {
-                    dataReceiveObject.onAdvertisementItemsReceived(statusCode, response);
+                    dataReceiveListener.onAdvertisementItemsReceived(statusCode, response);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -123,7 +123,7 @@ public class AdvertisementItemsService {
             @Override
             public void onFailure(int statusCode, Header[] headers, Throwable throwable, JSONObject errorResponse) {
                 try {
-                    dataReceiveObject.onAdvertisementItemsReceived(statusCode, null);
+                    dataReceiveListener.onAdvertisementItemsReceived(statusCode, null);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
@@ -132,7 +132,7 @@ public class AdvertisementItemsService {
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
                 try {
-                    dataReceiveObject.onAdvertisementItemsReceived(statusCode, null);
+                    dataReceiveListener.onAdvertisementItemsReceived(statusCode, null);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }

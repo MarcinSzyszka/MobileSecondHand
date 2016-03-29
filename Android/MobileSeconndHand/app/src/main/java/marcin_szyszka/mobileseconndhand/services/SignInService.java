@@ -83,7 +83,7 @@ public class SignInService {
 
             @Override
             public void onFailure(int statusCode, Header[] headers, String responseString, Throwable throwable) {
-                if (statusCode != 200) {
+                if (statusCode == 401) {
                     tryWithFacebook();
                 } else {
                     raiseListenerCallback(statusCode, null);
