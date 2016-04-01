@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import marcin_szyszka.mobileseconndhand.R;
 import marcin_szyszka.mobileseconndhand.common.IAdvertisementItemsReceiver;
 import marcin_szyszka.mobileseconndhand.models.AdvertisementItemShortModel;
+import marcin_szyszka.mobileseconndhand.services.AdvertisementItemListActivityService;
 import marcin_szyszka.mobileseconndhand.services.AdvertisementItemsService;
 import marcin_szyszka.mobileseconndhand.services.GpsLocationService;
 import marcin_szyszka.mobileseconndhand.services.ToastService;
@@ -43,6 +44,7 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
     private GpsLocationService gps;
     RecyclerView recyclerView;
     AdvertisementItemRecyclerViewAdapter fragmentListAdapter;
+
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
@@ -74,12 +76,6 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_item_list, container, false);
-        if (savedInstanceState != null){
-            return view;
-        }
-
-
-
         if (!gps.canGetLocation()) {
             gps.showSettingsAlert();
         } else {
@@ -94,7 +90,14 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
                 }
 
                 try {
-                    getAdvertisements();
+                    if (savedInstanceState != null) {
+                        setFragmentAdapter(AdvertisementItemListActivityService
+                                .getInstance()
+                                .getStoredAdvertisementItemShortModelsList());
+                        return view;
+                    } else {
+                        getAdvertisements();
+                    }
                 } catch (UnsupportedEncodingException e) {
                     e.printStackTrace();
                 }
@@ -126,22 +129,26 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
         if (statusCode == 200) {
             ArrayList<AdvertisementItemShortModel> list = new ArrayList<>();
             Gson gson = new Gson();
-            Type advertisementType = new TypeToken<AdvertisementItemShortModel>(){}.getType();
+            Type advertisementType = new TypeToken<AdvertisementItemShortModel>() {
+            }.getType();
 
             for (int i = 0; i < response.length(); i++) {
                 AdvertisementItemShortModel model = gson.fromJson(response.get(i).toString(), advertisementType);
                 list.add(model);
             }
-            if(fragmentListAdapter == null){
-                fragmentListAdapter = new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext());
-                recyclerView.setAdapter(fragmentListAdapter);
-            }
-            else{
-                fragmentListAdapter.addItems(list);
-            }
+            setFragmentAdapter(list);
             mListener.onPreparedData();
         } else {
             ToastService.getInstance().showToast(this.getContext(), "Wystąpił błąd podczas pobierania ogłoszeń");
+        }
+    }
+
+    private void setFragmentAdapter(ArrayList<AdvertisementItemShortModel> list) {
+        if (fragmentListAdapter == null) {
+            fragmentListAdapter = new AdvertisementItemRecyclerViewAdapter(list, mListener, getContext());
+            recyclerView.setAdapter(fragmentListAdapter);
+        } else {
+            fragmentListAdapter.addItems(list);
         }
     }
 
@@ -149,17 +156,24 @@ public class AdvertisementItemFragment extends Fragment implements IAdvertisemen
         mListener.onStartDownloading();
         AdvertisementItemsService.getInstance().GetAdvertisementItems(gps.getCoordinatesModel(), getActivity(), this);
     }
+
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
         outState.putAll(outState);
+        AdvertisementItemListActivityService
+                .getInstance()
+                .storeAdvertisementItemShortModelsList(fragmentListAdapter.getItems());
     }
 
 
     public interface OnListFragmentInteractionListener {
         void onListFragmentInteraction(AdvertisementItemShortModel item);
+
         void onInfinityScroll() throws UnsupportedEncodingException;
+
         void onPreparedData();
+
         void onStartDownloading();
     }
 

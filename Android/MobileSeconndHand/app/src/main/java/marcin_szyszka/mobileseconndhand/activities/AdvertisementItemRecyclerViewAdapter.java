@@ -18,13 +18,13 @@ import java.util.List;
 
 public class AdvertisementItemRecyclerViewAdapter extends RecyclerView.Adapter<AdvertisementItemRecyclerViewAdapter.ViewHolder> {
 private Context context;
-    private final List<AdvertisementItemShortModel> mValues;
+    private final ArrayList<AdvertisementItemShortModel> mValues;
     private final AdvertisementItemFragment.OnListFragmentInteractionListener mListener;
     private ViewHolder lastHolder;
     private int lastPosition;
     private boolean loadingData = false;
 
-    public AdvertisementItemRecyclerViewAdapter(List<AdvertisementItemShortModel> items, AdvertisementItemFragment.OnListFragmentInteractionListener listener, Context context) {
+    public AdvertisementItemRecyclerViewAdapter(ArrayList<AdvertisementItemShortModel> items, AdvertisementItemFragment.OnListFragmentInteractionListener listener, Context context) {
         mValues = items;
         mListener = listener;
         this.context = context;
@@ -89,6 +89,10 @@ private Context context;
         this.mValues.addAll(advertisementsList);
         this.bindViewHolder(lastHolder, lastPosition);
         loadingData = false;
+    }
+
+    public ArrayList<AdvertisementItemShortModel> getItems() {
+        return this.mValues;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
