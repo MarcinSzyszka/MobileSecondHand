@@ -10,7 +10,6 @@ import android.support.annotation.NonNull;
  */
 public class BitmapOperationService {
     public static Bitmap ResizeImage(String imagePath, int width, int height) {
-        // Get the dimensions of the bitmap
         BitmapFactory.Options bmOptions = getBitmapOptions();
         BitmapFactory.decodeFile(imagePath, bmOptions);
 
@@ -21,9 +20,9 @@ public class BitmapOperationService {
     }
 
     public static Bitmap ResizeImage(byte[] imageByteArray, int width, int height) {
-// Get the dimensions of the bitmap
+        int offset = 0;
         BitmapFactory.Options bmOptions = getBitmapOptions();
-        BitmapFactory.decodeByteArray(imageByteArray, 0, imageByteArray.length, bmOptions);
+        BitmapFactory.decodeByteArray(imageByteArray, offset, imageByteArray.length, bmOptions);
 
         scaleImage(width, height, bmOptions);
 
@@ -54,12 +53,10 @@ public class BitmapOperationService {
             int photoW = bmOptions.outWidth;
             int photoH = bmOptions.outHeight;
 
-            // Determine how much to scale down the image
             int scaleFactor = Math.min(photoW / width, photoH / height);
             bmOptions.inSampleSize = scaleFactor;
         }
 
-        // Decode the image file into a Bitmap sized to fill the View
         bmOptions.inJustDecodeBounds = false;
         bmOptions.inPurgeable = true;
     }
