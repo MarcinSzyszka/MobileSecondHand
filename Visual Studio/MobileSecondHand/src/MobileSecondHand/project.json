@@ -37,7 +37,8 @@
         "Microsoft.AspNet.Authentication.Facebook": "1.0.0-rc1-final",
         "Microsoft.AspNet.Http.Features": "1.0.0-rc1-final",
         "MobileSecondHand.Api.Models": "1.0.0-*",
-        "MobileSecondHand.Api.Services": "1.0.0-*"
+        "MobileSecondHand.Api.Services": "1.0.0-*",
+        "NuGet.Server": "2.10.1"
     },
 
     "commands": {
