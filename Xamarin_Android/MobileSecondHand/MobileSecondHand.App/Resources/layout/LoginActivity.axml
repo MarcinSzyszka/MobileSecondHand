@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:facebook="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout1"
+        android:layout_weight="8">
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout3"
+            android:layout_centerInParent="true"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp">
+            <TextView
+                android:text="@string/infoLogin"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textView1"
+                android:textSize="30dp"
+                android:layout_centerHorizontal="true"
+                android:textStyle="bold" />
+            <EditText
+                android:inputType="textEmailAddress"
+                android:layout_height="wrap_content"
+                android:id="@+id/emailInputLogin"
+                android:layout_width="match_parent"
+                android:hint="email"
+                android:layout_below="@+id/textView1"
+                android:gravity="center" />
+            <EditText
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/emailInputLogin"
+                android:id="@+id/inputPasswordLogin"
+                android:hint="hasło"
+                android:textAlignment="inherit"
+                android:gravity="center" />
+            <Button
+                android:text="@string/standarLoginButtonText"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputPasswordLogin"
+                android:id="@+id/buttonLoginStandard"
+                android:layout_centerHorizontal="true" />
+            <Button
+                android:text="@string/goTeRegistrationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/buttonLoginStandard"
+                android:id="@+id/goToRegistrationButton"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_weight="1">
+        <com.facebook.login.widget.LoginButton
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:id="@+id/facebookLoginBtn" />
+    </RelativeLayout>
+</LinearLayout>

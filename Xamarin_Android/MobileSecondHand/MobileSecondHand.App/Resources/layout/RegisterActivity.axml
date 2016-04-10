@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout1"
+        android:layout_weight="2">
+        <TextView
+            android:text="@string/infoRegistration"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView1"
+            android:textStyle="bold"
+            android:textSize="30dp"
+            android:gravity="center"
+            android:layout_centerInParent="true" />
+    </RelativeLayout>
+    <RelativeLayout
+        android:minWidth="25px"
+        android:minHeight="25px"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/relativeLayout2"
+        android:layout_weight="8"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp">
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/relativeLayout3"
+            android:layout_centerInParent="true">
+            <EditText
+                android:inputType="textEmailAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/inputEmailRegistration"
+                android:gravity="center"
+                android:layout_centerHorizontal="true"
+                android:hint="email" />
+            <EditText
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputEmailRegistration"
+                android:id="@+id/inputPasswordRegistration"
+                android:layout_centerHorizontal="true"
+                android:hint="hasło (min 6 znaków)"
+                android:gravity="center" />
+            <EditText
+                android:inputType="textPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputPasswordRegistration"
+                android:id="@+id/inputConfirmPasswordRegistration"
+                android:layout_centerHorizontal="true"
+                android:hint="potwierdź hasło"
+                android:gravity="center" />
+            <Button
+                android:text="@string/registrationButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/inputConfirmPasswordRegistration"
+                android:id="@+id/buttonSubmitRegistration"
+                android:layout_centerHorizontal="true" />
+        </RelativeLayout>
+    </RelativeLayout>
+</LinearLayout>

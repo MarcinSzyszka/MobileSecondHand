@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="Hello">Hello World, Click Me!</string>
+    <string name="ApplicationName">MobileSecondHand</string>
+	<string name="app_id">1772882172935332</string>
+	<string name="infoLogin">Zaloguj się</string>
+	<string name="standarLoginButtonText">Zaloguj</string>
+	<string name="goTeRegistrationButton">Przejdź do rejestracji</string>
+	<string name="infoRegistration">Rejestracja</string>
+	<string name="registrationButton">Zarejestruj się</string>
+</resources>
