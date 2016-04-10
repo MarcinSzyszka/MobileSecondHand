@@ -23,7 +23,7 @@ namespace MobileSecondHand.Controllers {
 
 		[HttpPost]
 		[Route("LoginWithFacebook")]
-		public async Task<IActionResult> LoginWithFacebook(string facebookToken) {
+		public async Task<IActionResult> LoginWithFacebook([FromBody]FacebookTokenViewModel facebookToken) {
 			try {
 				var token = await this.applicationSignInManager.LoginWithFacebook(facebookToken);
 				return Json(token);
@@ -65,7 +65,7 @@ namespace MobileSecondHand.Controllers {
 
 
 		[HttpGet]
-		[Authorize("Bearer")]
+		//[Authorize("Bearer")]
 		[Route("TokenIsActual")]
 		public JsonResult TokenIsActual() {
 			//nothing, only check if jwt bearer middleware will allow user to entry

@@ -31,7 +31,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 				throw new Exception("Register model is invalid");
 			}
 			ApplicationUser user = await CreateUser(registerViewModel);
-			return GetToken(user, DateTime.UtcNow.AddMinutes(30));
+			return GetToken(user);
 		}
 
 		public async Task<TokenModel> LoginStandard(LoginViewModel loginStandardViewModel) {
@@ -46,18 +46,18 @@ namespace MobileSecondHand.Api.Services.Authentication {
 			if (!passwordIsValid) {
 				throw new Exception("Hasło jest nieprawidłowe");
 			}
-			return GetToken(user, DateTime.UtcNow.AddMinutes(30));
+			return GetToken(user);
 		}
 
-		public async Task<TokenModel> LoginWithFacebook(string facebookToken) {
-			FacebookUserCredentialsResponse facebookResponse = await facebookApiManager.GetUserCredentials(facebookToken);
+		public async Task<TokenModel> LoginWithFacebook(FacebookTokenViewModel facebookToken) {
+			FacebookUserCredentialsResponse facebookResponse = await facebookApiManager.GetUserCredentials(facebookToken.FacebookToken);
 
 			if (facebookResponse.email != null) {
 				ApplicationUser user = await applicationUserManager.GetUser(facebookResponse.email);
 				if (user == null) {
 					user = await CreateUser(facebookResponse);
 				}
-				return GetToken(user, DateTime.UtcNow.AddMinutes(30));
+				return GetToken(user);
 			}
 			throw new Exception("Facebook not returned email address");
 		}
@@ -86,7 +86,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 
 			return user;
 		}
-		private TokenModel GetToken(ApplicationUser user, DateTime? expires) {
+		private TokenModel GetToken(ApplicationUser user) {
 			var handler = new JwtSecurityTokenHandler();
 
 			ClaimsIdentity identity = new ClaimsIdentity(new GenericIdentity(user.Email, "TokenAuth"), new[] { new Claim("UserId", user.Id, ClaimValueTypes.String) });
@@ -96,7 +96,7 @@ namespace MobileSecondHand.Api.Services.Authentication {
 				audience: tokenAuthorizationOptions.Audience,
 				signingCredentials: tokenAuthorizationOptions.SigningCredentials,
 				subject: identity,
-				expires: expires
+				expires: DateTime.Now.AddHours(24)
 				);
 
 			return new TokenModel { Token = handler.WriteToken(securityToken) };

@@ -7,7 +7,7 @@ using MobileSecondHand.Api.Models.Security;
 namespace MobileSecondHand.Api.Services.Authentication
 {
 	public interface IApplicationSignInManager {
-		Task<TokenModel> LoginWithFacebook(string facebookToken);
+		Task<TokenModel> LoginWithFacebook(FacebookTokenViewModel facebookToken);
 		Task<TokenModel> Register(RegisterViewModel registerViewModel);
 		Task<TokenModel> LoginStandard(LoginViewModel loginStandardViewModel);
 	}
