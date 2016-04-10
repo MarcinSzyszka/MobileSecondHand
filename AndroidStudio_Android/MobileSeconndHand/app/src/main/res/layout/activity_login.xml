@@ -84,7 +84,9 @@
                 android:layout_centerVertical="true"
                 android:text="Zaloguj się"
                 android:textAppearance="?android:attr/textAppearanceLarge"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:textSize="20dp" />
+
         </RelativeLayout>
 
         <TextView
