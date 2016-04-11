@@ -52,12 +52,12 @@ namespace MobileSecondHand.Controllers {
 			}
 		}
 
-		[HttpGet]
+		[HttpPost]
 		[Route("GetAdvertisements")]
-		public async Task<string> GetAdvertisements([FromBody]CoordinatesModel coordinatesModel) {
+		public async Task<string> GetAdvertisements([FromBody]SearchModel searchModel) {
 			try {
 				var userId = this.identityService.GetUserId(User.Identity);
-				var advertisements = await this.advertisementItemService.GetAdvertisements(coordinatesModel, userId);
+				var advertisements = await this.advertisementItemService.GetAdvertisements(searchModel, userId);
 				JavaScriptSerializer serializer = new JavaScriptSerializer();
 				serializer.MaxJsonLength = int.MaxValue;
 				var adverts = serializer.Serialize(advertisements);

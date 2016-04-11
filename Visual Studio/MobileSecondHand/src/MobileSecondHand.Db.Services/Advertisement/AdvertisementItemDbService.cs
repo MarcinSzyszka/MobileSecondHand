@@ -11,7 +11,8 @@ namespace MobileSecondHand.Db.Services.Advertisement {
 			this.dbContext = context;
 		}
 
-		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel) {
+		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page) {
+			//dorobić pejdzowanie
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.Latitude >= coordinatesForSearchModel.LatitudeStart
 																						&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
 																						&& a.Longitude >= coordinatesForSearchModel.LongitudeStart

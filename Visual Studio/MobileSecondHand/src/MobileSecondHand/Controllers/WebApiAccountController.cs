@@ -65,7 +65,7 @@ namespace MobileSecondHand.Controllers {
 
 
 		[HttpGet]
-		//[Authorize("Bearer")]
+		[Authorize("Bearer")]
 		[Route("TokenIsActual")]
 		public JsonResult TokenIsActual() {
 			//nothing, only check if jwt bearer middleware will allow user to entry

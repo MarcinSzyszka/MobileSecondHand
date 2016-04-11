@@ -10,6 +10,6 @@ namespace MobileSecondHand.Db.Services.Advertisement
     public interface IAdvertisementItemDbService
     {
 		void SaveNewAdvertisementItem(AdvertisementItem advertisementItem);
-		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
+		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page);
 	}
 }
