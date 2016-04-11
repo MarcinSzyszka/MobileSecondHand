@@ -10,5 +10,6 @@ namespace MobileSecondHand.Models.Consts {
 		public const string WEB_API_ACCOUNT_CONTROLLER = "WebApiAccount/";
 		public const string AUTHORIZATION_HEADER_NAME = "Authorization";
 		public const string AUTHORIZATION_HEADER_BEARER_VALUE_NAME = "Bearer ";
+		public const string ADVERTISEMENT_CONTROLLER = "AdvertisementItem/";
 	}
 }

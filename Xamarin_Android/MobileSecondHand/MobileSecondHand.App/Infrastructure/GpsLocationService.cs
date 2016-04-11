@@ -12,6 +12,8 @@ using Android.Runtime;
 using Android.Support.V4.App;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.App.Consts;
+using MobileSecondHand.Models.Location;
 using MobileSecondHand.Services.Location;
 
 namespace MobileSecondHand.App.Infrastructure {
@@ -23,6 +25,7 @@ namespace MobileSecondHand.App.Infrastructure {
 		private Location location;
 		private LocationManager locationManager;
 		private Context mContext;
+		SharedPreferencesHelper sharedPreferencesHelper;
 		ISettingWindowCloseListener settingWindowListener;
 		private long MIN_DISTANCE_CHANGE_FOR_UPDATES = 500;//500m
 
@@ -33,6 +36,7 @@ namespace MobileSecondHand.App.Infrastructure {
 		public GpsLocationService(Context context, ISettingWindowCloseListener settingWindowListener) {
 			this.mContext = context;
 			this.settingWindowListener = settingWindowListener;
+			this.sharedPreferencesHelper = new SharedPreferencesHelper(context);
 			this.location = GetLocation();
 		}
 
@@ -48,7 +52,6 @@ namespace MobileSecondHand.App.Infrastructure {
 
 				if (!isGPSEnabled && !isNetworkEnabled) {
 					//showalert in activity
-					//ShowSettingsAlert();
 				}
 				else {
 					this.CanGetLocation = true;
@@ -82,10 +85,35 @@ namespace MobileSecondHand.App.Infrastructure {
 					}
 				}
 			} catch (Exception e) {
-				throw e;
+				AlertsService.ShowToast(this.mContext, "Nie masz w³¹czonej lokalizacji!");
 			}
 
 			return location;
+		}
+
+		public CoordinatesForAdvertisementsModel GetCoordinatesModel() {
+			CoordinatesForAdvertisementsModel coordinatesModel = new CoordinatesForAdvertisementsModel();
+			var location = GetLocation();
+			if (location == null || latitude == 0 || longitude == 0) {
+				string homeLatitude = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.HOME_LATITUDE);
+				string homeLongitude = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.HOME_LONGITUDE);
+				if (homeLatitude != null && homeLongitude != null) {
+					latitude = Double.Parse(homeLatitude);
+					longitude = Double.Parse(homeLongitude);
+					AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji. U¿yjê lokalizacji domowej");
+				}
+				else {
+					//in future ask user for him home location and show activity to set that
+					AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji i nie masz zapisanej lokalizacji domowej.");
+				}
+			}
+			var distance = (int)this.sharedPreferencesHelper.GetSharedPreference<int>(SharedPreferencesKeys.DISTANCE_FORADVERTISEMENT);
+
+			coordinatesModel.Latitude = latitude;
+			coordinatesModel.Longitude = longitude;
+			coordinatesModel.MaxDistance = distance > 0 ? distance : 10;
+			
+			return coordinatesModel;
 		}
 
 		public void ShowSettingsAlert() {
@@ -102,6 +130,7 @@ namespace MobileSecondHand.App.Infrastructure {
 
 		public void OnClick(IDialogInterface dialog, int which) {
 			if (which == -1) {
+				//ok
 				Intent intent = new Intent(Settings.ActionLocationSourceSettings);
 				mContext.StartActivity(intent);
 			}
