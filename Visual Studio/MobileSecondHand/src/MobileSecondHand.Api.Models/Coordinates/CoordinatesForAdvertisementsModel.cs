@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.Api.Models.Coordinates
 {
-    public class CoordinatesModel
+    public class CoordinatesForAdvertisementsModel
     {
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
