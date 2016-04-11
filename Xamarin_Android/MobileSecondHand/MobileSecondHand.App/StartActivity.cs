@@ -19,7 +19,7 @@ namespace MobileSecondHand.App {
 	[Activity(MainLauncher = true, Icon = "@drawable/icon")]
 	public class StartActivity : Activity, ISettingWindowCloseListener {
 		ISignInService signInService;
-		Action<bool> startActivityAction;
+		Action<bool> actionToExecuteAfterCloseSettingsDialog;
 		private bool settingsAlertIsShow;
 		private bool userIsLogged;
 
@@ -38,24 +38,20 @@ namespace MobileSecondHand.App {
 				gps.ShowSettingsAlert();
 				
 			}
-			var location = gps.GetLocation();
-			if (location != null) {
-				AlertsService.ShowToast(this, String.Format("{0}{1}", location.Latitude, location.Longitude));
-			}
 			userIsLogged = await SignInUser();
 			if (!settingsAlertIsShow) {
 				StartMainOrLoginActivity(userIsLogged);
 			}
 			else {
-				startActivityAction = StartMainOrLoginActivity;
+				actionToExecuteAfterCloseSettingsDialog = StartMainOrLoginActivity;
 			}
 		}
 
 		protected override void OnResume() {
 			base.OnResume();
-			if (startActivityAction != null) {
-				startActivityAction(userIsLogged);
-				startActivityAction = null;
+			if (actionToExecuteAfterCloseSettingsDialog != null) {
+				actionToExecuteAfterCloseSettingsDialog(userIsLogged);
+				actionToExecuteAfterCloseSettingsDialog = null;
 			}
 		}
 
@@ -98,9 +94,9 @@ namespace MobileSecondHand.App {
 		}
 
 		public void OnSettingsWindowClose() {
-			if (startActivityAction != null) {
-				startActivityAction(userIsLogged);
-				startActivityAction = null;
+			if (actionToExecuteAfterCloseSettingsDialog != null) {
+				actionToExecuteAfterCloseSettingsDialog(userIsLogged);
+				actionToExecuteAfterCloseSettingsDialog = null;
 			}
 		}
 	}
