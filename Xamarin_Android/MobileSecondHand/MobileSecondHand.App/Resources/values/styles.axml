@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<resources>
+	<style name="AppTheme" parent="@android:style/Theme.Material.Light.DarkActionBar">
+		<item name="android:windowNoTitle">true</item>
+		<!--We will be using the toolbar so no need to show ActionBar-->
+		<item name="android:windowActionBar">false</item>
+		<!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
+		<!-- colorPrimary is used for the default action bar background -->
+		<item name="android:colorPrimary">#03A9F4</item>
+		<!-- colorPrimaryDark is used for the status bar -->
+		<item name="android:colorPrimaryDark">#0288D1</item>
+		<!--<item name="android:colorPrimaryLight">#B3E5FC</item>-->
+		<item name="android:textColorPrimary">#212121</item>
+		<item name="android:textColorSecondary">#727272</item>
+		<!--<item name="android:colorIcons">#FFFFFF</item>
+		<item name="android:colorDivider">#B6B6B6</item>-->
+		<!-- colorAccent is used as the default value for colorControlActivated
+         which is used to tint widgets -->
+		<item name="android:colorAccent">#FF5722</item>
+		<!-- You can also set colorControlNormal, colorControlActivated
+         colorControlHighlight and colorSwitchThumbNormal. -->
+	</style>
+</resources>
