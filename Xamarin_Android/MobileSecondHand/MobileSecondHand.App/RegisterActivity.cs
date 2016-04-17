@@ -55,7 +55,7 @@ namespace MobileSecondHand.App {
 
 		private bool loginFormIsValid() {
 			var formValidator = new FormValidator();
-			return formValidator.IsFormValidate(emailInput, passwordInput, confirmPasswordInput, ref focusView);
+			return formValidator.IsLoginFormValidate(emailInput, passwordInput, confirmPasswordInput, ref focusView);
 		}
 
 		private async Task RegisterUser() {

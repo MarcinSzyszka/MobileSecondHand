@@ -102,7 +102,7 @@ namespace MobileSecondHand.App {
 
 		private bool loginFormIsValid() {
 			var formValidator = new FormValidator();
-			return formValidator.IsFormValidate(emailInput, passwordInput, ref focusView);
+			return formValidator.IsLoginFormValidate(emailInput, passwordInput, ref focusView);
 		}
 
 		private void SetupFacebookLogin() {

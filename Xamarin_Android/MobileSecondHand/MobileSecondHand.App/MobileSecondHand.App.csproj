@@ -108,9 +108,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
+    <Compile Include="AddNewAdvertisementActivity.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
+    <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
     <Compile Include="Infrastructure\BitmapOperationService.cs" />
     <Compile Include="Infrastructure\GpsLocationService.cs" />
+    <Compile Include="Infrastructure\IAdvertisementsInfiniteScrollListener.cs" />
+    <Compile Include="Infrastructure\ProgressDialogHelper.cs" />
     <Compile Include="Infrastructure\SharedPreferencesHelper.cs" />
     <Compile Include="Infrastructure\AlertsService.cs" />
     <Compile Include="Infrastructure\FacebookCallback.cs" />
@@ -140,6 +144,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\menu\mainActivityMenu.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\values\styles.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AddNewAdvertisementActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -191,16 +201,22 @@
     <AndroidResource Include="Resources\drawable\ic_input_add.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\ic_menu_mylocation.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\background_border.xml" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_menu_moreoverflow_normal_holo_light.png" />
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ic_menu_start_conversation.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_menu_settings_holo_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\perm_group_sync_settings.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\ic_perm_group_location.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\add_photo_image.jpg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.Android.Support.Vector.Drawable.23.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets" Condition="Exists('..\packages\Xamarin.Android.Support.Vector.Drawable.23.2.1\build\Xamarin.Android.Support.Vector.Drawable.targets')" />

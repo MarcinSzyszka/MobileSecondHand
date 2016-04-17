@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using com.refractored.fab;
@@ -19,13 +20,15 @@ using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
 
 namespace MobileSecondHand.App {
-	[Activity(Label = "MainActivity")]
-	public class MainActivity : Activity {
-		ListView advertisementsListView;
-		AdvertisementItemListAdapter advertisementItemListAdapter;
+	[Activity(Label = "Lista og³oszeñ")]
+	public class MainActivity : Activity, IAdvertisementsInfiniteScrollListener {
+		RecyclerView advertisementsRecyclerView;
+		AdvertisementItemListAdapter advertisementItemRecyclerView;
 		IAdvertisementItemService advertisementItemService;
 		GpsLocationService gpsLocationService;
 		SharedPreferencesHelper sharedPreferencesHelper;
+		int advertisementsPage = 0;
+		private ProgressDialogHelper progress;
 
 		public MainActivity() {
 			this.advertisementItemService = new AdvertisementItemService();
@@ -37,12 +40,14 @@ namespace MobileSecondHand.App {
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
 			SetContentView(Resource.Layout.MainActivity);
+			SetupToolbar();
 			await SetupViews();
-			// Create your application here
 		}
 
-		public override bool OnOptionsItemSelected(IMenuItem item) {
-			return base.OnOptionsItemSelected(item);
+		private void SetupToolbar() {
+			var toolbar = FindViewById<Android.Widget.Toolbar>(Resource.Id.toolbar);
+			SetActionBar(toolbar);
+			ActionBar.Title = "Lista og³oszeñ";
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu) {
@@ -51,19 +56,40 @@ namespace MobileSecondHand.App {
 		}
 
 		private async Task SetupViews() {
+			progress = new ProgressDialogHelper(this);
 			SetupFab();
-			advertisementsListView = FindViewById<ListView>(Resource.Id.advertisementsListView);
-			List<AdvertisementItemShort> avertisements = await GetAdvertisements();
-			if (avertisements != null) {
-				advertisementItemListAdapter = new AdvertisementItemListAdapter(this, avertisements);
-				advertisementsListView.Adapter = advertisementItemListAdapter;
+			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
+			var mLayoutManager = new LinearLayoutManager(this);
+			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
+			await DownloadAndShowAdvertisements(true);
+		}
+
+		private async Task DownloadAndShowAdvertisements(bool resetList) {
+			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
+			advertisementsPage = resetList ? 0 : advertisementsPage + 1;
+			List<AdvertisementItemShort> advertisements = await GetAdvertisements();
+			if (advertisements != null) {
+				if (advertisementItemRecyclerView == null || resetList) {
+					advertisementItemRecyclerView = new AdvertisementItemListAdapter(this, advertisements, this);
+					advertisementItemRecyclerView.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
+					advertisementsRecyclerView.SetAdapter(advertisementItemRecyclerView);
+				}
+				else {
+					advertisementItemRecyclerView.AddAdvertisements(advertisements);
+				}
 			}
+			progress.CloseProgressDialog();
+
+		}
+
+		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, int advertisementId) {
+			//pobieranko konkretnego og³oszenia
 		}
 
 		private async Task<List<AdvertisementItemShort>> GetAdvertisements() {
 			var searchModel = new SearchModel();
 			searchModel.CoordinatesModel = this.gpsLocationService.GetCoordinatesModel();
-			searchModel.Page = 0;
+			searchModel.Page = advertisementsPage;
 			var tokenModel = new TokenModel();
 			tokenModel.Token = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 
@@ -78,7 +104,12 @@ namespace MobileSecondHand.App {
 
 		private void Fab_Click(object sender, EventArgs e) {
 			AlertsService.ShowToast(this, "Bum!");
+			var addAdvertisementIntent = new Intent(this, typeof(AddNewAdvertisementActivity));
+			StartActivity(addAdvertisementIntent);
 		}
 
+		public async void OnInfiniteScroll() {
+			await DownloadAndShowAdvertisements(false);
+		}
 	}
 }

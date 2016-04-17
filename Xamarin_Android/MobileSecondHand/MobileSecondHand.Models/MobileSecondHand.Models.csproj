@@ -37,7 +37,9 @@
     <!-- A reference to the entire .NET Framework is automatically included -->
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Advertisement\AdvertisementItemPhotosPaths.cs" />
     <Compile Include="Advertisement\AdvertisementItemShort.cs" />
+    <Compile Include="Advertisement\NewAdvertisementItem.cs" />
     <Compile Include="Advertisement\SearchModel.cs" />
     <Compile Include="Class1.cs" />
     <Compile Include="Consts\WebApiConsts.cs" />

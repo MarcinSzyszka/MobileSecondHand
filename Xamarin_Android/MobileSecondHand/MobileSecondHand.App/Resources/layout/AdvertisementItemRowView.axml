@@ -3,10 +3,9 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
-    android:background="@drawable/background_border">
+    android:padding="10dp">
     <ImageView
-        android:src="@android:drawable/ic_menu_mylocation"
+        android:src="@drawable/ic_perm_group_location"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/imageView1"
@@ -34,7 +33,9 @@
         android:layout_below="@+id/advertisementPhotoImageView"
         android:id="@+id/advertisementOnListTitle"
         android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        android:textAlignment="center"
+        android:gravity="center" />
     <TextView
         android:text="49 zł"
         android:textAppearance="?android:attr/textAppearanceLarge"
