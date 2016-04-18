@@ -8,9 +8,10 @@ using MobileSecondHand.Db.Services;
 namespace Mobilesecondhand.Migrations
 {
     [DbContext(typeof(MobileSecondHandContext))]
-    partial class MobileSecondHandContextModelSnapshot : ModelSnapshot
+    [Migration("20160418163622_AddColorAndCategoryKeywordsTablesRealtedWithAdvertisementItem")]
+    partial class AddColorAndCategoryKeywordsTablesRealtedWithAdvertisementItem
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.0-rc1-16348")
