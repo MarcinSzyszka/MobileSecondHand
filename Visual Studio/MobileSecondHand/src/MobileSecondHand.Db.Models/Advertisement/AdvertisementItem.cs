@@ -20,6 +20,9 @@ namespace MobileSecondHand.Db.Models.Advertisement {
 		[ForeignKey("UserId")]
 		public virtual ApplicationUser User { get; set; }
 		public virtual ICollection<AdvertisementPhoto> AdvertisementPhotos { get; set; }
+		public virtual ICollection<ColorKeywordToAdvertisement> ColorKeywords { get; set; }
+		public virtual ICollection<CategoryKeywordToAdvertisement> CategoryKeywords { get; set; }
+
 		public AdvertisementItem() {
 			this.AdvertisementPhotos = new List<AdvertisementPhoto>();
 		}
