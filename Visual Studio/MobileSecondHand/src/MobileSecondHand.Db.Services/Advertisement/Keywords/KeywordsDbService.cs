@@ -22,7 +22,7 @@ namespace MobileSecondHand.Db.Services.Advertisement.Keywords
 			this.dbContext.ColorKeyword.Add(colorKeyword);
 		}
 
-		public IEnumerable<T> GetKeywordsByNames<T>(IEnumerable<string> keywordsNames) where T : IKeyword {
+		public IEnumerable<T> GetKeywordsByNames<T>(IEnumerable<string> keywordsNames) where T : IKeywordDbModel {
 			if (typeof(T) == typeof(CategoryKeyword)) {
 				var keywords = this.dbContext.CategoryKeyword.Where(k => keywordsNames.Contains(k.Name));
 				return (IEnumerable <T>)keywords;

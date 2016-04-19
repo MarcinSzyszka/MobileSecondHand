@@ -8,7 +8,7 @@ namespace MobileSecondHand.Db.Services.Advertisement.Keywords
 {
     public interface IKeywordsDbService
     {
-		IEnumerable<T> GetKeywordsByNames<T>(IEnumerable<string> keywordsNames) where T : IKeyword;
+		IEnumerable<T> GetKeywordsByNames<T>(IEnumerable<string> keywordsNames) where T : IKeywordDbModel;
 		void AddCategoryKeywordToContext(CategoryKeyword categoryKeyword);
 		void AddColorKeywordToContext(ColorKeyword colorKeyword);
 		void SaveChanges();
