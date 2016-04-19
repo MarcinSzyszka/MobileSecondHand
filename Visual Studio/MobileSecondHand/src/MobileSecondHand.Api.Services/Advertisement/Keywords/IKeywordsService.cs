@@ -8,6 +8,8 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords
 {
     public interface IKeywordsService
     {
-		ICollection<T> RecognizeAndGetKeywords<T>(string textToRecognize) where T : IKeyword;
-    }
+		ICollection<T> RecognizeAndGetKeywordsDbModels<T>(string textToRecognize) where T : IKeywordDbModel;
+		IEnumerable<string> RecognizeAndGetStringCollectionKeywords<T>(string textToRecognize);
+
+	}
 }

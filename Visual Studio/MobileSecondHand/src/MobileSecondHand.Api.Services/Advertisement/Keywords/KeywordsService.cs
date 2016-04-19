@@ -15,7 +15,7 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords {
 			keywordsHelper = new KeywordsHelper();
 			this.keywordsService = keywordsService;
 		}
-		public ICollection<T> RecognizeAndGetKeywords<T>(string textToRecognize) where T : IKeyword {
+		public ICollection<T> RecognizeAndGetKeywordsDbModels<T>(string textToRecognize) where T : IKeywordDbModel {
 			IEnumerable<string> keywordsStringList = RecognizeAndGetStringCollectionKeywords<T>(textToRecognize);
 			var keywordsFromDb = this.keywordsService.GetKeywordsByNames<T>(keywordsStringList).ToList();
 
@@ -26,7 +26,7 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords {
 			return keywordsFromDb;
 		}
 
-		private List<T> SaveNewKeywordsToDb<T>(IEnumerable<string> keywordsStringList, List<T> keywordsFromDb) where T : IKeyword {
+		private List<T> SaveNewKeywordsToDb<T>(IEnumerable<string> keywordsStringList, List<T> keywordsFromDb) where T : IKeywordDbModel {
 			var keywordsFromDbNames = keywordsFromDb.Select(k => k.Name);
 			var nonStoredKeywordsNames = keywordsStringList.Except(keywordsFromDbNames);
 			foreach (var newKeywordName in nonStoredKeywordsNames) {
@@ -44,7 +44,8 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords {
 			return keywordsFromDb;
 		}
 
-		private IEnumerable<string> RecognizeAndGetStringCollectionKeywords<T>(string textToRecognize) {
+		//public for unit test
+		public IEnumerable<string> RecognizeAndGetStringCollectionKeywords<T>(string textToRecognize) {
 			var keywords = new List<string>();
 			textToRecognize = textToRecognize.ToLower();
 
@@ -52,8 +53,9 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords {
 				foreach (var key in keywordsHelper.CategoryKeywords.Keys) {
 					if (textToRecognize.Contains(key.ToLower())) {
 						foreach (var sample in keywordsHelper.CategoryKeywords[key]) {
-							if (textToRecognize.Contains(sample)) {
+							if (textToRecognize.Contains(sample.ToLower())) {
 								keywords.Add(keywordsHelper.CategoryKeywords[key][0]);
+								break;
 							}
 						}
 					}
@@ -63,8 +65,9 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords {
 				foreach (var key in keywordsHelper.ColorKeywords.Keys) {
 					if (textToRecognize.Contains(key.ToLower())) {
 						foreach (var sample in keywordsHelper.ColorKeywords[key]) {
-							if (textToRecognize.Contains(sample)) {
+							if (textToRecognize.Contains(sample.ToLower())) {
 								keywords.Add(keywordsHelper.ColorKeywords[key][0]);
+								break;
 							}
 						}
 					}
