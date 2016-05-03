@@ -109,6 +109,8 @@
   <ItemGroup>
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
     <Compile Include="AddNewAdvertisementActivity.cs" />
+    <Compile Include="AdvertisementItemDetailsActivity.cs" />
+    <Compile Include="Consts\ExtrasKeys.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
     <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
     <Compile Include="Infrastructure\BitmapOperationService.cs" />
@@ -150,6 +152,9 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AddNewAdvertisementActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\AdvertisementItemDetailsActivity.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
