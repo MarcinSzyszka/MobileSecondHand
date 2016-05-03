@@ -24,22 +24,27 @@ namespace MobileSecondHand.Controllers
 			var advertisement = new Db.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Spodnie klasyczne, materiałowe, rozm 40", Price = 40, Latitude = 52.0217376, Longitude = 20.8240181, User = fakeUser };
 			var avdertisementPhoto = new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./images/advertisementItem/foty/spodnie 2.jpg" };
 			advertisement.AdvertisementPhotos.Add(avdertisementPhoto);
+			advertisement.AdvertisementPhotos.Add(new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./images/advertisementItem/foty/spodnie 2.jpg" });
 
 			var advertisement2 = new Db.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Spodnie dżinsowe, rozm 44", Price = 55, Latitude = 52.0137376, Longitude = 20.8530181, User = fakeUser };
 			var avdertisementPhoto2 = new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./images/advertisementItem/foty/spodnie.jpg" };
 			advertisement2.AdvertisementPhotos.Add(avdertisementPhoto2);
+			advertisement2.AdvertisementPhotos.Add(new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./images/advertisementItem/foty/spodnie.jpg" });
 
 			var advertisement3 = new Db.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Sukienka wieczorowa, rozm 38, TANIO", Price = 99, Latitude = 52.0417376, Longitude = 20.8540181, User = fakeUser };
 			var avdertisementPhoto3 = new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./images/advertisementItem/foty/sukienka 2.jpg" };
 			advertisement3.AdvertisementPhotos.Add(avdertisementPhoto3);
+			advertisement3.AdvertisementPhotos.Add(new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./images/advertisementItem/foty/sukienka 2.jpg" });
 
 			var advertisement4 = new Db.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Sukienka \"mała czarna\", rozm 38, nowa!", Price = 69, Latitude = 52.0117376, Longitude = 20.8640181, User = fakeUser };
 			var avdertisementPhoto4 = new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./images/advertisementItem/foty/sukienka.jpg" };
 			advertisement4.AdvertisementPhotos.Add(avdertisementPhoto4);
+			advertisement4.AdvertisementPhotos.Add(new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./images/advertisementItem/foty/sukienka.jpg" });
 
 			var advertisement5 = new Db.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Ciepły sweter rozm L. Jak nowy, tylko przymierzony!", Price = 49, Latitude = 52.0917376, Longitude = 20.8540181, User = fakeUser };
 			var avdertisementPhoto5 = new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./images/advertisementItem/foty/sweter.jpg" };
 			advertisement5.AdvertisementPhotos.Add(avdertisementPhoto5);
+			advertisement5.AdvertisementPhotos.Add(new Db.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./images/advertisementItem/foty/sweter.jpg" });
 
 			context.AdvertisementItem.Add(advertisement);
 			context.AdvertisementItem.Add(advertisement2);

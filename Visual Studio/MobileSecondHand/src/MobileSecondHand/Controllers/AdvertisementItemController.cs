@@ -68,5 +68,20 @@ namespace MobileSecondHand.Controllers {
 				return null;
 			}
 		}
+
+		[HttpGet]
+		[Route("GetAdvertisementDetail/{advertisementId}")]
+		public async Task<IActionResult> GetAdvertisementDetail(int advertisementId) {
+			try {
+				var userId = this.identityService.GetUserId(User.Identity);
+				var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertisementId, userId);
+
+				return Json(advertisement);
+			} catch (Exception exc) {
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json("Wystąpił błąd! - " + exc.Message);
+			}
+		}
+		
 	}
 }

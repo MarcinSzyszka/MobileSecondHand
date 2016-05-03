@@ -19,7 +19,7 @@ namespace MobileSecondHand.Api.Services.Advertisement.Keywords {
 			IEnumerable<string> keywordsStringList = RecognizeAndGetStringCollectionKeywords<T>(textToRecognize);
 			var keywordsFromDb = this.keywordsService.GetKeywordsByNames<T>(keywordsStringList).ToList();
 
-			if (keywordsFromDb.Count > keywordsStringList.Count()) {
+			if (keywordsFromDb.Count < keywordsStringList.Count()) {
 				keywordsFromDb = SaveNewKeywordsToDb(keywordsStringList, keywordsFromDb);
 			}
 

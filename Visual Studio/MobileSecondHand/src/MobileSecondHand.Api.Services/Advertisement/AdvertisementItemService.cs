@@ -5,9 +5,11 @@ using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.Api.Models.Advertisement;
 using MobileSecondHand.Api.Models.Coordinates;
+using MobileSecondHand.Api.Services.Advertisement.Keywords;
 using MobileSecondHand.Common.CoordinatesHelpers;
 using MobileSecondHand.Common.PathHelpers;
 using MobileSecondHand.Db.Models.Advertisement;
+using MobileSecondHand.Db.Models.Advertisement.Keywords;
 using MobileSecondHand.Db.Services.Advertisement;
 
 namespace MobileSecondHand.Api.Services.Advertisement
@@ -17,15 +19,21 @@ namespace MobileSecondHand.Api.Services.Advertisement
 		ICoordinatesCalculator coordinatesCalculator;
 		IAdvertisementItemPhotosService advertisementItemPhotosService;
 		IAppFilesPathHelper appFilesPathHelper;
+		IKeywordsService keywordsService;
 
-		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper) {
+		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService) {
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
 			this.advertisementItemPhotosService = advertisementItemPhotosService;
 			this.appFilesPathHelper = appFilesPathHelper;
+			this.keywordsService = keywordsService;
 		}
 
 		public void CreateNewAdvertisementItem(NewAdvertisementItemModel newAdvertisementModel, string userId) {
+			var advertisementItemDescription = String.Concat(newAdvertisementModel.AdvertisementTitle, ' ', newAdvertisementModel.AdvertisementDescription);
+			var categoryKeywords = this.keywordsService.RecognizeAndGetKeywordsDbModels<CategoryKeyword>(advertisementItemDescription);
+			var colorKeywords = this.keywordsService.RecognizeAndGetKeywordsDbModels<ColorKeyword>(advertisementItemDescription);
+
 			var model = new AdvertisementItem {
 				UserId = userId,
 				Title = newAdvertisementModel.AdvertisementTitle,
@@ -39,15 +47,48 @@ namespace MobileSecondHand.Api.Services.Advertisement
 				AdvertisementPhotos = CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosPaths)
 			};
 
+			foreach (var category in categoryKeywords) {
+				model.CategoryKeywords.Add(new CategoryKeywordToAdvertisement { AdvertisementItem = model, CategoryKeyword = category });
+			}
+
+			foreach (var color in colorKeywords) {
+				model.ColorKeywords.Add(new ColorKeywordToAdvertisement { AdvertisementItem = model, ColorKeyword = color });
+			}
+
+
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchModel searchModel, string userId) {
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchModel searchModel, string userId){
 			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
 			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page);
 			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, searchModel.CoordinatesModel);
 
 			return advertisementsViewModels;
+		}
+
+		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId) {
+			var advertisementDetailsViewModel = default(AdvertisementItemDetails);
+			var advertisementFromDb = this.advertisementItemDbService.GetAdvertisementDetails(advertisementId);
+			if (advertisementFromDb != null) {
+				advertisementDetailsViewModel = await MapToDetailsViewModel(advertisementFromDb);
+			}
+
+			return advertisementDetailsViewModel;
+		}
+
+		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb) {
+			var viewModel = new AdvertisementItemDetails();
+			viewModel.Id = advertisementFromDb.Id;
+			viewModel.Title = advertisementFromDb.Title;
+			viewModel.Description = advertisementFromDb.Description;
+			viewModel.Price = advertisementFromDb.Price;
+			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
+			viewModel.SellerId = advertisementFromDb.UserId;
+			viewModel.Photo = await this.advertisementItemPhotosService.GetPhotoInBytes(advertisementFromDb.AdvertisementPhotos.FirstOrDefault(p => !p.IsMainPhoto).PhotoPath);
+
+			//viewModel.IsSellerOnline = sprawdzić czy sprzedający jest powiązany jakims socketem czy czyms
+			return viewModel;
 		}
 
 		private async Task<IEnumerable<AdvertisementItemShortModel>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesForAdvertisementsModel coordinatesModel) {
@@ -78,5 +119,7 @@ namespace MobileSecondHand.Api.Services.Advertisement
 
 			return photosDbModelsList;
 		}
+
+		
 	}
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.DependencyInjection;
 using MobileSecondHand.Api.Models.Security;
 using MobileSecondHand.Api.Services.Advertisement;
+using MobileSecondHand.Api.Services.Advertisement.Keywords;
 using MobileSecondHand.Api.Services.Authentication;
 using MobileSecondHand.Api.Services.OutsideApisManagers;
 
@@ -21,11 +22,8 @@ namespace MobileSecondHand.Api.Services.Configuration {
 			services.AddTransient<IAdvertisementItemPhotosService, AdvertisementItemPhotosService>();
 			services.AddTransient<IAdvertisementItemService, AdvertisementItemService>();
 			services.AddTransient<IIdentityService, IdentityService>();
+			services.AddTransient<IKeywordsService, KeywordsService>();
 			
-
-
-
-
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {
