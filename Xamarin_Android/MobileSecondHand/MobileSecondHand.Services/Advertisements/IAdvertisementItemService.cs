@@ -11,5 +11,6 @@ namespace MobileSecondHand.Services.Advertisements {
 		Task<List<AdvertisementItemShort>> GetAdvertisements(SearchModel searchModel, TokenModel tokenModel);
 		Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray, TokenModel tokenModel);
 		Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel, TokenModel tokenModel);
+		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId, TokenModel tokenModel);
 	}
 }

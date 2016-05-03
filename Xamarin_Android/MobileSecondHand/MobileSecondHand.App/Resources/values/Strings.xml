@@ -8,4 +8,9 @@
 	<string name="goTeRegistrationButton">Przejdź do rejestracji</string>
 	<string name="infoRegistration">Rejestracja</string>
 	<string name="registrationButton">Zarejestruj się</string>
+	<string name="userOnlineStateInfo">Użytkownik online</string>
+	<string name="userOfflineStateInfo">Użytkownik offline</string>
+	<string name="onlyForSellInfo">Tylko sprzedaż</string>
+	<string name="forSellOrChangeInfo">Sprzedaż lub wymiana</string>
+	<string name="distanceDetailsInfo">Odległość: </string>
 </resources>

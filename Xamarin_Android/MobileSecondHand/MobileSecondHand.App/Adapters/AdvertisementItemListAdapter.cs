@@ -13,6 +13,7 @@ using Android.Widget;
 using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
+using MobileSecondHand.Models.EventArgs;
 
 namespace MobileSecondHand.App.Adapters {
 	public class AdvertisementItemListAdapter : RecyclerView.Adapter {
@@ -20,7 +21,8 @@ namespace MobileSecondHand.App.Adapters {
 		Activity context;
 		BitmapOperationService bitmapOperationService;
 		IAdvertisementsInfiniteScrollListener infiniteScrollListener;
-		public event EventHandler<int> AdvertisementItemClick;
+		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
+		public bool InfiniteScrollDisabled { get; set; }
 
 		public int LastItemIndex { get; private set; }
 		public AdvertisementItemViewHolder LastItemViewHolder { get; private set; }
@@ -39,12 +41,12 @@ namespace MobileSecondHand.App.Adapters {
 
 		private void OnAdvertisementItemClick(int positionId) {
 			if (AdvertisementItemClick != null) {
-				AdvertisementItemClick(this, this.advertisementItems[positionId].Id);
+				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.advertisementItems[positionId].Id, Distance = this.advertisementItems[positionId].Distance });
 			}
 		}
 
 		private void RaiseOnInfiniteScrollWhenItemIsLastInList(AdvertisementItemShort currentItem, AdvertisementItemViewHolder viewHolder) {
-			if (this.advertisementItems.IndexOf(currentItem) == (this.advertisementItems.Count - 1)) {
+			if (this.advertisementItems.IndexOf(currentItem) == (this.advertisementItems.Count - 1) && !InfiniteScrollDisabled) {
 				LastItemIndex = this.advertisementItems.IndexOf(currentItem);
 				LastItemViewHolder = viewHolder;
 				this.infiniteScrollListener.OnInfiniteScroll();

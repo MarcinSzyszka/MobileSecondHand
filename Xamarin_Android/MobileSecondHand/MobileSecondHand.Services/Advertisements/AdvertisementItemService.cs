@@ -65,5 +65,19 @@ namespace MobileSecondHand.Services.Advertisements {
 			return true;
 
 		}
+
+		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId, TokenModel tokenModel) {
+			var client = new HttpClient();
+			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
+			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + tokenModel.Token);
+			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisementDetail/" + advertisementItemId);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+				return null;
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var advertisementDetails = JsonConvert.DeserializeObject<AdvertisementItemDetails>(responseContentString);
+
+			return advertisementDetails;
+		}
 	}
 }

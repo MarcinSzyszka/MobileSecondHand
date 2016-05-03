@@ -15,6 +15,7 @@ using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
+using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
@@ -55,6 +56,27 @@ namespace MobileSecondHand.App {
 			return base.OnCreateOptionsMenu(menu);
 		}
 
+		public override bool OnOptionsItemSelected(IMenuItem item) {
+			var handled = false;
+			switch (item.ItemId) {
+				case Resource.Id.refreshAdvertisementsOption:
+					this.RefreshAdvertisementList();
+					handled = true;
+					break;
+				case Resource.Id.appSettingOptions:
+					handled = true;
+					break;
+
+			}
+
+			return handled;
+		}
+
+		private async void RefreshAdvertisementList() {
+			advertisementItemRecyclerView.InfiniteScrollDisabled = false;
+			await DownloadAndShowAdvertisements(true);
+		}
+
 		private async Task SetupViews() {
 			progress = new ProgressDialogHelper(this);
 			SetupFab();
@@ -68,7 +90,7 @@ namespace MobileSecondHand.App {
 			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
 			advertisementsPage = resetList ? 0 : advertisementsPage + 1;
 			List<AdvertisementItemShort> advertisements = await GetAdvertisements();
-			if (advertisements != null) {
+			if (advertisements != null && advertisements.Count > 0) {
 				if (advertisementItemRecyclerView == null || resetList) {
 					advertisementItemRecyclerView = new AdvertisementItemListAdapter(this, advertisements, this);
 					advertisementItemRecyclerView.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
@@ -78,12 +100,18 @@ namespace MobileSecondHand.App {
 					advertisementItemRecyclerView.AddAdvertisements(advertisements);
 				}
 			}
+			else {
+				advertisementItemRecyclerView.InfiniteScrollDisabled = true;
+			}
 			progress.CloseProgressDialog();
-
 		}
 
-		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, int advertisementId) {
-			//pobieranko konkretnego og³oszenia
+		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, ShowAdvertisementDetailsEventArgs eventArgs) {
+			//przejœcie do widoku detalue dokumentu
+			var intent = new Intent(this, typeof(AdvertisementItemDetailsActivity));
+			intent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_ID, eventArgs.Id);
+			intent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_DISTANCE, eventArgs.Distance);
+			StartActivity(intent);
 		}
 
 		private async Task<List<AdvertisementItemShort>> GetAdvertisements() {

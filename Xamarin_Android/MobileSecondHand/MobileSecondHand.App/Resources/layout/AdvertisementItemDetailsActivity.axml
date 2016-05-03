@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:minWidth="25px"
+    android:minHeight="25px">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout1"
+        android:paddingTop="20dp">
+        <ImageView
+            android:src="@drawable/add_photo_image"
+            android:layout_width="250dp"
+            android:layout_height="200dp"
+            android:id="@+id/advertisementDetailsPhoto"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/startConvesationBtn" />
+        <Button
+            android:text="Nawiąż kontakt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/startConvesationBtn"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@+id/forSellOrChangeInfo" />
+        <TextView
+            android:text="@string/userOnlineStateInfo"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/sellerNetworkState"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/userOnlineState"
+            android:padding="5dp"
+            android:layout_below="@+id/distanceDetailsTextView" />
+        <TextView
+            android:text="Tytuł ogłoszenia"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/advertisementDeatilsPrice"
+            android:id="@+id/advertisementDetailsTitle"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:gravity="center_horizontal" />
+        <TextView
+            android:text="Treść ogłoszenia"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/advertisementDetailsTitle"
+            android:id="@+id/advertisementDetailsDescription"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp"
+            android:gravity="center_horizontal" />
+        <TextView
+            android:text="59 zł"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/advertisementDeatilsPrice"
+            android:layout_below="@+id/advertisementDetailsPhoto"
+            android:layout_centerHorizontal="true"
+            android:padding="10dp" />
+        <TextView
+            android:text="@string/forSellOrChangeInfo"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/forSellOrChangeInfo"
+            android:layout_below="@+id/sellerNetworkState"
+            android:layout_centerHorizontal="true"
+            android:padding="5dp" />
+        <Button
+            android:text="Zobacz inne ogłoszenia użytkownika"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/advertisementDetailsDescription"
+            android:id="@+id/showOtherUserAdvertisementsBtn"
+            android:layout_centerHorizontal="true" />
+        <TextView
+            android:text="Odległośc: 2.54 km"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/distanceDetailsTextView"
+            android:layout_centerHorizontal="true" />
+    </RelativeLayout>
+</ScrollView>

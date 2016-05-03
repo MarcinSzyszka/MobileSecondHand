@@ -8,4 +8,6 @@
 	<color name="secondary_text">#727272</color>
 	<color name="icons">#FFFFFF</color>
 	<color name="divider">#B6B6B6</color>
+	<color name="userOnlineState">#08c915</color>
+	<color name="userOfflineState">#d10000</color>
 </resources>
