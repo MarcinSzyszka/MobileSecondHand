@@ -25,6 +25,8 @@ namespace MobileSecondHand.Db.Models.Advertisement {
 
 		public AdvertisementItem() {
 			this.AdvertisementPhotos = new List<AdvertisementPhoto>();
+			this.ColorKeywords = new List<ColorKeywordToAdvertisement>();
+			this.CategoryKeywords = new List<CategoryKeywordToAdvertisement>();
 		}
 	}
 }

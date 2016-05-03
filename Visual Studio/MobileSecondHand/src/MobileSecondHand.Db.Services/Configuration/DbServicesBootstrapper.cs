@@ -6,6 +6,7 @@ using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.Extensions.DependencyInjection;
 using MobileSecondHand.Db.Models;
 using MobileSecondHand.Db.Services.Advertisement;
+using MobileSecondHand.Db.Services.Advertisement.Keywords;
 
 namespace MobileSecondHand.Db.Services.Configuration
 {
@@ -25,6 +26,7 @@ namespace MobileSecondHand.Db.Services.Configuration
 			.AddDefaultTokenProviders();
 
 			services.AddTransient<IAdvertisementItemDbService, AdvertisementItemDbService>();
+			services.AddTransient<IKeywordsDbService, KeywordsDbService>();
 		}
 	}
 }
