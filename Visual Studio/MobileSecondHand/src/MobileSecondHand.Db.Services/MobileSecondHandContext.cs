@@ -17,9 +17,26 @@ namespace MobileSecondHand.Db.Services
             base.OnModelCreating(builder);
 			builder.Entity<CategoryKeywordToAdvertisement>().HasKey(x => new { x.CategoryKeywordId, x.AdvertisementItemId });
 			builder.Entity<ColorKeywordToAdvertisement>().HasKey(x => new { x.ColorKeywordId, x.AdvertisementItemId });
-			// Customize the ASP.NET Identity model and override the defaults if needed.
-			// For example, you can rename the ASP.NET Identity table names and more.
-			// Add your customizations after calling base.OnModelCreating(builder);
+
+			builder.Entity<CategoryKeywordToAdvertisement>()
+			   .HasOne(pt => pt.CategoryKeyword)
+			   .WithMany(p => p.Advertisements)
+			   .HasForeignKey(pt => pt.CategoryKeywordId);
+
+			builder.Entity<CategoryKeywordToAdvertisement>()
+				.HasOne(pt => pt.AdvertisementItem)
+				.WithMany(t => t.CategoryKeywords)
+				.HasForeignKey(pt => pt.AdvertisementItemId);
+
+			builder.Entity<ColorKeywordToAdvertisement>()
+			   .HasOne(pt => pt.ColorKeyword)
+			   .WithMany(p => p.Advertisements)
+			   .HasForeignKey(pt => pt.ColorKeywordId);
+
+			builder.Entity<ColorKeywordToAdvertisement>()
+				.HasOne(pt => pt.AdvertisementItem)
+				.WithMany(t => t.ColorKeywords)
+				.HasForeignKey(pt => pt.AdvertisementItemId);
 		}
 
         public DbSet<ApplicationUser> ApplicationUser { get; set;}
