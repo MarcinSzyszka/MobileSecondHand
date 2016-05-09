@@ -13,6 +13,7 @@ using MobileSecondHand.Db.Services.Configuration;
 using MobileSecondHand.Db.Services;
 using MobileSecondHand.Api.Services.Configuration;
 using MobileSecondHand.Common.Configuration;
+using Microsoft.AspNet.SignalR;
 
 namespace MobileSecondHand {
 	public class Startup {
@@ -41,7 +42,7 @@ namespace MobileSecondHand {
 		public void ConfigureServices(IServiceCollection services) {
 			// Add framework services.
 			services.AddApplicationInsightsTelemetry(Configuration);
-
+	
 			services.AddEntityFramework()
 				.AddSqlServer()
 				.AddDbContext<MobileSecondHandContext>(options => {
@@ -68,6 +69,7 @@ namespace MobileSecondHand {
 			services.AddCors(config => {
 				config.AddPolicy("myPolicy", policy);
 			});
+			services.AddSignalR();
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -141,7 +143,7 @@ namespace MobileSecondHand {
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}");
 			});
-
+			app.UseSignalR();
 			app.UseCors("myPolicy");
 			context.Database.EnsureCreated();
 		}
