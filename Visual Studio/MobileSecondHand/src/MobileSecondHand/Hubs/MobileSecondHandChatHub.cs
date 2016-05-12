@@ -15,15 +15,13 @@ using Microsoft.AspNet.SignalR.Hubs;
 
 namespace MobileSecondHand.Hubs
 {
-	[Authorize]
 	[HubName("MobileSecondHandChatHub")]
     public class MobileSecondHandChatHub : Hub
     {
-
         public void Register(string message)
         {
 			var user = Context.User;
-            base.Clients.All.UpdateChatMessage("Zarejestrowane usera : " + user.Identity.IsAuthenticated + " " + message);
+            base.Clients.All.UpdateChatMessage("Witaj. Pozdro ze strony serwera :)");
         }
     }
 }
