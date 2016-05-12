@@ -123,6 +123,7 @@
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
     <Compile Include="AddNewAdvertisementActivity.cs" />
     <Compile Include="AdvertisementItemDetailsActivity.cs" />
+    <Compile Include="Chat\MessengerService.cs" />
     <Compile Include="Consts\ExtrasKeys.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
     <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
@@ -142,6 +143,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="app.config" />
     <None Include="GettingStarted.Xamarin" />
     <None Include="packages.config" />
     <None Include="Resources\AboutResources.txt" />
