@@ -39,20 +39,6 @@ namespace MobileSecondHand.App.Adapters {
 			get { return this.advertisementItems.Count; }
 		}
 
-		private void OnAdvertisementItemClick(int positionId) {
-			if (AdvertisementItemClick != null) {
-				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.advertisementItems[positionId].Id, Distance = this.advertisementItems[positionId].Distance });
-			}
-		}
-
-		private void RaiseOnInfiniteScrollWhenItemIsLastInList(AdvertisementItemShort currentItem, AdvertisementItemViewHolder viewHolder) {
-			if (this.advertisementItems.IndexOf(currentItem) == (this.advertisementItems.Count - 1) && !InfiniteScrollDisabled) {
-				LastItemIndex = this.advertisementItems.IndexOf(currentItem);
-				LastItemViewHolder = viewHolder;
-				this.infiniteScrollListener.OnInfiniteScroll();
-			}
-		}
-
 		public void AddAdvertisements(List<AdvertisementItemShort> advertisements) {
 			this.advertisementItems.AddRange(advertisements);
 			BindViewHolder(LastItemViewHolder, LastItemIndex);
@@ -73,5 +59,19 @@ namespace MobileSecondHand.App.Adapters {
 			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick);
 			return vh;
 		}
+		private void OnAdvertisementItemClick(int positionId) {
+			if (AdvertisementItemClick != null) {
+				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.advertisementItems[positionId].Id, Distance = this.advertisementItems[positionId].Distance });
+			}
+		}
+
+		private void RaiseOnInfiniteScrollWhenItemIsLastInList(AdvertisementItemShort currentItem, AdvertisementItemViewHolder viewHolder) {
+			if (this.advertisementItems.IndexOf(currentItem) == (this.advertisementItems.Count - 1) && !InfiniteScrollDisabled) {
+				LastItemIndex = this.advertisementItems.IndexOf(currentItem);
+				LastItemViewHolder = viewHolder;
+				this.infiniteScrollListener.OnInfiniteScroll();
+			}
+		}
+
 	}
 }
