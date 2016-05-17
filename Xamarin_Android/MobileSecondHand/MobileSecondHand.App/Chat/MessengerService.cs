@@ -48,7 +48,9 @@ namespace MobileSecondHand.App.Chat {
 			var nMgr = (NotificationManager)GetSystemService(NotificationService);
 			var notification = new Notification(Resource.Drawable.Icon, message);
 			notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
-			var pendingIntent = PendingIntent.GetActivity(this, 0, new Intent(this, typeof(MainActivity)), 0);
+			var intent = new Intent(this, typeof(ConversationActivity));
+			intent.PutExtra("a", message);
+			var pendingIntent = PendingIntent.GetActivity(this, 0, intent, 0);
 			notification.SetLatestEventInfo(this, "Mobile Second Hand", message, pendingIntent);
 			nMgr.Notify(0, notification);
 		}
