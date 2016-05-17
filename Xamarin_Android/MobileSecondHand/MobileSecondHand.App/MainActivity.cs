@@ -11,10 +11,13 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using com.refractored.fab;
+using Microsoft.AspNet.SignalR.Client;
 using MobileSecondHand.App.Adapters;
+using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
+using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
@@ -43,6 +46,11 @@ namespace MobileSecondHand.App {
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
 			await SetupViews();
+			RegisterInHub();
+		}
+
+		private void RegisterInHub() {
+			StartService(new Intent(this, typeof(MessengerService)));
 		}
 
 		private void SetupToolbar() {
