@@ -42,6 +42,7 @@
     <Compile Include="Advertisement\AdvertisementItemShort.cs" />
     <Compile Include="Advertisement\NewAdvertisementItem.cs" />
     <Compile Include="Advertisement\SearchModel.cs" />
+    <Compile Include="Chat\ConversationMessage.cs" />
     <Compile Include="Consts\WebApiConsts.cs" />
     <Compile Include="EventArgs\ShowAdvertisementDetailsEventArgs.cs" />
     <Compile Include="Location\CoordinatesForAdvertisementsModel.cs" />

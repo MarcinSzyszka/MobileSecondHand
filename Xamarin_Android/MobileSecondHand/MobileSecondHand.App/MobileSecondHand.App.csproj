@@ -121,12 +121,15 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
+    <Compile Include="Adapters\ConversationMessagesListAdapter.cs" />
     <Compile Include="AddNewAdvertisementActivity.cs" />
     <Compile Include="AdvertisementItemDetailsActivity.cs" />
     <Compile Include="Chat\MessengerService.cs" />
     <Compile Include="Consts\ExtrasKeys.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
+    <Compile Include="ConversationActivity.cs" />
     <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
+    <Compile Include="Holders\ConversationMessageViewHolder.cs" />
     <Compile Include="Infrastructure\BitmapOperationService.cs" />
     <Compile Include="Infrastructure\GpsLocationService.cs" />
     <Compile Include="Infrastructure\IAdvertisementsInfiniteScrollListener.cs" />
@@ -170,6 +173,12 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\AdvertisementItemDetailsActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConversationActivity.axml">
+      <SubType>AndroidResource</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConversationMessageRowView.axml">
       <SubType>AndroidResource</SubType>
     </AndroidResource>
   </ItemGroup>
