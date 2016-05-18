@@ -44,9 +44,9 @@ namespace MobileSecondHand.App.Chat {
 		}
 
 		private void ShowNotification(string message) {
-			//Toast.MakeText(ApplicationContext, message, ToastLength.Long).Show();
 			var nMgr = (NotificationManager)GetSystemService(NotificationService);
 			var notification = new Notification(Resource.Drawable.Icon, message);
+			notification.Flags = NotificationFlags.AutoCancel;
 			notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 			var intent = new Intent(this, typeof(ConversationActivity));
 			intent.PutExtra("a", message);
