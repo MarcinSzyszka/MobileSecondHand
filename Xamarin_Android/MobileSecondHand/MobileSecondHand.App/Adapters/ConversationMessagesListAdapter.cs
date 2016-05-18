@@ -5,9 +5,11 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Content;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -30,10 +32,7 @@ namespace MobileSecondHand.App.Adapters {
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 			var currentItem = this.messages[position];
 			ConversationMessageViewHolder vh = holder as ConversationMessageViewHolder;
-			RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
-			parameters.AddRule(LayoutRules.AlignParentRight);
-			vh.MessageLayout.LayoutParameters = parameters;
-			vh.MessageLayout.SetBackgroundColor(currentItem.UserWasSender ? Color.SkyBlue : Color.LightGreen);
+			SetLayotParameters(currentItem, vh);
 			vh.MessageHeader.Text = currentItem.MessageHeader;
 			vh.MessageContent.Text = currentItem.MessageContent;
 		}
@@ -43,5 +42,24 @@ namespace MobileSecondHand.App.Adapters {
 			ConversationMessageViewHolder vh = new ConversationMessageViewHolder(itemView);
 			return vh;
 		}
+		private static void SetLayotParameters(ConversationMessage currentItem, ConversationMessageViewHolder vh) {
+			RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
+			if (currentItem.UserWasSender) {
+				parameters.AddRule(LayoutRules.AlignParentLeft);
+				parameters.SetMargins(5, 5, 30, 5);
+				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_user_message_background_border);
+				vh.MessageHeader.SetTextColor(Color.Black);
+				vh.MessageContent.SetTextColor(Color.Black);
+			}
+			else {
+				parameters.AddRule(LayoutRules.AlignParentRight);
+				parameters.SetMargins(30, 5, 5, 5);
+				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_sender_message_background_border);
+				vh.MessageHeader.SetTextColor(Color.White);
+				vh.MessageContent.SetTextColor(Color.White);
+			}
+			vh.MessageLayout.LayoutParameters = parameters;
+		}
+
 	}
 }
