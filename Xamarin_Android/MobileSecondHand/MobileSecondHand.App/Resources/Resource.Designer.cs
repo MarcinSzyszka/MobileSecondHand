@@ -1920,61 +1920,67 @@ namespace MobileSecondHand.App
 			public const int common_ic_googleplayservices = 2130837607;
 			
 			// aapt resource value: 0x7f020068
-			public const int fab_shadow = 2130837608;
+			public const int conversation_sender_message_background_border = 2130837608;
 			
 			// aapt resource value: 0x7f020069
-			public const int fab_shadow_mini = 2130837609;
+			public const int conversation_user_message_background_border = 2130837609;
 			
 			// aapt resource value: 0x7f02006a
-			public const int ic_input_add = 2130837610;
+			public const int fab_shadow = 2130837610;
 			
 			// aapt resource value: 0x7f02006b
-			public const int ic_menu_moreoverflow_normal_holo_light = 2130837611;
+			public const int fab_shadow_mini = 2130837611;
 			
 			// aapt resource value: 0x7f02006c
-			public const int ic_menu_settings_holo_light = 2130837612;
+			public const int ic_input_add = 2130837612;
 			
 			// aapt resource value: 0x7f02006d
-			public const int ic_menu_start_conversation = 2130837613;
+			public const int ic_menu_moreoverflow_normal_holo_light = 2130837613;
 			
 			// aapt resource value: 0x7f02006e
-			public const int ic_perm_group_location = 2130837614;
+			public const int ic_menu_settings_holo_light = 2130837614;
 			
 			// aapt resource value: 0x7f02006f
-			public const int Icon = 2130837615;
+			public const int ic_menu_start_conversation = 2130837615;
 			
 			// aapt resource value: 0x7f020070
-			public const int messenger_bubble_large_blue = 2130837616;
+			public const int ic_perm_group_location = 2130837616;
 			
 			// aapt resource value: 0x7f020071
-			public const int messenger_bubble_large_white = 2130837617;
+			public const int Icon = 2130837617;
 			
 			// aapt resource value: 0x7f020072
-			public const int messenger_bubble_small_blue = 2130837618;
+			public const int messenger_bubble_large_blue = 2130837618;
 			
 			// aapt resource value: 0x7f020073
-			public const int messenger_bubble_small_white = 2130837619;
+			public const int messenger_bubble_large_white = 2130837619;
 			
 			// aapt resource value: 0x7f020074
-			public const int messenger_button_blue_bg_round = 2130837620;
+			public const int messenger_bubble_small_blue = 2130837620;
 			
 			// aapt resource value: 0x7f020075
-			public const int messenger_button_blue_bg_selector = 2130837621;
+			public const int messenger_bubble_small_white = 2130837621;
 			
 			// aapt resource value: 0x7f020076
-			public const int messenger_button_send_round_shadow = 2130837622;
+			public const int messenger_button_blue_bg_round = 2130837622;
 			
 			// aapt resource value: 0x7f020077
-			public const int messenger_button_white_bg_round = 2130837623;
+			public const int messenger_button_blue_bg_selector = 2130837623;
 			
 			// aapt resource value: 0x7f020078
-			public const int messenger_button_white_bg_selector = 2130837624;
-			
-			// aapt resource value: 0x7f02007a
-			public const int notification_template_icon_bg = 2130837626;
+			public const int messenger_button_send_round_shadow = 2130837624;
 			
 			// aapt resource value: 0x7f020079
-			public const int perm_group_sync_settings = 2130837625;
+			public const int messenger_button_white_bg_round = 2130837625;
+			
+			// aapt resource value: 0x7f02007a
+			public const int messenger_button_white_bg_selector = 2130837626;
+			
+			// aapt resource value: 0x7f02007c
+			public const int notification_template_icon_bg = 2130837628;
+			
+			// aapt resource value: 0x7f02007b
+			public const int perm_group_sync_settings = 2130837627;
 			
 			static Drawable()
 			{
