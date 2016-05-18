@@ -17,7 +17,7 @@ namespace MobileSecondHand.Services.Chat {
 		}
 
 		public void RegisterInHub(string bearerToken) {
-			//hubConnection.Headers.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			hubConnection.Headers.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, bearerToken);
 			Connect(hubConnection, async h => {
 				await h.Start();
 				SendMessage(chatHubProxy, proxy => proxy.Invoke("Register", "Hello froom Xamarin Android App! :)"));
