@@ -25,10 +25,10 @@ namespace MobileSecondHand.Api.Services.CacheServices {
 			}
 		}
 
-		public void RemoveDisconnectedClient(UserConnection userConnection) {
+		public void RemoveDisconnectedClient(string connectionId) {
 			var connectedUsers = GetConnectedUsers();
 			if (connectedUsers != null) {
-				var disconnectedUser = connectedUsers.FirstOrDefault(u => u.ConnectionId == userConnection.ConnectionId && u.UserId == userConnection.UserId);
+				var disconnectedUser = connectedUsers.FirstOrDefault(u => u.ConnectionId == connectionId);
 				if (disconnectedUser != null) {
 					connectedUsers.Remove(disconnectedUser);
 					this.cache.Set(CONNECTED_USERS, connectedUsers, ObjectCache.InfiniteAbsoluteExpiration);
