@@ -31,7 +31,7 @@ namespace MobileSecondHand.App {
 			conversationMessagesRecyclerView = FindViewById<RecyclerView>(Resource.Id.conversationsRecyclerView);
 			var mLayoutManager = new LinearLayoutManager(this);
 			conversationMessagesRecyclerView.SetLayoutManager(mLayoutManager);
-			var newMes = new ConversationMessage { MessageContent = "Jakaœ trêsc wiadomoœci bardzo interesuj¹ca", MessageHeader = "Ja, 17.05.2016", UserWasSender = true };
+			var newMes = new ConversationMessage { MessageContent = "Jakaœ treœæ wiadomoœci bardzo interesuj¹ca", MessageHeader = "Ja, 17.05.2016", UserWasSender = true };
 			this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(new List<ConversationMessage> { message, newMes, message, newMes, message, newMes, message, newMes});
 			conversationMessagesRecyclerView.SetAdapter(conversationMessagesListAdapter);
 		}
