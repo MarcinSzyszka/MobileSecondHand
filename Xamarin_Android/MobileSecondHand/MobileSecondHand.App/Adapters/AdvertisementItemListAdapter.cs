@@ -5,6 +5,7 @@ using System.Text;
 
 using Android.App;
 using Android.Content;
+using Android.Content.Res;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.Widget;
@@ -21,6 +22,9 @@ namespace MobileSecondHand.App.Adapters {
 		Activity context;
 		BitmapOperationService bitmapOperationService;
 		IAdvertisementsInfiniteScrollListener infiniteScrollListener;
+		private int photoImageViewWitdth;
+		private int photoImageViewHeight;
+
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
 
@@ -32,6 +36,7 @@ namespace MobileSecondHand.App.Adapters {
 			this.context = context;
 			this.bitmapOperationService = new BitmapOperationService();
 			this.infiniteScrollListener = infiniteScrollListener;
+			CalculateSizeForPhotoImageView();
 		}
 
 		public override int ItemCount
@@ -40,6 +45,7 @@ namespace MobileSecondHand.App.Adapters {
 		}
 
 		public void AddAdvertisements(List<AdvertisementItemShort> advertisements) {
+			CalculateSizeForPhotoImageView();
 			this.advertisementItems.AddRange(advertisements);
 			BindViewHolder(LastItemViewHolder, LastItemIndex);
 		}
@@ -50,7 +56,7 @@ namespace MobileSecondHand.App.Adapters {
 			vh.DistanceTextView.Text = String.Format("{0} km", currentItem.Distance);
 			vh.TitleTextView.Text = currentItem.AdvertisementTitle;
 			vh.PriceTextView.Text = String.Format("{0} z³", currentItem.AdvertisementPrice);
-			vh.PhotoImageView.SetImageBitmap(bitmapOperationService.ResizeImage(currentItem.MainPhoto, vh.PhotoImageView.Width, vh.PhotoImageView.Height));
+			vh.PhotoImageView.SetImageBitmap(bitmapOperationService.ResizeImage(currentItem.MainPhoto, vh.PhotoImageView.Width > 0 ? vh.PhotoImageView.Width : photoImageViewWitdth, vh.PhotoImageView.Height > 0 ? vh.PhotoImageView.Height : photoImageViewHeight));
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
 		}
 
@@ -59,6 +65,19 @@ namespace MobileSecondHand.App.Adapters {
 			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick);
 			return vh;
 		}
+
+		private void CalculateSizeForPhotoImageView() {
+			var metrics = context.Resources.DisplayMetrics;
+			var width = metrics.WidthPixels - 20;
+			this.photoImageViewWitdth = width;
+			this.photoImageViewHeight = (int)(width * 0.8);
+		}
+
+		private int ConvertPixelsToDp(float pixelValue) {
+			var dp = (int)((pixelValue) / context.Resources.DisplayMetrics.Density);
+			return dp;
+		}
+
 		private void OnAdvertisementItemClick(int positionId) {
 			if (AdvertisementItemClick != null) {
 				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.advertisementItems[positionId].Id, Distance = this.advertisementItems[positionId].Distance });

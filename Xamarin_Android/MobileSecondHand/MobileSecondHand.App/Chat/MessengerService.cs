@@ -19,6 +19,7 @@ namespace MobileSecondHand.App.Chat {
 	public class MessengerService : Service {
 		private SharedPreferencesHelper sharedPreferencesHelper;
 		ChatHubClientService chatHubClientService;
+		bool serviceIsRunnig;
 
 		public override IBinder OnBind(Intent intent) {
 			//throw new NotImplementedException();
@@ -27,9 +28,13 @@ namespace MobileSecondHand.App.Chat {
 
 		[return: GeneratedEnum]
 		public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId) {
-			this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
-			this.chatHubClientService = new ChatHubClientService();
-			DoWork();
+			if (!serviceIsRunnig) {
+				serviceIsRunnig = true;
+				this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
+				this.chatHubClientService = new ChatHubClientService();
+				DoWork();
+			}
+
 			return StartCommandResult.Sticky;
 		}
 

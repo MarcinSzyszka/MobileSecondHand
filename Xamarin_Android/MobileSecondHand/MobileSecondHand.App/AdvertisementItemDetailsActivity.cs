@@ -31,6 +31,8 @@ namespace MobileSecondHand.App {
 		private Button startConversationBtn;
 		private ImageView photoView;
 		private TextView distanceTextView;
+		private int photoImageViewWitdth;
+		private int photoImageViewHeight;
 
 		public AdvertisementItemDetailsActivity() {
 			this.advertisementItemService = new AdvertisementItemService();
@@ -41,7 +43,15 @@ namespace MobileSecondHand.App {
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.AdvertisementItemDetailsActivity);
 			SetupViews();
+			CalculateSizeForPhotoImageView();
 			await GetAndShowAdvertisementDetails();
+		}
+
+		private void CalculateSizeForPhotoImageView() {
+			var metrics = this.Resources.DisplayMetrics;
+			var width = metrics.WidthPixels - 20;
+			this.photoImageViewWitdth = width;
+			this.photoImageViewHeight = (int)(width * 0.8);
 		}
 
 		private void SetupViews() {
@@ -79,7 +89,10 @@ namespace MobileSecondHand.App {
 			forSellOrChangeInfoTextView.Text = advertisement.IsOnlyForSell ?
 												this.Resources.GetString(Resource.String.onlyForSellInfo) :
 												this.Resources.GetString(Resource.String.forSellOrChangeInfo);
-			photoView.SetImageBitmap(bitmapOperationService.ResizeImage(advertisement.Photo, photoView.Width, photoView.Height));
+			photoView.LayoutParameters.Width = photoImageViewWitdth;
+			photoView.LayoutParameters.Height = photoImageViewHeight;
+			photoView.RequestLayout();
+			photoView.SetImageBitmap(bitmapOperationService.ResizeImage(advertisement.Photo, photoImageViewWitdth, photoImageViewHeight));
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;

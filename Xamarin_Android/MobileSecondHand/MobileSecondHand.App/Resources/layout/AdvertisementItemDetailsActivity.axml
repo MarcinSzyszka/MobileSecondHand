@@ -11,12 +11,12 @@
         android:id="@+id/relativeLayout1"
         android:paddingTop="20dp">
         <ImageView
-            android:src="@drawable/add_photo_image"
-            android:layout_width="250dp"
             android:layout_height="200dp"
             android:id="@+id/advertisementDetailsPhoto"
             android:layout_centerHorizontal="true"
-            android:layout_below="@+id/startConvesationBtn" />
+            android:layout_below="@+id/startConvesationBtn"
+            android:layout_width="250dp"
+            android:src="@android:drawable/ic_menu_gallery" />
         <Button
             android:text="Nawiąż kontakt"
             android:layout_width="wrap_content"

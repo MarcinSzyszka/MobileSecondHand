@@ -109,6 +109,9 @@ namespace MobileSecondHand.App {
 				}
 			}
 			else {
+				if (advertisementItemRecyclerView == null) {
+					advertisementItemRecyclerView = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), this);
+				}
 				advertisementItemRecyclerView.InfiniteScrollDisabled = true;
 			}
 			progress.CloseProgressDialog();
