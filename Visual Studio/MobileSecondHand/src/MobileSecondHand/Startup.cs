@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Cors.Infrastructure;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.AspNetCore.SignalR.Hubs;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -20,6 +21,7 @@ using MobileSecondHand.DB.Services;
 using MobileSecondHand.DB.Services.Configuration;
 using MobileSecondHand.Models;
 using MobileSecondHand.Services;
+using MobileSecondHand.Workarounds;
 
 namespace MobileSecondHand
 {
@@ -80,12 +82,14 @@ namespace MobileSecondHand
 				config.AddPolicy("myPolicy", policy);
 			});
 
-			//services.a
+			services.AddSingleton<IAssemblyLocator, HubCouldNotBeResolvedWorkaround>();
+			services.AddSignalR();
+
 
 			//// Add application services.
 			//services.AddTransient<IEmailSender, AuthMessageSender>();
-   //         services.AddTransient<ISmsSender, AuthMessageSender>();
-        }
+			//         services.AddTransient<ISmsSender, AuthMessageSender>();
+		}
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TokenAuthorizationOptions tokenAuthorizationOptions)
@@ -146,6 +150,9 @@ namespace MobileSecondHand
             });
 
 			app.UseCors("myPolicy");
+
+			app.UseSignalR();
+			//app.UseWebSockets();
 		}
 
 		private FacebookOptions GetFacebookOptions(IConfigurationRoot configuration) {
