@@ -46,6 +46,8 @@
     <Compile Include="Authentication\ISignInService.cs" />
     <Compile Include="Authentication\SignInService.cs" />
     <Compile Include="Chat\ChatHubClientService.cs" />
+    <Compile Include="Chat\IMessagesService.cs" />
+    <Compile Include="Chat\MessagesService.cs" />
     <Compile Include="Location\IGpsClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
