@@ -16,7 +16,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Hubs;
-using MobileSecondHand.API.Models.ChatHub;
+using MobileSecondHand.API.Models.Chat;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.CacheServices;
 
@@ -26,6 +26,7 @@ namespace MobileSecondHand.Hubs {
 		IChatHubCacheService chatHubCacheService;
 		TokenAuthorizationOptions tokenAuthorizationOptions;
 		JwtSecurityTokenHandler handler;
+
 		public MobileSecondHandChatHub(IChatHubCacheService chatHubCacheService, TokenAuthorizationOptions tokenAuthorizationOptions) {
 			this.chatHubCacheService = chatHubCacheService;
 			this.tokenAuthorizationOptions = tokenAuthorizationOptions;
@@ -46,6 +47,13 @@ namespace MobileSecondHand.Hubs {
 
 			return base.OnConnected();
 		}
+		
+		public override Task OnDisconnected(bool stopCalled) {
+			var a = Context;
+			this.chatHubCacheService.RemoveDisconnectedClient(Context.ConnectionId);
+
+			return base.OnConnected();
+		}
 
 		private string ReadUserIdFromToken() {
 			string userId = String.Empty;
@@ -59,13 +67,6 @@ namespace MobileSecondHand.Hubs {
 			}
 
 			return userId;
-		}
-
-		public override Task OnDisconnected(bool stopCalled) {
-			var a = Context;
-			this.chatHubCacheService.RemoveDisconnectedClient(Context.ConnectionId);
-
-			return base.OnConnected();
 		}
 	}
 }
