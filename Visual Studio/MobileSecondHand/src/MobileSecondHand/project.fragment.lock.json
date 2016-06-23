@@ -120,6 +120,7 @@
       },
       "runtime": {
         "../../packages/Microsoft.EntityFrameworkCore.Relational.Design.1.0.0-rc2-final/lib/net451/Microsoft.EntityFrameworkCore.Relational.Design.dll": {},
+        "../../packages/Microsoft.EntityFrameworkCore.SqlServer.1.0.0-rc2-final/lib/net451/Microsoft.EntityFrameworkCore.SqlServer.dll": {},
         "../../packages/Microsoft.EntityFrameworkCore.Tools.Core.1.0.0-rc2-final/lib/net451/Microsoft.EntityFrameworkCore.Tools.Core.dll": {},
         "../packages/Ix-Async.1.2.5/lib/net45/System.Interactive.Async.dll": {},
         "../packages/Microsoft.AspNetCore.Authentication.1.0.0-rc2-final/lib/net451/Microsoft.AspNetCore.Authentication.dll": {},
