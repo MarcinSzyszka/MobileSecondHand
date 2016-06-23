@@ -15,6 +15,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.Configuration;
+using MobileSecondHand.COMMON;
 using MobileSecondHand.COMMON.Configuration;
 using MobileSecondHand.Data;
 using MobileSecondHand.DB.Services;
@@ -23,46 +24,38 @@ using MobileSecondHand.Models;
 using MobileSecondHand.Services;
 using MobileSecondHand.Workarounds;
 
-namespace MobileSecondHand
-{
-    public class Startup
-    {
-        public Startup(IHostingEnvironment env)
-        {
-            var builder = new ConfigurationBuilder()
-                .SetBasePath(env.ContentRootPath)
-                .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
-                .AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
+namespace MobileSecondHand {
+	public class Startup {
+		public Startup(IHostingEnvironment env) {
+			var builder = new ConfigurationBuilder()
+				.SetBasePath(env.ContentRootPath)
+				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
+				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-            if (env.IsDevelopment())
-            {
-                // For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
-                builder.AddUserSecrets();
+			if (env.IsDevelopment()) {
+				// For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
+				builder.AddUserSecrets();
 
-                // This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
-                builder.AddApplicationInsightsSettings(developerMode: true);
-            }
+				// This will push telemetry data through Application Insights pipeline faster, allowing you to view results immediately.
+				builder.AddApplicationInsightsSettings(developerMode: true);
+			}
 
-            builder.AddEnvironmentVariables();
-            Configuration = builder.Build();
-        }
+			builder.AddEnvironmentVariables();
+			Configuration = builder.Build();
+		}
 
-        public IConfigurationRoot Configuration { get; }
+		public IConfigurationRoot Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services)
-        {
-            // Add framework services.
-            services.AddApplicationInsightsTelemetry(Configuration);
+		// This method gets called by the runtime. Use this method to add services to the container.
+		public void ConfigureServices(IServiceCollection services) {
+			services.AddSingleton<ConnectionStringConfig>(new ConnectionStringConfig { ConnectionString = Configuration.GetConnectionString("DefaultConnection") });
+			// Add framework services.
+			services.AddApplicationInsightsTelemetry(Configuration);
 
-            services.AddDbContext<MobileSecondHandContext>(options =>
-                options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("mobilesecondhand")));
+			services.AddDbContext<MobileSecondHandContext>(options =>
+				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("MobileSecondHand")));
 
-            //services.AddIdentity<MobileSecondHandContext, IdentityRole>()
-            //    .AddEntityFrameworkStores<MobileSecondHandContext>()
-            //    .AddDefaultTokenProviders();
-
-            services.AddMvc();
+			services.AddMvc();
 
 			services.AddAuthorization(auth => {
 				auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -91,22 +84,19 @@ namespace MobileSecondHand
 			//         services.AddTransient<ISmsSender, AuthMessageSender>();
 		}
 
-        // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TokenAuthorizationOptions tokenAuthorizationOptions)
-        {
-            loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddDebug();
+		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TokenAuthorizationOptions tokenAuthorizationOptions) {
+			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
+			loggerFactory.AddDebug();
 
-            app.UseApplicationInsightsRequestTelemetry();
+			app.UseApplicationInsightsRequestTelemetry();
 
-            if (env.IsDevelopment())
-            {
-                app.UseDeveloperExceptionPage();
-                app.UseDatabaseErrorPage();
-                app.UseBrowserLink();
-            }
-            else
-            {
+			if (env.IsDevelopment()) {
+				app.UseDeveloperExceptionPage();
+				app.UseDatabaseErrorPage();
+				app.UseBrowserLink();
+			}
+			else {
 				app.UseExceptionHandler("/Home/Error");
 
 				// For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
@@ -119,9 +109,9 @@ namespace MobileSecondHand
 				} catch { }
 			}
 
-            app.UseApplicationInsightsExceptionTelemetry();
+			app.UseApplicationInsightsExceptionTelemetry();
 
-            app.UseStaticFiles();
+			app.UseStaticFiles();
 
 			app.Use(next => async ctx => {
 				try {
@@ -142,12 +132,11 @@ namespace MobileSecondHand
 			app.UseFacebookAuthentication(GetFacebookOptions(Configuration));
 			// Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-			app.UseMvc(routes =>
-            {
-                routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
-            });
+			app.UseMvc(routes => {
+				routes.MapRoute(
+					name: "default",
+					template: "{controller=Home}/{action=Index}/{id?}");
+			});
 
 			app.UseCors("myPolicy");
 
