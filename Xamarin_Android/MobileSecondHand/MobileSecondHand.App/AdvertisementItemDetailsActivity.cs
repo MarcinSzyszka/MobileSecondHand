@@ -33,6 +33,7 @@ namespace MobileSecondHand.App {
 		private TextView distanceTextView;
 		private int photoImageViewWitdth;
 		private int photoImageViewHeight;
+		private AdvertisementItemDetails advertisement;
 
 		public AdvertisementItemDetailsActivity() {
 			this.advertisementItemService = new AdvertisementItemService();
@@ -70,7 +71,7 @@ namespace MobileSecondHand.App {
 		private async Task GetAndShowAdvertisementDetails() {
 			progress.ShowProgressDialog("Pobieranie szczegó³ów og³oszenia...");
 			var advertisementItemId = Intent.GetIntExtra(ExtrasKeys.ADVERTISEMENT_ITEM_ID, 0);
-			var advertisement = await GetAdvertisement(advertisementItemId);
+			advertisement = await GetAdvertisement(advertisementItemId);
 			ShowAdvertisementDetails(advertisement, Intent.GetDoubleExtra(ExtrasKeys.ADVERTISEMENT_ITEM_DISTANCE, 0.0));
 			progress.CloseProgressDialog();
 		}
@@ -106,7 +107,9 @@ namespace MobileSecondHand.App {
 		}
 
 		private void StartConversationBtn_Click(object sender, EventArgs e) {
-			throw new NotImplementedException();
+			var conversationIntent = new Intent(this, typeof(ConversationActivity));
+			conversationIntent.PutExtra(ExtrasKeys.USER_ID, this.advertisement.SellerId);
+			StartActivity(conversationIntent);
 		}
 
 		private async Task<AdvertisementItemDetails> GetAdvertisement(int advertisementItemId) {
