@@ -191,6 +191,9 @@
     <Compile Include="Advertisement\Keywords\ColorKeyword.cs" />
     <Compile Include="Advertisement\Keywords\IKeywordDbModel.cs" />
     <Compile Include="Authentication\ApplicationUser.cs" />
+    <Compile Include="Chat\ChatMessage.cs" />
+    <Compile Include="Chat\Conversation.cs" />
+    <Compile Include="Chat\UserToConversation.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

@@ -234,6 +234,8 @@
     <Compile Include="CacheServices\ChatHubCacheService.cs" />
     <Compile Include="CacheServices\IChatHubCacheService.cs" />
     <Compile Include="Configuration\ApiServicesBootstrapper.cs" />
+    <Compile Include="Conversation\ConversationService.cs" />
+    <Compile Include="Conversation\IConversationService.cs" />
     <Compile Include="OutsideApisManagers\FacebookApiManager.cs" />
     <Compile Include="OutsideApisManagers\IFacebookApiManager.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -258,16 +260,6 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
-    <None Include="Scripts\jquery-2.1.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="Scripts\jquery-2.1.1.intellisense.js" />
-    <Content Include="Scripts\jquery-2.1.1.js" />
-    <Content Include="Scripts\jquery-2.1.1.min.js" />
-    <Content Include="Scripts\nugetexample.js" />
-  </ItemGroup>
-  <ItemGroup>
-    <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

@@ -102,6 +102,10 @@
       <HintPath>..\..\packages\Microsoft.EntityFrameworkCore.Relational.Design.1.0.0-rc2-final\lib\net451\Microsoft.EntityFrameworkCore.Relational.Design.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.EntityFrameworkCore.SqlServer.1.0.0-rc2-final\lib\net451\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.EntityFrameworkCore.Tools.Core, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.EntityFrameworkCore.Tools.Core.1.0.0-rc2-final\lib\net451\Microsoft.EntityFrameworkCore.Tools.Core.dll</HintPath>
       <Private>True</Private>
@@ -196,7 +200,12 @@
     <Compile Include="Advertisement\Keywords\IKeywordsDbService.cs" />
     <Compile Include="Advertisement\Keywords\KeywordsDbService.cs" />
     <Compile Include="Configuration\DbServicesBootstrapper.cs" />
+    <Compile Include="ConnectionStringConfig.cs" />
+    <Compile Include="Chat\ConversationDbService.cs" />
+    <Compile Include="Chat\IConversationDbService.cs" />
+    <Compile Include="IMobileSecondHandContextOptions.cs" />
     <Compile Include="MobileSecondHandContext.cs" />
+    <Compile Include="MobileSecondHandContextOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
