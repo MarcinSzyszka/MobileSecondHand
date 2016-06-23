@@ -1,4 +1,4 @@
-﻿using MobileSecondHand.API.Models.ChatHub;
+﻿using MobileSecondHand.API.Models.Chat;
 
 namespace MobileSecondHand.API.Services.CacheServices {
 	public interface IChatHubCacheService {

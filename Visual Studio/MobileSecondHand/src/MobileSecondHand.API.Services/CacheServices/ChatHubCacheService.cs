@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
-using MobileSecondHand.API.Models.ChatHub;
+using MobileSecondHand.API.Models.Chat;
 
 namespace MobileSecondHand.API.Services.CacheServices {
 	public class ChatHubCacheService : IChatHubCacheService {

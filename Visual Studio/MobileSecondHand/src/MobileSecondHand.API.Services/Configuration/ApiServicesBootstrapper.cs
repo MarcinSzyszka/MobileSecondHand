@@ -8,6 +8,7 @@ using MobileSecondHand.API.Services.Advertisement;
 using MobileSecondHand.API.Services.Advertisement.Keywords;
 using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.CacheServices;
+using MobileSecondHand.API.Services.Conversation;
 using MobileSecondHand.API.Services.OutsideApisManagers;
 
 namespace MobileSecondHand.API.Services.Configuration {
@@ -22,6 +23,7 @@ namespace MobileSecondHand.API.Services.Configuration {
 			services.AddTransient<IIdentityService, IdentityService>();
 			services.AddTransient<IKeywordsService, KeywordsService>();
 			services.AddTransient<IChatHubCacheService, ChatHubCacheService>();
+			services.AddTransient<IConversationService, ConversationService>();
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {
