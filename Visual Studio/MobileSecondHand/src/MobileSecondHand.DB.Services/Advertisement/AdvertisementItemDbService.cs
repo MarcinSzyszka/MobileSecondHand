@@ -29,6 +29,7 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem) {
 			dbContext.AdvertisementItem.Add(advertisementItem);
+			dbContext.Entry(advertisementItem).State = EntityState.Added;
 			dbContext.SaveChanges();
 		}
 	}
