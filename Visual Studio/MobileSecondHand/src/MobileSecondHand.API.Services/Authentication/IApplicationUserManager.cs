@@ -5,7 +5,8 @@ using MobileSecondHand.DB.Models.Authentication;
 
 namespace MobileSecondHand.API.Services.Authentication {
 	public interface IApplicationUserManager {
-		Task<ApplicationUser> GetUser(string email);
+		Task<ApplicationUser> GetUserByEmail(string email);
+		Task<ApplicationUser> GetUserById(string userId);
 		Task<IdentityResult> CreateAsync(ApplicationUser user);
 		Task<IdentityResult> AddLoginAsync(ApplicationUser user, UserLoginInfo userLoginInfo);
 		Task<bool> PasswordIsValid(ApplicationUser user, string password);

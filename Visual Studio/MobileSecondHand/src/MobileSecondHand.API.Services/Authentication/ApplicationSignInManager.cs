@@ -37,7 +37,7 @@ namespace MobileSecondHand.API.Services.Authentication {
 			if (loginStandardViewModel.Email == null || loginStandardViewModel.Password == null) {
 				throw new Exception("Login model is invalid");
 			}
-			ApplicationUser user = await applicationUserManager.GetUser(loginStandardViewModel.Email);
+			ApplicationUser user = await applicationUserManager.GetUserByEmail(loginStandardViewModel.Email);
 			if (user == null) {
 				//	throw new Exception("Użytkownik o podanym adresie email nieistnieje");
 			}
@@ -52,7 +52,7 @@ namespace MobileSecondHand.API.Services.Authentication {
 			FacebookUserCredentialsResponse facebookResponse = await facebookApiManager.GetUserCredentials(facebookToken.FacebookToken);
 
 			if (facebookResponse.email != null) {
-				ApplicationUser user = await applicationUserManager.GetUser(facebookResponse.email);
+				ApplicationUser user = await applicationUserManager.GetUserByEmail(facebookResponse.email);
 				if (user == null) {
 					user = await CreateUser(facebookResponse);
 				}

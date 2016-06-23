@@ -10,7 +10,12 @@ namespace MobileSecondHand.API.Services.Authentication {
 			this.userManager = userManager;
 		}
 
-		public async Task<ApplicationUser> GetUser(string email) {
+		public async Task<ApplicationUser> GetUserById (string userId)
+		{
+			return await userManager.FindByIdAsync(userId);
+		}
+
+		public async Task<ApplicationUser> GetUserByEmail(string email) {
 			return await userManager.FindByEmailAsync(email);
 		}
 
