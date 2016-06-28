@@ -16,6 +16,10 @@ namespace MobileSecondHand.App.Consts {
 
 		public const string ADVERTISEMENT_ITEM_DISTANCE = "advertisementItemDistance";
 
-		public const string CONVERSATION_ID = "conversationsId";
+		public const string CONVERSATION_ID = "conversationId";
+
+		public const string ADDRESSEE_ID = "addresseeId";
+
+		public const string ADVERTISEMENTS_LIST_PAGE = "advertisementsPageNumber";
 	}
 }

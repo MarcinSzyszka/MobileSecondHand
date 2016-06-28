@@ -18,21 +18,17 @@ using MobileSecondHand.Models.EventArgs;
 
 namespace MobileSecondHand.App.Adapters {
 	public class AdvertisementItemListAdapter : RecyclerView.Adapter {
-		List<AdvertisementItemShort> advertisementItems;
 		Activity context;
 		BitmapOperationService bitmapOperationService;
-		IAdvertisementsInfiniteScrollListener infiniteScrollListener;
+		IInfiniteScrollListener infiniteScrollListener;
 		private int photoImageViewWitdth;
 		private int photoImageViewHeight;
-
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
+		public List<AdvertisementItemShort> AdvertisementItems { get; private set; }
 
-		public int LastItemIndex { get; private set; }
-		public AdvertisementItemViewHolder LastItemViewHolder { get; private set; }
-
-		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, IAdvertisementsInfiniteScrollListener infiniteScrollListener) {
-			this.advertisementItems = advertisementItems;
+		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, IInfiniteScrollListener infiniteScrollListener) {
+			this.AdvertisementItems = advertisementItems;
 			this.context = context;
 			this.bitmapOperationService = new BitmapOperationService();
 			this.infiniteScrollListener = infiniteScrollListener;
@@ -41,17 +37,17 @@ namespace MobileSecondHand.App.Adapters {
 
 		public override int ItemCount
 		{
-			get { return this.advertisementItems.Count; }
+			get { return this.AdvertisementItems.Count; }
 		}
 
 		public void AddAdvertisements(List<AdvertisementItemShort> advertisements) {
 			CalculateSizeForPhotoImageView();
-			this.advertisementItems.AddRange(advertisements);
-			BindViewHolder(LastItemViewHolder, LastItemIndex);
+			this.AdvertisementItems.AddRange(advertisements);
+			this.NotifyDataSetChanged();
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-			var currentItem = this.advertisementItems[position];
+			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
 			vh.DistanceTextView.Text = String.Format("{0} km", currentItem.Distance);
 			vh.TitleTextView.Text = currentItem.AdvertisementTitle;
@@ -80,14 +76,12 @@ namespace MobileSecondHand.App.Adapters {
 
 		private void OnAdvertisementItemClick(int positionId) {
 			if (AdvertisementItemClick != null) {
-				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.advertisementItems[positionId].Id, Distance = this.advertisementItems[positionId].Distance });
+				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.AdvertisementItems[positionId].Id, Distance = this.AdvertisementItems[positionId].Distance });
 			}
 		}
 
 		private void RaiseOnInfiniteScrollWhenItemIsLastInList(AdvertisementItemShort currentItem, AdvertisementItemViewHolder viewHolder) {
-			if (this.advertisementItems.IndexOf(currentItem) == (this.advertisementItems.Count - 1) && !InfiniteScrollDisabled) {
-				LastItemIndex = this.advertisementItems.IndexOf(currentItem);
-				LastItemViewHolder = viewHolder;
+			if (this.AdvertisementItems.IndexOf(currentItem) == (this.AdvertisementItems.Count - 1) && !InfiniteScrollDisabled) {
 				this.infiniteScrollListener.OnInfiniteScroll();
 			}
 		}

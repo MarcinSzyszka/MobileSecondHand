@@ -14,12 +14,14 @@ using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
+using MobileSecondHand.Services.Chat;
 
 namespace MobileSecondHand.App {
 	[Activity(Label = "Szczegó³y og³oszenia")]
 	public class AdvertisementItemDetailsActivity : Activity {
 		private ProgressDialogHelper progress;
 		IAdvertisementItemService advertisementItemService;
+		IMessagesService messagesService;
 		BitmapOperationService bitmapOperationService;
 		SharedPreferencesHelper sharedPreferencesHelper;
 		private TextView sellerNetworkStateInfoTextView;
@@ -38,16 +40,20 @@ namespace MobileSecondHand.App {
 		public AdvertisementItemDetailsActivity() {
 			this.advertisementItemService = new AdvertisementItemService();
 			this.bitmapOperationService = new BitmapOperationService();
-			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
+			messagesService = new MessagesService();
 		}
 		protected override async void OnCreate(Bundle savedInstanceState) {
 			base.OnCreate(savedInstanceState);
+			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 			SetContentView(Resource.Layout.AdvertisementItemDetailsActivity);
 			SetupViews();
 			CalculateSizeForPhotoImageView();
 			await GetAndShowAdvertisementDetails();
 		}
-
+		protected override void OnDestroy()
+		{
+			base.OnDestroy();
+		}
 		private void CalculateSizeForPhotoImageView() {
 			var metrics = this.Resources.DisplayMetrics;
 			var width = metrics.WidthPixels - 20;
@@ -97,7 +103,7 @@ namespace MobileSecondHand.App {
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
-			startConversationBtn.Click += StartConversationBtn_Click;
+			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 			showOtherAdvertisementsBtn.Click += ShowOtherAdvertisementsBtn_Click;
 
 		}
@@ -106,10 +112,23 @@ namespace MobileSecondHand.App {
 			throw new NotImplementedException();
 		}
 
-		private void StartConversationBtn_Click(object sender, EventArgs e) {
-			var conversationIntent = new Intent(this, typeof(ConversationActivity));
-			conversationIntent.PutExtra(ExtrasKeys.USER_ID, this.advertisement.SellerId);
-			StartActivity(conversationIntent);
+		private async Task StartConversationBtn_Click(object sender, EventArgs e) {
+			progress.ShowProgressDialog("Proszê czekaæ. Trwa przetwarzanie informacji..");
+			var bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+			var conversationId = await messagesService.GetConversationId(this.advertisement.SellerId, bearerToken);
+			progress.CloseProgressDialog();
+			if (conversationId == 0)
+			{
+				//if 0 that means user is trying to send message to himself
+				AlertsService.ShowToast(this, "Nie mo¿esz wys³aæ wiadomoœci do samego siebie :)");
+			}
+			else
+			{
+				var conversationIntent = new Intent(this, typeof(ConversationActivity));
+				conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_ID, conversationId);
+				conversationIntent.PutExtra(ExtrasKeys.ADDRESSEE_ID, advertisement.SellerId);
+				StartActivity(conversationIntent);
+			}
 		}
 
 		private async Task<AdvertisementItemDetails> GetAdvertisement(int advertisementItemId) {

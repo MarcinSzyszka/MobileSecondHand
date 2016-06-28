@@ -16,6 +16,7 @@ using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.EventArgs;
@@ -23,50 +24,55 @@ using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
 
-namespace MobileSecondHand.App {
+namespace MobileSecondHand.App
+{
 	[Activity(Label = "Lista og³oszeñ")]
-	public class MainActivity : Activity, IAdvertisementsInfiniteScrollListener {
+	public class MainActivity : Activity, IInfiniteScrollListener
+	{
 		RecyclerView advertisementsRecyclerView;
-		AdvertisementItemListAdapter advertisementItemRecyclerView;
+		AdvertisementItemListAdapter advertisementItemListAdapter;
 		IAdvertisementItemService advertisementItemService;
 		GpsLocationService gpsLocationService;
 		SharedPreferencesHelper sharedPreferencesHelper;
-		int advertisementsPage = 0;
+		int advertisementsPage;
 		private ProgressDialogHelper progress;
 
-		public MainActivity() {
+		public MainActivity()
+		{
 			this.advertisementItemService = new AdvertisementItemService();
 		}
 
-		protected override async void OnCreate(Bundle savedInstanceState) {
+		protected override async void OnCreate(Bundle savedInstanceState)
+		{
 			base.OnCreate(savedInstanceState);
 			this.gpsLocationService = new GpsLocationService(this, null);
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
-			await SetupViews();
+			advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
+			await SetupViews(savedInstanceState != null);
 			RegisterInHub();
 		}
 
-		private void RegisterInHub() {
-			StartService(new Intent(this, typeof(MessengerService)));
+		protected override void OnSaveInstanceState(Bundle outState)
+		{
+			SharedObject.Data = this.advertisementItemListAdapter.AdvertisementItems;
+			outState.PutInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE, advertisementsPage);
+			base.OnSaveInstanceState(outState);
 		}
 
-		private void SetupToolbar() {
-			var toolbar = FindViewById<Android.Widget.Toolbar>(Resource.Id.toolbar);
-			SetActionBar(toolbar);
-			ActionBar.Title = "Lista og³oszeñ";
-		}
-
-		public override bool OnCreateOptionsMenu(IMenu menu) {
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
 			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
 			return base.OnCreateOptionsMenu(menu);
 		}
 
-		public override bool OnOptionsItemSelected(IMenuItem item) {
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
 			var handled = false;
-			switch (item.ItemId) {
+			switch (item.ItemId)
+			{
 				case Resource.Id.refreshAdvertisementsOption:
 					this.RefreshAdvertisementList();
 					handled = true;
@@ -80,44 +86,98 @@ namespace MobileSecondHand.App {
 			return handled;
 		}
 
-		private async void RefreshAdvertisementList() {
-			advertisementItemRecyclerView.InfiniteScrollDisabled = false;
+		public async void OnInfiniteScroll()
+		{
+			await DownloadAndShowAdvertisements(false);
+		}
+
+		private void RegisterInHub()
+		{
+			StartService(new Intent(this, typeof(MessengerService)));
+		}
+
+		private void SetupToolbar()
+		{
+			var toolbar = FindViewById<Android.Widget.Toolbar>(Resource.Id.toolbar);
+			SetActionBar(toolbar);
+			ActionBar.Title = "Lista og³oszeñ";
+		}
+
+		private async void RefreshAdvertisementList()
+		{
+			advertisementItemListAdapter.InfiniteScrollDisabled = false;
 			await DownloadAndShowAdvertisements(true);
 		}
 
-		private async Task SetupViews() {
+		private async Task SetupViews(bool screenOrientationChaged)
+		{
 			progress = new ProgressDialogHelper(this);
 			SetupFab();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
 			var mLayoutManager = new LinearLayoutManager(this);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
-			await DownloadAndShowAdvertisements(true);
+			await DownloadAndShowAdvertisements(screenOrientationChaged ? false : true, screenOrientationChaged);
 		}
 
-		private async Task DownloadAndShowAdvertisements(bool resetList) {
+		private async Task DownloadAndShowAdvertisements(bool resetList, bool screenOrientationChaged = false)
+		{
 			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
-			advertisementsPage = resetList ? 0 : advertisementsPage + 1;
-			List<AdvertisementItemShort> advertisements = await GetAdvertisements();
-			if (advertisements != null && advertisements.Count > 0) {
-				if (advertisementItemRecyclerView == null || resetList) {
-					advertisementItemRecyclerView = new AdvertisementItemListAdapter(this, advertisements, this);
-					advertisementItemRecyclerView.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
-					advertisementsRecyclerView.SetAdapter(advertisementItemRecyclerView);
+			SetAdvertisementListPageNumber(resetList, screenOrientationChaged);
+			List<AdvertisementItemShort> advertisements = await GetStoredOrDownloadAdvertisements(screenOrientationChaged);
+
+			if (advertisements != null && advertisements.Count > 0)
+			{
+				if (advertisementItemListAdapter == null || resetList)
+				{
+					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, this);
+					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
+					advertisementsRecyclerView.SetAdapter(advertisementItemListAdapter);
 				}
-				else {
-					advertisementItemRecyclerView.AddAdvertisements(advertisements);
+				else
+				{
+					advertisementItemListAdapter.AddAdvertisements(advertisements);
 				}
 			}
-			else {
-				if (advertisementItemRecyclerView == null) {
-					advertisementItemRecyclerView = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), this);
+			else
+			{
+				if (advertisementItemListAdapter == null)
+				{
+					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), this);
 				}
-				advertisementItemRecyclerView.InfiniteScrollDisabled = true;
+				advertisementItemListAdapter.InfiniteScrollDisabled = true;
 			}
 			progress.CloseProgressDialog();
 		}
 
-		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, ShowAdvertisementDetailsEventArgs eventArgs) {
+		private void SetAdvertisementListPageNumber(bool resetList, bool screenOrientationChaged)
+		{
+			if (resetList)
+			{
+				advertisementsPage = 0;
+			}
+			else if (!screenOrientationChaged)
+			{
+				advertisementsPage++;
+			}
+		}
+
+		private async Task<List<AdvertisementItemShort>> GetStoredOrDownloadAdvertisements(bool screenOrientationChaged)
+		{
+			List<AdvertisementItemShort> advertisements;
+			if (screenOrientationChaged)
+			{
+				advertisements = (List<AdvertisementItemShort>)SharedObject.Data;
+			}
+			else
+			{
+				advertisements = await GetAdvertisements();
+			}
+
+			return advertisements;
+		}
+
+		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, ShowAdvertisementDetailsEventArgs eventArgs)
+		{
 			//przejœcie do widoku detalue dokumentu
 			var intent = new Intent(this, typeof(AdvertisementItemDetailsActivity));
 			intent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_ID, eventArgs.Id);
@@ -125,7 +185,8 @@ namespace MobileSecondHand.App {
 			StartActivity(intent);
 		}
 
-		private async Task<List<AdvertisementItemShort>> GetAdvertisements() {
+		private async Task<List<AdvertisementItemShort>> GetAdvertisements()
+		{
 			var searchModel = new SearchModel();
 			searchModel.CoordinatesModel = this.gpsLocationService.GetCoordinatesModel();
 			searchModel.Page = advertisementsPage;
@@ -136,19 +197,18 @@ namespace MobileSecondHand.App {
 			return list;
 		}
 
-		private void SetupFab() {
+		private void SetupFab()
+		{
 			var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
 			fab.Click += Fab_Click;
 		}
 
-		private void Fab_Click(object sender, EventArgs e) {
+		private void Fab_Click(object sender, EventArgs e)
+		{
 			AlertsService.ShowToast(this, "Bum!");
 			var addAdvertisementIntent = new Intent(this, typeof(AddNewAdvertisementActivity));
 			StartActivity(addAdvertisementIntent);
 		}
 
-		public async void OnInfiniteScroll() {
-			await DownloadAndShowAdvertisements(false);
-		}
 	}
 }

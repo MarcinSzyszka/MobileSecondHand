@@ -37,6 +37,8 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/advertisementsRecyclerView"
+            tools:stackFromEnd="true"
+            tools:reverseLayout="true"
             android:layout_below="@+id/toolbar" />
     </RelativeLayout>
 </FrameLayout>

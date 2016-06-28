@@ -11,7 +11,7 @@ using Android.Views;
 using Android.Widget;
 
 namespace MobileSecondHand.App.Infrastructure {
-	public interface IAdvertisementsInfiniteScrollListener {
+	public interface IInfiniteScrollListener {
 		void OnInfiniteScroll();
 	}
 }

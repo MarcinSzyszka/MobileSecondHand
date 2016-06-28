@@ -14,27 +14,29 @@ using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Holders;
+using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Chat;
 
 namespace MobileSecondHand.App.Adapters {
 	public class ConversationMessagesListAdapter : RecyclerView.Adapter {
-		List<ConversationMessage> messages;
-		public override int ItemCount { get { return this.messages.Count; } }
+		private IInfiniteScrollListener infiniteScrollListener;
+		public override int ItemCount { get { return this.Messages.Count; } }
+		public bool InfiniteScrollDisabled { get; set; }
+		public List<ConversationMessage> Messages { get; private set; }
 
-		public ConversationMessagesListAdapter(List<ConversationMessage> messages) {
-			this.messages = messages;
-		}
-
-		public void AddMessage(ConversationMessage message) {
-			this.messages.Add(message);
+		public ConversationMessagesListAdapter(IInfiniteScrollListener infiniteScrollListener, List<ConversationMessage> messages) {
+			this.infiniteScrollListener = infiniteScrollListener;
+			this.Messages = messages;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
-			var currentItem = this.messages[position];
+			var currentItem = this.Messages[position];
 			ConversationMessageViewHolder vh = holder as ConversationMessageViewHolder;
 			SetLayotParameters(currentItem, vh);
 			vh.MessageHeader.Text = currentItem.MessageHeader;
 			vh.MessageContent.Text = currentItem.MessageContent;
+
+			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
@@ -42,6 +44,19 @@ namespace MobileSecondHand.App.Adapters {
 			ConversationMessageViewHolder vh = new ConversationMessageViewHolder(itemView);
 			return vh;
 		}
+
+		public void AddMessages(List<ConversationMessage> messages)
+		{
+			this.Messages.AddRange(messages);
+			this.NotifyDataSetChanged();
+		}
+
+		public void AddReceivedMessage(ConversationMessage message)
+		{
+			this.Messages.Insert(0, message);
+			this.NotifyDataSetChanged();
+		}
+
 		private static void SetLayotParameters(ConversationMessage currentItem, ConversationMessageViewHolder vh) {
 			RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
 			if (currentItem.UserWasSender) {
@@ -59,6 +74,14 @@ namespace MobileSecondHand.App.Adapters {
 				vh.MessageContent.SetTextColor(Color.White);
 			}
 			vh.MessageLayout.LayoutParameters = parameters;
+		}
+
+		private void RaiseOnInfiniteScrollWhenItemIsLastInList(ConversationMessage currentItem, ConversationMessageViewHolder viewHolder)
+		{
+			if (this.Messages.IndexOf(currentItem) == (this.Messages.Count - 1) && !InfiniteScrollDisabled)
+			{
+				this.infiniteScrollListener.OnInfiniteScroll();
+			}
 		}
 
 	}

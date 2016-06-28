@@ -10,22 +10,34 @@ namespace MobileSecondHand.Services.Chat {
 	public class ChatHubClientService {
 		IHubProxy chatHubProxy;
 		HubConnection hubConnection;
+		static ChatHubClientService serviceInstance;
 
-		public ChatHubClientService() {
+		public ChatHubClientService(string bearerToken) {
 			hubConnection = new HubConnection(WebApiConsts.SERWER_URL);
 			chatHubProxy = hubConnection.CreateHubProxy("MobileSecondHandChatHub");
-		}
-
-		public void RegisterInHub(string bearerToken) {
 			hubConnection.Headers.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, bearerToken);
 			Connect(hubConnection, async h => {
 				await h.Start();
-				SendMessage(chatHubProxy, proxy => proxy.Invoke("Register", "Hello froom Xamarin Android App! :)"));
 			});
 		}
 
-		public void RegisterReceiveMessages(Action<string> updateChatMessage) {
-			chatHubProxy.On<string>("UpdateChatMessage", message => updateChatMessage(message));
+		public static ChatHubClientService GetServiceInstance(string bearerToken)
+		{
+			if (serviceInstance == null)
+			{
+				serviceInstance = new ChatHubClientService(bearerToken);
+			}
+
+			return serviceInstance;
+		}
+
+
+		public void SendMessage(string messageContent, string addresseeId, int conversationId) {
+			SendMessage(chatHubProxy, proxy => proxy.Invoke("SendMessage", messageContent, addresseeId, conversationId.ToString()));
+		}
+
+		public void RegisterReceiveMessages(Action<string, string, string, string> updateChatMessage) {
+			chatHubProxy.On<string, string, string, string>("ReceiveMessage", (messageContent, messageHeader, conversationId, senderId) => updateChatMessage(messageContent, messageHeader, conversationId, senderId));
 		}
 
 		private void Connect(HubConnection hubObject, Action<HubConnection> hubConnection) {

@@ -15,70 +15,95 @@ using MobileSecondHand.Models.Security;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Services.Location;
 
-namespace MobileSecondHand.App {
+namespace MobileSecondHand.App
+{
 	[Activity(MainLauncher = true, Icon = "@drawable/icon")]
-	public class StartActivity : Activity, ISettingWindowCloseListener {
+	public class StartActivity : Activity, ISettingWindowCloseListener
+	{
 		ISignInService signInService;
 		Action<bool> actionToExecuteAfterCloseSettingsDialog;
 		private bool settingsAlertIsShow;
 		private bool userIsLogged;
 
-		public StartActivity() {
+		public StartActivity()
+		{
 			this.signInService = new SignInService();
 		}
-		protected override async void OnCreate(Bundle bundle) {
+		protected override async void OnCreate(Bundle bundle)
+		{
 			base.OnCreate(bundle);
 
 			FacebookSdk.SdkInitialize(this);
 			SetFullscreenOptions();
 			SetContentView(Resource.Layout.StartActivity);
 			var gps = new GpsLocationService(this, this);
-			if (!gps.CanGetLocation) { 
+			if (!gps.CanGetLocation)
+			{
 				settingsAlertIsShow = true;
 				gps.ShowSettingsAlert();
-				
+
 			}
-			userIsLogged = await SignInUser();
-			if (!settingsAlertIsShow) {
+			try
+			{
+				userIsLogged = await SignInUser();
+			}
+			catch (Exception)
+			{
+				AlertsService.ShowAlertDialog(this, "Wystąpił problem z połączeniem z serwerem. Spróbuj ponownie później");
+			}
+
+			if (!settingsAlertIsShow)
+			{
 				StartMainOrLoginActivity(userIsLogged);
 			}
-			else {
+			else
+			{
 				actionToExecuteAfterCloseSettingsDialog = StartMainOrLoginActivity;
 			}
 		}
 
-		protected override void OnResume() {
+		protected override void OnResume()
+		{
 			base.OnResume();
-			if (actionToExecuteAfterCloseSettingsDialog != null) {
+			if (actionToExecuteAfterCloseSettingsDialog != null)
+			{
 				actionToExecuteAfterCloseSettingsDialog(userIsLogged);
 				actionToExecuteAfterCloseSettingsDialog = null;
 			}
 		}
 
-		private void StartMainOrLoginActivity(bool userIsLogged) {
+		private void StartMainOrLoginActivity(bool userIsLogged)
+		{
 			var intent = default(Intent);
-			if (userIsLogged) {
+			if (userIsLogged)
+			{
 				intent = new Intent(this, typeof(MainActivity));
 			}
-			else {
+			else
+			{
 				intent = new Intent(this, typeof(LoginActivity));
 			}
 			this.Finish();
 			StartActivity(intent);
 		}
 
-		private async Task<bool> SignInUser() {
+		private async Task<bool> SignInUser()
+		{
 			var userIsLogged = false;
 			var preferenceHelper = new SharedPreferencesHelper(this);
 			var bearerToken = (string)preferenceHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-			if (bearerToken != null) {
+			if (bearerToken != null)
+			{
 				userIsLogged = await signInService.SignInUserWithBearerToken(new TokenModel { Token = bearerToken });
 			}
-			if (!userIsLogged) {
-				if (AccessToken.CurrentAccessToken != null && AccessToken.CurrentAccessToken.Token != null) {
+			if (!userIsLogged)
+			{
+				if (AccessToken.CurrentAccessToken != null && AccessToken.CurrentAccessToken.Token != null)
+				{
 					var facebookToken = new FacebookTokenViewModel { FacebookToken = AccessToken.CurrentAccessToken.Token };
 					var tokenModel = await signInService.SignInUserWithFacebookToken(facebookToken);
-					if (tokenModel != null) {
+					if (tokenModel != null)
+					{
 						preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
 						userIsLogged = true;
 					}
@@ -88,13 +113,16 @@ namespace MobileSecondHand.App {
 			return userIsLogged;
 		}
 
-		private void SetFullscreenOptions() {
+		private void SetFullscreenOptions()
+		{
 			this.Window.RequestFeature(WindowFeatures.NoTitle);
 			this.Window.SetFlags(WindowManagerFlags.Fullscreen, WindowManagerFlags.Fullscreen);
 		}
 
-		public void OnSettingsWindowClose() {
-			if (actionToExecuteAfterCloseSettingsDialog != null) {
+		public void OnSettingsWindowClose()
+		{
+			if (actionToExecuteAfterCloseSettingsDialog != null)
+			{
 				actionToExecuteAfterCloseSettingsDialog(userIsLogged);
 				actionToExecuteAfterCloseSettingsDialog = null;
 			}

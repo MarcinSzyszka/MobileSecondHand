@@ -1,13 +1,15 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+VisualStudioVersion = 14.0.25123.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.App", "MobileSecondHand.App\MobileSecondHand.App.csproj", "{EE4FD2E9-05EC-41F7-B755-41C48FDC266E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.Models", "MobileSecondHand.Models\MobileSecondHand.Models.csproj", "{A06429C2-0FED-40A3-8721-D58CC20773EE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.Services", "MobileSecondHand.Services\MobileSecondHand.Services.csproj", "{64034E83-7C82-46EE-B7B8-84F24627E8ED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.Common", "MobileSecondHand.Common\MobileSecondHand.Common.csproj", "{D604BD91-82D3-4241-97A1-EF8F947C8B7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -29,6 +31,10 @@ Global
 		{64034E83-7C82-46EE-B7B8-84F24627E8ED}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{64034E83-7C82-46EE-B7B8-84F24627E8ED}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{64034E83-7C82-46EE-B7B8-84F24627E8ED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D604BD91-82D3-4241-97A1-EF8F947C8B7B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D604BD91-82D3-4241-97A1-EF8F947C8B7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D604BD91-82D3-4241-97A1-EF8F947C8B7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D604BD91-82D3-4241-97A1-EF8F947C8B7B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

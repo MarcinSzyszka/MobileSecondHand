@@ -18,7 +18,7 @@ namespace MobileSecondHand.Services.Chat {
 			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 
-			var response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetMessages", conversationId, pageNumber));
+			var response = await client.GetAsync(String.Format("{0}/{1}/{2}/{3}", WebApiConsts.CONVERSATION_CONTROLLER, "GetMessages", conversationId, pageNumber));
 			
 			if (response.IsSuccessStatusCode) {
 				var responseString = await response.Content.ReadAsStringAsync();
@@ -26,6 +26,24 @@ namespace MobileSecondHand.Services.Chat {
 			}
 
 			return messagesList;
+		}
+
+		public async Task<int> GetConversationId(string addresseeId, string bearerToken)
+		{
+			var conversationId = 0;
+			var client = new HttpClient();
+			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
+			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+
+			var response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationId", addresseeId));
+
+			if (response.IsSuccessStatusCode)
+			{
+				var responseString = await response.Content.ReadAsStringAsync();
+				conversationId = JsonConvert.DeserializeObject<int>(responseString);
+			}
+
+			return conversationId;
 		}
 	}
 }
