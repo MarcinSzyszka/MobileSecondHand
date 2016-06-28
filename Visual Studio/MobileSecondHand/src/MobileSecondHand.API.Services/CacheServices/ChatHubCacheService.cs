@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Runtime.Caching;
 using MobileSecondHand.API.Models.Chat;
@@ -34,8 +35,17 @@ namespace MobileSecondHand.API.Services.CacheServices {
 			}
 		}
 
+
+		public bool IsUserConnected(string userId)
+		{
+			var userConnection = GetConnectedUsers().FirstOrDefault(u => u.UserId == userId);
+
+			return userConnection != null;
+		}
+
 		private List<UserConnection> GetConnectedUsers() {
 			return (List<UserConnection>)this.cache.Get(CONNECTED_USERS);
 		}
+
 	}
 }

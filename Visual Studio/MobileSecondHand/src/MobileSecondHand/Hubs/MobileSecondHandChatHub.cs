@@ -33,9 +33,11 @@ namespace MobileSecondHand.Hubs {
 			this.handler = new JwtSecurityTokenHandler();
 		}
 
-		public void Register(string message) {
+		public void SendMessage(string message) {
 			var a = Context;
-			base.Clients.All.UpdateChatMessage("Witaj. Pozdro ze strony serwera :)");
+			var conversationMessage = 1;
+			var senderId = 1;
+			base.Clients.All.UpdateChatMessage("Witaj. Pozdro ze strony serwera :)", conversationMessage.ToString(), senderId.ToString());
 		}
 
 		public override Task OnConnected() {

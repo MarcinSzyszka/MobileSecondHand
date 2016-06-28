@@ -32,9 +32,9 @@ namespace MobileSecondHand.Controllers {
 			advertisement3.AdvertisementPhotos.Add(new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./wwwroot/images/advertisementItem/foty/sukienka 2.jpg" });
 
 			var advertisement4 = new DB.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Sukienka \"mała czarna\", rozm 38, nowa!", Price = 69, Latitude = 52.0117376, Longitude = 20.8640181, User = fakeUser };
-			var avdertisementPhoto4 = new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./wwwroot/images/advertisementItem/foty/sukienka.jpg" };
+			var avdertisementPhoto4 = new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./wwwroot/images/advertisementItem/foty/sukienka.png" };
 			advertisement4.AdvertisementPhotos.Add(avdertisementPhoto4);
-			advertisement4.AdvertisementPhotos.Add(new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./wwwroot/images/advertisementItem/foty/sukienka.jpg" });
+			advertisement4.AdvertisementPhotos.Add(new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./wwwroot/images/advertisementItem/foty/sukienka.png" });
 
 			var advertisement5 = new DB.Models.Advertisement.AdvertisementItem { IsActive = true, Title = "Ciepły sweter rozm L. Jak nowy, tylko przymierzony!", Price = 49, Latitude = 52.0917376, Longitude = 20.8540181, User = fakeUser };
 			var avdertisementPhoto5 = new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./wwwroot/images/advertisementItem/foty/sweter.jpg" };

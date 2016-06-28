@@ -9,7 +9,7 @@ using MobileSecondHand.API.Services.Conversation;
 
 namespace MobileSecondHand.Controllers
 {
-	//[Microsoft.AspNetCore.Authorization.Authorize("Bearer")]
+	[Microsoft.AspNetCore.Authorization.Authorize("Bearer")]
 	[Route("api/[controller]")]
 	public class ConversationController : Controller
 	{

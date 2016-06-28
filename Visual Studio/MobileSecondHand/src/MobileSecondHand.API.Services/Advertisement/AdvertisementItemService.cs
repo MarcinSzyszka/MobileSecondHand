@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Advertisement;
 using MobileSecondHand.API.Models.Coordinates;
 using MobileSecondHand.API.Services.Advertisement.Keywords;
+using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.COMMON.CoordinatesHelpers;
 using MobileSecondHand.COMMON.PathHelpers;
 using MobileSecondHand.DB.Models.Advertisement;
@@ -19,13 +20,16 @@ namespace MobileSecondHand.API.Services.Advertisement {
 		IAdvertisementItemPhotosService advertisementItemPhotosService;
 		IAppFilesPathHelper appFilesPathHelper;
 		IKeywordsService keywordsService;
+		IChatHubCacheService chatHubCacheService;
 
-		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService) {
+		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService)
+		{
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
 			this.advertisementItemPhotosService = advertisementItemPhotosService;
 			this.appFilesPathHelper = appFilesPathHelper;
 			this.keywordsService = keywordsService;
+			this.chatHubCacheService = chatHubCacheService;
 		}
 
 		public void CreateNewAdvertisementItem(NewAdvertisementItemModel newAdvertisementModel, string userId) {
@@ -85,8 +89,7 @@ namespace MobileSecondHand.API.Services.Advertisement {
 			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
 			viewModel.SellerId = advertisementFromDb.UserId;
 			viewModel.Photo = await this.advertisementItemPhotosService.GetPhotoInBytes(advertisementFromDb.AdvertisementPhotos.FirstOrDefault(p => !p.IsMainPhoto).PhotoPath);
-
-			//viewModel.IsSellerOnline = sprawdzić czy sprzedający jest powiązany jakims socketem czy czyms
+			viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(advertisementFromDb.UserId);
 			return viewModel;
 		}
 
