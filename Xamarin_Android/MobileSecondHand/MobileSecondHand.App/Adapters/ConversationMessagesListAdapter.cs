@@ -22,11 +22,10 @@ namespace MobileSecondHand.App.Adapters {
 		private IInfiniteScrollListener infiniteScrollListener;
 		public override int ItemCount { get { return this.Messages.Count; } }
 		public bool InfiniteScrollDisabled { get; set; }
-		public List<ConversationMessage> Messages { get; private set; }
-
-		public ConversationMessagesListAdapter(IInfiniteScrollListener infiniteScrollListener, List<ConversationMessage> messages) {
+		public List<ConversationMessage> Messages { get; set; }
+		public event EventHandler NewMessageAdded;
+		public ConversationMessagesListAdapter(IInfiniteScrollListener infiniteScrollListener) {
 			this.infiniteScrollListener = infiniteScrollListener;
-			this.Messages = messages;
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
@@ -54,7 +53,11 @@ namespace MobileSecondHand.App.Adapters {
 		public void AddReceivedMessage(ConversationMessage message)
 		{
 			this.Messages.Insert(0, message);
-			this.NotifyDataSetChanged();
+			this.NotifyItemInserted(0);
+			if (NewMessageAdded != null)
+			{
+				NewMessageAdded(this, EventArgs.Empty);
+			}
 		}
 
 		private static void SetLayotParameters(ConversationMessage currentItem, ConversationMessageViewHolder vh) {

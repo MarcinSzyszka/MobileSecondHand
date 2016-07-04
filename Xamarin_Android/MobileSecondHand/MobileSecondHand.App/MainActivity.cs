@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -23,11 +24,12 @@ using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
+using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace MobileSecondHand.App
 {
 	[Activity(Label = "Lista og³oszeñ")]
-	public class MainActivity : Activity, IInfiniteScrollListener
+	public class MainActivity : AppCompatActivity, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
 		AdvertisementItemListAdapter advertisementItemListAdapter;
@@ -98,9 +100,12 @@ namespace MobileSecondHand.App
 
 		private void SetupToolbar()
 		{
-			var toolbar = FindViewById<Android.Widget.Toolbar>(Resource.Id.toolbar);
-			SetActionBar(toolbar);
-			ActionBar.Title = "Lista og³oszeñ";
+			var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+
+			SetSupportActionBar(toolbar);
+			SupportActionBar.Title = "Lista og³oszeñ";
+			//SetActionBar(toolbar);
+			//ActionBar.Title = "Lista og³oszeñ";
 		}
 
 		private async void RefreshAdvertisementList()

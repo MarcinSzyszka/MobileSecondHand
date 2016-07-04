@@ -29,8 +29,7 @@ namespace MobileSecondHand.App
 		ConversationMessagesListAdapter conversationMessagesListAdapter;
 		ChatHubClientService chatHubClientService;
 		RecyclerView conversationMessagesRecyclerView;
-		Button btnSendMessage;
-		ImageButton btnBack;
+		ImageButton btnSendMessage;
 		EditText editTextMessage;
 		int pageNumber;
 		int conversationId;
@@ -52,7 +51,7 @@ namespace MobileSecondHand.App
 
 		public void AddMessage(ConversationMessage message)
 		{
-			this.conversationMessagesListAdapter.AddReceivedMessage(message);
+			this.RunOnUiThread(() => this.conversationMessagesListAdapter.AddReceivedMessage(message));
 		}
 
 		protected override async void OnCreate(Bundle savedInstanceState)
@@ -66,6 +65,19 @@ namespace MobileSecondHand.App
 			GetExtras();
 			pageNumber = 0;
 			await SetupViews(savedInstanceState);
+		}
+
+
+		public override bool DispatchKeyEvent(KeyEvent e)
+		{
+			if (e.KeyCode == Keycode.Back)
+			{
+				if (this.editTextMessage.HasFocus)
+				{
+					this.editTextMessage.ClearFocus();
+				}
+			}
+			return base.DispatchKeyEvent(e);
 		}
 
 		protected override void OnStart()
@@ -94,17 +106,25 @@ namespace MobileSecondHand.App
 
 		private async Task SetupViews(Bundle savedInstanceState)
 		{
-			btnBack = FindViewById<ImageButton>(Resource.Id.btnBack);
-			btnBack.Click += BtnBack_Click;
 			conversationMessagesRecyclerView = FindViewById<RecyclerView>(Resource.Id.conversationsRecyclerView);
-			btnSendMessage = FindViewById<Button>(Resource.Id.buttonSendConversationMessage);
+			btnSendMessage = FindViewById<ImageButton>(Resource.Id.buttonSendConversationMessage);
 			btnSendMessage.Click += BtnSendMessage_Click;
 			editTextMessage = FindViewById<EditText>(Resource.Id.editTextConversationMessage);
 			editTextMessage.KeyPress += EditTextMessage_KeyPress;
 			var mLayoutManager = new LinearLayoutManager(this);
 			mLayoutManager.ReverseLayout = true;
+			mLayoutManager.SmoothScrollbarEnabled = true;
 			conversationMessagesRecyclerView.SetLayoutManager(mLayoutManager);
+
+			this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(this);
+			this.conversationMessagesListAdapter.NewMessageAdded += ConversationMessagesListAdapter_NewMessageAdded;
 			await GetAndSetMessages(savedInstanceState);
+			this.conversationMessagesRecyclerView.RequestLayout();
+		}
+
+		private void ConversationMessagesListAdapter_NewMessageAdded(object sender, EventArgs e)
+		{
+			this.conversationMessagesRecyclerView.SmoothScrollToPosition(0);
 		}
 
 		private void BtnBack_Click(object sender, EventArgs e)
@@ -133,7 +153,6 @@ namespace MobileSecondHand.App
 		{
 			if (editTextMessage.Text != null & editTextMessage.Text != string.Empty)
 			{
-				chatHubClientService.SendMessage(editTextMessage.Text, this.addresseeId.ToString(), this.conversationId);
 				var date = DateTime.Now;
 				var message = new ConversationMessage();
 				message.MessageContent = editTextMessage.Text;
@@ -141,6 +160,7 @@ namespace MobileSecondHand.App
 				message.ConversationId = this.conversationId;
 				message.MessageHeader = String.Format("ja, {0} {1}", date.GetDateDottedStringFormat(), date.GetTimeColonStringFormat());
 				this.conversationMessagesListAdapter.AddReceivedMessage(message);
+				chatHubClientService.SendMessage(editTextMessage.Text, this.addresseeId.ToString(), this.conversationId);
 				editTextMessage.Text = string.Empty;
 			}
 		}
@@ -151,22 +171,11 @@ namespace MobileSecondHand.App
 
 			if (messages != null && messages.Count > 0)
 			{
-				if (this.conversationMessagesListAdapter == null)
-				{
-					this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(this, messages);
-				}
-				else
-				{
-					this.conversationMessagesListAdapter.AddMessages(messages);
-				}
+				this.conversationMessagesListAdapter.AddMessages(messages);
 			}
 			else
 			{
-				if (this.conversationMessagesListAdapter == null)
-				{
-					this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(this, new List<ConversationMessage>());
-				}
-
+				this.conversationMessagesListAdapter.Messages = new List<ConversationMessage>();
 				this.conversationMessagesListAdapter.InfiniteScrollDisabled = true;
 			}
 

@@ -11,14 +11,9 @@
         android:layout_height="wrap_content"
         android:id="@+id/relativeLayout3"
         android:layout_centerInParent="true">
-        <Toolbar
+        <include
             android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:minHeight="?android:attr/actionBarSize"
-            android:background="?android:attr/colorPrimary"
-            android:theme="@android:style/ThemeOverlay.Material.Dark.ActionBar"
-            android:popupTheme="@android:style/ThemeOverlay.Material.Light"
+            layout="@layout/toolbar"
             android:layout_gravity="top"
             android:layout_alignParentTop="true" />
         <com.refractored.fab.FloatingActionButton

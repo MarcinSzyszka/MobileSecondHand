@@ -17,7 +17,7 @@ namespace MobileSecondHand.App.Infrastructure {
 		string incorrectPasswordErrorMessage = "Min. 6 znaków w tym conajmniej jedna cyfra";
 		string confirmedPasswordErrorMessage = "Podane has³a nie s¹ takie same";
 		public bool IsLoginFormValidate(EditText email, EditText password, ref View focus) {
-			var icon = email.Context.GetDrawable(Android.Resource.Drawable.StatNotifyError);
+			var icon = email.Context.Resources.GetDrawable(Android.Resource.Drawable.StatNotifyError);
 			var emailText = email.Text;
 			var passwordText = password.Text;
 			if (emailText == null || emailText == String.Empty) {
@@ -47,7 +47,7 @@ namespace MobileSecondHand.App.Infrastructure {
 		}
 
 		public bool IsLoginFormValidate(EditText email, EditText password, EditText confirmedPassword, ref View focus) {
-			var icon = email.Context.GetDrawable(Android.Resource.Drawable.StatNotifyError);
+			var icon = email.Context.Resources.GetDrawable(Android.Resource.Drawable.StatNotifyError);
 			var isValidate = false;
 			isValidate = IsLoginFormValidate(email, password, ref focus);
 			var passwordText = password.Text;

@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.Models.Consts {
 	public class WebApiConsts {
-		public const string SERWER_URL = "http://192.168.8.100:81/";
-		public const string WEB_API_URL = "http://192.168.8.100:81/api/";
+		public const string SERWER_URL = "http://192.168.8.104:81/";
+		public const string WEB_API_URL = "http://192.168.8.104:81/api/";
 		public const string WEB_API_ACCOUNT_CONTROLLER = "WebApiAccount/";
 		public const string ADVERTISEMENT_CONTROLLER = "AdvertisementItem/";
 		public const string CONVERSATION_CONTROLLER = "Conversation";
