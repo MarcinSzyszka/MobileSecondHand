@@ -64,7 +64,7 @@ namespace MobileSecondHand.API.Services.Advertisement {
 
 		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchModel searchModel, string userId){
 			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
-			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page);
+			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page).ToList();
 			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, searchModel.CoordinatesModel);
 
 			return advertisementsViewModels;
@@ -109,7 +109,7 @@ namespace MobileSecondHand.API.Services.Advertisement {
 			return viewModelsList;
 		}
 
-		private ICollection<AdvertisementPhoto> CreateAdvertisementPhotosModels(IEnumerable<string> advertisementPhotosPaths) {
+		private List<AdvertisementPhoto> CreateAdvertisementPhotosModels(IEnumerable<string> advertisementPhotosPaths) {
 			var photosDbModelsList = new List<AdvertisementPhoto>();
 			foreach (var photoPath in advertisementPhotosPaths) {
 				var model = new AdvertisementPhoto();

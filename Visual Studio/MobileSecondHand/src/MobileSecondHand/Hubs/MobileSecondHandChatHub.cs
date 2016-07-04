@@ -13,12 +13,14 @@
 using System;
 using System.IdentityModel.Tokens.Jwt;
 using System.Linq;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.SignalR;
 using Microsoft.AspNetCore.SignalR.Hubs;
 using MobileSecondHand.API.Models.Chat;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.CacheServices;
+using MobileSecondHand.COMMON.Extensions;
 
 namespace MobileSecondHand.Hubs {
 	[HubName("MobileSecondHandChatHub")]
@@ -33,11 +35,14 @@ namespace MobileSecondHand.Hubs {
 			this.handler = new JwtSecurityTokenHandler();
 		}
 
-		public void SendMessage(string message) {
-			var a = Context;
-			var conversationMessage = 1;
-			var senderId = 1;
-			base.Clients.All.UpdateChatMessage("Witaj. Pozdro ze strony serwera :)", conversationMessage.ToString(), senderId.ToString());
+		public void SendMessage(string message, string addresseeId, string conversationId) {
+			//var conversationMessage = 1;
+			var senderId = ReadUserIdFromToken();
+
+			var addresseeConnectionId = this.chatHubCacheService.GetUserConnectionId(addresseeId);
+
+			base.Clients.Client(addresseeConnectionId).ReceiveMessage(message, String.Format("ktoś, {0} {1}", DateTime.Now.GetDateDottedStringFormat(), DateTime.Now.GetTimeColonStringFormat()), "1", senderId);
+			//base.Clients.All.ReceiveMessage("Witaj. Pozdro ze strony serwera :)", "serwer, 28.06.2016 18:31;33", senderId.ToString(), conversationMessage.ToString());
 		}
 
 		public override Task OnConnected() {

@@ -35,6 +35,18 @@ namespace MobileSecondHand.API.Services.CacheServices {
 			}
 		}
 
+		public string GetUserConnectionId(string addresseeId)
+		{
+			var users = GetConnectedUsers();
+
+			var userConnection = users.FirstOrDefault(c => c.UserId == addresseeId);
+			if (userConnection != null)
+			{
+				return userConnection.ConnectionId;
+			}
+
+			return string.Empty;
+		}
 
 		public bool IsUserConnected(string userId)
 		{
@@ -45,7 +57,6 @@ namespace MobileSecondHand.API.Services.CacheServices {
 
 		private List<UserConnection> GetConnectedUsers() {
 			return (List<UserConnection>)this.cache.Get(CONNECTED_USERS);
-		}
-
+		}		
 	}
 }
