@@ -5,8 +5,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.DB.Models.Authentication;
 
-namespace MobileSecondHand.DB.Models.Advertisement {
-	public class AdvertisementItem {
+namespace MobileSecondHand.DB.Models.Advertisement
+{
+	public class AdvertisementItem
+	{
 		public int Id { get; set; }
 		public string UserId { get; set; }
 		public string Title { get; set; }
@@ -19,15 +21,9 @@ namespace MobileSecondHand.DB.Models.Advertisement {
 		public DateTime CreationDate { get; set; }
 		public DateTime? ExpirationDate { get; set; }
 		[ForeignKey("UserId")]
-		public virtual ApplicationUser User { get; set; }
-		public virtual ICollection<AdvertisementPhoto> AdvertisementPhotos { get; set; }
-		public virtual ICollection<ColorKeywordToAdvertisement> ColorKeywords { get; set; }
-		public virtual ICollection<CategoryKeywordToAdvertisement> CategoryKeywords { get; set; }
-
-		public AdvertisementItem() {
-			this.AdvertisementPhotos = new List<AdvertisementPhoto>();
-			this.ColorKeywords = new List<ColorKeywordToAdvertisement>();
-			this.CategoryKeywords = new List<CategoryKeywordToAdvertisement>();
-		}
+		public ApplicationUser User { get; set; }
+		public List<AdvertisementPhoto> AdvertisementPhotos { get; set; } = new List<AdvertisementPhoto>();
+		public List<ColorKeywordToAdvertisement> ColorKeywords { get; set; } = new List<ColorKeywordToAdvertisement>();
+		public List<CategoryKeywordToAdvertisement> CategoryKeywords { get; set; } = new List<CategoryKeywordToAdvertisement>();
 	}
 }

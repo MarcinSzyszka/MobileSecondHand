@@ -8,11 +8,11 @@ namespace MobileSecondHand.DB.Models.Advertisement
 {
     public class AdvertisementPhoto
     {
-		public int Id { get; set; }
+		public int AdvertisementPhotoId { get; set; }
 		public string PhotoPath { get; set; }
 		public bool IsMainPhoto { get; set; }
 		public int AdvertisementItemId { get; set; }
 		[ForeignKey("AdvertisementItemId")]
-		public virtual AdvertisementItem AdvertisementItem { get; set; }
+		public AdvertisementItem AdvertisementItem { get; set; }
 	}
 }
