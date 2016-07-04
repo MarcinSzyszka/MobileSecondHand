@@ -5,16 +5,16 @@ using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
 using MobileSecondHand.DB.Services;
 
-namespace mobilesecondhand.Migrations
+namespace MobileSecondHand.Migrations
 {
     [DbContext(typeof(MobileSecondHandContext))]
-    [Migration("20160526085200_InitialMigrationAfterUpgradeToRc2")]
-    partial class InitialMigrationAfterUpgradeToRc2
+    [Migration("20160629171631_initialMigration")]
+    partial class initialMigration
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
-                .HasAnnotation("ProductVersion", "1.0.0-rc2-20901")
+                .HasAnnotation("ProductVersion", "1.0.0-rtm-21431")
                 .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole", b =>
@@ -158,7 +158,7 @@ namespace mobilesecondhand.Migrations
 
             modelBuilder.Entity("MobileSecondHand.DB.Models.Advertisement.AdvertisementPhoto", b =>
                 {
-                    b.Property<int>("Id")
+                    b.Property<int>("AdvertisementPhotoId")
                         .ValueGeneratedOnAdd();
 
                     b.Property<int>("AdvertisementItemId");
@@ -167,7 +167,7 @@ namespace mobilesecondhand.Migrations
 
                     b.Property<string>("PhotoPath");
 
-                    b.HasKey("Id");
+                    b.HasKey("AdvertisementPhotoId");
 
                     b.HasIndex("AdvertisementItemId");
 
@@ -271,15 +271,63 @@ namespace mobilesecondhand.Migrations
                         .HasName("EmailIndex");
 
                     b.HasIndex("NormalizedUserName")
+                        .IsUnique()
                         .HasName("UserNameIndex");
 
                     b.ToTable("AspNetUsers");
                 });
 
+            modelBuilder.Entity("MobileSecondHand.DB.Models.Chat.ChatMessage", b =>
+                {
+                    b.Property<int>("ChatMessageId")
+                        .ValueGeneratedOnAdd();
+
+                    b.Property<string>("AuthorId");
+
+                    b.Property<string>("Content");
+
+                    b.Property<int>("ConversationId");
+
+                    b.Property<DateTime>("Date");
+
+                    b.HasKey("ChatMessageId");
+
+                    b.HasIndex("AuthorId");
+
+                    b.HasIndex("ConversationId");
+
+                    b.ToTable("ChatMessage");
+                });
+
+            modelBuilder.Entity("MobileSecondHand.DB.Models.Chat.Conversation", b =>
+                {
+                    b.Property<int>("ConversationId")
+                        .ValueGeneratedOnAdd();
+
+                    b.HasKey("ConversationId");
+
+                    b.ToTable("Conversation");
+                });
+
+            modelBuilder.Entity("MobileSecondHand.DB.Models.Chat.UserToConversation", b =>
+                {
+                    b.Property<string>("UserId");
+
+                    b.Property<int>("ConversationId");
+
+                    b.HasKey("UserId", "ConversationId");
+
+                    b.HasIndex("ConversationId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("UserToConversation");
+                });
+
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRoleClaim<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
-                        .WithMany()
+                        .WithMany("Claims")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -287,7 +335,7 @@ namespace mobilesecondhand.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserClaim<string>", b =>
                 {
                     b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser")
-                        .WithMany()
+                        .WithMany("Claims")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -295,7 +343,7 @@ namespace mobilesecondhand.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserLogin<string>", b =>
                 {
                     b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser")
-                        .WithMany()
+                        .WithMany("Logins")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
@@ -303,54 +351,79 @@ namespace mobilesecondhand.Migrations
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityUserRole<string>", b =>
                 {
                     b.HasOne("Microsoft.AspNetCore.Identity.EntityFrameworkCore.IdentityRole")
-                        .WithMany()
+                        .WithMany("Users")
                         .HasForeignKey("RoleId")
                         .OnDelete(DeleteBehavior.Cascade);
 
                     b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser")
-                        .WithMany()
+                        .WithMany("Roles")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem", b =>
                 {
-                    b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser")
-                        .WithMany()
+                    b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser", "User")
+                        .WithMany("AdvertisementItems")
                         .HasForeignKey("UserId");
                 });
 
             modelBuilder.Entity("MobileSecondHand.DB.Models.Advertisement.AdvertisementPhoto", b =>
                 {
-                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem")
-                        .WithMany()
+                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem", "AdvertisementItem")
+                        .WithMany("AdvertisementPhotos")
                         .HasForeignKey("AdvertisementItemId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MobileSecondHand.DB.Models.Advertisement.CategoryKeywordToAdvertisement", b =>
                 {
-                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem")
-                        .WithMany()
+                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem", "AdvertisementItem")
+                        .WithMany("CategoryKeywords")
                         .HasForeignKey("AdvertisementItemId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.Keywords.CategoryKeyword")
-                        .WithMany()
+                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.Keywords.CategoryKeyword", "CategoryKeyword")
+                        .WithMany("Advertisements")
                         .HasForeignKey("CategoryKeywordId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("MobileSecondHand.DB.Models.Advertisement.ColorKeywordToAdvertisement", b =>
                 {
-                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem")
-                        .WithMany()
+                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.AdvertisementItem", "AdvertisementItem")
+                        .WithMany("ColorKeywords")
                         .HasForeignKey("AdvertisementItemId")
                         .OnDelete(DeleteBehavior.Cascade);
 
-                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.Keywords.ColorKeyword")
-                        .WithMany()
+                    b.HasOne("MobileSecondHand.DB.Models.Advertisement.Keywords.ColorKeyword", "ColorKeyword")
+                        .WithMany("Advertisements")
                         .HasForeignKey("ColorKeywordId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MobileSecondHand.DB.Models.Chat.ChatMessage", b =>
+                {
+                    b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser", "Author")
+                        .WithMany("ChatMessages")
+                        .HasForeignKey("AuthorId");
+
+                    b.HasOne("MobileSecondHand.DB.Models.Chat.Conversation", "Conversation")
+                        .WithMany("Messages")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+                });
+
+            modelBuilder.Entity("MobileSecondHand.DB.Models.Chat.UserToConversation", b =>
+                {
+                    b.HasOne("MobileSecondHand.DB.Models.Chat.Conversation", "Conversation")
+                        .WithMany("Users")
+                        .HasForeignKey("ConversationId")
+                        .OnDelete(DeleteBehavior.Cascade);
+
+                    b.HasOne("MobileSecondHand.DB.Models.Authentication.ApplicationUser", "User")
+                        .WithMany("Conversations")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
         }
