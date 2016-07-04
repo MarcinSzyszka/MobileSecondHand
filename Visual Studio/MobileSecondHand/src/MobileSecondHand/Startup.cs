@@ -23,6 +23,7 @@ using MobileSecondHand.DB.Services.Configuration;
 using MobileSecondHand.Models;
 using MobileSecondHand.Services;
 using MobileSecondHand.Workarounds;
+using Newtonsoft.Json.Serialization;
 
 namespace MobileSecondHand {
 	public class Startup {
@@ -55,7 +56,10 @@ namespace MobileSecondHand {
 			services.AddDbContext<MobileSecondHandContext>(options =>
 				options.UseSqlServer(Configuration.GetConnectionString("DefaultConnection"), b => b.MigrationsAssembly("MobileSecondHand")));
 
-			services.AddMvc();
+			services.AddMvc().AddJsonOptions(o =>
+			{
+				o.SerializerSettings.ContractResolver = new DefaultContractResolver();
+			});
 
 			services.AddAuthorization(auth => {
 				auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
@@ -75,7 +79,7 @@ namespace MobileSecondHand {
 				config.AddPolicy("myPolicy", policy);
 			});
 
-			services.AddSingleton<IAssemblyLocator, HubCouldNotBeResolvedWorkaround>();
+			//services.AddSingleton<IAssemblyLocator, HubCouldNotBeResolvedWorkaround>();
 			services.AddSignalR();
 
 
