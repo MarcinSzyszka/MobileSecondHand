@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading;
@@ -22,7 +23,11 @@ namespace MobileSecondHand.App.Chat
 	{
 		private SharedPreferencesHelper sharedPreferencesHelper;
 		ChatHubClientService chatHubClientService;
-		bool serviceIsRunnig;
+		private string bearerToken;
+		private Thread signalRThread;
+		private string lastHeader;
+
+		public static bool ServiceIsRunning { get; private set; }
 
 		public override IBinder OnBind(Intent intent)
 		{
@@ -30,42 +35,64 @@ namespace MobileSecondHand.App.Chat
 			return null;
 		}
 
+		public override void OnDestroy()
+		{
+			ServiceIsRunning = false;
+			base.OnDestroy();
+		}
+
 		[return: GeneratedEnum]
 		public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
 		{
-			if (!serviceIsRunnig)
-			{
-				serviceIsRunnig = true;
-				this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
-				var bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
-				DoWork();
-			}
+			ServiceIsRunning = true;
+			
+			DoWork();
 
 			return StartCommandResult.Sticky;
 		}
 
 		private void DoWork()
 		{
-			var t = new Thread(() =>
+			this.signalRThread = new Thread(() =>
 			{
+				this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
+				this.bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
 				this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
+
+				var timer = new Timer(new TimerCallback(TimerCallBackMethod));
+				timer.Change(0, 5000);
 			}
 		);
-			t.Start();
+			signalRThread.Start();
+		}
+
+		private void TimerCallBackMethod(object state)
+		{
+			if (!this.chatHubClientService.IsConnected())
+			{
+				this.chatHubClientService.Reconnect();
+
+			}
 		}
 
 		private void ShowNotification(string messageContent, string messageHeader, string conversationId, string senderId)
 		{
-			if (!ConversationActivity.IsInForeground)
+			if (lastHeader == messageHeader)
+			{
+				return;
+			}
+			if (!ConversationActivity.ConversationActivityStateModel.IsInForeground || ConversationActivity.ConversationActivityStateModel.ConversationId != int.Parse(conversationId))
 			{
 				var nMgr = (NotificationManager)GetSystemService(NotificationService);
 				var notification = new Notification(Resource.Drawable.Icon, messageContent);
 				notification.Flags = NotificationFlags.AutoCancel;
 				notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 				var intent = new Intent(this, typeof(ConversationActivity));
+				intent.PutExtra(ExtrasKeys.CONVERSATION_ID, int.Parse(conversationId));
+				intent.PutExtra(ExtrasKeys.ADDRESSEE_ID, senderId);
 				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, 0);
-				notification.SetLatestEventInfo(this, "Mobile Second Hand", messageContent, pendingIntent);
+				notification.SetLatestEventInfo(this, "Nowa wiadomoœæ", messageContent, pendingIntent);
 				nMgr.Notify(0, notification);
 			}
 			else
@@ -77,6 +104,7 @@ namespace MobileSecondHand.App.Chat
 				ConversationActivity.ActivityInstance.AddMessage(message);
 			}
 
+			lastHeader = messageHeader;
 		}
 	}
 }

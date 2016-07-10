@@ -36,7 +36,7 @@ namespace MobileSecondHand.App
 		string addresseeId;
 		private string bearerToken;
 
-		public static bool IsInForeground { get; private set; }
+		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
 
 		public ConversationActivity()
@@ -83,19 +83,24 @@ namespace MobileSecondHand.App
 		protected override void OnStart()
 		{
 			base.OnStart();
-			IsInForeground = true;
+			ConversationActivity.ConversationActivityStateModel = GetStateModel(true);
 		}
 
 		protected override void OnStop()
 		{
 			base.OnStop();
-			IsInForeground = false;
+			ConversationActivity.ConversationActivityStateModel = GetStateModel(false);
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)
 		{
 			base.OnSaveInstanceState(outState);
 			SharedObject.Data = this.conversationMessagesListAdapter.Messages;
+		}
+
+		private ConversationActivityStateModel GetStateModel(bool isInForeground)
+		{
+			return new ConversationActivityStateModel(isInForeground, this.conversationId);
 		}
 
 		private void GetExtras()
@@ -153,15 +158,24 @@ namespace MobileSecondHand.App
 		{
 			if (editTextMessage.Text != null & editTextMessage.Text != string.Empty)
 			{
-				var date = DateTime.Now;
-				var message = new ConversationMessage();
-				message.MessageContent = editTextMessage.Text;
-				message.UserWasSender = true;
-				message.ConversationId = this.conversationId;
-				message.MessageHeader = String.Format("ja, {0} {1}", date.GetDateDottedStringFormat(), date.GetTimeColonStringFormat());
-				this.conversationMessagesListAdapter.AddReceivedMessage(message);
-				chatHubClientService.SendMessage(editTextMessage.Text, this.addresseeId.ToString(), this.conversationId);
-				editTextMessage.Text = string.Empty;
+				if (chatHubClientService.IsConnected())
+				{
+					var date = DateTime.Now;
+					var message = new ConversationMessage();
+					message.MessageContent = editTextMessage.Text;
+					message.UserWasSender = true;
+					message.ConversationId = this.conversationId;
+					message.MessageHeader = String.Format("ja, {0} {1}", date.GetDateDottedStringFormat(), date.GetTimeColonStringFormat());
+
+					this.conversationMessagesListAdapter.AddReceivedMessage(message);
+					chatHubClientService.SendMessage(editTextMessage.Text, this.addresseeId.ToString(), this.conversationId);
+
+					editTextMessage.Text = string.Empty;
+				}
+				else
+				{
+					AlertsService.ShowToast(this, "Nie mogê po³¹czyæ siê z serwerem. Upewnij siê czy masz dostêp do internetu;");
+				}
 			}
 		}
 
@@ -175,7 +189,7 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
-				this.conversationMessagesListAdapter.Messages = new List<ConversationMessage>();
+				//this.conversationMessagesListAdapter.Messages = new List<ConversationMessage>();
 				this.conversationMessagesListAdapter.InfiniteScrollDisabled = true;
 			}
 

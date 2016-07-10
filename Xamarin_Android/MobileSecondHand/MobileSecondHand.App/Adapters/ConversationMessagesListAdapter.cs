@@ -22,7 +22,7 @@ namespace MobileSecondHand.App.Adapters {
 		private IInfiniteScrollListener infiniteScrollListener;
 		public override int ItemCount { get { return this.Messages.Count; } }
 		public bool InfiniteScrollDisabled { get; set; }
-		public List<ConversationMessage> Messages { get; set; }
+		public List<ConversationMessage> Messages { get; set; } = new List<ConversationMessage>();
 		public event EventHandler NewMessageAdded;
 		public ConversationMessagesListAdapter(IInfiniteScrollListener infiniteScrollListener) {
 			this.infiniteScrollListener = infiniteScrollListener;

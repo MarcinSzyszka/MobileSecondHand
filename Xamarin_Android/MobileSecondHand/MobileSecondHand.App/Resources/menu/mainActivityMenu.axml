@@ -4,7 +4,7 @@
       xmlns:tools="http://schemas.android.com/tools">
 	<item
         android:id="@+id/refreshAdvertisementsOption"
-        android:showAsAction="always"
+        android:showAsAction="ifRoom"
         android:title="Odśwież"
         android:icon="@drawable/perm_group_sync_settings" />
 	<item

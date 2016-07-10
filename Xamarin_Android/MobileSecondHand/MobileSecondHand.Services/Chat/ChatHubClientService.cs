@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 using MobileSecondHand.Models.Consts;
@@ -31,6 +32,10 @@ namespace MobileSecondHand.Services.Chat {
 			return serviceInstance;
 		}
 
+		public bool IsConnected()
+		{
+			return hubConnection.State == ConnectionState.Connected;
+		}
 
 		public void SendMessage(string messageContent, string addresseeId, int conversationId) {
 			SendMessage(chatHubProxy, proxy => proxy.Invoke("SendMessage", messageContent, addresseeId, conversationId.ToString()));
@@ -46,6 +51,21 @@ namespace MobileSecondHand.Services.Chat {
 
 		private void SendMessage(IHubProxy hubProxy, Action<IHubProxy> invoke) {
 			invoke(hubProxy);
+		}
+
+		public static ChatHubClientService RecreateServiceInstance(string bearerToken)
+		{
+			
+			serviceInstance = new ChatHubClientService(bearerToken);
+
+			return serviceInstance;
+		}
+
+		public void Reconnect()
+		{
+				Connect(hubConnection, async h => {
+				await h.Start();
+			});
 		}
 	}
 }

@@ -2,7 +2,7 @@
 <resources>
 	<style name="AppTheme" parent="AppTheme.Base">
 	</style>
-	<style name="AppTheme.Base" parent="Theme.AppCompat.Light.DarkActionBar">
+	<style name="AppTheme.Base" parent="Theme.AppCompat.Light">
 		<item name="windowNoTitle">true</item>
 		<!--We will be using the toolbar so no need to show ActionBar-->
 		<item name="windowActionBar">false</item>
@@ -12,8 +12,8 @@
 		<!-- colorPrimaryDark is used for the status bar -->
 		<item name="colorPrimaryDark">#0288D1</item>
 		<!--<item name="android:colorPrimaryLight">#B3E5FC</item>-->
-		<item name="android:textColorPrimary">#212121</item>
-		<item name="android:textColorSecondary">#727272</item>
+		<!--<item name="android:textColorPrimary">#212121</item>
+		<item name="android:textColorSecondary">#727272</item>-->
 		<!--<item name="android:colorIcons">#FFFFFF</item>
 		<item name="android:colorDivider">#B6B6B6</item>-->
 		<!-- colorAccent is used as the default value for colorControlActivated

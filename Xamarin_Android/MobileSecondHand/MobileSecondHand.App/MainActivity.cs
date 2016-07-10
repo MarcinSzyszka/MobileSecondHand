@@ -7,6 +7,8 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.Design.Widget;
+using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -38,6 +40,7 @@ namespace MobileSecondHand.App
 		SharedPreferencesHelper sharedPreferencesHelper;
 		int advertisementsPage;
 		private ProgressDialogHelper progress;
+		private DrawerLayout drawerLayout;
 
 		public MainActivity()
 		{
@@ -51,10 +54,23 @@ namespace MobileSecondHand.App
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
 			SetContentView(Resource.Layout.MainActivity);
+
+
+
+
 			SetupToolbar();
 			advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
 			await SetupViews(savedInstanceState != null);
-			RegisterInHub();
+		}
+
+		protected override void OnStart()
+		{
+			base.OnStart();
+			if (!MessengerService.ServiceIsRunning)
+			{
+				StartService(new Intent(this, typeof(MessengerService)));
+			}
+
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)
@@ -93,19 +109,59 @@ namespace MobileSecondHand.App
 			await DownloadAndShowAdvertisements(false);
 		}
 
-		private void RegisterInHub()
-		{
-			StartService(new Intent(this, typeof(MessengerService)));
-		}
 
 		private void SetupToolbar()
 		{
-			var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
+			// Init toolbar
+			var toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
 			SetSupportActionBar(toolbar);
-			SupportActionBar.Title = "Lista og³oszeñ";
+			//SupportActionBar.SetTitle(Resource.String.app);
+			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+			SupportActionBar.SetDisplayShowHomeEnabled(true);
+
+			// Attach item selected handler to navigation view
+			var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+			navigationView.NavigationItemSelected += NavigationView_NavigationItemSelected;
+
+			// Create ActionBarDrawerToggle button and add it to the toolbar
+			var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
+			drawerLayout.SetDrawerListener(drawerToggle);
+			drawerToggle.SyncState();
+
+			//load default home screen
+			//var ft = FragmentManager.BeginTransaction();
+			//ft.AddToBackStack(null);
+			//ft.Add(Resource.Id.HomeFrameLayout, new HomeFragment());
+			//ft.Commit();
+
+
+
+			//var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
+			//SetSupportActionBar(toolbar);
+			//SupportActionBar.Title = "Lista og³oszeñ";
 			//SetActionBar(toolbar);
 			//ActionBar.Title = "Lista og³oszeñ";
+		}
+
+		private void NavigationView_NavigationItemSelected(object sender, NavigationView.NavigationItemSelectedEventArgs e)
+		{
+
+			switch (e.MenuItem.ItemId)
+			{
+				case (Resource.Id.nav_home):
+					Toast.MakeText(this, "Home selected!", ToastLength.Short).Show();
+					break;
+				case (Resource.Id.navmessages):
+					Toast.MakeText(this, "Message selected!", ToastLength.Short).Show();
+					break;
+				case (Resource.Id.navfriends):
+					// React on 'Friends' selection
+					break;
+			}
+			// Close drawer
+			drawerLayout.CloseDrawers();
 		}
 
 		private async void RefreshAdvertisementList()
@@ -204,7 +260,8 @@ namespace MobileSecondHand.App
 
 		private void SetupFab()
 		{
-			var fab = FindViewById<FloatingActionButton>(Resource.Id.fab);
+			var fab = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fab);
+			fab.BringToFront();
 			fab.Click += Fab_Click;
 		}
 
