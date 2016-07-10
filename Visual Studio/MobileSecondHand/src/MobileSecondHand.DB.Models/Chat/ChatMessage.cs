@@ -11,6 +11,7 @@ namespace MobileSecondHand.DB.Models.Chat {
 		public int ChatMessageId { get; set; }
 		public DateTime Date { get; set; }
 		public string Content { get; set; }
+		public bool Received { get; set; }
 
 		public string AuthorId { get; set; }
 		[ForeignKey("AuthorId")]

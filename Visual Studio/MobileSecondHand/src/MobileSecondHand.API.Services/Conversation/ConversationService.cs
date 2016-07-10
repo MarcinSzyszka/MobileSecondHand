@@ -18,26 +18,26 @@ namespace MobileSecondHand.API.Services.Conversation
 			this.conversationDbService = conversationDbService;
 		}
 
-		public List<ChatMessageViewModel> GetMessages(string userId, int conversationId, int pageNumber)
+		public List<ChatMessageReadModel> GetMessages(string userId, int conversationId, int pageNumber)
 		{
-			var messagesViewModelList = new List<ChatMessageViewModel>();
+			var messagesViewModelList = new List<ChatMessageReadModel>();
 			List<ChatMessage> messagesDbList = this.conversationDbService.GetMessagesInConversation(conversationId, pageNumber);
 
 			foreach (var message in messagesDbList)
 			{
-				var messageViewModel = new ChatMessageViewModel();
-				messageViewModel.Id = message.ChatMessageId;
-				messageViewModel.ConversationId = message.ConversationId;
-				messageViewModel.MessageHeader = GetMessageHeader(userId, message);
-				messageViewModel.MessageContent = message.Content;
-				messageViewModel.UserWasSender = userId == message.AuthorId;
-
-				messagesViewModelList.Add(messageViewModel);
+				messagesViewModelList.Add(MapChatMessageToReadModel(userId, message));
 			}
 
 			return messagesViewModelList;
 		}
 
+
+		/// <summary>
+		/// Returns conversation Id in db or create new if doesn't exist;
+		/// </summary>
+		/// <param name="userId">Id of user who is message sender</param>
+		/// <param name="addresseeId">Id of user who will be message addressee</param>
+		/// <returns>Id of conversation record in db</returns>
 		public int GetConversationId(string userId, string addresseeId)
 		{
 			if (userId == addresseeId)
@@ -53,6 +53,36 @@ namespace MobileSecondHand.API.Services.Conversation
 			}
 
 			return conversation.ConversationId;
+		}
+
+		/// <summary>
+		/// Saves message in db and returns message read model
+		/// </summary>
+		/// <param name="chatMessageSaveModel">Model with message parameters</param>
+		/// <returns>Message read model</returns>
+		public ChatMessageReadModel AddMessageToConversation(ChatMessageSaveModel chatMessageSaveModel)
+		{
+			var messageDbModel = new ChatMessage();
+			messageDbModel.AuthorId = chatMessageSaveModel.SenderId;
+			messageDbModel.Content = chatMessageSaveModel.Content;
+			messageDbModel.ConversationId = chatMessageSaveModel.ConversationId;
+			messageDbModel.Date = DateTime.Now;
+			messageDbModel.Received = chatMessageSaveModel.AddresseeCanReceiveMessage;
+
+			messageDbModel = this.conversationDbService.SaveMessage(messageDbModel);
+
+			return MapChatMessageToReadModel(chatMessageSaveModel.AddresseeId, messageDbModel);
+		}
+
+		private ChatMessageReadModel MapChatMessageToReadModel(string userId, ChatMessage message)
+		{
+			var messageViewModel = new ChatMessageReadModel();
+			messageViewModel.Id = message.ChatMessageId;
+			messageViewModel.ConversationId = message.ConversationId;
+			messageViewModel.MessageHeader = GetMessageHeader(userId, message);
+			messageViewModel.MessageContent = message.Content;
+			messageViewModel.UserWasSender = userId == message.AuthorId;
+			return messageViewModel;
 		}
 
 		private string GetMessageHeader(string userId, ChatMessage message)

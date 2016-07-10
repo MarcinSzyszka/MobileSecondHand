@@ -15,7 +15,6 @@ namespace MobileSecondHand.DB.Services.Tests.Fixtures
 		public MobileSecondHandContextForTestsFixture()
 		{
 			MobileSecondHandContextOptions = new MobileSecondHandContextOptions(new ConnectionStringConfig() { ConnectionString = "Server=.\\SQLEXPRESS;Database=MobileSecondHandNew_TESTS;Integrated Security=SSPI;Trusted_Connection=True;MultipleActiveResultSets=true" });
-			
 			DbContext = new MobileSecondHandContext(MobileSecondHandContextOptions.DbContextOptions);
 			DbContext.Database.EnsureCreated();
 		}

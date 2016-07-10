@@ -1,51 +1,73 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Runtime.Caching;
 using MobileSecondHand.API.Models.Chat;
 
-namespace MobileSecondHand.API.Services.CacheServices {
-	public class ChatHubCacheService : IChatHubCacheService {
+namespace MobileSecondHand.API.Services.CacheServices
+{
+	public class ChatHubCacheService : IChatHubCacheService
+	{
 		MemoryCache cache;
 		const string CONNECTED_USERS = "CONNECTED_USERS";
-		public ChatHubCacheService() {
+		public ChatHubCacheService()
+		{
 			this.cache = MemoryCache.Default;
 		}
 
-		public void AddConnectedClient(UserConnection userConnection) {
+		public void AddConnectedClient(UserConnection userConnection)
+		{
 			var connectedUsers = GetConnectedUsers();
-			if (connectedUsers == null) {
+			if (connectedUsers == null)
+			{
 				var newConnectedUsersList = new List<UserConnection> { userConnection };
 				this.cache.Set(CONNECTED_USERS, newConnectedUsersList, ObjectCache.InfiniteAbsoluteExpiration);
 			}
-			else {
+			else
+			{
 				connectedUsers.Add(userConnection);
-				this.cache.Set(CONNECTED_USERS, connectedUsers, ObjectCache.InfiniteAbsoluteExpiration);
+
 			}
 		}
 
-		public void RemoveDisconnectedClient(string connectionId) {
+		public void RemoveDisconnectedClient(string connectionId)
+		{
 			var connectedUsers = GetConnectedUsers();
-			if (connectedUsers != null) {
+			if (connectedUsers != null)
+			{
 				var disconnectedUser = connectedUsers.FirstOrDefault(u => u.ConnectionId == connectionId);
-				if (disconnectedUser != null) {
+				if (disconnectedUser != null)
+				{
+
+					using (var sw = new StreamWriter(@"C:\Users\marcianno\Desktop\logs.txt", true))
+					{
+
+						if (disconnectedUser.UserId == "ef15eb21-d31a-4325-bedb-cc8173a98073")
+						{
+							sw.WriteLine("Htc się rozłączył: " + connectionId);
+						}
+						else
+						{
+							sw.WriteLine("Samsung się rozłączył: " + connectionId);
+						}
+
+						sw.WriteLine();
+					}
+
+
 					connectedUsers.Remove(disconnectedUser);
-					this.cache.Set(CONNECTED_USERS, connectedUsers, ObjectCache.InfiniteAbsoluteExpiration);
 				}
 			}
 		}
 
-		public string GetUserConnectionId(string addresseeId)
+		public List<string> GetUserConnectionIds(string addresseeId)
 		{
 			var users = GetConnectedUsers();
 
-			var userConnection = users.FirstOrDefault(c => c.UserId == addresseeId);
-			if (userConnection != null)
-			{
-				return userConnection.ConnectionId;
-			}
+			var userConnections = users.Where(c => c.UserId == addresseeId).Select(c => c.ConnectionId).ToList();
 
-			return string.Empty;
+			return userConnections;
 		}
 
 		public bool IsUserConnected(string userId)
@@ -55,8 +77,9 @@ namespace MobileSecondHand.API.Services.CacheServices {
 			return userConnection != null;
 		}
 
-		private List<UserConnection> GetConnectedUsers() {
+		private List<UserConnection> GetConnectedUsers()
+		{
 			return (List<UserConnection>)this.cache.Get(CONNECTED_USERS);
-		}		
+		}
 	}
 }

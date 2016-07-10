@@ -14,6 +14,30 @@ namespace MobileSecondHand.DB.Services.Tests.Conversations
 	[Collection("MobileSecondHandContextForTestsCollection")]
 	public class ConversationsDbServiceTests
 	{
+
+
+		[Fact]
+		public void SaveMessage_CorrectSaveEntityAndReturnIt_WithNavigationProperty_Author()
+		{
+			//Arrange
+			var firstUser = new ApplicationUser { UserName = "First User" };
+			var conversation = new Conversation();
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = firstUser });
+			this.fixture.DbContext.Conversation.Add(conversation);
+			this.fixture.DbContext.SaveChanges();
+			var chatMessageToSave = new ChatMessage { AuthorId = firstUser.Id, ConversationId = conversation.ConversationId, Received = true };
+
+			//Act
+			var savedChatMessage = serviceUnderTest.SaveMessage(chatMessageToSave);
+
+			//Assert
+			Assert.NotNull(savedChatMessage);
+			Assert.NotNull(savedChatMessage.Author);
+			Assert.Equal(firstUser.UserName, savedChatMessage.Author.UserName);
+			Assert.True(savedChatMessage.AuthorId == firstUser.Id);
+			Assert.True(savedChatMessage.Received);
+		}
+
 		[Fact]
 		public void CreateConversation_ConversationIsCreatingAndReturningWithRelatedUsersProperty()
 		{

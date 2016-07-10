@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.API.Models.Chat
 {
-	public class ChatMessageViewModel
+	public class ChatMessageReadModel
 	{
 		public int Id { get; set; }
 		/// <summary>

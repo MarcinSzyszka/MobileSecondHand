@@ -101,7 +101,7 @@ namespace MobileSecondHand.API.Services.Authentication {
 			tokenDescriptor.Audience = tokenAuthorizationOptions.Audience;
 			tokenDescriptor.SigningCredentials = tokenAuthorizationOptions.SigningCredentials;
 			tokenDescriptor.Subject = identity;
-			tokenDescriptor.Expires = DateTime.Now.AddHours(24);
+			tokenDescriptor.Expires = DateTime.Now.AddDays(24);
 
 			return tokenDescriptor;
 		}

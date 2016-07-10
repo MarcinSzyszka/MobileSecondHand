@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using MobileSecondHand.API.Models.Chat;
 using MobileSecondHand.API.Services.Conversation;
 using MobileSecondHand.DB.Models.Authentication;
 using MobileSecondHand.DB.Models.Chat;
@@ -11,6 +12,40 @@ namespace MobileSecondHand.API.Services.Tests.Chat
 {
 	public class ConversationServiceTests
 	{
+
+		[Fact]
+		public void AddMessageToConversation_ReturnCorrectMappedReadModel_WhereUserWhoAreGoingToReceiveThisMessage_WasNotSender()
+		{
+			//Arrange
+			var saveModel = new ChatMessageSaveModel
+			{
+				AddresseeId = "addresseeTestId",
+				AddresseeCanReceiveMessage = true,
+				SenderId = "senderTestId",
+				Content = "test content",
+			};
+
+			var date = new DateTime(2016, 07, 06);
+			var savedMessageDbModel = new ChatMessage
+			{
+				Author = new ApplicationUser { Id = saveModel.SenderId, UserName = saveModel.SenderId },
+				Date = date,
+				Content = saveModel.Content
+			};
+
+			this.conversationDbService.Setup(s => s.SaveMessage(It.IsAny<ChatMessage>())).Returns(savedMessageDbModel);
+
+			//Act
+			var messageReadModel = this.serviceUnderTest.AddMessageToConversation(saveModel);
+
+			//Assert
+			Assert.NotNull(messageReadModel);
+			Assert.False(messageReadModel.UserWasSender);
+			Assert.NotEmpty(messageReadModel.MessageContent);
+			Assert.NotEmpty(messageReadModel.MessageHeader);
+		}
+
+
 		[Fact]
 		public void GetMessages_ShouldReturnListWithOneMessage_WithAllProperties_UserWasSender()
 		{

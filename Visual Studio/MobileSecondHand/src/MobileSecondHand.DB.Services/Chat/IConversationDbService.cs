@@ -11,5 +11,6 @@ namespace MobileSecondHand.DB.Services.Chat {
 		List<ChatMessage> GetMessagesInConversation(int conversationId, int pageNumber);
 		Conversation GetConversationByUsers(string userId, string addresseeId);
 		Conversation CreateConversation(string userId, string addresseeId);
+		ChatMessage SaveMessage(ChatMessage messageDbModel);
 	}
 }

@@ -47,5 +47,21 @@ namespace MobileSecondHand.DB.Services.Chat
 
 			return messagesQuery.ToList();
 		}
+
+		public ChatMessage SaveMessage(ChatMessage messageDbModel)
+		{
+			if (messageDbModel.ChatMessageId > 0)
+			{
+				this.dbContext.Entry(messageDbModel).State = EntityState.Modified;
+			}
+			else
+			{
+				this.dbContext.Add(messageDbModel);
+			}
+
+			this.dbContext.SaveChanges();
+
+			return this.dbContext.ChatMessage.Include(m => m.Author).FirstOrDefault(m => m.ChatMessageId == messageDbModel.ChatMessageId);
+		}
 	}
 }
