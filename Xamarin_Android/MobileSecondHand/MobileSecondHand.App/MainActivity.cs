@@ -83,6 +83,12 @@ namespace MobileSecondHand.App
 		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
 			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
+			if (menu != null)
+			{
+				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(true);
+				menu.FindItem(Resource.Id.chat).SetVisible(true);
+			}
+
 			return base.OnCreateOptionsMenu(menu);
 		}
 
@@ -95,7 +101,7 @@ namespace MobileSecondHand.App
 					this.RefreshAdvertisementList();
 					handled = true;
 					break;
-				case Resource.Id.appSettingOptions:
+				case Resource.Id.chat:
 					handled = true;
 					break;
 

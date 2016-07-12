@@ -80,6 +80,7 @@ namespace MobileSecondHand.App.Chat
 		{
 			if (lastHeader == messageHeader)
 			{
+				//kilka po³aczeñ z hubem a header jest unikalny dla wiadomoœci
 				return;
 			}
 			if (!ConversationActivity.ConversationActivityStateModel.IsInForeground || ConversationActivity.ConversationActivityStateModel.ConversationId != int.Parse(conversationId))

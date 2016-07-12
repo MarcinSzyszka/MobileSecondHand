@@ -17,7 +17,7 @@ using MobileSecondHand.Services.Location;
 
 namespace MobileSecondHand.App
 {
-	[Activity(MainLauncher = true, Icon = "@drawable/icon")]
+	[Activity(MainLauncher = true, Icon = "@drawable/Icon")]
 	public class StartActivity : Activity, ISettingWindowCloseListener
 	{
 		ISignInService signInService;
