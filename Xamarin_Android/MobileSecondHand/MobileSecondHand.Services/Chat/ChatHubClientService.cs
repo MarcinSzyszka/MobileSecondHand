@@ -8,7 +8,7 @@ using Microsoft.AspNet.SignalR.Client;
 using MobileSecondHand.Models.Consts;
 
 namespace MobileSecondHand.Services.Chat {
-	public class ChatHubClientService {
+	public class ChatHubClientService : IDisposable {
 		IHubProxy chatHubProxy;
 		HubConnection hubConnection;
 		static ChatHubClientService serviceInstance;
@@ -66,6 +66,11 @@ namespace MobileSecondHand.Services.Chat {
 				Connect(hubConnection, async h => {
 				await h.Start();
 			});
+		}
+
+		public void Dispose()
+		{
+			hubConnection.Dispose();
 		}
 	}
 }

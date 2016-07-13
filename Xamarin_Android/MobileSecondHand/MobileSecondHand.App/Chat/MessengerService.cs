@@ -35,8 +35,15 @@ namespace MobileSecondHand.App.Chat
 			return null;
 		}
 
+		public override bool StopService(Intent name)
+		{
+			ServiceIsRunning = false;
+			return base.StopService(name);
+		}
+
 		public override void OnDestroy()
 		{
+			this.chatHubClientService.Dispose();
 			ServiceIsRunning = false;
 			base.OnDestroy();
 		}
