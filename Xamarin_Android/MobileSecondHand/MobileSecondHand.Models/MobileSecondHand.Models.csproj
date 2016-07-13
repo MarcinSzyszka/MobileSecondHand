@@ -51,6 +51,7 @@
     <Compile Include="Security\LoginModel.cs" />
     <Compile Include="Security\RegisterModel.cs" />
     <Compile Include="Security\TokenModel.cs" />
+    <Compile Include="Settings\AppSettingsModel.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
