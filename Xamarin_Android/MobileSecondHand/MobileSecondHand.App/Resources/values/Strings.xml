@@ -15,4 +15,16 @@
 	<string name="distanceDetailsInfo">Odległość: </string>
 	<string name="open_drawer">bbb </string>
 	<string name="close_drawer">aaa</string>
+
+	<string-array name="notifications_radius">
+		<item>1 km</item>
+		<item>2 km</item>
+		<item>5 km</item>
+		<item>10 km</item>
+		<item>20 km</item>
+		<item>30 km</item>
+		<item>50 km</item>
+		<item>100 km</item>
+		<item>bez ograniczeń</item>
+	</string-array>
 </resources>

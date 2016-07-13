@@ -32,15 +32,30 @@ namespace MobileSecondHand.App.Infrastructure
 			AlertDialog.Builder alert = new AlertDialog.Builder(context);
 			alert.SetTitle("PotwierdŸ");
 			alert.SetMessage(message);
-			alert.SetPositiveButton("Tak", (sender, args) => {
+			alert.SetPositiveButton("Tak", (sender, args) =>
+			{
 				actionOnConfirm();
 				alert.Dispose();
 			});
-			alert.SetNegativeButton("Nie", (sender, args) => {
+			alert.SetNegativeButton("Nie", (sender, args) =>
+			{
 				actionOnCancel();
 				alert.Dispose();
 			});
 			alert.Show();
+		}
+
+		public static void ShowSingleSelectListString(Context context, string[] items, Action<string> actionOnSelect)
+		{
+			var alertDialog = default(AlertDialog);
+			AlertDialog.Builder buider = new AlertDialog.Builder(context);
+			buider.SetTitle("Wybierz element");
+			buider.SetSingleChoiceItems(items, -1, (sender, args) => {
+				actionOnSelect(items[args.Which]);
+				alertDialog.Dismiss();
+			});
+			alertDialog = buider.Create();
+			alertDialog.Show();
 		}
 	}
 }

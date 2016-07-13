@@ -112,6 +112,19 @@ namespace MobileSecondHand.App
 			return handled;
 		}
 
+		public override void OnBackPressed()
+		{
+			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
+			{
+				drawerLayout.CloseDrawers();
+			}
+			else
+			{
+				base.OnBackPressed();
+			}
+
+		}
+
 		public async void OnInfiniteScroll()
 		{
 			await DownloadAndShowAdvertisements(false);
@@ -122,7 +135,6 @@ namespace MobileSecondHand.App
 		{
 			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
-			// Init toolbar
 			var toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
 			SetSupportActionBar(toolbar);
 			//SupportActionBar.SetTitle(Resource.String.app);
@@ -134,147 +146,25 @@ namespace MobileSecondHand.App
 			drawerLayout.SetDrawerListener(drawerToggle);
 			drawerToggle.SyncState();
 			drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
-
-			//load default home screen
-			//var ft = FragmentManager.BeginTransaction();
-			//ft.AddToBackStack(null);
-			//ft.Add(Resource.Id.HomeFrameLayout, new HomeFragment());
-			//ft.Commit();
-
-
-
-			//var toolbar = FindViewById<Toolbar>(Resource.Id.toolbar);
-			//SetSupportActionBar(toolbar);
-			//SupportActionBar.Title = "Lista og³oszeñ";
-			//SetActionBar(toolbar);
-			//ActionBar.Title = "Lista og³oszeñ";
+			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
+			{
+				SetupSideMenu();
+			}
 		}
 
 		private void DrawerLayout_DrawerOpened(object sender, DrawerLayout.DrawerOpenedEventArgs e)
 		{
-			AppSettingsModel settingsModel = GetAppSettings();
+			SetupSideMenu();
+		}
+
+		private void SetupSideMenu()
+		{
 			if (navigationViewMenu == null)
 			{
-				navigationViewMenu = new NavigationViewMenu(this);
+				navigationViewMenu = new NavigationViewMenu(this, this.sharedPreferencesHelper);
 			}
 
-			navigationViewMenu.SetupMenu(settingsModel);
-		}
-
-		private void SetHomeLocationSettings(AppSettingsModel settingsModel)
-		{
-			//this.textViewHomeLocalization.Text = settingsModel.LocationSettings.Latitude > 0 ? String.Format("Lat {0}, Lon {1}", settingsModel.LocationSettings.Latitude, settingsModel.LocationSettings.Longitude) : "nieustawiona";
-		}
-
-		private void SetKeywordsSettings(AppSettingsModel settingsModel)
-		{
-			//if (settingsModel.Keywords.Count > 0)
-			//{
-			//	var sb = new StringBuilder("");
-			//	foreach (var keyword in settingsModel.Keywords)
-			//	{
-			//		sb.Append(keyword.Value);
-			//		sb.Append("\r\n");
-			//	}
-			//	//this.textViewKeywords.Text = sb.ToString();
-			//}
-			//else
-			//{
-			//	this.textViewKeywords.Text = "Wszystkie";
-			//}
-
-			//this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance > 0 ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
-		}
-
-		private AppSettingsModel GetAppSettings()
-		{
-			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
-			if (settingsModel == null)
-			{
-				settingsModel = new AppSettingsModel();
-				this.sharedPreferencesHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, settingsModel);
-			}
-
-			return settingsModel;
-		}
-
-		private void SetNotificationsSettings()
-		{
-			//if (NewsService.ServiceIsRunnig)
-			//{
-			//	this.textViewNotificationsState.Text = "w³¹czone";
-			//	this.imgBtnNotificationsStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.kasowanie_setting));
-			//}
-			//else
-			//{
-			//	this.textViewNotificationsState.Text = "wy³¹czone";
-			//	this.imgBtnNotificationsStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.enable_setting));
-			//}
-		}
-
-		private void SetChatSettings()
-		{
-			//if (MessengerService.ServiceIsRunning)
-			//{
-			//	this.textViewChatState.Text = "w³¹czony";
-			//	this.imgBtnChatStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.kasowanie_setting));
-			//}
-			//else
-			//{
-			//	this.textViewChatState.Text = "wy³¹czony";
-			//	this.imgBtnChatStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.enable_setting));
-			//}
-
-			//this.imgBtnChatStartStop.Click += (sender, args) =>
-			//{
-			//	AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz wy³¹czyæ czat?", () =>
-			//	{
-			//		StopService(new Intent(this, typeof(MessengerService)));
-			//		SetChatSettings();
-			//	});
-			//};
-		}
-
-		private void SetupNavigationView()
-		{
-			var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-			navigationView.NavigationItemSelected += NavigationView_NavigationItemSelected;
-
-			//if (textViewUserName != null)
-			//{
-			//	return;
-			//}
-			//this.textViewUserName = FindViewById<TextView>(Resource.Id.textViewUserName);
-			//this.textViewNotificationsState = FindViewById<TextView>(Resource.Id.textViewNotificationsState);
-			//this.textViewChatState = FindViewById<TextView>(Resource.Id.textViewChatState);
-			//this.textViewNotificationsRadius = FindViewById<TextView>(Resource.Id.textViewNotificationsRadius);
-			//this.textViewKeywords = FindViewById<TextView>(Resource.Id.textViewKeywords);
-			//this.textViewHomeLocalization = FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
-			//this.imgBtnConversations = FindViewById<ImageButton>(Resource.Id.imgBtnConversations);
-			//this.imgBtnChatStartStop = FindViewById<ImageButton>(Resource.Id.imgBtnChatStartStop);
-			//this.imgBtnNotificationsStartStop = FindViewById<ImageButton>(Resource.Id.imgBtnNotificationsStartStop);
-			//this.imgBtnRadius = FindViewById<ImageButton>(Resource.Id.imgBtnRadius);
-			//this.imgBtnKeywords = FindViewById<ImageButton>(Resource.Id.imgBtnKeywords);
-			//this.imgBtnHomeLocalization = FindViewById<ImageButton>(Resource.Id.imgBtnHomeLocalization);
-		}
-
-		private void NavigationView_NavigationItemSelected(object sender, NavigationView.NavigationItemSelectedEventArgs e)
-		{
-
-			switch (e.MenuItem.ItemId)
-			{
-				case (Resource.Id.nav_home):
-					Toast.MakeText(this, "Home selected!", ToastLength.Short).Show();
-					break;
-				case (Resource.Id.navmessages):
-					Toast.MakeText(this, "Message selected!", ToastLength.Short).Show();
-					break;
-				case (Resource.Id.navfriends):
-					// React on 'Friends' selection
-					break;
-			}
-			// Close drawer
-			drawerLayout.CloseDrawers();
+			navigationViewMenu.SetupMenu();
 		}
 
 		private async void RefreshAdvertisementList()

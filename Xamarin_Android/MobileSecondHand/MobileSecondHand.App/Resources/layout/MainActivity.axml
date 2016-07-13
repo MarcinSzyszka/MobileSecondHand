@@ -50,4 +50,11 @@
             android:layout_gravity="start"
             tools:headerLayout="@layout/headerdrawerlayout" />
     </android.support.v4.widget.DrawerLayout>
+	<Spinner
+			android:gravity="center"
+			android:id="@+id/spinner"
+			android:layout_width="fill_parent"
+			android:layout_height="wrap_content"
+			android:spinnerMode="dialog"
+			android:visibility="invisible"/>
 </FrameLayout>
