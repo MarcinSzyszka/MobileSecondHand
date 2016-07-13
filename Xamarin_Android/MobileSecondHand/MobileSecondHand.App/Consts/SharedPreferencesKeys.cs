@@ -16,5 +16,6 @@ namespace MobileSecondHand.App.Consts {
 		public const string HOME_LATITUDE = "homeLatitude";
 		public const string HOME_LONGITUDE = "homeLongitude";
 		public const string DISTANCE_FORADVERTISEMENT = "distanceForAdvertisements";
+		public const string APP_SETTINGS = "appSettings";
 	}
 }

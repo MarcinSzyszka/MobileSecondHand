@@ -10,41 +10,69 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using Newtonsoft.Json;
 
-namespace MobileSecondHand.App.Infrastructure {
-	public class SharedPreferencesHelper {
+namespace MobileSecondHand.App.Infrastructure
+{
+	public class SharedPreferencesHelper
+	{
 		Context context;
 
-		public SharedPreferencesHelper(Context context) {
+		public SharedPreferencesHelper(Context context)
+		{
 			this.context = context;
 		}
 
-		public object GetSharedPreference<T>(string key) {
+		public object GetSharedPreference<T>(string key)
+		{
 			var preference = PreferenceManager.GetDefaultSharedPreferences(context);
-			if (typeof(T) == typeof(int)) {
+			if (typeof(T) == typeof(int))
+			{
 				return preference.GetInt(key, 0);
-			} else if (typeof(T) == typeof(bool)) {
+			}
+			else if (typeof(T) == typeof(bool))
+			{
 				return preference.GetBoolean(key, false);
 			}
-			else if (typeof(T) == typeof(string)) {
+			else if (typeof(T) == typeof(string))
+			{
 				return preference.GetString(key, null);
 			}
-			else {
-				return default(T);
+			else
+			{
+				var json = preference.GetString(key, null);
+				if (json != null)
+				{
+					return JsonConvert.DeserializeObject<T>(json);
+				}
+				else
+				{
+					return null;
+				}
+
 			}
 		}
 
-		public void SetSharedPreference<T>(string key, object value) {
+		public void SetSharedPreference<T>(string key, object value)
+		{
 			var preference = PreferenceManager.GetDefaultSharedPreferences(context);
 			var preferencesEditor = preference.Edit();
-			if (typeof(T) == typeof(int)) {
+			if (typeof(T) == typeof(int))
+			{
 				preferencesEditor.PutInt(key, (int)value);
 			}
-			else if (typeof(T) == typeof(bool)) {
+			else if (typeof(T) == typeof(bool))
+			{
 				preferencesEditor.PutBoolean(key, (bool)value);
 			}
-			else if (typeof(T) == typeof(string)) {
+			else if (typeof(T) == typeof(string))
+			{
 				preferencesEditor.PutString(key, (string)value);
+			}
+			else
+			{
+				var json = JsonConvert.SerializeObject(value);
+				preferencesEditor.PutString(key, json);
 			}
 			preferencesEditor.Commit();
 		}
