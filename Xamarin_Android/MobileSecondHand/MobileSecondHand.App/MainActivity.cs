@@ -8,6 +8,7 @@ using Android.Content;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.Design.Widget;
+using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
@@ -20,10 +21,13 @@ using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.App.Infrastructure.ActivityState;
+using MobileSecondHand.App.Notifications;
+using MobileSecondHand.App.SideMenu;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Models.Security;
+using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
@@ -41,6 +45,7 @@ namespace MobileSecondHand.App
 		int advertisementsPage;
 		private ProgressDialogHelper progress;
 		private DrawerLayout drawerLayout;
+		NavigationViewMenu navigationViewMenu;
 
 		public MainActivity()
 		{
@@ -54,9 +59,6 @@ namespace MobileSecondHand.App
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
 			SetContentView(Resource.Layout.MainActivity);
-
-
-
 
 			SetupToolbar();
 			advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
@@ -127,14 +129,11 @@ namespace MobileSecondHand.App
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 			SupportActionBar.SetDisplayShowHomeEnabled(true);
 
-			// Attach item selected handler to navigation view
-			var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
-			navigationView.NavigationItemSelected += NavigationView_NavigationItemSelected;
-
 			// Create ActionBarDrawerToggle button and add it to the toolbar
 			var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
 			drawerLayout.SetDrawerListener(drawerToggle);
 			drawerToggle.SyncState();
+			drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
 
 			//load default home screen
 			//var ft = FragmentManager.BeginTransaction();
@@ -149,6 +148,114 @@ namespace MobileSecondHand.App
 			//SupportActionBar.Title = "Lista og³oszeñ";
 			//SetActionBar(toolbar);
 			//ActionBar.Title = "Lista og³oszeñ";
+		}
+
+		private void DrawerLayout_DrawerOpened(object sender, DrawerLayout.DrawerOpenedEventArgs e)
+		{
+			AppSettingsModel settingsModel = GetAppSettings();
+			if (navigationViewMenu == null)
+			{
+				navigationViewMenu = new NavigationViewMenu(this);
+			}
+
+			navigationViewMenu.SetupMenu(settingsModel);
+		}
+
+		private void SetHomeLocationSettings(AppSettingsModel settingsModel)
+		{
+			//this.textViewHomeLocalization.Text = settingsModel.LocationSettings.Latitude > 0 ? String.Format("Lat {0}, Lon {1}", settingsModel.LocationSettings.Latitude, settingsModel.LocationSettings.Longitude) : "nieustawiona";
+		}
+
+		private void SetKeywordsSettings(AppSettingsModel settingsModel)
+		{
+			//if (settingsModel.Keywords.Count > 0)
+			//{
+			//	var sb = new StringBuilder("");
+			//	foreach (var keyword in settingsModel.Keywords)
+			//	{
+			//		sb.Append(keyword.Value);
+			//		sb.Append("\r\n");
+			//	}
+			//	//this.textViewKeywords.Text = sb.ToString();
+			//}
+			//else
+			//{
+			//	this.textViewKeywords.Text = "Wszystkie";
+			//}
+
+			//this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance > 0 ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
+		}
+
+		private AppSettingsModel GetAppSettings()
+		{
+			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
+			if (settingsModel == null)
+			{
+				settingsModel = new AppSettingsModel();
+				this.sharedPreferencesHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, settingsModel);
+			}
+
+			return settingsModel;
+		}
+
+		private void SetNotificationsSettings()
+		{
+			//if (NewsService.ServiceIsRunnig)
+			//{
+			//	this.textViewNotificationsState.Text = "w³¹czone";
+			//	this.imgBtnNotificationsStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.kasowanie_setting));
+			//}
+			//else
+			//{
+			//	this.textViewNotificationsState.Text = "wy³¹czone";
+			//	this.imgBtnNotificationsStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.enable_setting));
+			//}
+		}
+
+		private void SetChatSettings()
+		{
+			//if (MessengerService.ServiceIsRunning)
+			//{
+			//	this.textViewChatState.Text = "w³¹czony";
+			//	this.imgBtnChatStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.kasowanie_setting));
+			//}
+			//else
+			//{
+			//	this.textViewChatState.Text = "wy³¹czony";
+			//	this.imgBtnChatStartStop.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.enable_setting));
+			//}
+
+			//this.imgBtnChatStartStop.Click += (sender, args) =>
+			//{
+			//	AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz wy³¹czyæ czat?", () =>
+			//	{
+			//		StopService(new Intent(this, typeof(MessengerService)));
+			//		SetChatSettings();
+			//	});
+			//};
+		}
+
+		private void SetupNavigationView()
+		{
+			var navigationView = FindViewById<NavigationView>(Resource.Id.nav_view);
+			navigationView.NavigationItemSelected += NavigationView_NavigationItemSelected;
+
+			//if (textViewUserName != null)
+			//{
+			//	return;
+			//}
+			//this.textViewUserName = FindViewById<TextView>(Resource.Id.textViewUserName);
+			//this.textViewNotificationsState = FindViewById<TextView>(Resource.Id.textViewNotificationsState);
+			//this.textViewChatState = FindViewById<TextView>(Resource.Id.textViewChatState);
+			//this.textViewNotificationsRadius = FindViewById<TextView>(Resource.Id.textViewNotificationsRadius);
+			//this.textViewKeywords = FindViewById<TextView>(Resource.Id.textViewKeywords);
+			//this.textViewHomeLocalization = FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
+			//this.imgBtnConversations = FindViewById<ImageButton>(Resource.Id.imgBtnConversations);
+			//this.imgBtnChatStartStop = FindViewById<ImageButton>(Resource.Id.imgBtnChatStartStop);
+			//this.imgBtnNotificationsStartStop = FindViewById<ImageButton>(Resource.Id.imgBtnNotificationsStartStop);
+			//this.imgBtnRadius = FindViewById<ImageButton>(Resource.Id.imgBtnRadius);
+			//this.imgBtnKeywords = FindViewById<ImageButton>(Resource.Id.imgBtnKeywords);
+			//this.imgBtnHomeLocalization = FindViewById<ImageButton>(Resource.Id.imgBtnHomeLocalization);
 		}
 
 		private void NavigationView_NavigationItemSelected(object sender, NavigationView.NavigationItemSelectedEventArgs e)
