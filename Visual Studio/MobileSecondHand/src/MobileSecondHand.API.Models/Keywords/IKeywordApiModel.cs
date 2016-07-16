@@ -2,8 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Advertisement;
 
-namespace MobileSecondHand.API.Models.Advertisement.Keywords {
+namespace MobileSecondHand.API.Models.Keywords {
 	public interface IKeywordApiModel {
 		int Id { get; set; }
 		string Name { get; set; }

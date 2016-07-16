@@ -5,15 +5,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Advertisement;
 using MobileSecondHand.API.Models.Coordinates;
-using MobileSecondHand.API.Services.Advertisement.Keywords;
+using MobileSecondHand.API.Services.Keywords;
 using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.COMMON.CoordinatesHelpers;
 using MobileSecondHand.COMMON.PathHelpers;
 using MobileSecondHand.DB.Models.Advertisement;
-using MobileSecondHand.DB.Models.Advertisement.Keywords;
 using MobileSecondHand.DB.Services.Advertisement;
+using MobileSecondHand.DB.Models.Keywords;
 
-namespace MobileSecondHand.API.Services.Advertisement {
+namespace MobileSecondHand.API.Services.Advertisement
+{
 	public class AdvertisementItemService : IAdvertisementItemService {
 		IAdvertisementItemDbService advertisementItemDbService;
 		ICoordinatesCalculator coordinatesCalculator;

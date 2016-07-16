@@ -1,18 +1,37 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MobileSecondHand.API.Services.Advertisement.Keywords;
-using MobileSecondHand.DB.Models.Advertisement.Keywords;
+using MobileSecondHand.API.Services.Keywords;
+using MobileSecondHand.DB.Models.Keywords;
 using MobileSecondHand.DB.Services.Advertisement.Keywords;
 using Moq;
 using Xunit;
 
 namespace MobileSecondHand.API.Services.Tests
 {
-    public class KeywordsService_Tests
+	public class KeywordsService_Tests
     {
+		[Fact]
+		public void GetKeywordsForSettings_MethodReturnsDictionaryWitchThreeElements_WhereKeyIsInt_AndValueIsString()
+		{
+			//Arrange
+			var categoryKeywordsDb = new List<CategoryKeyword> {
+				new CategoryKeyword { Id = 1, Name = "test1" },
+				new CategoryKeyword { Id = 2, Name = "test2" },
+				new CategoryKeyword { Id = 3, Name = "test3" }
+			};
+			this.keywordsDbServiceMock.Setup(s => s.GetAllKeywords()).Returns(categoryKeywordsDb);
+
+			//Act
+			var result = this.serviceUnderTest.GetKeywordsForSettings();
+
+			//Assert
+			Assert.Equal(3, result.Count);
+			Assert.Equal("test1", result[1]);
+			Assert.Equal("test2", result[2]);
+			Assert.Equal("test3", result[3]);
+		}
+
+		#region RECOGNIZING_FROM_TEXT
 		[Fact]
 		public void RecognizeAndGetStringCollectionKeywords_CategoryKeyword_MethodShouldNotRecognizeAnyKeyword() {
 			//Arrange
@@ -383,6 +402,8 @@ namespace MobileSecondHand.API.Services.Tests
 			Assert.Equal(expectedKeywords[0], recognizedKeywords.First());
 			Assert.Equal(expectedKeywords[1], recognizedKeywords.ToList()[1]);
 		}
+
+		#endregion
 
 		#region CONFIGURATION
 		Mock<IKeywordsDbService> keywordsDbServiceMock = new Mock<IKeywordsDbService>();

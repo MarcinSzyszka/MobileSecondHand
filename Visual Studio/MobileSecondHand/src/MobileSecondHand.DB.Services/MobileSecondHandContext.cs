@@ -2,7 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Advertisement;
-using MobileSecondHand.DB.Models.Advertisement.Keywords;
+using MobileSecondHand.DB.Models.Keywords;
 using MobileSecondHand.DB.Models.Authentication;
 using MobileSecondHand.DB.Models.Chat;
 

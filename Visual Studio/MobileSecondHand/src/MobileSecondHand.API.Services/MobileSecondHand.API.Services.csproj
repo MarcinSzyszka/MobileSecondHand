@@ -228,8 +228,8 @@
     <Compile Include="Advertisement\AdvertisementItemService.cs" />
     <Compile Include="Advertisement\IAdvertisementItemPhotosUploader.cs" />
     <Compile Include="Advertisement\IAdvertisementItemService.cs" />
-    <Compile Include="Advertisement\Keywords\IKeywordsService.cs" />
-    <Compile Include="Advertisement\Keywords\KeywordsService.cs" />
+    <Compile Include="Keywords\IKeywordsService.cs" />
+    <Compile Include="Keywords\KeywordsService.cs" />
     <Compile Include="Authentication\ApplicationSignInManager.cs" />
     <Compile Include="Authentication\ApplicationUserManager.cs" />
     <Compile Include="Authentication\IApplicationSignInManager.cs" />

@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.Advertisement;
-using MobileSecondHand.API.Services.Advertisement.Keywords;
+using MobileSecondHand.API.Services.Keywords;
 using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.API.Services.Conversation;

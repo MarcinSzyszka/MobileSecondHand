@@ -1,10 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using MobileSecondHand.COMMON.Keywords;
-using MobileSecondHand.DB.Models.Advertisement.Keywords;
+using MobileSecondHand.DB.Models.Keywords;
 using MobileSecondHand.DB.Services.Advertisement.Keywords;
 
-namespace MobileSecondHand.API.Services.Advertisement.Keywords {
+namespace MobileSecondHand.API.Services.Keywords
+{
 	public class KeywordsService : IKeywordsService {
 		KeywordsHelper keywordsHelper;
 		IKeywordsDbService keywordsService;
@@ -42,7 +43,7 @@ namespace MobileSecondHand.API.Services.Advertisement.Keywords {
 			return keywordsFromDb;
 		}
 
-		//public for unit test
+		//public for unit tests
 		public IEnumerable<string> RecognizeAndGetStringCollectionKeywords<T>(string textToRecognize) {
 			var keywords = new List<string>();
 			textToRecognize = textToRecognize.ToLower();
@@ -74,5 +75,20 @@ namespace MobileSecondHand.API.Services.Advertisement.Keywords {
 
 			return keywords;
 		}
+
+		public IDictionary<int, string> GetKeywordsForSettings()
+		{
+			var dictionary = new Dictionary<int, string>();
+			var keywords = this.keywordsService.GetAllKeywords().ToList();
+
+			foreach (var keyword in keywords)
+			{
+				dictionary.Add(keyword.Id, keyword.Name);
+			}
+
+			return dictionary;
+
+		}
+
 	}
 }

@@ -57,9 +57,9 @@
     <Compile Include="Advertisement\AdvertisementItemDetails.cs" />
     <Compile Include="Advertisement\AdvertisementItemPhotosPaths.cs" />
     <Compile Include="Advertisement\AdvertisementItemShortModel.cs" />
-    <Compile Include="Advertisement\Keywords\CategoryKeywordApiModel.cs" />
-    <Compile Include="Advertisement\Keywords\ColorKeywordApiModel.cs" />
-    <Compile Include="Advertisement\Keywords\IKeywordApiModel.cs" />
+    <Compile Include="Keywords\CategoryKeywordApiModel.cs" />
+    <Compile Include="Keywords\ColorKeywordApiModel.cs" />
+    <Compile Include="Keywords\IKeywordApiModel.cs" />
     <Compile Include="Advertisement\NewAdvertisementItemModel.cs" />
     <Compile Include="Advertisement\SearchModel.cs" />
     <Compile Include="Chat\ChatMessageReadModel.cs" />

@@ -1,8 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
-using MobileSecondHand.DB.Models.Advertisement.Keywords;
+using MobileSecondHand.DB.Models.Keywords;
 
-namespace MobileSecondHand.DB.Services.Advertisement.Keywords {
+namespace MobileSecondHand.DB.Services.Advertisement.Keywords
+{
 	public class KeywordsDbService : IKeywordsDbService
     {
 		MobileSecondHandContext dbContext;
@@ -17,6 +19,11 @@ namespace MobileSecondHand.DB.Services.Advertisement.Keywords {
 
 		public void AddColorKeywordToContext(ColorKeyword colorKeyword) {
 			this.dbContext.ColorKeyword.Add(colorKeyword);
+		}
+
+		public IEnumerable<CategoryKeyword> GetAllKeywords()
+		{
+			return dbContext.CategoryKeyword.ToList();
 		}
 
 		public IEnumerable<T> GetKeywordsByNames<T>(IEnumerable<string> keywordsNames) where T : IKeywordDbModel {

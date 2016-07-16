@@ -58,7 +58,7 @@ namespace MobileSecondHand.Hubs
 				{
 					foreach (var connection in addresseeConnectionIds)
 					{
-						base.Clients.Client(connection).ReceiveMessage(chatMessage.MessageContent, chatMessage.MessageHeader, chatMessage.ConversationId, chatMessage.Id, senderId);
+						base.Clients.Client(connection).ReceiveMessage(chatMessage.MessageContent, chatMessage.MessageHeader, chatMessage.ConversationId, senderId);
 					}
 				}
 				else

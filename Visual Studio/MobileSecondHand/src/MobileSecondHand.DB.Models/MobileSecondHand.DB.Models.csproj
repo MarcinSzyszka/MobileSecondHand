@@ -192,9 +192,9 @@
     <Compile Include="Advertisement\AdvertisementPhoto.cs" />
     <Compile Include="Advertisement\CategoryKeywordToAdvertisement.cs" />
     <Compile Include="Advertisement\ColorKeywordToAdvertisement.cs" />
-    <Compile Include="Advertisement\Keywords\CategoryKeyword.cs" />
-    <Compile Include="Advertisement\Keywords\ColorKeyword.cs" />
-    <Compile Include="Advertisement\Keywords\IKeywordDbModel.cs" />
+    <Compile Include="Keywords\CategoryKeyword.cs" />
+    <Compile Include="Keywords\ColorKeyword.cs" />
+    <Compile Include="Keywords\IKeywordDbModel.cs" />
     <Compile Include="Authentication\ApplicationUser.cs" />
     <Compile Include="Chat\ChatMessage.cs" />
     <Compile Include="Chat\Conversation.cs" />
