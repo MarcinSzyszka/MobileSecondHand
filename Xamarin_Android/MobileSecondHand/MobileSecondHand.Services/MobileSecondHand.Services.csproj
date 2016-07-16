@@ -48,6 +48,10 @@
     <Compile Include="Chat\ChatHubClientService.cs" />
     <Compile Include="Chat\IMessagesService.cs" />
     <Compile Include="Chat\MessagesService.cs" />
+    <Compile Include="Google Api\GoogleMapsAPIService.cs" />
+    <Compile Include="Google Api\IGoogleMapsAPIService.cs" />
+    <Compile Include="Keywords\IKeyworsService.cs" />
+    <Compile Include="Keywords\KeywordsService.cs" />
     <Compile Include="Location\IGpsClient.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

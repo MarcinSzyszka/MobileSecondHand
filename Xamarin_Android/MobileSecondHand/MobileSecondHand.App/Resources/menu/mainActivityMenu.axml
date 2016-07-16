@@ -4,12 +4,12 @@
       xmlns:tools="http://schemas.android.com/tools">
 	<item
         android:id="@+id/refreshAdvertisementsOption"
-        android:showAsAction="never"
+        app:showAsAction="never"
         android:title="Odśwież"
         android:icon="@drawable/perm_group_sync_settings" />
 	<item
 		android:id="@+id/chat"
-		android:showAsAction="always"
+		app:showAsAction="always"
 		android:title="Chat"
 		android:icon="@drawable/ic_menu_start_conversation" />
 </menu>
