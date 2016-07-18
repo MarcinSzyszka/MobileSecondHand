@@ -29,6 +29,20 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem) {
 			dbContext.AdvertisementItem.Add(advertisementItem);
 			dbContext.Entry(advertisementItem).State = EntityState.Added;
+			foreach (var keyword in advertisementItem.CategoryKeywords)
+			{
+				if (keyword.CategoryKeyword.Id > 0)
+				{
+					dbContext.Entry(keyword.CategoryKeyword).State = EntityState.Unchanged;
+				}
+			}
+			foreach (var keyword in advertisementItem.ColorKeywords)
+			{
+				if (keyword.ColorKeyword.Id > 0)
+				{
+					dbContext.Entry(keyword.ColorKeyword).State = EntityState.Unchanged;
+				}
+			}
 			dbContext.SaveChanges();
 		}
 	}

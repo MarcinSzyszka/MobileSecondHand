@@ -12,5 +12,7 @@ namespace MobileSecondHand.API.Models.Advertisement
 		public int AdvertisementPrice { get; set; }
 		public double Distance { get; set; }
 		public byte[] MainPhoto { get; set; }
+		public bool IsSellerOnline { get; set; }
+		public bool IsOnlyForSell { get; set; }
 	}
 }

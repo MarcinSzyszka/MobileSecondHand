@@ -103,7 +103,8 @@ namespace MobileSecondHand.API.Services.Advertisement
 				viewModel.AdvertisementPrice = dbModel.Price;
 				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoPath);
 				viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
-
+				viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(dbModel.UserId);
+				viewModel.IsOnlyForSell = dbModel.IsOnlyForSell;
 				viewModelsList.Add(viewModel);
 			}
 

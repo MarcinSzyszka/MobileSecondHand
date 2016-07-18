@@ -19,16 +19,7 @@ namespace MobileSecondHand.API.Services.CacheServices
 		public void AddConnectedClient(UserConnection userConnection)
 		{
 			var connectedUsers = GetConnectedUsers();
-			if (connectedUsers == null)
-			{
-				var newConnectedUsersList = new List<UserConnection> { userConnection };
-				this.cache.Set(CONNECTED_USERS, newConnectedUsersList, ObjectCache.InfiniteAbsoluteExpiration);
-			}
-			else
-			{
-				connectedUsers.Add(userConnection);
-
-			}
+			connectedUsers.Add(userConnection);
 		}
 
 		public void RemoveDisconnectedClient(string connectionId)
@@ -79,6 +70,12 @@ namespace MobileSecondHand.API.Services.CacheServices
 
 		private List<UserConnection> GetConnectedUsers()
 		{
+			var cacheObject = this.cache.Get(CONNECTED_USERS);
+			if (cacheObject == null)
+			{
+				var usersList = new List<UserConnection>();
+				this.cache.Set(CONNECTED_USERS, usersList, ObjectCache.InfiniteAbsoluteExpiration);
+			}
 			return (List<UserConnection>)this.cache.Get(CONNECTED_USERS);
 		}
 	}
