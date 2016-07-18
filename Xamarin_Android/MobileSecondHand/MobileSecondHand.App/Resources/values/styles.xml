@@ -1,34 +1,38 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <resources>
-	<style name="SettingsSwitch" parent="Theme.AppCompat.Light">
-		<!-- active thumb & track color (30% transparency) -->
+	<!--<style name="SettingsSwitch" parent="Theme.AppCompat.Light">
+		--><!-- active thumb & track color (30% transparency) --><!--
 		<item name="colorControlActivated">#4CAF50</item>
 
-		<!-- inactive thumb color -->
+		--><!-- inactive thumb color --><!--
 		<item name="colorSwitchThumbNormal">#f44336</item>
 
-		<!-- inactive track color (30% transparency) -->
+		--><!-- inactive track color (30% transparency) --><!--
 		<item name="android:colorForeground">#BDBDBD</item>
+	</style>-->
+
+	<style name="ToolbarTheme" parent="AppTheme">
+		<item name="android:textColorPrimary">@color/textColorPrimary</item>
+		<item name="android:textColorSecondary">@color/textColorSecondary</item>
 	</style>
+
 	<style name="AppTheme" parent="AppTheme.Base">
 	</style>
 	<style name="AppTheme.Base" parent="Theme.AppCompat.Light">
 		<item name="windowNoTitle">true</item>
-		<!--We will be using the toolbar so no need to show ActionBar-->
 		<item name="windowActionBar">false</item>
-		<!-- Set theme colors from http://www.google.com/design/spec/style/color.html#color-color-palette-->
-		<!-- colorPrimary is used for the default action bar background -->
-		<item name="colorPrimary">#03A9F4</item>
-		<!-- colorPrimaryDark is used for the status bar -->
-		<item name="colorPrimaryDark">#0288D1</item>
+		<item name="colorPrimary">@color/colorPrimary</item>
+		<item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+		<item name="android:windowBackground">@color/windowBackground</item>
+
+		
+
 		<!--<item name="android:colorPrimaryLight">#B3E5FC</item>-->
-		<!--<item name="android:textColorPrimary">#212121</item>
-		<item name="android:textColorSecondary">#727272</item>-->
-		<!--<item name="android:colorIcons">#FFFFFF</item>
-		<item name="android:colorDivider">#B6B6B6</item>-->
+
+		<!--<item name="android:colorDivider">#B6B6B6</item>-->-->
 		<!-- colorAccent is used as the default value for colorControlActivated
          which is used to tint widgets -->
-		<item name="colorAccent">#FF5722</item>
+		<item name="colorAccent">@color/colorAccent</item>
 		<!-- You can also set colorControlNormal, colorControlActivated
          colorControlHighlight and colorSwitchThumbNormal. -->
 	</style>

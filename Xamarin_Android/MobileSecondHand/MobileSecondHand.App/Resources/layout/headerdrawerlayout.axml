@@ -3,286 +3,331 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fillViewport="true">
-    <LinearLayout
-        android:orientation="vertical"
+
+	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:weightSum="1"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp">
-        <RelativeLayout
+        android:orientation="vertical"
+        android:weightSum="1">
+
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
-                android:orientation="vertical"
+
+			<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true">
-                <RelativeLayout
+                android:layout_alignParentTop="true"
+                android:background="@color/colorPrimary"
+                android:orientation="vertical">
+
+				<RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
-                    <ImageView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/imageView"
-                        android:layout_centerVertical="true"
-                        android:src="@drawable/logo_200" />
-                </RelativeLayout>
-                <RelativeLayout
+
+					<refractored.controls.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+					   android:id="@+id/profile_image"
+					   android:layout_width="150dp"
+					   android:layout_height="150dp"
+					   android:layout_centerHorizontal="true"
+					   android:layout_centerVertical="true"
+					   android:layout_marginBottom="5dp"
+					   android:layout_marginTop="20dp"
+					   android:src="@drawable/ja" />
+				</RelativeLayout>
+
+				<RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2">
-                    <TextView
+
+					<TextView
+                        android:id="@+id/textViewUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceLarge"
+                        android:layout_alignParentBottom="false"
                         android:text="nazwa_usera"
-                        android:id="@+id/textViewUserName"
-                        android:layout_alignParentBottom="false" />
-                </RelativeLayout>
-            </LinearLayout>
-        </RelativeLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Rozmowy"
+                        android:textAppearance="?android:attr/textAppearanceLarge" />
+				</RelativeLayout>
+			</LinearLayout>
+		</RelativeLayout>
+
+		<TextView
             android:id="@+id/textViewConversations"
-            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/setting_header"
-            android:padding="3dp" />
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/setting_row"
-            android:padding="2dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Przejdź do rozmów"
-                android:id="@+id/editTextGoToConversations"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textStyle="bold"
-                android:layout_centerInParent="true" />
-            <ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgBtnConversations"
-                android:src="@drawable/dymekOrozmoe"
-                android:background="#00ffffff"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:clickable="true" />
-        </RelativeLayout>
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:background="@drawable/setting_row"
-            android:padding="2dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Stan chatu:  "
-                android:id="@+id/textViewChat"
-                android:layout_alignTop="@+id/switchChatState"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true"
-                android:textStyle="bold"
-                android:layout_centerInParent="true" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="aktywny"
-                android:id="@+id/textViewChatState"
-                android:layout_below="@+id/textViewChat"
-                android:layout_alignLeft="@+id/textViewChat"
-                android:layout_alignStart="@+id/textViewChat" />
-            <android.support.v7.widget.SwitchCompat
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:checked="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
-                android:id="@+id/switchChatState"
-                android:theme="@style/SettingsSwitch" />
-        <!--<ImageButton
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/imgBtnChatStartStop"
-                android:src="@drawable/kasowanie_setting"
-                android:background="#00ffffff"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />-->
-        </RelativeLayout>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:padding="3dp"
+            android:text="Rozmowy"
             android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Powiadomienia o nowościach"
+            android:textStyle="bold" />
+
+		<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
+            android:background="@drawable/setting_row"
+            android:padding="2dp">
+
+			<TextView
+                android:id="@+id/editTextGoToConversations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_centerInParent="true"
+                android:text="Przejdź do rozmów"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+			<ImageButton
+                android:id="@+id/imgBtnConversations"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="#00ffffff"
+                android:clickable="true"
+                android:src="@drawable/dymekOrozmoe" />
+		</RelativeLayout>
+
+		<RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
+            android:background="@drawable/setting_row"
+            android:padding="2dp">
+
+			<TextView
+                android:id="@+id/textViewChat"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignTop="@+id/switchChatState"
+                android:layout_centerInParent="true"
+                android:text="Stan chatu:  "
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+			<TextView
+                android:id="@+id/textViewChatState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignLeft="@+id/textViewChat"
+                android:layout_alignStart="@+id/textViewChat"
+                android:layout_below="@+id/textViewChat"
+                android:text="aktywny"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.SwitchCompat
+                android:id="@+id/switchChatState"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:checked="true" />
+			<!--<ImageButton
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/imgBtnChatStartStop"
+                    android:src="@drawable/kasowanie_setting"
+                    android:background="#00ffffff"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_alignParentEnd="true" />-->
+		</RelativeLayout>
+
+		<TextView
             android:id="@+id/textView"
-            android:textStyle="bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/setting_header"
-            android:padding="3dp" />
-        <RelativeLayout
+            android:padding="3dp"
+            android:text="Powiadomienia o nowościach"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Stan powiadomień: "
+
+			<TextView
                 android:id="@+id/editTextState"
-                android:textStyle="bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_alignParentStart="true"
+                android:text="Stan powiadomień: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="aktywne"
+                android:textStyle="bold" />
+
+			<TextView
                 android:id="@+id/textViewNotificationsState"
-                android:layout_below="@+id/editTextState"
-                android:layout_alignLeft="@+id/editTextState"
-                android:layout_alignStart="@+id/editTextState" />
-            <android.support.v7.widget.SwitchCompat
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true"
+                android:layout_alignLeft="@+id/editTextState"
+                android:layout_alignStart="@+id/editTextState"
+                android:layout_below="@+id/editTextState"
+                android:text="aktywne"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchNotificationsState"
-                android:theme="@style/SettingsSwitch" />
-        </RelativeLayout>
-        <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:checked="true" />
+		</RelativeLayout>
+
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+
+			<TextView
+                android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Promień: "
-                android:id="@+id/textView3"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/editTextState"
-                android:textStyle="bold"
-                android:layout_centerInParent="true" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="Promień: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="3 km"
+                android:textStyle="bold" />
+
+			<TextView
                 android:id="@+id/textViewNotificationsRadius"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"
-                android:layout_toRightOf="@+id/textView3"
-                android:layout_toEndOf="@+id/textView3"
-                android:layout_centerInParent="true" />
-            <ImageButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentTop="true"
+                android:layout_centerInParent="true"
+                android:layout_toEndOf="@+id/textView3"
+                android:layout_toRightOf="@+id/textView3"
+                android:text="3 km"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+
+			<ImageButton
                 android:id="@+id/imgBtnRadius"
-                android:src="@drawable/settings"
-                android:background="#00ffffff"
-                android:layout_alignTop="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
-        <RelativeLayout
+                android:layout_alignTop="@+id/textView3"
+                android:background="#00ffffff"
+                android:src="@drawable/settings" />
+		</RelativeLayout>
+
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView4"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/textView4"
             android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Słowa kluczowe: "
+
+			<TextView
                 android:id="@+id/textView7"
-                android:textStyle="bold"
-                android:layout_alignParentTop="true"
-                android:layout_alignParentLeft="true"
-                android:layout_alignParentStart="true" />
-            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Słowa kluczowe: "
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="koszule\nButy\nswetry\nsukienki"
+                android:textStyle="bold" />
+
+			<TextView
                 android:id="@+id/textViewKeywords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/textView7"
-                android:layout_alignParentLeft="true" />
-            <ImageButton
+                android:text="koszule\nButy\nswetry\nsukienki"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<ImageButton
+                android:id="@+id/imgBtnKeywords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgBtnKeywords"
-                android:src="@drawable/settings"
-                android:background="#00ffffff"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
-        <TextView
+                android:layout_alignParentTop="true"
+                android:background="#00ffffff"
+                android:src="@drawable/settings" />
+		</RelativeLayout>
+
+		<TextView
+            android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:text="Lokalizacja domowa"
-            android:id="@+id/textView5"
-            android:textStyle="bold"
             android:layout_marginTop="20dp"
             android:background="@drawable/setting_header"
-            android:padding="3dp" />
-        <RelativeLayout
+            android:padding="3dp"
+            android:text="Lokalizacja domowa"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:textStyle="bold" />
+
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+
+			<TextView
+                android:id="@+id/textViewHomeLocalization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="51.004W 765.22L"
-                android:id="@+id/textViewHomeLocalization"
-                android:layout_alignParentTop="false"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="true"
-                android:layout_centerInParent="true" />
-            <ImageButton
+                android:layout_alignParentTop="false"
+                android:layout_centerInParent="true"
+                android:layout_marginRight="35dp"
+                android:text="jakiś adres"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<ImageButton
+                android:id="@+id/imgBtnHomeLocalization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/imgBtnHomeLocalization"
-                android:src="@drawable/settings"
-                android:background="#00ffffff"
-                android:layout_alignParentTop="true"
+                android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignParentEnd="true" />
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_alignParentTop="true"
+                android:background="#00ffffff"
+                android:src="@drawable/settings" />
+		</RelativeLayout>
+	</LinearLayout>
 </ScrollView>
