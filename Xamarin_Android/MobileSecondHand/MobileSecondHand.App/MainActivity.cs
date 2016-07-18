@@ -178,7 +178,8 @@ namespace MobileSecondHand.App
 			progress = new ProgressDialogHelper(this);
 			SetupFab();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
-			var mLayoutManager = new LinearLayoutManager(this);
+			//var mLayoutManager = new LinearLayoutManager(this);
+			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 			await DownloadAndShowAdvertisements(screenOrientationChaged ? false : true, screenOrientationChaged);
 		}

@@ -17,12 +17,16 @@ namespace MobileSecondHand.App.Holders {
 		public ImageView PhotoImageView { get; set; }
 		public TextView PriceTextView { get; set; }
 		public TextView TitleTextView { get; set; }
+		public ImageView SellerChatStateImageView { get; set; }
+		public TextView AdvertisementKindTextView { get; set; }
 
 		public AdvertisementItemViewHolder(View itemView, Action<int> clickAction) : base(itemView) {
 			DistanceTextView = itemView.FindViewById<TextView>(Resource.Id.distanceTextView);
 			TitleTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementOnListTitle);
 			PriceTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementPriceListTextView);
 			PhotoImageView = itemView.FindViewById<ImageView>(Resource.Id.advertisementPhotoImageView);
+			SellerChatStateImageView = itemView.FindViewById<ImageView>(Resource.Id.sellerChatState);
+			AdvertisementKindTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementKind);
 
 			itemView.Click += (s, e) => clickAction(Position);
 		}

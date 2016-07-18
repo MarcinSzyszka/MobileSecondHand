@@ -3,47 +3,91 @@
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:padding="10dp"
     android:id="@+id/advertisementRowLayout">
-    <ImageView
-        android:src="@drawable/ic_perm_group_location"
-        android:layout_width="wrap_content"
+	<RelativeLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/imageView1"
-        android:layout_centerHorizontal="true" />
-    <TextView
-        android:text="3 km"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView1"
-        android:id="@+id/distanceTextView"
-        android:layout_centerHorizontal="true" />
-    <ImageView
-        android:src="@android:drawable/ic_menu_gallery"
-        android:layout_width="350dp"
-        android:layout_height="300dp"
-        android:layout_below="@+id/distanceTextView"
-        android:id="@+id/advertisementPhotoImageView"
-        android:layout_centerHorizontal="true" />
-    <TextView
-        android:text="Tytuł ogłoszenia"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/advertisementPhotoImageView"
-        android:id="@+id/advertisementOnListTitle"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold"
-        android:textAlignment="center"
-        android:gravity="center" />
-    <TextView
-        android:text="49 zł"
-        android:textAppearance="?android:attr/textAppearanceLarge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/advertisementOnListTitle"
-        android:id="@+id/advertisementPriceListTextView"
-        android:layout_centerHorizontal="true"
-        android:textStyle="bold" />
+        android:layout_margin="10dp"
+        android:background="@color/advertisementRowBackground"
+        android:id="@+id/relativeLayout">
+		<ImageView
+            android:src="@drawable/localization"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView1"
+            android:layout_alignBottom="@+id/advertisementPriceListTextView"
+            android:layout_toLeftOf="@+id/distanceTextView" />
+		<TextView
+            android:text="3 km"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/distanceTextView"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="true"
+            android:textColor="@color/colorPrimary"
+            android:layout_alignBaseline="@+id/advertisementPriceListTextView"
+            android:layout_marginRight="5dp"
+            android:textSize="@dimen/smallText" />
+		<ImageView
+            android:src="@android:drawable/ic_menu_gallery"
+            android:layout_width="200dp"
+            android:layout_height="150dp"
+            android:id="@+id/advertisementPhotoImageView"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentEnd="false" />
+		<TextView
+            android:text="Tytuł ogłoszenia"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/advertisementKind"
+            android:id="@+id/advertisementOnListTitle"
+            android:textAlignment="center"
+            android:singleLine="true"
+            android:layout_margin="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/mediumText" />
+		<TextView
+            android:text="49 zł"
+            android:textAppearance="?android:attr/textAppearanceLarge"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/advertisementOnListTitle"
+            android:id="@+id/advertisementPriceListTextView"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textSize="@dimen/largeText" />
+		<TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="sprzedaż/wymiana"
+            android:id="@+id/advertisementKind"
+            android:layout_below="@+id/advertisementPhotoImageView"
+            android:layout_marginLeft="5dp"
+            android:textColor="@color/colorPrimary"
+            android:layout_margin="5dp"
+            android:textIsSelectable="false"
+            android:textSize="@dimen/smallText" />
+		<ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/imageView2"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="false"
+            android:layout_below="@+id/advertisementPhotoImageView"
+            android:src="@drawable/dymekOrozmoe16x16"
+            android:layout_marginRight="15dp"
+            android:layout_marginTop="5dp" />
+		<ImageView
+            android:layout_width="8dp"
+            android:layout_height="8dp"
+            android:id="@+id/sellerChatState"
+            android:background="@drawable/rounded_chat_state_online"
+            android:layout_below="@+id/advertisementPhotoImageView"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="5dp" />
+	</RelativeLayout>
 </RelativeLayout>

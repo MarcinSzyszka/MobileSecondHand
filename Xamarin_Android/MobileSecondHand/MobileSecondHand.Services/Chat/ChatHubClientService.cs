@@ -71,6 +71,7 @@ namespace MobileSecondHand.Services.Chat {
 		public void Dispose()
 		{
 			hubConnection.Dispose();
+			serviceInstance = null;
 		}
 	}
 }
