@@ -15,7 +15,7 @@ using MobileSecondHand.Models.Security;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Services.Location;
 
-namespace MobileSecondHand.App
+namespace MobileSecondHand.App.Activities
 {
 	[Activity(MainLauncher = true, Icon = "@drawable/Icon")]
 	public class StartActivity : Activity, ISettingWindowCloseListener

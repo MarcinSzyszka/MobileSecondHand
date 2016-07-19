@@ -1,90 +1,231 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:minHeight="25px"
     android:minWidth="25px"
-    android:minHeight="25px">
-    <RelativeLayout
+    android:orientation="vertical">
+
+	<android.support.v4.widget.DrawerLayout
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/relativeLayout1"
-        android:paddingTop="20dp">
-        <ImageView
-            android:layout_height="200dp"
-            android:id="@+id/advertisementDetailsPhoto"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/startConvesationBtn"
-            android:layout_width="250dp"
-            android:src="@android:drawable/ic_menu_gallery" />
-        <Button
-            android:text="Nawiąż kontakt"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/startConvesationBtn"
-            android:layout_centerHorizontal="true"
-            android:layout_below="@+id/forSellOrChangeInfo" />
-        <TextView
-            android:text="@string/userOnlineStateInfo"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/sellerNetworkState"
-            android:layout_centerHorizontal="true"
-            android:textColor="@color/userOnlineState"
-            android:padding="5dp"
-            android:layout_below="@+id/distanceDetailsTextView" />
-        <TextView
-            android:text="Tytuł ogłoszenia"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/advertisementDeatilsPrice"
-            android:id="@+id/advertisementDetailsTitle"
-            android:layout_centerHorizontal="true"
-            android:padding="10dp"
-            android:gravity="center_horizontal" />
-        <TextView
-            android:text="Treść ogłoszenia"
-            android:textAppearance="?android:attr/textAppearanceMedium"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/advertisementDetailsTitle"
-            android:id="@+id/advertisementDetailsDescription"
-            android:layout_centerHorizontal="true"
-            android:padding="10dp"
-            android:gravity="center_horizontal" />
-        <TextView
-            android:text="59 zł"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/advertisementDeatilsPrice"
-            android:layout_below="@+id/advertisementDetailsPhoto"
-            android:layout_centerHorizontal="true"
-            android:padding="10dp" />
-        <TextView
-            android:text="@string/forSellOrChangeInfo"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/forSellOrChangeInfo"
-            android:layout_below="@+id/sellerNetworkState"
-            android:layout_centerHorizontal="true"
-            android:padding="5dp" />
-        <Button
-            android:text="Zobacz inne ogłoszenia użytkownika"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/advertisementDetailsDescription"
-            android:id="@+id/showOtherUserAdvertisementsBtn"
-            android:layout_centerHorizontal="true" />
-        <TextView
-            android:text="Odległośc: 2.54 km"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:id="@+id/distanceDetailsTextView"
-            android:layout_centerHorizontal="true" />
-    </RelativeLayout>
-</ScrollView>
+        android:minHeight="25px"
+        android:minWidth="25px"
+        android:orientation="vertical">
+
+		<ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:minHeight="25px"
+            android:minWidth="25px"
+            android:orientation="vertical">
+			<LinearLayout
+				android:layout_width="match_parent"
+				android:layout_height="match_parent"
+				android:orientation="vertical">
+				<include
+					layout="@layout/appbar"
+					android:layout_alignParentTop="true"
+					android:layout_gravity="top" />
+
+
+				<RelativeLayout
+					android:id="@+id/relativeLayout1"
+					android:layout_width="match_parent"
+					android:layout_height="match_parent">
+
+
+					<ImageView
+						android:id="@+id/advertisementDetailsPhoto"
+						android:layout_width="350dp"
+						android:layout_height="300dp"
+						android:layout_centerHorizontal="true"
+						android:layout_marginTop="5dp"
+						android:src="@android:drawable/ic_menu_gallery" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:text="Rodzaj ogłoszenia"
+						android:id="@+id/textView10"
+						android:layout_below="@+id/advertisementDetailsPhoto"
+						android:layout_marginTop="@dimen/settingRowMargin"
+						android:paddingTop="5dp"
+						android:paddingBottom="5dp"
+						android:gravity="center"
+						android:background="@color/headerBackground"
+						android:textColor="@color/colorPrimaryDark" />
+
+					<Button
+						android:id="@+id/startConvesationBtn"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:text="Napisz"
+						android:layout_below="@+id/textView11"
+						android:layout_alignParentRight="true"
+						android:layout_marginRight="5dp"
+						android:layout_centerInParent="true" />
+
+					<TextView
+						android:id="@+id/sellerNetworkState"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/textView11"
+						android:layout_centerHorizontal="true"
+						android:padding="5dp"
+						android:text="@string/userOnlineStateInfo"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:textColor="@color/userOnlineState"
+						android:layout_alignParentLeft="true"
+						android:layout_marginTop="14dp" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:text="Odległość od Ciebie"
+						android:id="@+id/textView12"
+						android:layout_below="@+id/startConvesationBtn"
+						android:layout_marginTop="@dimen/settingRowMargin"
+						android:background="@color/headerBackground"
+						android:paddingTop="5dp"
+						android:paddingBottom="5dp"
+						android:textColor="@color/colorPrimaryDark"
+						android:gravity="center" />
+
+					<TextView
+						android:id="@+id/advertisementDetailsTitle"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/textView14"
+						android:layout_centerHorizontal="true"
+						android:gravity="center_horizontal"
+						android:padding="5dp"
+						android:text="Tytuł ogłoszenia"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:textColor="@color/colorPrimaryDark" />
+
+					<TextView
+						android:id="@+id/advertisementDetailsDescription"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/advertisementDetailsTitle"
+						android:layout_centerHorizontal="true"
+						android:gravity="center_horizontal"
+						android:padding="5dp"
+						android:text="Treść ogłoszenia"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:textColor="@color/colorPrimary" />
+
+					<TextView
+						android:id="@+id/advertisementDeatilsPrice"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/textView13"
+						android:layout_centerHorizontal="true"
+						android:text="59 zł"
+						android:textAppearance="?android:attr/textAppearanceLarge"
+						android:textColor="@color/colorPrimaryDark"
+						android:layout_marginTop="5dp" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:text="Opis"
+						android:id="@+id/textView14"
+						android:layout_below="@+id/advertisementDeatilsPrice"
+						android:background="@color/headerBackground"
+						android:layout_marginTop="@dimen/settingRowMargin"
+						android:gravity="center"
+						android:paddingTop="5dp"
+						android:paddingBottom="5dp"
+						android:textColor="@color/colorPrimaryDark" />
+
+					<TextView
+						android:id="@+id/forSellOrChangeInfo"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/textView10"
+						android:layout_centerHorizontal="true"
+						android:padding="5dp"
+						android:text="@string/forSellOrChangeInfo"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:layout_alignParentLeft="false"
+						android:layout_marginTop="5dp"
+						android:textColor="@color/colorPrimaryDark" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:text="Kontakt"
+						android:id="@+id/textView11"
+						android:layout_marginTop="@dimen/settingRowMargin"
+						android:layout_below="@+id/forSellOrChangeInfo"
+						android:background="@color/headerBackground"
+						android:paddingTop="5dp"
+						android:paddingBottom="5dp"
+						android:textColor="@color/colorPrimaryDark"
+						android:gravity="center" />
+
+					<Button
+						android:id="@+id/showOtherUserAdvertisementsBtn"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_below="@+id/advertisementDetailsDescription"
+						android:layout_centerHorizontal="true"
+						android:text="Zobacz inne ogłoszenia użytkownika"
+						android:layout_marginTop="5dp" />
+
+					<TextView
+						android:id="@+id/distanceDetailsTextView"
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:layout_centerHorizontal="true"
+						android:text="2,45 km"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:layout_below="@+id/imageView3"
+						android:layout_alignParentRight="false"
+						android:layout_marginTop="5dp"
+						android:textColor="@color/colorPrimaryDark" />
+
+					<TextView
+						android:layout_width="match_parent"
+						android:layout_height="wrap_content"
+						android:textAppearance="?android:attr/textAppearanceMedium"
+						android:text="Cena"
+						android:id="@+id/textView13"
+						android:layout_marginTop="@dimen/settingRowMargin"
+						android:layout_below="@+id/distanceDetailsTextView"
+						android:background="@color/headerBackground"
+						android:gravity="center"
+						android:paddingTop="5dp"
+						android:paddingBottom="5dp"
+						android:textColor="@color/colorPrimaryDark" />
+
+					<ImageView
+						android:layout_width="wrap_content"
+						android:layout_height="wrap_content"
+						android:id="@+id/imageView3"
+						android:src="@drawable/localization"
+						android:layout_below="@+id/textView12"
+						android:layout_centerHorizontal="true"
+						android:layout_marginTop="5dp" />
+
+				</RelativeLayout>
+			</LinearLayout>
+		</ScrollView>
+
+		<android.support.design.widget.NavigationView
+            android:id="@+id/nav_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="start"
+            tools:headerLayout="@layout/headerdrawerlayout" />
+	</android.support.v4.widget.DrawerLayout>
+</FrameLayout>

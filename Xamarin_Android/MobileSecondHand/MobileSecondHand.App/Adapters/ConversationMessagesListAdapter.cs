@@ -66,15 +66,17 @@ namespace MobileSecondHand.App.Adapters {
 				parameters.AddRule(LayoutRules.AlignParentLeft);
 				parameters.SetMargins(5, 5, 30, 5);
 				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_user_message_background_border);
-				vh.MessageHeader.SetTextColor(Color.Black);
-				vh.MessageContent.SetTextColor(Color.Black);
+				var color = new Color(141, 110, 99);
+				vh.MessageHeader.SetTextColor(color);
+				vh.MessageContent.SetTextColor(color);
 			}
 			else {
 				parameters.AddRule(LayoutRules.AlignParentRight);
 				parameters.SetMargins(30, 5, 5, 5);
 				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_sender_message_background_border);
-				vh.MessageHeader.SetTextColor(Color.White);
-				vh.MessageContent.SetTextColor(Color.White);
+				var color = new Color(239, 235, 233);
+				vh.MessageHeader.SetTextColor(color);
+				vh.MessageContent.SetTextColor(color);
 			}
 			vh.MessageLayout.LayoutParameters = parameters;
 		}

@@ -14,7 +14,8 @@ using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Authentication;
 
-namespace MobileSecondHand.App {
+namespace MobileSecondHand.App.Activities
+{
 	[Activity(Label = "RegisterActivity")]
 	public class RegisterActivity : Activity {
 		private EditText confirmPasswordInput;

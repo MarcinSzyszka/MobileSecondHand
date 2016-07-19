@@ -19,7 +19,7 @@ using MobileSecondHand.Common.Extensions;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using Android.Content.Res;
 
-namespace MobileSecondHand.App
+namespace MobileSecondHand.App.Activities
 {
 	[Activity(Label = "ConversationActivity")]
 	public class ConversationActivity : Activity, IInfiniteScrollListener

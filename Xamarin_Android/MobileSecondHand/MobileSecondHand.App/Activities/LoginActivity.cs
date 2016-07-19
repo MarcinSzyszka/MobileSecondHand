@@ -20,7 +20,8 @@ using Xamarin.Facebook.Login.Widget;
 
 [assembly: MetaData("com.facebook.sdk.ApplicationId", Value = "@string/app_id")]
 
-namespace MobileSecondHand.App {
+namespace MobileSecondHand.App.Activities
+{
 	[Activity(Label = "LoginActivity")]
 	public class LoginActivity : Activity {
 		private ICallbackManager callbackManager;

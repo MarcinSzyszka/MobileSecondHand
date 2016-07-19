@@ -20,7 +20,7 @@ using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 
-namespace MobileSecondHand.App {
+namespace MobileSecondHand.App.Activities{
 	[Activity(Label = "Nowe og³oszenie")]
 	public class AddNewAdvertisementActivity : BaseActivity
 	{

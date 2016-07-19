@@ -16,9 +16,11 @@ using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
 
-namespace MobileSecondHand.App {
+namespace MobileSecondHand.App.Activities
+{
 	[Activity(Label = "Szczegó³y og³oszenia")]
-	public class AdvertisementItemDetailsActivity : Activity {
+	public class AdvertisementItemDetailsActivity : BaseActivity
+	{
 		private ProgressDialogHelper progress;
 		IAdvertisementItemService advertisementItemService;
 		IMessagesService messagesService;
@@ -46,6 +48,7 @@ namespace MobileSecondHand.App {
 			base.OnCreate(savedInstanceState);
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 			SetContentView(Resource.Layout.AdvertisementItemDetailsActivity);
+			base.SetupToolbar();
 			SetupViews();
 			CalculateSizeForPhotoImageView();
 			await GetAndShowAdvertisementDetails();
@@ -83,7 +86,8 @@ namespace MobileSecondHand.App {
 		}
 
 		private void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance) {
-			distanceTextView.Text = String.Format("{0}{1} km", this.Resources.GetString(Resource.String.distanceDetailsInfo), distance);
+			//distanceTextView.Text = String.Format("{0}{1} km", this.Resources.GetString(Resource.String.distanceDetailsInfo), distance);
+			distanceTextView.Text = String.Format("{0} km", distance);
 			if (advertisement.IsSellerOnline) {
 				sellerNetworkStateInfoTextView.Text = this.Resources.GetString(Resource.String.userOnlineStateInfo);
 				sellerNetworkStateInfoTextView.SetTextColor(Android.Graphics.Color.Green);

@@ -136,12 +136,12 @@
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
     <Compile Include="Adapters\ConversationMessagesListAdapter.cs" />
-    <Compile Include="AddNewAdvertisementActivity.cs" />
-    <Compile Include="AdvertisementItemDetailsActivity.cs" />
+    <Compile Include="Activities\AddNewAdvertisementActivity.cs" />
+    <Compile Include="Activities\AdvertisementItemDetailsActivity.cs" />
     <Compile Include="Chat\MessengerService.cs" />
     <Compile Include="Consts\ExtrasKeys.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
-    <Compile Include="ConversationActivity.cs" />
+    <Compile Include="Activities\ConversationActivity.cs" />
     <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
     <Compile Include="Holders\ConversationMessageViewHolder.cs" />
     <Compile Include="Infrastructure\ActivityState\ConversationActivityStateModel.cs" />
@@ -154,12 +154,12 @@
     <Compile Include="Infrastructure\AlertsService.cs" />
     <Compile Include="Infrastructure\FacebookCallback.cs" />
     <Compile Include="Infrastructure\FormValidator.cs" />
-    <Compile Include="LoginActivity.cs" />
-    <Compile Include="MainActivity.cs" />
+    <Compile Include="Activities\LoginActivity.cs" />
+    <Compile Include="Activities\MainActivity.cs" />
     <Compile Include="Notifications\NewsService.cs" />
-    <Compile Include="RegisterActivity.cs" />
+    <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="SideMenu\NavigationViewMenu.cs" />
-    <Compile Include="StartActivity.cs" />
+    <Compile Include="Activities\StartActivity.cs" />
     <Compile Include="Resources\Resource.Designer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
