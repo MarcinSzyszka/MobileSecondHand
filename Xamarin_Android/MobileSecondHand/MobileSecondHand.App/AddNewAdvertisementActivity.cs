@@ -13,6 +13,7 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Java.IO;
+using MobileSecondHand.App.Activities;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
@@ -20,8 +21,9 @@ using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 
 namespace MobileSecondHand.App {
-	[Activity(Label = "AddNewAdvertisementActivity")]
-	public class AddNewAdvertisementActivity : Activity {
+	[Activity(Label = "Nowe og³oszenie")]
+	public class AddNewAdvertisementActivity : BaseActivity
+	{
 		BitmapOperationService bitmapOperationService;
 		GpsLocationService gpsLocationService;
 		private EditText advertisementDescription;
@@ -56,6 +58,7 @@ namespace MobileSecondHand.App {
 			base.OnCreate(savedInstanceState);
 			this.gpsLocationService = new GpsLocationService(this, null);
 			SetContentView(Resource.Layout.AddNewAdvertisementActivity);
+			base.SetupToolbar();
 			SetupViews(savedInstanceState);
 			if (savedInstanceState != null) {
 				RestoreViewFieldsValues(savedInstanceState);

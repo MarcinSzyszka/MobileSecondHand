@@ -16,6 +16,7 @@ using Android.Views;
 using Android.Widget;
 using com.refractored.fab;
 using Microsoft.AspNet.SignalR.Client;
+using MobileSecondHand.App.Activities;
 using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
@@ -35,7 +36,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 namespace MobileSecondHand.App
 {
 	[Activity(Label = "Lista og³oszeñ")]
-	public class MainActivity : AppCompatActivity, IInfiniteScrollListener
+	public class MainActivity : BaseActivity, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
 		AdvertisementItemListAdapter advertisementItemListAdapter;
@@ -44,8 +45,6 @@ namespace MobileSecondHand.App
 		SharedPreferencesHelper sharedPreferencesHelper;
 		int advertisementsPage;
 		private ProgressDialogHelper progress;
-		private DrawerLayout drawerLayout;
-		NavigationViewMenu navigationViewMenu;
 
 		public MainActivity()
 		{
@@ -59,8 +58,7 @@ namespace MobileSecondHand.App
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 
 			SetContentView(Resource.Layout.MainActivity);
-
-			SetupToolbar();
+			base.SetupToolbar();
 			advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
 			await SetupViews(savedInstanceState != null);
 		}
@@ -112,60 +110,13 @@ namespace MobileSecondHand.App
 			return handled;
 		}
 
-		public override void OnBackPressed()
-		{
-			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
-			{
-				drawerLayout.CloseDrawers();
-			}
-			else
-			{
-				base.OnBackPressed();
-			}
-
-		}
+		
 
 		public async void OnInfiniteScroll()
 		{
 			await DownloadAndShowAdvertisements(false);
 		}
 
-
-		private void SetupToolbar()
-		{
-			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-
-			var toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
-			SetSupportActionBar(toolbar);
-			//SupportActionBar.SetTitle(Resource.String.app);
-			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
-			SupportActionBar.SetDisplayShowHomeEnabled(true);
-
-			// Create ActionBarDrawerToggle button and add it to the toolbar
-			var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
-			drawerLayout.SetDrawerListener(drawerToggle);
-			drawerToggle.SyncState();
-			drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
-			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
-			{
-				SetupSideMenu();
-			}
-		}
-
-		private void DrawerLayout_DrawerOpened(object sender, DrawerLayout.DrawerOpenedEventArgs e)
-		{
-			SetupSideMenu();
-		}
-
-		private void SetupSideMenu()
-		{
-			if (navigationViewMenu == null)
-			{
-				navigationViewMenu = new NavigationViewMenu(this, this.sharedPreferencesHelper);
-			}
-
-			navigationViewMenu.SetupMenu();
-		}
 
 		private async void RefreshAdvertisementList()
 		{
