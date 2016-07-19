@@ -4,18 +4,17 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:id="@+id/addNewAdvertisementScrollView">
-    <LinearLayout
+	<LinearLayout
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <RelativeLayout
+		<RelativeLayout
             android:id="@+id/relativeLayout4"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-            <TextView
+            android:layout_height="wrap_content">
+			<TextView
                 android:id="@+id/textView4"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="false"
@@ -23,13 +22,18 @@
                 android:layout_centerHorizontal="true"
                 android:text="Tytuł zawierający nazwę, rozmiar i kolor"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:textAlignment="center"
-                android:gravity="center" />
-            <EditText
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:background="@color/headerBackground" />
+
+
+
+
+
+
+			<EditText
                 android:id="@+id/editTextTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -47,10 +51,12 @@
                 android:textAlignment="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:gravity="center" />
-            <TextView
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+			<TextView
                 android:id="@+id/textView6"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="false"
@@ -58,13 +64,13 @@
                 android:layout_centerHorizontal="true"
                 android:text="Dodatkowe informacje o przedmiocie"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
                 android:layout_marginTop="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginRight="5dp"
                 android:textAlignment="center"
-                android:gravity="center" />
-            <EditText
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                style="@drawable/setting_header"
+                android:background="@color/headerBackground" />
+			<EditText
                 android:id="@+id/editTextDescription"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -79,10 +85,12 @@
                 android:textAlignment="center"
                 android:layout_marginLeft="5dp"
                 android:layout_marginRight="5dp"
-                android:gravity="center" />
-            <TextView
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+			<TextView
                 android:id="@+id/textView7"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="false"
                 android:layout_alignParentStart="false"
@@ -90,34 +98,54 @@
                 android:layout_centerHorizontal="true"
                 android:text="Cena"
                 android:textAppearance="?android:attr/textAppearanceMedium"
-                android:textStyle="bold"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:background="@color/headerBackground" />
+
+			<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Rodzaj ogłoszenia"
+                android:id="@+id/textView2"
+                android:layout_below="@+id/editTextPrice"
+                android:layout_centerHorizontal="true"
+                android:background="@color/headerBackground"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
                 android:layout_marginTop="10dp" />
-            <RelativeLayout
+
+			<RelativeLayout
                 android:id="@+id/relativeLayout3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/editTextPrice"
+                android:layout_below="@+id/textView2"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="10dp">
-                <RadioGroup
+				<RadioGroup
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_alignParentTop="true"
                     android:layout_centerHorizontal="true">
-                    <RadioButton
+					<RadioButton
                         android:id="@+id/rdBtnOnlyForSell"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chcę tylko sprzedać"
-                        android:checked="true" />
-                    <RadioButton
+                        android:text="tylko sprzedaż"
+                        android:checked="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+					<RadioButton
                         android:id="@+id/rdBtnForSellAndChange"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Chcę sprzedać, ale też chętnie sie wymienię" />
-                </RadioGroup>
-            </RelativeLayout>
-            <EditText
+                        android:text="sprzedaż/zamiana"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+				</RadioGroup>
+			</RelativeLayout>
+			<EditText
                 android:id="@+id/editTextPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -126,79 +154,116 @@
                 android:ems="10"
                 android:inputType="number"
                 android:textAlignment="center"
-                android:gravity="center" />
-        </RelativeLayout>
-        <RelativeLayout
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="?android:attr/textAppearanceMedium" />
+
+			<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Zdjęcia"
+                android:id="@+id/textView8"
+                android:layout_below="@+id/relativeLayout3"
+                android:layout_marginTop="10dp"
+                android:gravity="center"
+                android:background="@color/headerBackground"
+                android:autoText="false"
+                android:textColor="@color/colorPrimaryDark" />
+
+		</RelativeLayout>
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="fill_parent"
             android:layout_weight="2"
             android:layout_marginTop="10dp">
-            <ImageView
+			<ImageView
                 android:layout_width="300dp"
                 android:layout_height="230dp"
                 android:id="@+id/photoView1"
                 android:layout_centerHorizontal="true"
                 android:src="@drawable/add_photo_image"
                 android:layout_below="@+id/buttonTakePicture" />
-            <ImageView
+			<ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/photoView2"
                 android:layout_below="@+id/photoView1"
                 android:layout_alignParentBottom="false"
                 android:layout_centerHorizontal="true" />
-            <ImageView
+			<ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/photoView3"
                 android:layout_below="@+id/photoView2"
                 android:layout_centerHorizontal="true" />
-            <ImageView
+			<ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/photoView4"
                 android:layout_below="@+id/photoView3"
                 android:layout_centerHorizontal="true" />
-            <Button
+			<Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Zrób zdjęcie"
                 android:id="@+id/buttonTakePicture"
-                android:layout_centerHorizontal="true" />
-        </RelativeLayout>
-        <RelativeLayout
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+		</RelativeLayout>
+
+		<TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:text="Lokalizacja"
+            android:id="@+id/textView9"
+            android:layout_marginTop="10dp"
+            android:background="@color/headerBackground"
+            android:textColor="@color/colorPrimaryDark"
+            android:gravity="center" />
+
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:layout_marginTop="10dp">
-            <RadioGroup
+			<RadioGroup
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true">
-                <RadioButton
+				<RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Użyj mojej bieżącej lokalizacji"
                     android:id="@+id/radioButton3"
-                    android:checked="true" />
-                <RadioButton
+                    android:checked="true"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+				<RadioButton
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Użyj mojej domowej lokalizacji"
-                    android:id="@+id/radioButton4" />
-            </RadioGroup>
-        </RelativeLayout>
-        <RelativeLayout
+                    android:id="@+id/radioButton4"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textAppearance="?android:attr/textAppearanceMedium" />
+			</RadioGroup>
+		</RelativeLayout>
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_marginTop="15dp">
-            <Button
+			<Button
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Opublikuj"
                 android:id="@+id/buttonPublishAdvertisemenetItem"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="15dp" />
-        </RelativeLayout>
-    </LinearLayout>
+                android:layout_marginBottom="15dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:textStyle="bold" />
+		</RelativeLayout>
+	</LinearLayout>
 </ScrollView>
