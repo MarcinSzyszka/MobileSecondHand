@@ -12,6 +12,8 @@ using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.Services.Keywords;
 using MobileSecondHand.Services.Google_Api;
+using MobileSecondHand.App.Infrastructure.ActivityState;
+using MobileSecondHand.App.Activities;
 
 namespace MobileSecondHand.App.SideMenu
 {
@@ -36,7 +38,7 @@ namespace MobileSecondHand.App.SideMenu
 		private TextView textViewNotificationsState;
 		private TextView textViewUserName;
 
-		public NavigationViewMenu(AppCompatActivity activity, SharedPreferencesHelper sharedPreferencesHelper)
+		public NavigationViewMenu(BaseActivity activity, SharedPreferencesHelper sharedPreferencesHelper)
 		{
 			this.progressDialogHelper = new ProgressDialogHelper(activity);
 			this.keyworsService = new KeywordsService();
@@ -46,7 +48,7 @@ namespace MobileSecondHand.App.SideMenu
 			SetupViews(activity);
 		}
 
-		private void SetupViews(AppCompatActivity activity)
+		private void SetupViews(BaseActivity activity)
 		{
 			this.textViewUserName = activity.FindViewById<TextView>(Resource.Id.textViewUserName);
 			this.textViewNotificationsState = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsState);
@@ -189,7 +191,7 @@ namespace MobileSecondHand.App.SideMenu
 			};
 		}
 
-		private void SetupChatStateView(AppCompatActivity activity)
+		private void SetupChatStateView(BaseActivity activity)
 		{
 			this.chatStateSwitch = activity.FindViewById<SwitchCompat>(Resource.Id.switchChatState);
 			this.chatStateSwitch.Click += (sender, args) =>
@@ -199,13 +201,17 @@ namespace MobileSecondHand.App.SideMenu
 				{
 					if (!chatStateSwitch.Checked)
 					{
-						activity.StopService(new Intent(activity, typeof(MessengerService)));
+						appSettings.ChatDisabled = true;
+						activity.StopService(new Intent(ActivityInstanceWhichStartedMessengerService.Activity, typeof(MessengerService)));
 					}
 					else
 					{
+						appSettings.ChatDisabled = false;
 						activity.StartService(new Intent(activity, typeof(MessengerService)));
+						ActivityInstanceWhichStartedMessengerService.Activity = activity;
 					}
 
+					SetAppSettings(appSettings);
 					this.textViewChatState.Text = chatStateSwitch.Checked ? "w³¹czony" : "wy³¹czony";
 				},
 				() =>
@@ -303,17 +309,27 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void SetChatSettings()
 		{
-			if (MessengerService.ServiceIsRunning)
-			{
-
-				this.textViewChatState.Text = "w³¹czony";
-				this.chatStateSwitch.Checked = true;
-			}
-			else
+			if (appSettings.ChatDisabled)
 			{
 				this.textViewChatState.Text = "wy³¹czony";
 				this.chatStateSwitch.Checked = false;
 			}
+			else
+			{
+				this.textViewChatState.Text = "w³¹czony";
+				this.chatStateSwitch.Checked = true;
+			}
+			//if (MessengerService.ServiceIsRunning)
+			//{
+
+			//	this.textViewChatState.Text = "w³¹czony";
+			//	this.chatStateSwitch.Checked = true;
+			//}
+			//else
+			//{
+			//	this.textViewChatState.Text = "wy³¹czony";
+			//	this.chatStateSwitch.Checked = false;
+			//}
 		}
 	}
 }

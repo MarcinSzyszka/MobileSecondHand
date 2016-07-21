@@ -15,6 +15,7 @@ using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
+using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -119,9 +120,9 @@ namespace MobileSecondHand.App.Activities
 		private async Task StartConversationBtn_Click(object sender, EventArgs e) {
 			progress.ShowProgressDialog("Proszê czekaæ. Trwa przetwarzanie informacji..");
 			var bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-			var conversationId = await messagesService.GetConversationId(this.advertisement.SellerId, bearerToken);
+			var conversationInfoModel = await messagesService.GetConversationInfoModel(this.advertisement.SellerId, bearerToken);
 			progress.CloseProgressDialog();
-			if (conversationId == 0)
+			if (conversationInfoModel.ConversationId == 0)
 			{
 				//if 0 that means user is trying to send message to himself
 				AlertsService.ShowToast(this, "Nie mo¿esz wys³aæ wiadomoœci do samego siebie :)");
@@ -129,8 +130,9 @@ namespace MobileSecondHand.App.Activities
 			else
 			{
 				var conversationIntent = new Intent(this, typeof(ConversationActivity));
-				conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_ID, conversationId);
-				conversationIntent.PutExtra(ExtrasKeys.ADDRESSEE_ID, advertisement.SellerId);
+				conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
+				//conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_ID, conversationInfoModel);
+				//conversationIntent.PutExtra(ExtrasKeys.ADDRESSEE_ID, advertisement.SellerId);
 				StartActivity(conversationIntent);
 			}
 		}

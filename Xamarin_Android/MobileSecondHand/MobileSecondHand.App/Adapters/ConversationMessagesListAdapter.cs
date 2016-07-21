@@ -64,7 +64,7 @@ namespace MobileSecondHand.App.Adapters {
 			RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
 			if (currentItem.UserWasSender) {
 				parameters.AddRule(LayoutRules.AlignParentLeft);
-				parameters.SetMargins(5, 5, 30, 5);
+				parameters.SetMargins(10, 5, 50, 15);
 				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_user_message_background_border);
 				var color = new Color(141, 110, 99);
 				vh.MessageHeader.SetTextColor(color);
@@ -72,7 +72,7 @@ namespace MobileSecondHand.App.Adapters {
 			}
 			else {
 				parameters.AddRule(LayoutRules.AlignParentRight);
-				parameters.SetMargins(30, 5, 5, 5);
+				parameters.SetMargins(50, 5, 10, 15);
 				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_sender_message_background_border);
 				var color = new Color(239, 235, 233);
 				vh.MessageHeader.SetTextColor(color);

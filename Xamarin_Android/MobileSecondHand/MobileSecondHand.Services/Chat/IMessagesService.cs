@@ -8,6 +8,6 @@ using MobileSecondHand.Models.Chat;
 namespace MobileSecondHand.Services.Chat {
 	public interface IMessagesService {
 		Task<List<ConversationMessage>> GetMessages(int conversationId, int pageNumber, string bearerToken);
-		Task<int> GetConversationId(string addresseeId, string bearerToken);
+		Task<ConversationInfoModel> GetConversationInfoModel(string addresseeId, string bearerToken);
 	}
 }

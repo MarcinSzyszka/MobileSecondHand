@@ -144,6 +144,7 @@
     <Compile Include="Activities\ConversationActivity.cs" />
     <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
     <Compile Include="Holders\ConversationMessageViewHolder.cs" />
+    <Compile Include="Infrastructure\ActivityState\ActivityInstanceWhichStartedMessengerService.cs" />
     <Compile Include="Infrastructure\ActivityState\ConversationActivityStateModel.cs" />
     <Compile Include="Infrastructure\ActivityState\SharedObject.cs" />
     <Compile Include="Infrastructure\BitmapOperationService.cs" />

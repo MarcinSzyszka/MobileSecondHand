@@ -28,22 +28,22 @@ namespace MobileSecondHand.Services.Chat {
 			return messagesList;
 		}
 
-		public async Task<int> GetConversationId(string addresseeId, string bearerToken)
+		public async Task<ConversationInfoModel> GetConversationInfoModel(string addresseeId, string bearerToken)
 		{
-			var conversationId = 0;
+			var conversationInfoModel = default(ConversationInfoModel);
 			var client = new HttpClient();
 			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 
-			var response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationId", addresseeId));
+			var response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationInfoModel", addresseeId));
 
 			if (response.IsSuccessStatusCode)
 			{
 				var responseString = await response.Content.ReadAsStringAsync();
-				conversationId = JsonConvert.DeserializeObject<int>(responseString);
+				conversationInfoModel = JsonConvert.DeserializeObject<ConversationInfoModel>(responseString);
 			}
 
-			return conversationId;
+			return conversationInfoModel;
 		}
 	}
 }

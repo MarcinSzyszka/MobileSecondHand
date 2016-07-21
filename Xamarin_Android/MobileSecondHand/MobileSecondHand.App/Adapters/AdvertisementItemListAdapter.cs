@@ -49,7 +49,11 @@ namespace MobileSecondHand.App.Adapters {
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
-			if (!currentItem.IsSellerOnline)
+			if (currentItem.IsSellerOnline)
+			{
+				vh.SellerChatStateImageView.SetBackgroundResource(Resource.Drawable.rounded_chat_state_online);
+			}
+			else
 			{
 				vh.SellerChatStateImageView.SetBackgroundResource(Resource.Drawable.rounded_chat_state_offline);
 			}

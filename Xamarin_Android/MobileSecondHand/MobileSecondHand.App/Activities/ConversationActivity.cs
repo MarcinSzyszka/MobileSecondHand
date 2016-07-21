@@ -18,11 +18,12 @@ using MobileSecondHand.Services.Chat;
 using MobileSecondHand.Common.Extensions;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using Android.Content.Res;
+using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "ConversationActivity")]
-	public class ConversationActivity : Activity, IInfiniteScrollListener
+	[Activity(Label = "Rozmowa")]
+	public class ConversationActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
 		SharedPreferencesHelper preferenceHelper;
@@ -31,9 +32,8 @@ namespace MobileSecondHand.App.Activities
 		RecyclerView conversationMessagesRecyclerView;
 		ImageButton btnSendMessage;
 		EditText editTextMessage;
+		ConversationInfoModel conversationInfoModel;
 		int pageNumber;
-		int conversationId;
-		string addresseeId;
 		private string bearerToken;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
@@ -63,6 +63,8 @@ namespace MobileSecondHand.App.Activities
 			this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
 			SetContentView(Resource.Layout.ConversationActivity);
 			GetExtras();
+			base.SetupToolbar();
+
 			pageNumber = 0;
 			await SetupViews(savedInstanceState);
 		}
@@ -100,13 +102,13 @@ namespace MobileSecondHand.App.Activities
 
 		private ConversationActivityStateModel GetStateModel(bool isInForeground)
 		{
-			return new ConversationActivityStateModel(isInForeground, this.conversationId);
+			return new ConversationActivityStateModel(isInForeground, this.conversationInfoModel.ConversationId);
 		}
 
 		private void GetExtras()
 		{
-			conversationId = Intent.GetIntExtra(ExtrasKeys.CONVERSATION_ID, 0);
-			addresseeId = Intent.GetStringExtra(ExtrasKeys.ADDRESSEE_ID);
+			var conversationInfoModelString = Intent.GetStringExtra(ExtrasKeys.CONVERSATION_INFO_MODEL);
+			this.conversationInfoModel = JsonConvert.DeserializeObject<ConversationInfoModel>(conversationInfoModelString);
 		}
 
 		private async Task SetupViews(Bundle savedInstanceState)
@@ -164,11 +166,11 @@ namespace MobileSecondHand.App.Activities
 					var message = new ConversationMessage();
 					message.MessageContent = editTextMessage.Text;
 					message.UserWasSender = true;
-					message.ConversationId = this.conversationId;
+					message.ConversationId = this.conversationInfoModel.ConversationId;
 					message.MessageHeader = String.Format("ja, {0} {1}", date.GetDateDottedStringFormat(), date.GetTimeColonStringFormat());
 
 					this.conversationMessagesListAdapter.AddReceivedMessage(message);
-					chatHubClientService.SendMessage(editTextMessage.Text, this.addresseeId.ToString(), this.conversationId);
+					chatHubClientService.SendMessage(editTextMessage.Text, this.conversationInfoModel.InterlocutorId.ToString(), this.conversationInfoModel.ConversationId);
 
 					editTextMessage.Text = string.Empty;
 				}
@@ -206,7 +208,7 @@ namespace MobileSecondHand.App.Activities
 			}
 			else
 			{
-				messages = await this.messagesService.GetMessages(conversationId, pageNumber, this.bearerToken);
+				messages = await this.messagesService.GetMessages(conversationInfoModel.ConversationId, pageNumber, this.bearerToken);
 			}
 
 			return messages;

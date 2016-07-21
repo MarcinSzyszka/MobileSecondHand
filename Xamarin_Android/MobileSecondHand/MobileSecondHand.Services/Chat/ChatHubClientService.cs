@@ -41,8 +41,18 @@ namespace MobileSecondHand.Services.Chat {
 			SendMessage(chatHubProxy, proxy => proxy.Invoke("SendMessage", messageContent, addresseeId, conversationId.ToString()));
 		}
 
-		public void RegisterReceiveMessages(Action<string, string, string, string> updateChatMessage) {
-			chatHubProxy.On<string, string, string, string>("ReceiveMessage", (messageContent, messageHeader, conversationId, senderId) => updateChatMessage(messageContent, messageHeader, conversationId, senderId));
+		public void MessageReceived(int messageId)
+		{
+			MessageReceived(chatHubProxy, proxy => proxy.Invoke("MessageReceived", messageId.ToString()));
+		}
+
+		public void GetNotReceivedMessages()
+		{
+			chatHubProxy.Invoke("GetNotReceivedMessages");
+		}
+
+		public void RegisterReceiveMessages(Action<string> updateChatMessage) {
+			chatHubProxy.On<string>("ReceiveMessage", (messageObject) => updateChatMessage(messageObject));
 		}
 
 		private void Connect(HubConnection hubObject, Action<HubConnection> hubConnection) {
@@ -52,6 +62,11 @@ namespace MobileSecondHand.Services.Chat {
 		private void SendMessage(IHubProxy hubProxy, Action<IHubProxy> invoke) {
 			invoke(hubProxy);
 		}
+		private void MessageReceived(IHubProxy hubProxy, Action<IHubProxy> invoke)
+		{
+			invoke(hubProxy);
+		}
+
 
 		public static ChatHubClientService RecreateServiceInstance(string bearerToken)
 		{
@@ -70,8 +85,10 @@ namespace MobileSecondHand.Services.Chat {
 
 		public void Dispose()
 		{
-			hubConnection.Dispose();
+			hubConnection.Stop();
 			serviceInstance = null;
 		}
+
+		
 	}
 }

@@ -11,8 +11,12 @@ using Android.Support.V4.Widget;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.App.Chat;
+using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.App.SideMenu;
+using MobileSecondHand.Models.Settings;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace MobileSecondHand.App.Activities
@@ -30,11 +34,15 @@ namespace MobileSecondHand.App.Activities
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
 		}
 
-		protected void SetupToolbar()
+		protected void SetupToolbar(string toolbarText = null)
 		{
 			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
 			var toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
+			if (toolbarText != null)
+			{
+				toolbar.Title = toolbarText;
+			}
 			SetSupportActionBar(toolbar);
 			//SupportActionBar.SetTitle(Resource.String.app);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
@@ -49,6 +57,21 @@ namespace MobileSecondHand.App.Activities
 			{
 				SetupSideMenu();
 			}
+		}
+
+		protected override void OnStart()
+		{
+			base.OnStart();
+			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
+			if (settingsModel != null)
+			{
+				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
+				{
+					StartService(new Intent(this, typeof(MessengerService)));
+					ActivityInstanceWhichStartedMessengerService.Activity = this;
+				}
+			}
+		
 		}
 
 		private void SetupSideMenu()

@@ -63,16 +63,6 @@ namespace MobileSecondHand.App
 			await SetupViews(savedInstanceState != null);
 		}
 
-		protected override void OnStart()
-		{
-			base.OnStart();
-			if (!MessengerService.ServiceIsRunning)
-			{
-				StartService(new Intent(this, typeof(MessengerService)));
-			}
-
-		}
-
 		protected override void OnSaveInstanceState(Bundle outState)
 		{
 			SharedObject.Data = this.advertisementItemListAdapter.AdvertisementItems;
@@ -147,7 +137,10 @@ namespace MobileSecondHand.App
 				{
 					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, this);
 					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
+					var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
+					advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 					advertisementsRecyclerView.SetAdapter(advertisementItemListAdapter);
+					advertisementsRecyclerView.RequestLayout();
 				}
 				else
 				{

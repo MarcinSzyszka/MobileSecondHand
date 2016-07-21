@@ -16,6 +16,7 @@ using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.Services.Chat;
+using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Chat
 {
@@ -26,7 +27,8 @@ namespace MobileSecondHand.App.Chat
 		ChatHubClientService chatHubClientService;
 		private string bearerToken;
 		private Thread signalRThread;
-		private string lastHeader;
+		private int lastMessageId;
+		private Timer timer;
 
 		public static bool ServiceIsRunning { get; private set; }
 
@@ -36,15 +38,10 @@ namespace MobileSecondHand.App.Chat
 			return null;
 		}
 
-		public override bool StopService(Intent name)
-		{
-			ServiceIsRunning = false;
-			return base.StopService(name);
-		}
-
 		public override void OnDestroy()
 		{
 			this.chatHubClientService.Dispose();
+			timer.Dispose();
 			ServiceIsRunning = false;
 			base.OnDestroy();
 		}
@@ -68,8 +65,8 @@ namespace MobileSecondHand.App.Chat
 				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
 				this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
 
-				var timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 5000);
+				timer = new Timer(new TimerCallback(TimerCallBackMethod));
+				timer.Change(0, 10000);
 			}
 		);
 			signalRThread.Start();
@@ -84,36 +81,39 @@ namespace MobileSecondHand.App.Chat
 			}
 		}
 
-		private void ShowNotification(string messageContent, string messageHeader, string conversationId, string senderId)
+		private void ShowNotification(string conversationMessage)
 		{
-			if (lastHeader == messageHeader)
+			var message = JsonConvert.DeserializeObject<ConversationMessage>(conversationMessage);
+			if (lastMessageId == message.Id)
 			{
 				//kilka po³aczeñ z hubem a header jest unikalny dla wiadomoœci
 				return;
 			}
-			if (!ConversationActivity.ConversationActivityStateModel.IsInForeground || ConversationActivity.ConversationActivityStateModel.ConversationId != int.Parse(conversationId))
+			if (!ConversationActivity.ConversationActivityStateModel.IsInForeground || ConversationActivity.ConversationActivityStateModel.ConversationId != message.ConversationId)
 			{
 				var nMgr = (NotificationManager)GetSystemService(NotificationService);
-				var notification = new Notification(Resource.Drawable.Icon, messageContent);
+				var notification = new Notification(Resource.Drawable.Icon, message.MessageContent);
 				notification.Flags = NotificationFlags.AutoCancel;
 				notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 				var intent = new Intent(this, typeof(ConversationActivity));
-				intent.PutExtra(ExtrasKeys.CONVERSATION_ID, int.Parse(conversationId));
-				intent.PutExtra(ExtrasKeys.ADDRESSEE_ID, senderId);
+				var conversationInfoModel = new ConversationInfoModel
+				{
+					ConversationId = message.ConversationId,
+					InterlocutorId = message.SenderId,
+					InterlocutorName = message.SenderName
+				};
+				intent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
 				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, 0);
-				notification.SetLatestEventInfo(this, "Nowa wiadomoœæ", messageContent, pendingIntent);
+				notification.SetLatestEventInfo(this, String.Format("Wiadomoœæ od {0}", message.SenderName), message.MessageContent, pendingIntent);
 				nMgr.Notify(0, notification);
 			}
 			else
 			{
-				var message = new ConversationMessage();
-				message.ConversationId = int.Parse(conversationId);
-				message.MessageContent = messageContent;
-				message.MessageHeader = messageHeader;
 				ConversationActivity.ActivityInstance.AddMessage(message);
 			}
 
-			lastHeader = messageHeader;
+			lastMessageId = message.Id;
+			this.chatHubClientService.MessageReceived(message.Id);
 		}
 	}
 }
