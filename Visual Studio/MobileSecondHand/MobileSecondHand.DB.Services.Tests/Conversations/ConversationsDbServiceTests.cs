@@ -15,6 +15,54 @@ namespace MobileSecondHand.DB.Services.Tests.Conversations
 	public class ConversationsDbServiceTests
 	{
 
+		[Fact]
+		public void GetNotReceivedMessagesDictionary_UserHasTwoNotReceivedMessagesInOneConversation_MethodReturnsLastMessageByDate()
+		{
+			//Arrange
+			var firstUser = new ApplicationUser { UserName = "First User" };
+			var secondUser = new ApplicationUser { UserName = "SecondUser" };
+			var conversation = new Conversation();
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = firstUser});
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = secondUser });
+			var chatMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false, Date = DateTime.Now  };
+			var secondMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false, Date = chatMessageToSave.Date.AddMinutes(1) };
+			conversation.Messages.Add(chatMessageToSave);
+			conversation.Messages.Add(secondMessageToSave);
+			this.fixture.DbContext.Conversation.Add(conversation);
+			this.fixture.DbContext.SaveChanges();
+
+
+			//Act
+			var resultDictionary = serviceUnderTest.GetNotReceivedMessagesDictionary(firstUser.Id);
+
+			//Assert
+			Assert.NotNull(resultDictionary);
+			Assert.Equal(1, resultDictionary.Count);
+			Assert.Equal(secondMessageToSave.ChatMessageId, resultDictionary[conversation.ConversationId].ChatMessageId);
+		}
+
+		[Fact]
+		public void GetNotReceivedMessagesDictionary_ReturnDictionaryWithOneElement()
+		{
+			//Arrange
+			var firstUser = new ApplicationUser { UserName = "First User" };
+			var secondUser = new ApplicationUser { UserName = "SecondUser" };
+			var conversation = new Conversation();
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = firstUser });
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = secondUser });
+			var chatMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false };
+			conversation.Messages.Add(chatMessageToSave);
+			this.fixture.DbContext.Conversation.Add(conversation);
+			this.fixture.DbContext.SaveChanges();
+
+
+			//Act
+			var resultDictionary = serviceUnderTest.GetNotReceivedMessagesDictionary(firstUser.Id);
+
+			//Assert
+			Assert.NotNull(resultDictionary);
+			Assert.Equal(1, resultDictionary.Count);
+		}
 
 		[Fact]
 		public void SaveMessage_CorrectSaveEntityAndReturnIt_WithNavigationProperty_Author()

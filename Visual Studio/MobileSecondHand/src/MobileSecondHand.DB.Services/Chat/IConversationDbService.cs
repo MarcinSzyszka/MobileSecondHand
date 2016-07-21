@@ -12,5 +12,8 @@ namespace MobileSecondHand.DB.Services.Chat {
 		Conversation GetConversationByUsers(string userId, string addresseeId);
 		Conversation CreateConversation(string userId, string addresseeId);
 		ChatMessage SaveMessage(ChatMessage messageDbModel);
+		IDictionary<int, ChatMessage> GetNotReceivedMessagesDictionary(string userId);
+		void UpdateReceivedPropertyInNotReceivedMessages(string userId, IEnumerable<int> conversationsIds);
+		void MarkMessageAsReceived(int messageId);
 	}
 }

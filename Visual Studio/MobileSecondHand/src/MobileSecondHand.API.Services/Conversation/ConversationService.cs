@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Chat;
 using MobileSecondHand.API.Services.Authentication;
@@ -38,21 +39,27 @@ namespace MobileSecondHand.API.Services.Conversation
 		/// <param name="userId">Id of user who is message sender</param>
 		/// <param name="addresseeId">Id of user who will be message addressee</param>
 		/// <returns>Id of conversation record in db</returns>
-		public int GetConversationId(string userId, string addresseeId)
+		public ConversationInfoModel GetConversationInfoModel(string userId, string addresseeId)
 		{
+			var result = new ConversationInfoModel();
 			if (userId == addresseeId)
 			{
 				//sender and addressee is the same user
-				return 0;
+				return result;
 			}
 
 			var conversation = this.conversationDbService.GetConversationByUsers(userId, addresseeId);
 			if (conversation == null)
 			{
-				conversation = this.conversationDbService.CreateConversation(userId, addresseeId);
+				this.conversationDbService.CreateConversation(userId, addresseeId);
+				conversation = this.conversationDbService.GetConversationByUsers(userId, addresseeId);
 			}
 
-			return conversation.ConversationId;
+			result.ConversationId = conversation.ConversationId;
+			result.InterlocutorId = addresseeId;
+			result.InterlocutorName = conversation.Users.First(u => u.UserId != userId).User.GetUserName();
+
+			return result;
 		}
 
 		/// <summary>
@@ -67,12 +74,39 @@ namespace MobileSecondHand.API.Services.Conversation
 			messageDbModel.Content = chatMessageSaveModel.Content;
 			messageDbModel.ConversationId = chatMessageSaveModel.ConversationId;
 			messageDbModel.Date = DateTime.Now;
-			messageDbModel.Received = chatMessageSaveModel.AddresseeCanReceiveMessage;
 
 			messageDbModel = this.conversationDbService.SaveMessage(messageDbModel);
 
 			return MapChatMessageToReadModel(chatMessageSaveModel.AddresseeId, messageDbModel);
 		}
+
+		public void MarkMessageAsReceived(int messageId)
+		{
+			this.conversationDbService.MarkMessageAsReceived(messageId);
+		}
+
+		public IEnumerable<ChatMessageReadModel> GetNotReceivedMessagesAndMarkThemReceived(string userId)
+		{
+			var result = new List<ChatMessageReadModel>();
+			var notReceivedMessagesDictionary = this.conversationDbService.GetNotReceivedMessagesDictionary(userId);
+
+			if (notReceivedMessagesDictionary.Count == 0)
+			{
+				//nothing not received
+				return result;
+			}
+
+			foreach (var item in notReceivedMessagesDictionary)
+			{
+				result.Add(MapChatMessageToReadModel(userId, item.Value));
+			}
+
+			//marking received
+			this.conversationDbService.UpdateReceivedPropertyInNotReceivedMessages(userId, notReceivedMessagesDictionary.Select(k => k.Key));
+
+			return result;
+		}
+
 
 		private ChatMessageReadModel MapChatMessageToReadModel(string userId, ChatMessage message)
 		{
@@ -82,6 +116,8 @@ namespace MobileSecondHand.API.Services.Conversation
 			messageViewModel.MessageHeader = GetMessageHeader(userId, message);
 			messageViewModel.MessageContent = message.Content;
 			messageViewModel.UserWasSender = userId == message.AuthorId;
+			messageViewModel.SenderId = message.AuthorId;
+			messageViewModel.SenderName = message.Author.GetUserName();
 			return messageViewModel;
 		}
 
@@ -89,5 +125,7 @@ namespace MobileSecondHand.API.Services.Conversation
 		{
 			return String.Format("{0}, {1} {2}", userId == message.AuthorId ? "ja" : message.Author.GetUserName(), message.Date.GetDateDottedStringFormat(), message.Date.GetTimeColonStringFormat());
 		}
+
 	}
+
 }

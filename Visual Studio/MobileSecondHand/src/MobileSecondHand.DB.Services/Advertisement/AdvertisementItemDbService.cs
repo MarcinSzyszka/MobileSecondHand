@@ -19,11 +19,21 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		}
 
 		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page) {
+			//return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.Latitude >= coordinatesForSearchModel.LatitudeStart
+			//																			&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
+			//																			&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
+			//																			&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
+			//																	  .Skip(10 * page).Take(10);
+
+			//workaround buga w EF (chujowe bo ciagne wszystko zeby zwrocic 10)
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.Latitude >= coordinatesForSearchModel.LatitudeStart
 																						&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
 																						&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
 																						&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
-																				  .Skip(10 * page).Take(10);
+																						.ToList()
+																						.Skip(10 * page)
+																						.Take(10);
+
 		}
 
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem) {

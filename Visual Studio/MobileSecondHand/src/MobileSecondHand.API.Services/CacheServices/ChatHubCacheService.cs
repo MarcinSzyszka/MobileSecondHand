@@ -19,7 +19,12 @@ namespace MobileSecondHand.API.Services.CacheServices
 		public void AddConnectedClient(UserConnection userConnection)
 		{
 			var connectedUsers = GetConnectedUsers();
-			connectedUsers.Add(userConnection);
+			var connection = connectedUsers.FirstOrDefault(c => c.UserId == userConnection.UserId && c.ConnectionId == userConnection.ConnectionId);
+			if (connection == null)
+			{
+				connectedUsers.Add(userConnection);
+			}
+
 		}
 
 		public void RemoveDisconnectedClient(string connectionId)

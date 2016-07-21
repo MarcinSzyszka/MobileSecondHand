@@ -13,9 +13,10 @@ namespace MobileSecondHand.DB.Services.Chat
 	{
 		const int MESSAGES_COUNT_PER_REQUEST = 20;
 		MobileSecondHandContext dbContext;
-
+		DbContextOptions<MobileSecondHandContext> dbContextOptions;
 		public ConversationDbService(IMobileSecondHandContextOptions mobileSecondHandContextOptions)
 		{
+			dbContextOptions = mobileSecondHandContextOptions.DbContextOptions;
 			this.dbContext = new MobileSecondHandContext(mobileSecondHandContextOptions.DbContextOptions);
 		}
 
@@ -33,7 +34,7 @@ namespace MobileSecondHand.DB.Services.Chat
 
 		public Models.Chat.Conversation GetConversationByUsers(string userId, string addresseeId)
 		{
-			return this.dbContext.Conversation.Include(c => c.Users).FirstOrDefault(c => c.Users.Select(u => u.UserId).Contains(userId) && c.Users.Select(u => u.UserId).Contains(addresseeId));
+			return this.dbContext.Conversation.Include(c => c.Users).ThenInclude(s => s.User).FirstOrDefault(c => c.Users.Select(u => u.UserId).Contains(userId) && c.Users.Select(u => u.UserId).Contains(addresseeId));
 		}
 
 		public List<ChatMessage> GetMessagesInConversation(int conversationId, int pageNumber)
@@ -46,6 +47,52 @@ namespace MobileSecondHand.DB.Services.Chat
 												.Take(MESSAGES_COUNT_PER_REQUEST);
 
 			return messagesQuery.ToList();
+		}
+
+		public IDictionary<int, ChatMessage> GetNotReceivedMessagesDictionary(string userId)
+		{
+			var resultDictionary = new Dictionary<int, ChatMessage>();
+
+			var groupedByConversationId = this.dbContext.ChatMessage.Include(m => m.Author)
+											.Where(m => !m.Received && m.AuthorId != userId)
+											.GroupBy(m => m.ConversationId)
+											.Select(m => new { ConversationId = m.Key, Message = m.OrderByDescending(ms => ms.Date).FirstOrDefault() })
+											.ToList();
+
+			foreach (var item in groupedByConversationId)
+			{
+				if (item.Message != null)
+				{
+					resultDictionary.Add(item.ConversationId, item.Message);
+				}
+			}
+
+			return resultDictionary;
+		}
+
+		public void UpdateReceivedPropertyInNotReceivedMessages(string userId, IEnumerable<int> conversationsIds)
+		{
+			var messages = this.dbContext.ChatMessage
+											.Where(m => conversationsIds.Contains(m.ConversationId) && !m.Received && m.AuthorId != userId)
+											.ToList();
+
+			for (int i = 0; i < messages.Count; i++)
+			{
+				messages[i].Received = true;
+				this.dbContext.Entry(messages[i]).State = EntityState.Modified;
+				if (i % 100 == 0)
+				{
+					SaveChangesAndRecreateContext();
+				}
+
+				this.dbContext.SaveChanges();
+			}
+		}
+
+		private void SaveChangesAndRecreateContext()
+		{
+			this.dbContext.SaveChanges();
+			this.dbContext = new MobileSecondHandContext(dbContextOptions);
 		}
 
 		public ChatMessage SaveMessage(ChatMessage messageDbModel)
@@ -62,6 +109,15 @@ namespace MobileSecondHand.DB.Services.Chat
 			this.dbContext.SaveChanges();
 
 			return this.dbContext.ChatMessage.Include(m => m.Author).FirstOrDefault(m => m.ChatMessageId == messageDbModel.ChatMessageId);
+		}
+
+		public void MarkMessageAsReceived(int messageId)
+		{
+			var message = this.dbContext.ChatMessage.First(m => m.ChatMessageId == messageId);
+			message.Received = true;
+
+			this.dbContext.Entry(message).State = EntityState.Modified;
+			this.dbContext.SaveChanges();
 		}
 	}
 }

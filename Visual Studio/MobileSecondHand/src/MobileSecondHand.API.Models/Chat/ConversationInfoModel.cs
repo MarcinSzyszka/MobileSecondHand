@@ -6,11 +6,10 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.API.Models.Chat
 {
-	public class ChatMessageSaveModel
+	public class ConversationInfoModel
 	{
 		public int ConversationId { get; set; }
-		public string SenderId { get; set; }
-		public string AddresseeId { get; set; }
-		public string Content { get; set; }
+		public string InterlocutorId { get; set; }
+		public string InterlocutorName { get; set; }
 	}
 }
