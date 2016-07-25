@@ -24,6 +24,7 @@ using MobileSecondHand.Models;
 using MobileSecondHand.Services;
 using MobileSecondHand.Workarounds;
 using Newtonsoft.Json.Serialization;
+using NLog.Extensions.Logging;
 
 namespace MobileSecondHand {
 	public class Startup {
@@ -90,11 +91,10 @@ namespace MobileSecondHand {
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
 		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TokenAuthorizationOptions tokenAuthorizationOptions) {
-			loggerFactory.AddConsole(Configuration.GetSection("Logging"));
 			loggerFactory.AddDebug();
-
+			loggerFactory.AddNLog();
 			app.UseApplicationInsightsRequestTelemetry();
-
+			env.ConfigureNLog("nlog.config");
 			if (env.IsDevelopment()) {
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();

@@ -63,7 +63,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchModel searchModel, string userId){
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchAdvertisementsModel searchModel, string userId){
 			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
 			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page).ToList();
 			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, searchModel.CoordinatesModel);

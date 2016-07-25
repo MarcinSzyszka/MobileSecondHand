@@ -20,7 +20,6 @@ namespace MobileSecondHand.API.Services.Tests.Chat
 			var saveModel = new ChatMessageSaveModel
 			{
 				AddresseeId = "addresseeTestId",
-				AddresseeCanReceiveMessage = true,
 				SenderId = "senderTestId",
 				Content = "test content",
 			};

@@ -12,5 +12,6 @@ namespace MobileSecondHand.API.Services.Conversation {
 		ChatMessageReadModel AddMessageToConversation(ChatMessageSaveModel chatMessageSaveModel);
 		IEnumerable<ChatMessageReadModel> GetNotReceivedMessagesAndMarkThemReceived(string userId);
 		void MarkMessageAsReceived(int messageId);
+		List<ConversationItemModel> GetConversations(string userId, int pageNumber);
 	}
 }

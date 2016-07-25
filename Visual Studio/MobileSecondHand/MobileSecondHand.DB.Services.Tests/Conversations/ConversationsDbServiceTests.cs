@@ -14,6 +14,77 @@ namespace MobileSecondHand.DB.Services.Tests.Conversations
 	[Collection("MobileSecondHandContextForTestsCollection")]
 	public class ConversationsDbServiceTests
 	{
+		[Fact]
+		public void GetConversations_MethodShouldReturnTwoConversationWithLastMessages_InDescByDateOrder()
+		{
+			//Arrange
+			var pageNumber = 0;
+			var firstUser = new ApplicationUser { UserName = "First User" };
+			var secondUser = new ApplicationUser { UserName = "SecondUser" };
+			var conversation = new Conversation();
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = firstUser });
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = secondUser });
+			var chatMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false, Date = DateTime.Now };
+			var secondMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false, Date = chatMessageToSave.Date.AddMinutes(5) };
+			conversation.Messages.Add(chatMessageToSave);
+			conversation.Messages.Add(secondMessageToSave);
+			this.fixture.DbContext.Conversation.Add(conversation);
+
+
+			var firstUserOther = new ApplicationUser { UserName = "First User" };
+			var secondUserOthe = new ApplicationUser { UserName = "SecondUser" };
+			var conversationSecond = new Conversation();
+			conversationSecond.Users.Add(new UserToConversation { Conversation = conversationSecond, User = firstUserOther });
+			conversationSecond.Users.Add(new UserToConversation { Conversation = conversationSecond, User = secondUserOthe });
+			var chatMessageToSaveSecond = new ChatMessage { Author = secondUserOthe, Conversation = conversationSecond, Received = false, Date = DateTime.Now };
+			var secondMessageToSaveSecond = new ChatMessage { Author = secondUserOthe, Conversation = conversationSecond, Received = false, Date = chatMessageToSaveSecond.Date.AddMinutes(1) };
+			conversationSecond.Messages.Add(chatMessageToSaveSecond);
+			conversationSecond.Messages.Add(secondMessageToSaveSecond);
+			this.fixture.DbContext.Conversation.Add(conversationSecond);
+			this.fixture.DbContext.SaveChanges();
+
+
+			//Act
+			var resultDictionary = serviceUnderTest.GetConversationsWithLastMessage(firstUser.Id, pageNumber);
+
+			//Assert
+			Assert.NotNull(resultDictionary);
+			Assert.Equal(2, resultDictionary.Count);
+			Assert.Equal(conversation.ConversationId, resultDictionary[0].ConversationId);
+			Assert.Equal(conversationSecond.ConversationId, resultDictionary[1].ConversationId);
+			Assert.Equal(1, resultDictionary[0].Messages.Count);
+			Assert.Equal(1, resultDictionary[1].Messages.Count);
+			Assert.Equal(secondMessageToSave.ChatMessageId, resultDictionary[0].Messages[0].ChatMessageId);
+			Assert.Equal(secondMessageToSaveSecond.ChatMessageId, resultDictionary[1].Messages[0].ChatMessageId);
+		}
+
+		[Fact]
+		public void GetConversations_MethodShouldReturnConversationWithLastMessage()
+		{
+			//Arrange
+			var pageNumber = 0;
+			var firstUser = new ApplicationUser { UserName = "First User" };
+			var secondUser = new ApplicationUser { UserName = "SecondUser" };
+			var conversation = new Conversation();
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = firstUser });
+			conversation.Users.Add(new UserToConversation { Conversation = conversation, User = secondUser });
+			var chatMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false, Date = DateTime.Now };
+			var secondMessageToSave = new ChatMessage { Author = secondUser, Conversation = conversation, Received = false, Date = chatMessageToSave.Date.AddMinutes(1) };
+			conversation.Messages.Add(chatMessageToSave);
+			conversation.Messages.Add(secondMessageToSave);
+			this.fixture.DbContext.Conversation.Add(conversation);
+			this.fixture.DbContext.SaveChanges();
+
+
+			//Act
+			var resultDictionary = serviceUnderTest.GetConversationsWithLastMessage(firstUser.Id, pageNumber);
+
+			//Assert
+			Assert.NotNull(resultDictionary);
+			Assert.Equal(1, resultDictionary.Count);
+			Assert.Equal(1, resultDictionary[0].Messages.Count);
+			Assert.Equal(secondMessageToSave.ChatMessageId, resultDictionary[0].Messages[0].ChatMessageId);
+		}
 
 		[Fact]
 		public void GetNotReceivedMessagesDictionary_UserHasTwoNotReceivedMessagesInOneConversation_MethodReturnsLastMessageByDate()

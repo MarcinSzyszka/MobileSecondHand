@@ -6,7 +6,7 @@ using MobileSecondHand.API.Models.Coordinates;
 
 namespace MobileSecondHand.API.Models.Advertisement
 {
-    public class SearchModel
+    public class SearchAdvertisementsModel
     {
 		public CoordinatesForAdvertisementsModel CoordinatesModel { get; set; }
 		public int Page { get; set; }

@@ -57,5 +57,25 @@ namespace MobileSecondHand.Controllers
 				return Json(String.Format("Wyst¹pi³ b³¹d: {0}", exc.Message));
 			}
 		}
+
+		[HttpGet]
+		[Route("GetConversations/{pageNumber}")]
+		public IActionResult GetConversations(int pageNumber)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				var conversations = this.conversationService.GetConversations(userId, pageNumber);
+
+				return Json(conversations);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json(String.Format("Wyst¹pi³ b³¹d: {0}", exc.Message));
+			}
+		}
+
+		
 	}
 }

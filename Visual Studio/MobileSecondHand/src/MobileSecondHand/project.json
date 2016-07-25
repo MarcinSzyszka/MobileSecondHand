@@ -39,7 +39,8 @@
             "type": "build"
         },
         "System.IdentityModel.Tokens.Jwt":  "5.0.0",
-        "Microsoft.AspNetCore.SignalR.Server": "0.1.0-rtm-21431"
+        "Microsoft.AspNetCore.SignalR.Server": "0.1.0-rtm-21431",
+        "NLog.Extensions.Logging": "1.0.0-rtm-alpha4"
     },
     "tools": {
         "Microsoft.EntityFrameworkCore.Tools": {
@@ -91,7 +92,8 @@
             "wwwroot",
             "Views",
             "appsettings.json",
-            "web.config"
+            "web.config",
+            "nlog.config"
         ]
     },
     "scripts": {

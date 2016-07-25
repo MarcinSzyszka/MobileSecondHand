@@ -119,5 +119,18 @@ namespace MobileSecondHand.DB.Services.Chat
 			this.dbContext.Entry(message).State = EntityState.Modified;
 			this.dbContext.SaveChanges();
 		}
+
+		public List<ConversationReadModel> GetConversationsWithLastMessage(string userId, int pageNumber)
+		{
+			var conversations = this.dbContext.Conversation
+										.Include(c => c.Users).ThenInclude(u => u.User)
+										.Include(c => c.Messages)
+										.Where(c => c.Users.Any(u => u.UserId == userId) && c.Messages.Count > 0)
+										.Select(c => new ConversationReadModel { ConversationId = c.ConversationId, Users = c.Users.Select(u => u.User).ToList(), Messages = c.Messages.OrderByDescending(m => m.Date).Take(1).ToList() }).ToList();
+								
+
+
+			return conversations.OrderByDescending(c => c.Messages.FirstOrDefault().Date).Skip(pageNumber * MESSAGES_COUNT_PER_REQUEST).Take(MESSAGES_COUNT_PER_REQUEST).ToList();
+		}
 	}
 }

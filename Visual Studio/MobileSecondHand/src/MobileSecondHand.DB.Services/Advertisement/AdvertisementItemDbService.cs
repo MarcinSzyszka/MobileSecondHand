@@ -7,6 +7,7 @@ using MobileSecondHand.DB.Models.Advertisement;
 namespace MobileSecondHand.DB.Services.Advertisement {
 	public class AdvertisementItemDbService : IAdvertisementItemDbService {
 		MobileSecondHandContext dbContext;
+		const int ITEMS_PER_REQUEST = 20;
 		public AdvertisementItemDbService(MobileSecondHandContext context) {
 			this.dbContext = context;
 		}
@@ -31,8 +32,8 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 																						&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
 																						&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
 																						.ToList()
-																						.Skip(10 * page)
-																						.Take(10);
+																						.Skip(ITEMS_PER_REQUEST * page)
+																						.Take(ITEMS_PER_REQUEST);
 
 		}
 

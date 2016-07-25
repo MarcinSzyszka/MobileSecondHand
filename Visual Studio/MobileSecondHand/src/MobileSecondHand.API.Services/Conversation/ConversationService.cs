@@ -107,6 +107,32 @@ namespace MobileSecondHand.API.Services.Conversation
 			return result;
 		}
 
+		public List<ConversationItemModel> GetConversations(string userId, int pageNumber)
+		{
+			var conversations = this.conversationDbService.GetConversationsWithLastMessage(userId, pageNumber);
+			List<ConversationItemModel> coversationViewModelList = MapToViewModels(userId, conversations);
+
+			return coversationViewModelList;
+		}
+
+		private List<ConversationItemModel> MapToViewModels(string userId, List<DB.Models.Chat.ConversationReadModel> conversations)
+		{
+			var list = new List<ConversationItemModel>();
+
+			foreach (var conversation in conversations)
+			{
+				var model = new ConversationItemModel();
+				model.Id = conversation.ConversationId;
+				model.InterLocutorId = conversation.Users.First(u => u.Id != userId).Id;
+				model.InterlocutorName = conversation.Users.First(u => u.Id != userId).GetUserName();
+				model.LastMessage = conversation.Messages[0].Content;
+				model.LastMessageDate = GetDateString(conversation.Messages[0].Date);
+
+				list.Add(model);
+			}
+
+			return list;
+		}
 
 		private ChatMessageReadModel MapChatMessageToReadModel(string userId, ChatMessage message)
 		{
@@ -123,9 +149,27 @@ namespace MobileSecondHand.API.Services.Conversation
 
 		private string GetMessageHeader(string userId, ChatMessage message)
 		{
-			return String.Format("{0}, {1} {2}", userId == message.AuthorId ? "ja" : message.Author.GetUserName(), message.Date.GetDateDottedStringFormat(), message.Date.GetTimeColonStringFormat());
+			return string.Format("{0}, {1} {2}", userId == message.AuthorId ? "ja" : message.Author.GetUserName(), GetDateString(message.Date), message.Date.GetTimeColonStringFormat());
 		}
 
+		private string GetDateString(DateTime date)
+		{
+			var date1 = new DateTime(date.Year, date.Month, date.Day);
+			var dateNow = DateTime.Now;
+			var date2 = new DateTime(dateNow.Year, dateNow.Month, dateNow.Day);
+
+			if (date1 == date2)
+			{
+				return "dzisiaj";
+
+			}
+			else if (date1.AddDays(1) == date2)
+			{
+				return "wczoraj";
+			}
+
+			return date.GetDateDottedStringFormat();
+		}
 	}
 
 }
