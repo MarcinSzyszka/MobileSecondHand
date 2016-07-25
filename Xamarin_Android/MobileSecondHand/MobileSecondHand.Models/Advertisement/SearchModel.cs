@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using MobileSecondHand.Models.Location;
 
 namespace MobileSecondHand.Models.Advertisement {
-	public class SearchModel {
+	public class SearchAdvertisementsModel {
 		public CoordinatesForAdvertisementsModel CoordinatesModel { get; set; }
 		public int Page { get; set; }
 	}

@@ -57,6 +57,12 @@ namespace MobileSecondHand.App.SideMenu
 			this.textViewKeywords = activity.FindViewById<TextView>(Resource.Id.textViewKeywords);
 			this.textViewHomeLocalization = activity.FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
 			this.imgBtnConversations = activity.FindViewById<ImageButton>(Resource.Id.imgBtnConversations);
+			this.imgBtnConversations.Click += (s, e) =>
+			{
+				var intent = new Intent(activity, typeof(ConversationsListActivity));
+				activity.StartActivity(intent);
+			};
+
 
 			//conversations
 			SetupChatStateView(activity);

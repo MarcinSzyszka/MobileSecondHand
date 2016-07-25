@@ -2,14 +2,20 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
 	  xmlns:app="http://schemas.android.com/apk/res-auto"
       xmlns:tools="http://schemas.android.com/tools">
+
 	<item
-        android:id="@+id/refreshAdvertisementsOption"
-        app:showAsAction="never"
-        android:title="Odśwież"
-        android:icon="@drawable/perm_group_sync_settings" />
+        android:id="@+id/choosingAdvertisementsList"
+        app:showAsAction="always"
+        android:title="Wybierz ogłoszenia"
+        android:icon="@drawable/wybor_listy" />
 	<item
 		android:id="@+id/chat"
 		app:showAsAction="always"
 		android:title="Chat"
-		android:icon="@drawable/ic_menu_start_conversation" />
+		android:icon="@drawable/rozmowy_toolbar" />
+	<item
+        android:id="@+id/refreshAdvertisementsOption"
+        app:showAsAction="always"
+        android:title="Odśwież"
+        android:icon="@drawable/refresh" />
 </menu>

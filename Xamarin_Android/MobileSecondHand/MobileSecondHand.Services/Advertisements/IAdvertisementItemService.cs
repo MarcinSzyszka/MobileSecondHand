@@ -8,9 +8,9 @@ using MobileSecondHand.Models.Security;
 
 namespace MobileSecondHand.Services.Advertisements {
 	public interface IAdvertisementItemService {
-		Task<List<AdvertisementItemShort>> GetAdvertisements(SearchModel searchModel, TokenModel tokenModel);
-		Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray, TokenModel tokenModel);
-		Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel, TokenModel tokenModel);
-		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId, TokenModel tokenModel);
+		Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel);
+		Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray);
+		Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel);
+		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId);
 	}
 }

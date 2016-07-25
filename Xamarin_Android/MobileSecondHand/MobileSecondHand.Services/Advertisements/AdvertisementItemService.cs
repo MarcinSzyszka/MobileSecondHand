@@ -13,10 +13,16 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Advertisements {
 	public class AdvertisementItemService : IAdvertisementItemService {
-		public async Task<List<AdvertisementItemShort>> GetAdvertisements(SearchModel searchModel, TokenModel tokenModel) {
-			var client = new HttpClient();
+		private HttpClient client;
+
+		public AdvertisementItemService(string bearerToken)
+		{
+			this.client = new HttpClient();
 			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + tokenModel.Token);
+			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+		}
+		public async Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel) {
+		
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisements", stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
@@ -27,11 +33,7 @@ namespace MobileSecondHand.Services.Advertisements {
 			return advertisementList;
 		}
 
-		public async Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray, TokenModel tokenModel) {
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + tokenModel.Token);
-
+		public async Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray) {
 			MultipartFormDataContent form = new MultipartFormDataContent();
 			HttpContent content = new StringContent("uploadPhoto");
 			form.Add(content, "uploadPhoto");
@@ -52,11 +54,7 @@ namespace MobileSecondHand.Services.Advertisements {
 			return photosPaths;
 		}
 
-		public async Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel, TokenModel tokenModel) {
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + tokenModel.Token);
-
+		public async Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel) {
 			var stringContent = new StringContent(JsonConvert.SerializeObject(newAdvertisementModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CreateAdvertisementItem", stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
@@ -66,10 +64,7 @@ namespace MobileSecondHand.Services.Advertisements {
 
 		}
 
-		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId, TokenModel tokenModel) {
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + tokenModel.Token);
+		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId) {
 			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisementDetail/" + advertisementItemId);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
 				return null;

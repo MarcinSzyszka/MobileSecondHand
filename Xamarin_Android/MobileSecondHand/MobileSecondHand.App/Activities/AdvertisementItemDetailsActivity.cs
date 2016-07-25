@@ -40,14 +40,14 @@ namespace MobileSecondHand.App.Activities
 		private int photoImageViewHeight;
 		private AdvertisementItemDetails advertisement;
 
-		public AdvertisementItemDetailsActivity() {
-			this.advertisementItemService = new AdvertisementItemService();
-			this.bitmapOperationService = new BitmapOperationService();
-			messagesService = new MessagesService();
-		}
 		protected override async void OnCreate(Bundle savedInstanceState) {
 			base.OnCreate(savedInstanceState);
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
+			var bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+			this.advertisementItemService = new AdvertisementItemService(bearerToken);
+			messagesService = new MessagesService(bearerToken);
+			this.bitmapOperationService = new BitmapOperationService();
+			
 			SetContentView(Resource.Layout.AdvertisementItemDetailsActivity);
 			base.SetupToolbar();
 			SetupViews();
@@ -119,8 +119,7 @@ namespace MobileSecondHand.App.Activities
 
 		private async Task StartConversationBtn_Click(object sender, EventArgs e) {
 			progress.ShowProgressDialog("Proszê czekaæ. Trwa przetwarzanie informacji..");
-			var bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-			var conversationInfoModel = await messagesService.GetConversationInfoModel(this.advertisement.SellerId, bearerToken);
+			var conversationInfoModel = await messagesService.GetConversationInfoModel(this.advertisement.SellerId);
 			progress.CloseProgressDialog();
 			if (conversationInfoModel.ConversationId == 0)
 			{
@@ -131,16 +130,12 @@ namespace MobileSecondHand.App.Activities
 			{
 				var conversationIntent = new Intent(this, typeof(ConversationActivity));
 				conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
-				//conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_ID, conversationInfoModel);
-				//conversationIntent.PutExtra(ExtrasKeys.ADDRESSEE_ID, advertisement.SellerId);
 				StartActivity(conversationIntent);
 			}
 		}
 
 		private async Task<AdvertisementItemDetails> GetAdvertisement(int advertisementItemId) {
-			var tokenModel = new TokenModel();
-			tokenModel.Token = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-			var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertisementItemId, tokenModel);
+			var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertisementItemId);
 
 			return advertisement;
 		}

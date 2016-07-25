@@ -17,7 +17,7 @@ using MobileSecondHand.Services.Location;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(MainLauncher = true, Icon = "@drawable/Icon")]
+	[Activity(MainLauncher = true, Icon = "@drawable/logo_icon")]
 	public class StartActivity : Activity, ISettingWindowCloseListener
 	{
 		ISignInService signInService;
@@ -47,7 +47,7 @@ namespace MobileSecondHand.App.Activities
 			{
 				userIsLogged = await SignInUser();
 			}
-			catch (Exception)
+			catch (Exception exc)
 			{
 				AlertsService.ShowAlertDialog(this, "Wystąpił problem z połączeniem z serwerem. Spróbuj ponownie później");
 			}

@@ -19,6 +19,7 @@ namespace MobileSecondHand.App.Holders {
 		public TextView TitleTextView { get; set; }
 		public ImageView SellerChatStateImageView { get; set; }
 		public TextView AdvertisementKindTextView { get; set; }
+		public com.refractored.fab.FloatingActionButton DeleteAdvertisementFab { get; private set; }
 
 		public AdvertisementItemViewHolder(View itemView, Action<int> clickAction) : base(itemView) {
 			DistanceTextView = itemView.FindViewById<TextView>(Resource.Id.distanceTextView);
@@ -27,6 +28,8 @@ namespace MobileSecondHand.App.Holders {
 			PhotoImageView = itemView.FindViewById<ImageView>(Resource.Id.advertisementPhotoImageView);
 			SellerChatStateImageView = itemView.FindViewById<ImageView>(Resource.Id.sellerChatState);
 			AdvertisementKindTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementKind);
+			DeleteAdvertisementFab = itemView.FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fab_remove_advertisement);
+			DeleteAdvertisementFab.BringToFront();
 
 			itemView.Click += (s, e) => clickAction(Position);
 		}

@@ -26,12 +26,14 @@ namespace MobileSecondHand.App.Activities
 	{
 		private DrawerLayout drawerLayout;
 		NavigationViewMenu navigationViewMenu;
-		SharedPreferencesHelper sharedPreferencesHelper;
+		protected SharedPreferencesHelper sharedPreferencesHelper;
+		protected string bearerToken;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
+			bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 		}
 
 		protected void SetupToolbar(string toolbarText = null)

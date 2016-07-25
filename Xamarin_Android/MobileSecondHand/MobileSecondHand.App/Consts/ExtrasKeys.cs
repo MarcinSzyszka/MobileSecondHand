@@ -25,5 +25,7 @@ namespace MobileSecondHand.App.Consts
 		public const string ADVERTISEMENTS_LIST_PAGE = "advertisementsPageNumber";
 
 		public const string CONVERSATION_INFO_MODEL = "conversationInfoModel";
+
+		public const string CONVERSATIONS_LIST_PAGE = "aconversationsPageNumber";
 	}
 }

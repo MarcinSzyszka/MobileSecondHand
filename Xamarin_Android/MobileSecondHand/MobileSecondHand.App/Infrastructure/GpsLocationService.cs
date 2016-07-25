@@ -14,6 +14,7 @@ using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.Models.Location;
+using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Location;
 
 namespace MobileSecondHand.App.Infrastructure
@@ -122,14 +123,12 @@ namespace MobileSecondHand.App.Infrastructure
 		{
 			CoordinatesForAdvertisementsModel coordinatesModel = new CoordinatesForAdvertisementsModel();
 			var location = GetLocation();
+			var settingsMOdel = (AppSettingsModel)sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 			if (location == null || latitude == 0 || longitude == 0)
 			{
-				string homeLatitude = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.HOME_LATITUDE);
-				string homeLongitude = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.HOME_LONGITUDE);
-				if (homeLatitude != null && homeLongitude != null)
+				if (settingsMOdel != null && settingsMOdel.LocationSettings.Latitude != 0.0D)
 				{
-					latitude = Double.Parse(homeLatitude);
-					longitude = Double.Parse(homeLongitude);
+					coordinatesModel = settingsMOdel.LocationSettings;
 					AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji. U¿yjê lokalizacji domowej");
 				}
 				else
@@ -138,11 +137,13 @@ namespace MobileSecondHand.App.Infrastructure
 					AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji i nie masz zapisanej lokalizacji domowej.");
 				}
 			}
-			var distance = (int)this.sharedPreferencesHelper.GetSharedPreference<int>(SharedPreferencesKeys.DISTANCE_FORADVERTISEMENT);
+			else
+			{
+				coordinatesModel.Latitude = latitude;
+				coordinatesModel.Longitude = longitude;
+				coordinatesModel.MaxDistance = settingsMOdel != null ? settingsMOdel.LocationSettings.MaxDistance : 10;
+			}
 
-			coordinatesModel.Latitude = latitude;
-			coordinatesModel.Longitude = longitude;
-			coordinatesModel.MaxDistance = distance > 0 ? distance : 10;
 
 			return coordinatesModel;
 		}

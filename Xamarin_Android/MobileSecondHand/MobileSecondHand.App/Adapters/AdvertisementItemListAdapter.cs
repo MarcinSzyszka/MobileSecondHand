@@ -13,6 +13,7 @@ using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.Common.Enumerations;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.EventArgs;
 
@@ -23,17 +24,24 @@ namespace MobileSecondHand.App.Adapters {
 		IInfiniteScrollListener infiniteScrollListener;
 		private int photoImageViewWitdth;
 		private int photoImageViewHeight;
+		private MainActivity mainActivity1;
+		private List<AdvertisementItemShort> advertisements;
+		private AdvertisementsKind advertisementsKind;
+		private MainActivity mainActivity2;
+
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
 		public List<AdvertisementItemShort> AdvertisementItems { get; private set; }
 
-		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, IInfiniteScrollListener infiniteScrollListener) {
+		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, AdvertisementsKind advertisementsKind, IInfiniteScrollListener infiniteScrollListener) {
 			this.AdvertisementItems = advertisementItems;
 			this.context = context;
 			this.bitmapOperationService = new BitmapOperationService();
 			this.infiniteScrollListener = infiniteScrollListener;
+			this.advertisementsKind = advertisementsKind;
 			CalculateSizeForPhotoImageView();
 		}
+
 
 		public override int ItemCount
 		{
@@ -49,6 +57,15 @@ namespace MobileSecondHand.App.Adapters {
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
+			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser)
+			{
+				vh.DeleteAdvertisementFab.Visibility = ViewStates.Visible;
+			}
+			else
+			{
+				vh.DeleteAdvertisementFab.Visibility = ViewStates.Invisible;
+			}
+
 			if (currentItem.IsSellerOnline)
 			{
 				vh.SellerChatStateImageView.SetBackgroundResource(Resource.Drawable.rounded_chat_state_online);

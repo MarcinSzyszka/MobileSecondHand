@@ -1,23 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/advertisementRowLayout">
-	<RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="10dp"
         android:background="@color/advertisementRowBackground"
         android:id="@+id/relativeLayout">
-		<ImageView
+        <com.refractored.fab.FloatingActionButton
+            android:id="@+id/fab_remove_advertisement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:src="@drawable/kasowanie_ogloszenia"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            tools:fab_colorNormal="@color/colorPrimary"
+            tools:fab_colorPressed="#DCE775"
+            tools:fab_colorRipple="#F0F4C3" />
+        <ImageView
             android:src="@drawable/localization"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView1"
             android:layout_alignBottom="@+id/advertisementPriceListTextView"
             android:layout_toLeftOf="@+id/distanceTextView" />
-		<TextView
+        <TextView
             android:text="3 km"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:layout_width="wrap_content"
@@ -29,14 +41,14 @@
             android:layout_alignBaseline="@+id/advertisementPriceListTextView"
             android:layout_marginRight="5dp"
             android:textSize="@dimen/smallText" />
-		<ImageView
+        <ImageView
             android:src="@android:drawable/ic_menu_gallery"
             android:layout_width="200dp"
             android:layout_height="150dp"
             android:id="@+id/advertisementPhotoImageView"
             android:layout_centerHorizontal="true"
             android:layout_alignParentEnd="false" />
-		<TextView
+        <TextView
             android:text="Tytuł ogłoszenia"
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
@@ -48,7 +60,7 @@
             android:layout_margin="5dp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/mediumText" />
-		<TextView
+        <TextView
             android:text="49 zł"
             android:textAppearance="?android:attr/textAppearanceLarge"
             android:layout_width="wrap_content"
@@ -58,7 +70,7 @@
             android:layout_marginLeft="5dp"
             android:textColor="@color/colorPrimaryDark"
             android:textSize="@dimen/largeText" />
-		<TextView
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:textAppearance="?android:attr/textAppearanceSmall"
@@ -70,7 +82,7 @@
             android:layout_margin="5dp"
             android:textIsSelectable="false"
             android:textSize="@dimen/smallText" />
-		<ImageView
+        <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:id="@+id/imageView2"
@@ -80,7 +92,7 @@
             android:src="@drawable/dymekOrozmoe16x16"
             android:layout_marginRight="15dp"
             android:layout_marginTop="5dp" />
-		<ImageView
+        <ImageView
             android:layout_width="8dp"
             android:layout_height="8dp"
             android:id="@+id/sellerChatState"
@@ -89,5 +101,5 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="8dp"
             android:layout_marginRight="5dp" />
-	</RelativeLayout>
+    </RelativeLayout>
 </RelativeLayout>

@@ -134,16 +134,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
+    <Compile Include="Activities\ConversationsListActivity.cs" />
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
     <Compile Include="Adapters\ConversationMessagesListAdapter.cs" />
     <Compile Include="Activities\AddNewAdvertisementActivity.cs" />
     <Compile Include="Activities\AdvertisementItemDetailsActivity.cs" />
+    <Compile Include="Adapters\ConversationsListAdapter.cs" />
     <Compile Include="Chat\MessengerService.cs" />
     <Compile Include="Consts\ExtrasKeys.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
     <Compile Include="Activities\ConversationActivity.cs" />
     <Compile Include="Holders\AdvertisementItemViewHolder.cs" />
     <Compile Include="Holders\ConversationMessageViewHolder.cs" />
+    <Compile Include="Holders\ConversationViewHolder.cs" />
     <Compile Include="Infrastructure\ActivityState\ActivityInstanceWhichStartedMessengerService.cs" />
     <Compile Include="Infrastructure\ActivityState\ConversationActivityStateModel.cs" />
     <Compile Include="Infrastructure\ActivityState\SharedObject.cs" />
@@ -195,10 +198,10 @@
       <SubType>AndroidResource</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ConversationActivity.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ConversationMessageRowView.axml">
-      <SubType>AndroidResource</SubType>
+      <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\toolbar.axml">
       <SubType>Designer</SubType>
@@ -210,6 +213,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\menu\sidenav.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConversationsListActivity.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\ConversationItemRovView.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>
@@ -304,12 +313,6 @@
     <AndroidResource Include="Resources\drawable\Beztytulu.png" />
   </ItemGroup>
   <ItemGroup>
-    <AndroidResource Include="Resources\drawable\logo.png" />
-  </ItemGroup>
-  <ItemGroup>
-    <AndroidResource Include="Resources\drawable\logo_200.png" />
-  </ItemGroup>
-  <ItemGroup>
     <AndroidResource Include="Resources\drawable\dymekOrozmoe.png" />
   </ItemGroup>
   <ItemGroup>
@@ -347,6 +350,27 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\rounded_chat_state_offline.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\dymek_rozmow_32_light.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\refresh.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo_icon.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\logo.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\kasowanie_ogloszenia.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\rozmowy_toolbar.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\wybor_listy.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets')" />

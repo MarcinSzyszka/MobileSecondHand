@@ -24,6 +24,7 @@ using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.App.Notifications;
 using MobileSecondHand.App.SideMenu;
+using MobileSecondHand.Common.Enumerations;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.EventArgs;
@@ -32,41 +33,40 @@ using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
+using MobileSecondHand.Common.Extensions;
 
 namespace MobileSecondHand.App
 {
-	[Activity(Label = "Lista og³oszeñ")]
+	[Activity(Label = "Lista og³oszeñ", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class MainActivity : BaseActivity, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
 		AdvertisementItemListAdapter advertisementItemListAdapter;
 		IAdvertisementItemService advertisementItemService;
 		GpsLocationService gpsLocationService;
-		SharedPreferencesHelper sharedPreferencesHelper;
 		int advertisementsPage;
 		private ProgressDialogHelper progress;
-
-		public MainActivity()
-		{
-			this.advertisementItemService = new AdvertisementItemService();
-		}
+		AdvertisementsKind advertisementsKind;
+		private TextView advertisementsListKindTextView;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+			advertisementsKind = AdvertisementsKind.AdvertisementsAroundUserCurrentLocation;
 			this.gpsLocationService = new GpsLocationService(this, null);
-			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
+			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 
 			SetContentView(Resource.Layout.MainActivity);
 			base.SetupToolbar();
-			advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
-			await SetupViews(savedInstanceState != null);
+			//advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
+			advertisementsPage = 0;
+			await SetupViews();
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)
 		{
-			SharedObject.Data = this.advertisementItemListAdapter.AdvertisementItems;
-			outState.PutInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE, advertisementsPage);
+			//SharedObject.Data = this.advertisementItemListAdapter.AdvertisementItems;
+			//outState.PutInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE, advertisementsPage);
 			base.OnSaveInstanceState(outState);
 		}
 
@@ -77,6 +77,7 @@ namespace MobileSecondHand.App
 			{
 				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(true);
 				menu.FindItem(Resource.Id.chat).SetVisible(true);
+				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(true);
 			}
 
 			return base.OnCreateOptionsMenu(menu);
@@ -92,50 +93,90 @@ namespace MobileSecondHand.App
 					handled = true;
 					break;
 				case Resource.Id.chat:
+					var intent = new Intent(this, typeof(ConversationsListActivity));
+					StartActivity(intent);
 					handled = true;
 					break;
-
+				case Resource.Id.choosingAdvertisementsList:
+					ShowChoosingAdvertisementsKindDialog();
+					handled = true;
+					break;
 			}
 
 			return handled;
 		}
 
-		
+		private void ShowChoosingAdvertisementsKindDialog()
+		{
+			var kindNames = Enum.GetValues(typeof(AdvertisementsKind)).GetAllItemsDisplayNames();
+			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), s =>
+			{
+				advertisementsKind = s.GetEnumValueByDisplayName<AdvertisementsKind>();
+				this.advertisementsListKindTextView.Text = advertisementsKind.GetDisplayName();
+			});
+		}
 
 		public async void OnInfiniteScroll()
 		{
-			await DownloadAndShowAdvertisements(false);
+			try
+			{
+				await DownloadAndShowAdvertisements(false);
+			}
+			catch (Exception)
+			{
+
+				//throw;
+			}
+
 		}
 
 
 		private async void RefreshAdvertisementList()
 		{
 			advertisementItemListAdapter.InfiniteScrollDisabled = false;
-			await DownloadAndShowAdvertisements(true);
+			try
+			{
+				await DownloadAndShowAdvertisements(true);
+			}
+			catch (Exception)
+			{
+
+				//throw;
+			}
+
 		}
 
-		private async Task SetupViews(bool screenOrientationChaged)
+		private async Task SetupViews()
 		{
 			progress = new ProgressDialogHelper(this);
 			SetupFab();
+			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
+			advertisementsListKindTextView.Text = advertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
-			//var mLayoutManager = new LinearLayoutManager(this);
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
-			await DownloadAndShowAdvertisements(screenOrientationChaged ? false : true, screenOrientationChaged);
+			try
+			{
+				await DownloadAndShowAdvertisements(true);
+			}
+			catch (Exception)
+			{
+				//throw;
+			}
+
 		}
 
-		private async Task DownloadAndShowAdvertisements(bool resetList, bool screenOrientationChaged = false)
+		private async Task DownloadAndShowAdvertisements(bool resetList)
 		{
 			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
-			SetAdvertisementListPageNumber(resetList, screenOrientationChaged);
-			List<AdvertisementItemShort> advertisements = await GetStoredOrDownloadAdvertisements(screenOrientationChaged);
+			SetAdvertisementListPageNumber(resetList);
+			List<AdvertisementItemShort> advertisements = await GetAdvertisements();
 
 			if (advertisements != null && advertisements.Count > 0)
 			{
 				if (advertisementItemListAdapter == null || resetList)
 				{
-					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, this);
+					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, advertisementsKind, this);
 					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
 					var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 					advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
@@ -151,38 +192,23 @@ namespace MobileSecondHand.App
 			{
 				if (advertisementItemListAdapter == null)
 				{
-					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), this);
+					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), advertisementsKind, this);
 				}
 				advertisementItemListAdapter.InfiniteScrollDisabled = true;
 			}
 			progress.CloseProgressDialog();
 		}
 
-		private void SetAdvertisementListPageNumber(bool resetList, bool screenOrientationChaged)
+		private void SetAdvertisementListPageNumber(bool resetList)
 		{
 			if (resetList)
 			{
 				advertisementsPage = 0;
 			}
-			else if (!screenOrientationChaged)
+			else
 			{
 				advertisementsPage++;
 			}
-		}
-
-		private async Task<List<AdvertisementItemShort>> GetStoredOrDownloadAdvertisements(bool screenOrientationChaged)
-		{
-			List<AdvertisementItemShort> advertisements;
-			if (screenOrientationChaged)
-			{
-				advertisements = (List<AdvertisementItemShort>)SharedObject.Data;
-			}
-			else
-			{
-				advertisements = await GetAdvertisements();
-			}
-
-			return advertisements;
 		}
 
 		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, ShowAdvertisementDetailsEventArgs eventArgs)
@@ -196,13 +222,49 @@ namespace MobileSecondHand.App
 
 		private async Task<List<AdvertisementItemShort>> GetAdvertisements()
 		{
-			var searchModel = new SearchModel();
-			searchModel.CoordinatesModel = this.gpsLocationService.GetCoordinatesModel();
+			var userAdvertisements = false;
+			var searchModel = new SearchAdvertisementsModel();
 			searchModel.Page = advertisementsPage;
-			var tokenModel = new TokenModel();
-			tokenModel.Token = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 
-			var list = await this.advertisementItemService.GetAdvertisements(searchModel, tokenModel);
+			switch (advertisementsKind)
+			{
+				case AdvertisementsKind.AdvertisementsAroundUserCurrentLocation:
+					searchModel.CoordinatesModel = this.gpsLocationService.GetCoordinatesModel();
+					break;
+				case AdvertisementsKind.AdvertisementsArounUserHomeLocation:
+					var settingsMOdel = (AppSettingsModel)sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
+					if (settingsMOdel != null)
+					{
+						searchModel.CoordinatesModel = settingsMOdel.LocationSettings;
+						if (searchModel.CoordinatesModel.Latitude == 0.0D)
+						{
+							AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
+							throw new Exception("Brak lokalizacji domowej");
+						}
+					}
+					else
+					{
+						AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
+						throw new Exception("Brak lokalizacji domowej");
+					}
+
+					break;
+				case AdvertisementsKind.AdvertisementsCreatedByUser:
+					userAdvertisements = false;
+					break;
+			}
+
+			var list = default(List<AdvertisementItemShort>);
+
+			if (!userAdvertisements)
+			{
+				list = await this.advertisementItemService.GetAdvertisements(searchModel);
+			}
+			else
+			{
+				//pobieranie ogloszen usera
+			}
+
 			return list;
 		}
 
@@ -215,7 +277,6 @@ namespace MobileSecondHand.App
 
 		private void Fab_Click(object sender, EventArgs e)
 		{
-			AlertsService.ShowToast(this, "Bum!");
 			var addAdvertisementIntent = new Intent(this, typeof(AddNewAdvertisementActivity));
 			StartActivity(addAdvertisementIntent);
 		}

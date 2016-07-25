@@ -26,7 +26,6 @@ namespace MobileSecondHand.App.Activities
 	public class ConversationActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
-		SharedPreferencesHelper preferenceHelper;
 		ConversationMessagesListAdapter conversationMessagesListAdapter;
 		ChatHubClientService chatHubClientService;
 		RecyclerView conversationMessagesRecyclerView;
@@ -34,15 +33,9 @@ namespace MobileSecondHand.App.Activities
 		EditText editTextMessage;
 		ConversationInfoModel conversationInfoModel;
 		int pageNumber;
-		private string bearerToken;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
-
-		public ConversationActivity()
-		{
-			this.messagesService = new MessagesService();
-		}
 
 		public async void OnInfiniteScroll()
 		{
@@ -58,9 +51,8 @@ namespace MobileSecondHand.App.Activities
 		{
 			base.OnCreate(savedInstanceState);
 			ActivityInstance = this;
-			this.preferenceHelper = new SharedPreferencesHelper(this);
-			bearerToken = (string)preferenceHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 			this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+			this.messagesService = new MessagesService(bearerToken);
 			SetContentView(Resource.Layout.ConversationActivity);
 			GetExtras();
 			base.SetupToolbar();
@@ -208,7 +200,7 @@ namespace MobileSecondHand.App.Activities
 			}
 			else
 			{
-				messages = await this.messagesService.GetMessages(conversationInfoModel.ConversationId, pageNumber, this.bearerToken);
+				messages = await this.messagesService.GetMessages(conversationInfoModel.ConversationId, pageNumber);
 			}
 
 			return messages;

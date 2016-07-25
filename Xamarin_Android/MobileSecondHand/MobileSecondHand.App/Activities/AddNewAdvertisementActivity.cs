@@ -47,15 +47,11 @@ namespace MobileSecondHand.App.Activities{
 		private Button buttonPublishAdvertisement;
 		private View focusView;
 		IAdvertisementItemService advertisementItemService;
-		SharedPreferencesHelper sharedPreferencesHelper;
 
-		public AddNewAdvertisementActivity() {
-			this.bitmapOperationService = new BitmapOperationService();
-			this.advertisementItemService = new AdvertisementItemService();
-			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
-		}
 		protected override void OnCreate(Bundle savedInstanceState) {
 			base.OnCreate(savedInstanceState);
+			this.bitmapOperationService = new BitmapOperationService();
+			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.gpsLocationService = new GpsLocationService(this, null);
 			SetContentView(Resource.Layout.AddNewAdvertisementActivity);
 			base.SetupToolbar();
@@ -131,13 +127,11 @@ namespace MobileSecondHand.App.Activities{
 				progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 				var location = gpsLocationService.GetLocation();
 				if (location.Longitude != 0.0 && location.Latitude != 0.0) {
-					var tokenModel = new TokenModel();
-					tokenModel.Token = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 					var bytesArray = System.IO.File.ReadAllBytes(mPhotoPath);
-					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(bytesArray, tokenModel);
+					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(bytesArray);
 					if (photosListModel != null) {
 						var newAdvertisementModel = CreateNewAdvertisementItemModel(photosListModel);
-						var success = await this.advertisementItemService.CreateNewAdvertisement(newAdvertisementModel, tokenModel);
+						var success = await this.advertisementItemService.CreateNewAdvertisement(newAdvertisementModel);
 						if (success) {
 							AlertsService.ShowToast(this, "Pomyœlnie utworzone nowe og³oszenie");
 							this.Finish();
