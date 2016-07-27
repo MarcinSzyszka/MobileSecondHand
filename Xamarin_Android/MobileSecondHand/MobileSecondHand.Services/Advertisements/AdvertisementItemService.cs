@@ -22,11 +22,22 @@ namespace MobileSecondHand.Services.Advertisements {
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 		}
 		public async Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel) {
-		
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisements", stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
-				return null;
+				return new List<AdvertisementItemShort>();
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var advertisementList = JsonConvert.DeserializeObject<List<AdvertisementItemShort>>(responseContentString);
+			return advertisementList;
+		}
+
+		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber)
+		{
+			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return new List<AdvertisementItemShort>();
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
 			var advertisementList = JsonConvert.DeserializeObject<List<AdvertisementItemShort>>(responseContentString);

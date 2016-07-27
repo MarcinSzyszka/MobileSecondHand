@@ -141,9 +141,15 @@ namespace MobileSecondHand.App.Infrastructure
 			{
 				coordinatesModel.Latitude = latitude;
 				coordinatesModel.Longitude = longitude;
-				coordinatesModel.MaxDistance = settingsMOdel != null ? settingsMOdel.LocationSettings.MaxDistance : 10;
+				if (settingsMOdel != null && settingsMOdel.LocationSettings.MaxDistance > 0)
+				{
+					coordinatesModel.MaxDistance = settingsMOdel.LocationSettings.MaxDistance;
+				}
+				else
+				{
+					coordinatesModel.MaxDistance = 500;
+				}
 			}
-
 
 			return coordinatesModel;
 		}

@@ -109,11 +109,14 @@ namespace MobileSecondHand.App
 		private void ShowChoosingAdvertisementsKindDialog()
 		{
 			var kindNames = Enum.GetValues(typeof(AdvertisementsKind)).GetAllItemsDisplayNames();
-			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), s =>
+			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), async s =>
 			{
 				advertisementsKind = s.GetEnumValueByDisplayName<AdvertisementsKind>();
 				this.advertisementsListKindTextView.Text = advertisementsKind.GetDisplayName();
+				this.advertisementItemListAdapter.InfiniteScrollDisabled = false;
+				await DownloadAndShowAdvertisements(true);
 			});
+
 		}
 
 		public async void OnInfiniteScroll()
@@ -172,7 +175,7 @@ namespace MobileSecondHand.App
 			SetAdvertisementListPageNumber(resetList);
 			List<AdvertisementItemShort> advertisements = await GetAdvertisements();
 
-			if (advertisements != null && advertisements.Count > 0)
+			if (advertisements.Count > 0 || resetList)
 			{
 				if (advertisementItemListAdapter == null || resetList)
 				{
@@ -236,21 +239,25 @@ namespace MobileSecondHand.App
 					if (settingsMOdel != null)
 					{
 						searchModel.CoordinatesModel = settingsMOdel.LocationSettings;
+						if (searchModel.CoordinatesModel.MaxDistance == 0)
+						{
+							searchModel.CoordinatesModel.MaxDistance = 500;
+						}
 						if (searchModel.CoordinatesModel.Latitude == 0.0D)
 						{
 							AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
-							throw new Exception("Brak lokalizacji domowej");
+							return new List<AdvertisementItemShort>();
 						}
 					}
 					else
 					{
 						AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
-						throw new Exception("Brak lokalizacji domowej");
+						return new List<AdvertisementItemShort>();
 					}
 
 					break;
 				case AdvertisementsKind.AdvertisementsCreatedByUser:
-					userAdvertisements = false;
+					userAdvertisements = true;
 					break;
 			}
 
@@ -262,7 +269,7 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
-				//pobieranie ogloszen usera
+				list = await this.advertisementItemService.GetUserAdvertisements(this.advertisementsPage);
 			}
 
 			return list;
