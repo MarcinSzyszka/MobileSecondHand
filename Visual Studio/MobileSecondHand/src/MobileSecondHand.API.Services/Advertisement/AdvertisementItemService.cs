@@ -22,8 +22,9 @@ namespace MobileSecondHand.API.Services.Advertisement
 		IAppFilesPathHelper appFilesPathHelper;
 		IKeywordsService keywordsService;
 		IChatHubCacheService chatHubCacheService;
+		ILastUsersChecksCacheService lastUsersChecksCacheService;
 
-		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService)
+		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService, ILastUsersChecksCacheService lastUsersChecksCacheService)
 		{
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
@@ -31,6 +32,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.appFilesPathHelper = appFilesPathHelper;
 			this.keywordsService = keywordsService;
 			this.chatHubCacheService = chatHubCacheService;
+			this.lastUsersChecksCacheService = lastUsersChecksCacheService;
 		}
 
 		public void CreateNewAdvertisementItem(NewAdvertisementItemModel newAdvertisementModel, string userId) {
@@ -78,6 +80,16 @@ namespace MobileSecondHand.API.Services.Advertisement
 			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb);
 
 			return advertisementsViewModels;
+		}
+
+		public bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel)
+		{
+			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(coordinatesModel.Latitude, coordinatesModel.Longitude, coordinatesModel.MaxDistance);
+			var lastUserCheckModel = this.lastUsersChecksCacheService.GetLastTimeUserCheck(userId);
+			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredAreaSinceLastCheck(lastUserCheckModel.LastCheckDate, userId, coordinatesForSearchModel).ToList();
+			this.lastUsersChecksCacheService.UpdateLastTimeUserCheckDate(userId);
+
+			return advertisementsFromDb.Count > 0;
 		}
 
 		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId) {

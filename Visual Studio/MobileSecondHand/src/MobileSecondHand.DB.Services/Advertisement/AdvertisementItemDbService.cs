@@ -51,6 +51,16 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		}
 
+		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
+		{
+			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.CreationDate >= lastCheckDate && a.UserId != userId &&
+																				a.Latitude >= coordinatesForSearchModel.LatitudeStart
+																				&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
+																				&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
+																				&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
+																				.Take(1);
+		}
+
 		public IEnumerable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber)
 		{
 			//	return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId)
@@ -87,5 +97,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 			}
 			dbContext.SaveChanges();
 		}
+
+		
 	}
 }

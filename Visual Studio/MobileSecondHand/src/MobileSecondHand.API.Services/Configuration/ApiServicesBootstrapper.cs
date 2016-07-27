@@ -24,6 +24,8 @@ namespace MobileSecondHand.API.Services.Configuration {
 			services.AddTransient<IKeywordsService, KeywordsService>();
 			services.AddTransient<IChatHubCacheService, ChatHubCacheService>();
 			services.AddTransient<IConversationService, ConversationService>();
+			services.AddTransient<ILastUsersChecksCacheService, LastUsersChecksCacheService>();
+			
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {

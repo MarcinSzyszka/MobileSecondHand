@@ -8,6 +8,10 @@ namespace MobileSecondHand.API.Models.Coordinates
     public class CoordinatesForAdvertisementsModel
     {
 		public double Latitude { get; set; }
+		/// <summary>
+		/// Only for home location setting
+		/// </summary>
+		public string LocationAddress { get; set; }
 		public double Longitude { get; set; }
 		public int MaxDistance { get; set; }
 	}

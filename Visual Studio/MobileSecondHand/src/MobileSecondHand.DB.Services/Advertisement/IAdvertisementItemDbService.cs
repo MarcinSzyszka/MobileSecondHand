@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using MobileSecondHand.COMMON.Models;
 using MobileSecondHand.DB.Models.Advertisement;
 
@@ -9,5 +10,6 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page);
 		AdvertisementItem GetAdvertisementDetails(int advertisementId);
 		IEnumerable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber);
+		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
 	}
 }

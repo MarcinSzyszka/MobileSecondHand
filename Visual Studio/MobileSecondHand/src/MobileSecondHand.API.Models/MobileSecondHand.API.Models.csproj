@@ -59,6 +59,7 @@
     <Compile Include="Advertisement\AdvertisementItemShortModel.cs" />
     <Compile Include="Chat\ConversationInfoModel.cs" />
     <Compile Include="Chat\ConversationItemModel.cs" />
+    <Compile Include="CheckingNewAdvertisements\LastTimeUserCheckModel.cs" />
     <Compile Include="Keywords\CategoryKeywordApiModel.cs" />
     <Compile Include="Keywords\ColorKeywordApiModel.cs" />
     <Compile Include="Keywords\IKeywordApiModel.cs" />

@@ -11,6 +11,7 @@ using Microsoft.Extensions.Logging;
 using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections;
+using MobileSecondHand.API.Models.Coordinates;
 
 namespace MobileSecondHand.Controllers {
 	[Microsoft.AspNetCore.Authorization.Authorize("Bearer")]
@@ -67,6 +68,27 @@ namespace MobileSecondHand.Controllers {
 			} catch (Exception exc) {
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc.Message);
+				return null;
+			}
+		}
+		
+
+			[HttpPost]
+		[Route("CheckForNewAdvertisementsSinceLastCheck")]
+		public IActionResult CheckForNewAdvertisementsSinceLastCheck([FromBody]CoordinatesForAdvertisementsModel coordinatesModel)
+		{
+			try
+			{
+				logger.LogInformation("Sprawdzanie czy są nowe ogłoszenia");
+				var userId = this.identityService.GetUserId(User.Identity);
+				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, coordinatesModel);
+				logger.LogInformation("Zakonczono sprawdzanie nowych ogłoszeń");
+				return Json(foundedNewAdvertisements);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc.Message);
 				return null;
 			}
 		}

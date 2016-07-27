@@ -228,6 +228,8 @@
     <Compile Include="Advertisement\AdvertisementItemService.cs" />
     <Compile Include="Advertisement\IAdvertisementItemPhotosUploader.cs" />
     <Compile Include="Advertisement\IAdvertisementItemService.cs" />
+    <Compile Include="CacheServices\ILastUsersChecksCacheService.cs" />
+    <Compile Include="CacheServices\LastUsersChecksCacheService.cs" />
     <Compile Include="Keywords\IKeywordsService.cs" />
     <Compile Include="Keywords\KeywordsService.cs" />
     <Compile Include="Authentication\ApplicationSignInManager.cs" />
