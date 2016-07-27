@@ -11,5 +11,7 @@ namespace MobileSecondHand.COMMON.Models
 		public double LatitudeEnd { get; set; }
 		public double LongitudeStart { get; set; }
 		public double LongitudeEnd { get; set; }
+		public double UserLatitude { get; set; }
+		public double UserLongitude { get; set; }
 	}
 }

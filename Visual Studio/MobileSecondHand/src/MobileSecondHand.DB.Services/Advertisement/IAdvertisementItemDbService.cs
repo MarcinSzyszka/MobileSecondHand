@@ -8,5 +8,6 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		void SaveNewAdvertisementItem(AdvertisementItem advertisementItem);
 		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page);
 		AdvertisementItem GetAdvertisementDetails(int advertisementId);
+		IEnumerable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber);
 	}
 }

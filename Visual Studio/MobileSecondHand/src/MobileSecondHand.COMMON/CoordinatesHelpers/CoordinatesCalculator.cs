@@ -16,6 +16,8 @@ namespace MobileSecondHand.COMMON.CoordinatesHelpers
 			model.LatitudeEnd = lat + (radius * DEGRESS_PER_KILOMETER);
 			model.LongitudeStart = lon - (radius * DEGRESS_PER_KILOMETER);
 			model.LongitudeEnd = lon + (radius * DEGRESS_PER_KILOMETER);
+			model.UserLatitude = lat;
+			model.UserLongitude = lon;
 
 			return model;
 		}

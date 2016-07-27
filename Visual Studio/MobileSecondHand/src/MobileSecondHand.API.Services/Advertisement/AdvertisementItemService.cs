@@ -45,6 +45,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				Price = newAdvertisementModel.AdvertisementPrice,
 				IsActive = true,
 				CreationDate = DateTime.Now,
+				ExpirationDate = DateTime.Now.AddDays(7),
 				Latitude = newAdvertisementModel.Latitude,
 				Longitude = newAdvertisementModel.Longitude,
 				IsOnlyForSell = newAdvertisementModel.IsOnlyForSell,
@@ -63,10 +64,18 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchAdvertisementsModel searchModel, string userId){
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchAdvertisementsModel searchModel, string userId) {
 			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
 			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page).ToList();
 			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, searchModel.CoordinatesModel);
+
+			return advertisementsViewModels;
+		}
+
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetUserAdvertisements(string userId, int pageNumber)
+		{
+			var advertisementsFromDb = this.advertisementItemDbService.GetUserAdvertisements(userId, pageNumber).ToList();
+			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb);
 
 			return advertisementsViewModels;
 		}
@@ -94,7 +103,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return viewModel;
 		}
 
-		private async Task<IEnumerable<AdvertisementItemShortModel>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesForAdvertisementsModel coordinatesModel) {
+		private async Task<IEnumerable<AdvertisementItemShortModel>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesForAdvertisementsModel coordinatesModel = null) {
 			var viewModelsList = new List<AdvertisementItemShortModel>();
 			foreach (var dbModel in advertisementsFromDb) {
 				var viewModel = new AdvertisementItemShortModel();
@@ -102,7 +111,14 @@ namespace MobileSecondHand.API.Services.Advertisement
 				viewModel.AdvertisementTitle = dbModel.Title;
 				viewModel.AdvertisementPrice = dbModel.Price;
 				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoPath);
+				if (coordinatesModel != null)
+				{
 				viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
+				}
+				else
+				{
+					viewModel.Distance = 0.0D;
+				}
 				viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(dbModel.UserId);
 				viewModel.IsOnlyForSell = dbModel.IsOnlyForSell;
 				viewModelsList.Add(viewModel);

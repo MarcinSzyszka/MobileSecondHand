@@ -72,6 +72,27 @@ namespace MobileSecondHand.Controllers {
 		}
 
 		[HttpGet]
+		[Route("GetUserAdvertisements/{pageNumber}")]
+		public async Task<IActionResult> GetUserAdvertisements(int pageNumber)
+		{
+			try
+			{
+				logger.LogInformation("Pobieranie ogłoszeń utworzonych przez użytkownika");
+				var userId = this.identityService.GetUserId(User.Identity);
+				var advertisements = await this.advertisementItemService.GetUserAdvertisements(userId, pageNumber);
+				logger.LogInformation("Zakonczono pobieranie ogłoszeń");
+				return Json(advertisements);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc.Message);
+				return null;
+			}
+		}
+
+		
+		[HttpGet]
 		[Route("GetAdvertisementDetail/{advertisementId}")]
 		public async Task<IActionResult> GetAdvertisementDetail(int advertisementId) {
 			try {

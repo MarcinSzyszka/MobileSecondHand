@@ -7,5 +7,6 @@ namespace MobileSecondHand.API.Services.Advertisement {
 		void CreateNewAdvertisementItem(NewAdvertisementItemModel newAdvertisementModel, string userId);
 		Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchAdvertisementsModel searchModel, string userId);
 		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId);
+		Task<IEnumerable<AdvertisementItemShortModel>> GetUserAdvertisements(string userId, int pageNumber);
 	}
 }
