@@ -126,22 +126,14 @@ namespace MobileSecondHand.App.Infrastructure
 			var settingsMOdel = (AppSettingsModel)sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 			if (location == null || latitude == 0 || longitude == 0)
 			{
-				if (settingsMOdel != null && settingsMOdel.LocationSettings.Latitude != 0.0D)
-				{
-					coordinatesModel = settingsMOdel.LocationSettings;
-					AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji. U¿yjê lokalizacji domowej");
-				}
-				else
-				{
-					//in future ask user for him home location and show activity to set that
-					AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji i nie masz zapisanej lokalizacji domowej.");
-				}
+				AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji. SprawdŸ ustawienia GPS");
+				throw new Exception("Brak lokalizacji");
 			}
 			else
 			{
 				coordinatesModel.Latitude = latitude;
 				coordinatesModel.Longitude = longitude;
-				if (settingsMOdel != null && settingsMOdel.LocationSettings.MaxDistance > 0)
+				if (settingsMOdel != null)
 				{
 					coordinatesModel.MaxDistance = settingsMOdel.LocationSettings.MaxDistance;
 				}

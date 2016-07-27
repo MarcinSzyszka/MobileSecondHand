@@ -12,5 +12,6 @@ namespace MobileSecondHand.Models.Settings
 		public CoordinatesForAdvertisementsModel LocationSettings { get; set; } = new CoordinatesForAdvertisementsModel();
 		public IDictionary<int, string> Keywords { get; set; } = new Dictionary<int, string>();
 		public bool ChatDisabled { get; set; }
+		public bool NotificationsDisabled { get; set; }
 	}
 }

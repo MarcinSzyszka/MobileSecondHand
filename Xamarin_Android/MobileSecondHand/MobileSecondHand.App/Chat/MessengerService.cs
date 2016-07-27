@@ -43,6 +43,7 @@ namespace MobileSecondHand.App.Chat
 			this.chatHubClientService.Dispose();
 			timer.Dispose();
 			ServiceIsRunning = false;
+			this.signalRThread.Abort();
 			base.OnDestroy();
 		}
 
@@ -52,7 +53,6 @@ namespace MobileSecondHand.App.Chat
 			ServiceIsRunning = true;
 			
 			DoWork();
-
 			return StartCommandResult.Sticky;
 		}
 

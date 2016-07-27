@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
+using MobileSecondHand.Models.Location;
 using MobileSecondHand.Models.Security;
 using Newtonsoft.Json;
 
@@ -42,6 +43,19 @@ namespace MobileSecondHand.Services.Advertisements {
 			var responseContentString = await response.Content.ReadAsStringAsync();
 			var advertisementList = JsonConvert.DeserializeObject<List<AdvertisementItemShort>>(responseContentString);
 			return advertisementList;
+		}
+
+		public async Task<bool> CheckForNewAdvertisementsSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
+		{
+			var stringContent = new StringContent(JsonConvert.SerializeObject(coordinatesMOdel), Encoding.UTF8, "application/json");
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsSinceLastCheck", stringContent);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return false;
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var areTherNewAdvertisements = JsonConvert.DeserializeObject<bool>(responseContentString);
+			return areTherNewAdvertisements;
 		}
 
 		public async Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray) {

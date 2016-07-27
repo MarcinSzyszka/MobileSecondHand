@@ -155,7 +155,7 @@ namespace MobileSecondHand.App.SideMenu
 			};
 		}
 
-		private void SetupNotificationsStateView(AppCompatActivity activity)
+		private void SetupNotificationsStateView(BaseActivity activity)
 		{
 			this.notificationsStateSwitch = activity.FindViewById<SwitchCompat>(Resource.Id.switchNotificationsState);
 			this.notificationsStateSwitch.Click += (sender, args) =>
@@ -165,13 +165,17 @@ namespace MobileSecondHand.App.SideMenu
 				{
 					if (!notificationsStateSwitch.Checked)
 					{
-						activity.StopService(new Intent(activity, typeof(MessengerService)));
+						appSettings.NotificationsDisabled = true;
+						activity.StopService(new Intent(ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService, typeof(NewsService)));
 					}
 					else
 					{
-						activity.StartService(new Intent(activity, typeof(MessengerService)));
+						appSettings.NotificationsDisabled = false;
+						activity.StartService(new Intent(activity, typeof(NewsService)));
+						ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = activity;
 					}
 
+					SetAppSettings(appSettings);
 					this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "w³¹czone" : "wy³¹czone";
 				},
 				() =>
@@ -186,7 +190,7 @@ namespace MobileSecondHand.App.SideMenu
 				string[] itemList = activity.Resources.GetStringArray(Resource.Array.notifications_radius);
 				AlertsService.ShowSingleSelectListString(activity, itemList, selectedText =>
 				{
-					var resultRadius = 0;
+					var resultRadius = 500;
 					var selectedRadius = selectedText.Split(new char[] { ' ' })[0];
 					int.TryParse(selectedRadius, out resultRadius);
 					appSettings.LocationSettings.MaxDistance = resultRadius;
@@ -208,13 +212,13 @@ namespace MobileSecondHand.App.SideMenu
 					if (!chatStateSwitch.Checked)
 					{
 						appSettings.ChatDisabled = true;
-						activity.StopService(new Intent(ActivityInstanceWhichStartedMessengerService.Activity, typeof(MessengerService)));
+						activity.StopService(new Intent(ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService, typeof(MessengerService)));
 					}
 					else
 					{
 						appSettings.ChatDisabled = false;
 						activity.StartService(new Intent(activity, typeof(MessengerService)));
-						ActivityInstanceWhichStartedMessengerService.Activity = activity;
+						ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = activity;
 					}
 
 					SetAppSettings(appSettings);
@@ -294,13 +298,13 @@ namespace MobileSecondHand.App.SideMenu
 				this.textViewKeywords.Text = "Wszystkie";
 			}
 
-			this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance > 0 ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
+			this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance < 500 ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
 
 		}
 
 		private void SetNotificationsSettings()
 		{
-			if (NewsService.ServiceIsRunnig)
+			if (NewsService.ServiceIsRunning)
 			{
 				this.textViewNotificationsState.Text = "w³¹czone";
 

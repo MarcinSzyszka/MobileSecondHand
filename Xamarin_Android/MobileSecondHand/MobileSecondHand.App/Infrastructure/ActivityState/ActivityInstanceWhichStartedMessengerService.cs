@@ -13,8 +13,9 @@ using MobileSecondHand.App.Activities;
 
 namespace MobileSecondHand.App.Infrastructure.ActivityState
 {
-	public class ActivityInstanceWhichStartedMessengerService
+	public class ActivityInstancesWhichStartedServices
 	{
-		public static BaseActivity Activity { get; set; }
+		public static BaseActivity ActivityWhichStartedMessengerService { get; set; }
+		public static BaseActivity ActivityWhichStartedNotificationsService { get; set; }
 	}
 }

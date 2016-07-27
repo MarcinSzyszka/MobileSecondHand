@@ -34,6 +34,7 @@ using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Location;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using MobileSecondHand.Common.Extensions;
+using Newtonsoft.Json;
 
 namespace MobileSecondHand.App
 {
@@ -52,7 +53,7 @@ namespace MobileSecondHand.App
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-			advertisementsKind = AdvertisementsKind.AdvertisementsAroundUserCurrentLocation;
+			SetAdvertisementsListKind();
 			this.gpsLocationService = new GpsLocationService(this, null);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 
@@ -61,6 +62,20 @@ namespace MobileSecondHand.App
 			//advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
 			advertisementsPage = 0;
 			await SetupViews();
+		}
+
+		private void SetAdvertisementsListKind()
+		{
+			var kindExtra = Intent.GetStringExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND);
+			if (kindExtra != null)
+			{
+				advertisementsKind = JsonConvert.DeserializeObject<AdvertisementsKind>(kindExtra);
+			}
+			else
+			{
+				advertisementsKind = AdvertisementsKind.AdvertisementsAroundUserCurrentLocation;
+			}
+
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)
@@ -232,17 +247,21 @@ namespace MobileSecondHand.App
 			switch (advertisementsKind)
 			{
 				case AdvertisementsKind.AdvertisementsAroundUserCurrentLocation:
-					searchModel.CoordinatesModel = this.gpsLocationService.GetCoordinatesModel();
+					try
+					{
+						searchModel.CoordinatesModel = this.gpsLocationService.GetCoordinatesModel();
+					}
+					catch (Exception exc)
+					{
+						return new List<AdvertisementItemShort>();
+					}
+
 					break;
 				case AdvertisementsKind.AdvertisementsArounUserHomeLocation:
 					var settingsMOdel = (AppSettingsModel)sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 					if (settingsMOdel != null)
 					{
 						searchModel.CoordinatesModel = settingsMOdel.LocationSettings;
-						if (searchModel.CoordinatesModel.MaxDistance == 0)
-						{
-							searchModel.CoordinatesModel.MaxDistance = 500;
-						}
 						if (searchModel.CoordinatesModel.Latitude == 0.0D)
 						{
 							AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");

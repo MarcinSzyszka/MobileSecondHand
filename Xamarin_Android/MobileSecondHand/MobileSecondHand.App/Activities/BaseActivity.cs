@@ -15,6 +15,7 @@ using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.App.Infrastructure.ActivityState;
+using MobileSecondHand.App.Notifications;
 using MobileSecondHand.App.SideMenu;
 using MobileSecondHand.Models.Settings;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
@@ -70,7 +71,12 @@ namespace MobileSecondHand.App.Activities
 				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 				{
 					StartService(new Intent(this, typeof(MessengerService)));
-					ActivityInstanceWhichStartedMessengerService.Activity = this;
+					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this;
+				}
+				if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
+				{
+					StartService(new Intent(this, typeof(NewsService)));
+					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this;
 				}
 			}
 		
