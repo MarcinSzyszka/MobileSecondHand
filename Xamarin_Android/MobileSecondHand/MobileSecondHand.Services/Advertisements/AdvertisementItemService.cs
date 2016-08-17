@@ -45,10 +45,23 @@ namespace MobileSecondHand.Services.Advertisements {
 			return advertisementList;
 		}
 
-		public async Task<bool> CheckForNewAdvertisementsSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
+		public async Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(coordinatesMOdel), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsSinceLastCheck", stringContent);
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck", stringContent);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return false;
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var areTherNewAdvertisements = JsonConvert.DeserializeObject<bool>(responseContentString);
+			return areTherNewAdvertisements;
+		}
+
+		public async Task<bool> CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
+		{
+			var stringContent = new StringContent(JsonConvert.SerializeObject(coordinatesMOdel), Encoding.UTF8, "application/json");
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck", stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -98,6 +111,20 @@ namespace MobileSecondHand.Services.Advertisements {
 			var advertisementDetails = JsonConvert.DeserializeObject<AdvertisementItemDetails>(responseContentString);
 
 			return advertisementDetails;
+		}
+
+		public async Task<bool> DeleteAdvertisement(int advertisementId)
+		{
+			var stringContent = new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json");
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "DeleteAdvertisement/", stringContent);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return false;
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var success = JsonConvert.DeserializeObject<bool>(responseContentString);
+
+			return success;
 		}
 	}
 }

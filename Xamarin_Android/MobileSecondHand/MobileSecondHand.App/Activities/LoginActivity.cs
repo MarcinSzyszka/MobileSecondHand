@@ -22,7 +22,7 @@ using Xamarin.Facebook.Login.Widget;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "LoginActivity")]
+	[Activity]
 	public class LoginActivity : Activity {
 		private ICallbackManager callbackManager;
 		private ISignInService signInService;
@@ -32,6 +32,7 @@ namespace MobileSecondHand.App.Activities
 		private Button buttonLogin;
 		private Button buttonRegistration;
 		private View focusView;
+		private ProgressDialogHelper progress;
 
 		public LoginActivity() {
 			this.signInService = new SignInService();
@@ -54,6 +55,7 @@ namespace MobileSecondHand.App.Activities
 		}
 
 		private void SetupViews() {
+			progress = new ProgressDialogHelper(this);
 			SetupFacebookLogin();
 			SetupStandardLogin();
 			SetupGoToRegistration();
@@ -87,16 +89,19 @@ namespace MobileSecondHand.App.Activities
 		}
 
 		private async Task LoginUser() {
+			progress.ShowProgressDialog("Trwa logowanie... Proszê czekaæ");
 			var loginModel = new LoginModel {
 				Email = emailInput.Text,
 				Password = passwordInput.Text
 			};
 			var tokenModel = await this.signInService.SignInUserStandard(loginModel);
 			if (tokenModel != null) {
+				progress.CloseProgressDialog();
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
 				GoToMainActivity();
 			}
 			else {
+				progress.CloseProgressDialog();
 				AlertsService.ShowToast(this, "Coœ posz³o nie tak na serwerze!");
 			}
 		}
@@ -113,18 +118,23 @@ namespace MobileSecondHand.App.Activities
 			var loginCallback = new FacebookCallback<LoginResult> {
 				HandleSuccess = async loginResult => {
 					AlertsService.ShowToast(this, "Facebook zwróci³ token");
+					progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
 					var userIsLogged = await LoginWithFacebook();
 					if (userIsLogged) {
+						progress.CloseProgressDialog();
 						GoToMainActivity();
 					}
 					else {
+						progress.CloseProgressDialog();
 						AlertsService.ShowToast(this, "Facebook zwróci³ token, ale coœ posz³o nie tak z logowaniem na serwerze");
 					}
 				},
 				HandleCancel = () => {
+					progress.CloseProgressDialog();
 					AlertsService.ShowToast(this, "Przerwano logowanie z facebookiem");
 				},
 				HandleError = loginError => {
+					progress.CloseProgressDialog();
 					AlertsService.ShowToast(this, "Wyst¹pi³ b³¹ podczas logowanie z facebookiem");
 				}
 			};

@@ -14,6 +14,7 @@ using MobileSecondHand.Services.Keywords;
 using MobileSecondHand.Services.Google_Api;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.App.Activities;
+using Android.App;
 
 namespace MobileSecondHand.App.SideMenu
 {
@@ -171,8 +172,8 @@ namespace MobileSecondHand.App.SideMenu
 					else
 					{
 						appSettings.NotificationsDisabled = false;
-						activity.StartService(new Intent(activity, typeof(NewsService)));
-						ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = activity;
+						activity.StartService(new Intent(activity.BaseContext, typeof(NewsService)));
+						ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = activity.BaseContext;
 					}
 
 					SetAppSettings(appSettings);
@@ -217,8 +218,8 @@ namespace MobileSecondHand.App.SideMenu
 					else
 					{
 						appSettings.ChatDisabled = false;
-						activity.StartService(new Intent(activity, typeof(MessengerService)));
-						ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = activity;
+						activity.StartService(new Intent(activity.BaseContext, typeof(MessengerService)));
+						ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = activity.BaseContext;
 					}
 
 					SetAppSettings(appSettings);
@@ -251,6 +252,7 @@ namespace MobileSecondHand.App.SideMenu
 			if (settingsModel == null)
 			{
 				settingsModel = new AppSettingsModel();
+				settingsModel.LocationSettings.MaxDistance = 500;
 				this.sharedPreferencesHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, settingsModel);
 			}
 
@@ -304,7 +306,7 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void SetNotificationsSettings()
 		{
-			if (NewsService.ServiceIsRunning)
+			if (!appSettings.NotificationsDisabled)
 			{
 				this.textViewNotificationsState.Text = "w³¹czone";
 
@@ -329,17 +331,6 @@ namespace MobileSecondHand.App.SideMenu
 				this.textViewChatState.Text = "w³¹czony";
 				this.chatStateSwitch.Checked = true;
 			}
-			//if (MessengerService.ServiceIsRunning)
-			//{
-
-			//	this.textViewChatState.Text = "w³¹czony";
-			//	this.chatStateSwitch.Checked = true;
-			//}
-			//else
-			//{
-			//	this.textViewChatState.Text = "wy³¹czony";
-			//	this.chatStateSwitch.Checked = false;
-			//}
 		}
 	}
 }

@@ -89,7 +89,7 @@ namespace MobileSecondHand.App.Notifications
 			}
 
 			this.homeLocationCoordinatesModel = appsettings.LocationSettings;
-			var areThereNewAdvertisements = await this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(currentLocationCoordinatesModel);
+			var areThereNewAdvertisements = await this.advertisementItemService.CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(currentLocationCoordinatesModel);
 			if (areThereNewAdvertisements)
 			{
 				NotifyUserAboutNewAdvertisements(AdvertisementsKind.AdvertisementsArounUserHomeLocation);
@@ -108,7 +108,7 @@ namespace MobileSecondHand.App.Notifications
 				//nic nie robiê
 			}
 
-			var areThereNewAdvertisements = await this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(currentLocationCoordinatesModel);
+			var areThereNewAdvertisements = await this.advertisementItemService.CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(currentLocationCoordinatesModel);
 			if (areThereNewAdvertisements)
 			{
 				NotifyUserAboutNewAdvertisements(AdvertisementsKind.AdvertisementsAroundUserCurrentLocation);

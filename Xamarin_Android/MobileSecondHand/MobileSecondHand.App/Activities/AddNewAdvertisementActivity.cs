@@ -21,7 +21,7 @@ using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 
 namespace MobileSecondHand.App.Activities{
-	[Activity(Label = "Nowe og³oszenie")]
+	[Activity]
 	public class AddNewAdvertisementActivity : BaseActivity
 	{
 		BitmapOperationService bitmapOperationService;
@@ -68,6 +68,36 @@ namespace MobileSecondHand.App.Activities{
 				SetPhoto();
 			}
 
+		}
+
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.conversationMenu, menu);
+			if (menu != null)
+			{
+				menu.FindItem(Resource.Id.home).SetVisible(true);
+				menu.FindItem(Resource.Id.chat).SetVisible(true);
+			}
+
+			return base.OnCreateOptionsMenu(menu);
+		}
+
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			var handled = false;
+			switch (item.ItemId)
+			{
+				case Resource.Id.home:
+					GoToMainPage();
+					handled = true;
+					break;
+				case Resource.Id.chat:
+					GoToChat();
+					handled = true;
+					break;
+			}
+
+			return handled;
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState) {
@@ -123,12 +153,13 @@ namespace MobileSecondHand.App.Activities{
 		}
 
 		private async void ButtonPublishAdvertisement_Click(object sender, EventArgs e) {
+			progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 			if (AdvertisementItemDataIsValidate()) {
-				progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 				var location = gpsLocationService.GetLocation();
 				if (location.Longitude != 0.0 && location.Latitude != 0.0) {
 					var bytesArray = System.IO.File.ReadAllBytes(mPhotoPath);
-					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(bytesArray);
+					var resized = this.bitmapOperationService.ResizeImageAndGetByteArray(bytesArray, 900);
+					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(resized);
 					if (photosListModel != null) {
 						var newAdvertisementModel = CreateNewAdvertisementItemModel(photosListModel);
 						var success = await this.advertisementItemService.CreateNewAdvertisement(newAdvertisementModel);
@@ -146,8 +177,8 @@ namespace MobileSecondHand.App.Activities{
 					//lokalizacja jest chujowa
 					Toast.MakeText(this, "Wspólrzêdne lokalizacji s¹ zerowe", ToastLength.Long).Show();
 				}
-				progress.CloseProgressDialog();
 			}
+			progress.CloseProgressDialog();
 		}
 
 		private NewAdvertisementItem CreateNewAdvertisementItemModel(AdvertisementItemPhotosPaths photosListModel) {

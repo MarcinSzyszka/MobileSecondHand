@@ -19,7 +19,7 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Szczegó³y og³oszenia")]
+	[Activity]
 	public class AdvertisementItemDetailsActivity : BaseActivity
 	{
 		private ProgressDialogHelper progress;
@@ -39,6 +39,7 @@ namespace MobileSecondHand.App.Activities
 		private int photoImageViewWitdth;
 		private int photoImageViewHeight;
 		private AdvertisementItemDetails advertisement;
+		private RelativeLayout advertisementDetailsWrapperLayout;
 
 		protected override async void OnCreate(Bundle savedInstanceState) {
 			base.OnCreate(savedInstanceState);
@@ -58,6 +59,37 @@ namespace MobileSecondHand.App.Activities
 		{
 			base.OnDestroy();
 		}
+
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.conversationMenu, menu);
+			if (menu != null)
+			{
+				menu.FindItem(Resource.Id.home).SetVisible(true);
+				menu.FindItem(Resource.Id.chat).SetVisible(true);
+			}
+
+			return base.OnCreateOptionsMenu(menu);
+		}
+
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			var handled = false;
+			switch (item.ItemId)
+			{
+				case Resource.Id.home:
+					GoToMainPage();
+					handled = true;
+					break;
+				case Resource.Id.chat:
+					GoToChat();
+					handled = true;
+					break;
+			}
+
+			return handled;
+		}
+
 		private void CalculateSizeForPhotoImageView() {
 			var metrics = this.Resources.DisplayMetrics;
 			var width = metrics.WidthPixels - 20;
@@ -67,6 +99,7 @@ namespace MobileSecondHand.App.Activities
 
 		private void SetupViews() {
 			this.progress = new ProgressDialogHelper(this);
+			this.advertisementDetailsWrapperLayout = FindViewById<RelativeLayout>(Resource.Id.advertisementDetailsWrapperLayout);
 			this.distanceTextView = FindViewById<TextView>(Resource.Id.distanceDetailsTextView);
 			this.sellerNetworkStateInfoTextView = FindViewById<TextView>(Resource.Id.sellerNetworkState);
 			this.forSellOrChangeInfoTextView = FindViewById<TextView>(Resource.Id.forSellOrChangeInfo);
@@ -76,12 +109,15 @@ namespace MobileSecondHand.App.Activities
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.showOtherAdvertisementsBtn = FindViewById<Button>(Resource.Id.showOtherUserAdvertisementsBtn);
+			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Invisible;
 		}
 
 		private async Task GetAndShowAdvertisementDetails() {
 			progress.ShowProgressDialog("Pobieranie szczegó³ów og³oszenia...");
+			this.advertisementDetailsWrapperLayout.Visibility = ViewStates.Invisible;
 			var advertisementItemId = Intent.GetIntExtra(ExtrasKeys.ADVERTISEMENT_ITEM_ID, 0);
 			advertisement = await GetAdvertisement(advertisementItemId);
+			this.advertisementDetailsWrapperLayout.Visibility = ViewStates.Visible;
 			ShowAdvertisementDetails(advertisement, Intent.GetDoubleExtra(ExtrasKeys.ADVERTISEMENT_ITEM_DISTANCE, 0.0));
 			progress.CloseProgressDialog();
 		}
@@ -101,10 +137,12 @@ namespace MobileSecondHand.App.Activities
 			forSellOrChangeInfoTextView.Text = advertisement.IsOnlyForSell ?
 												this.Resources.GetString(Resource.String.onlyForSellInfo) :
 												this.Resources.GetString(Resource.String.forSellOrChangeInfo);
-			photoView.LayoutParameters.Width = photoImageViewWitdth;
-			photoView.LayoutParameters.Height = photoImageViewHeight;
-			photoView.RequestLayout();
-			photoView.SetImageBitmap(bitmapOperationService.ResizeImage(advertisement.Photo, photoImageViewWitdth, photoImageViewHeight));
+			//photoView.LayoutParameters.Width = photoImageViewWitdth;
+			//photoView.LayoutParameters.Height = photoImageViewHeight;
+			//photoView.RequestLayout();
+			
+			photoView.SetImageBitmap(bitmapOperationService.ResizeImageByWidth(advertisement.Photo, photoImageViewHeight));
+			//photoView.SetImageBitmap(bitmapOperationService.ResizeImage(advertisement.Photo, this.photoView.Width, photoImageViewHeight));
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;

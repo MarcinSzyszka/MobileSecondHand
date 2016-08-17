@@ -22,7 +22,7 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Rozmowa")]
+	[Activity]
 	public class ConversationActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
@@ -59,6 +59,36 @@ namespace MobileSecondHand.App.Activities
 
 			pageNumber = 0;
 			await SetupViews(savedInstanceState);
+		}
+
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.conversationMenu, menu);
+			if (menu != null)
+			{
+				menu.FindItem(Resource.Id.home).SetVisible(true);
+				menu.FindItem(Resource.Id.chat).SetVisible(true);
+			}
+
+			return base.OnCreateOptionsMenu(menu);
+		}
+
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			var handled = false;
+			switch (item.ItemId)
+			{
+				case Resource.Id.home:
+					GoToMainPage();
+					handled = true;
+					break;
+				case Resource.Id.chat:
+					GoToChat();
+					handled = true;
+					break;
+			}
+
+			return handled;
 		}
 
 
@@ -118,6 +148,7 @@ namespace MobileSecondHand.App.Activities
 			this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(this);
 			this.conversationMessagesListAdapter.NewMessageAdded += ConversationMessagesListAdapter_NewMessageAdded;
 			await GetAndSetMessages(savedInstanceState);
+			this.conversationMessagesRecyclerView.SetAdapter(conversationMessagesListAdapter);
 			this.conversationMessagesRecyclerView.RequestLayout();
 		}
 
@@ -187,7 +218,7 @@ namespace MobileSecondHand.App.Activities
 				this.conversationMessagesListAdapter.InfiniteScrollDisabled = true;
 			}
 
-			conversationMessagesRecyclerView.SetAdapter(conversationMessagesListAdapter);
+			//conversationMessagesRecyclerView.SetAdapter(conversationMessagesListAdapter);
 			pageNumber++;
 		}
 

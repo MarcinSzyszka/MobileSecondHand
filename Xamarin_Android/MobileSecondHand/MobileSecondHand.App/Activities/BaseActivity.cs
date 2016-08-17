@@ -22,7 +22,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "BaseActivity")]
+	[Activity]
 	public class BaseActivity : AppCompatActivity
 	{
 		private DrawerLayout drawerLayout;
@@ -37,17 +37,16 @@ namespace MobileSecondHand.App.Activities
 			bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 		}
 
-		protected void SetupToolbar(string toolbarText = null)
+		protected void SetupToolbar(bool navigationVisible = true)
 		{
 			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 
 			var toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
-			if (toolbarText != null)
-			{
-				toolbar.Title = toolbarText;
-			}
 			SetSupportActionBar(toolbar);
+
+
 			//SupportActionBar.SetTitle(Resource.String.app);
+
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 			SupportActionBar.SetDisplayShowHomeEnabled(true);
 
@@ -70,16 +69,28 @@ namespace MobileSecondHand.App.Activities
 			{
 				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 				{
-					StartService(new Intent(this, typeof(MessengerService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this;
+					StartService(new Intent(this.BaseContext, typeof(MessengerService)));
+					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this.BaseContext;
 				}
 				if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
 				{
-					StartService(new Intent(this, typeof(NewsService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this;
+					StartService(new Intent(this.BaseContext, typeof(NewsService)));
+					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this.BaseContext;
 				}
 			}
-		
+
+		}
+
+		protected void GoToMainPage()
+		{
+			var intent = new Intent(this, typeof(MainActivity));
+			StartActivity(intent);
+		}
+
+		protected void GoToChat()
+		{
+			var intent = new Intent(this, typeof(ConversationsListActivity));
+			StartActivity(intent);
 		}
 
 		private void SetupSideMenu()

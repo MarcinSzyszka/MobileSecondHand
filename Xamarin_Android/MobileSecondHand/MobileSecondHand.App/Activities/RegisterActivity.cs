@@ -16,7 +16,7 @@ using MobileSecondHand.Services.Authentication;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "RegisterActivity")]
+	[Activity]
 	public class RegisterActivity : Activity {
 		private EditText confirmPasswordInput;
 		private EditText emailInput;
@@ -24,6 +24,7 @@ namespace MobileSecondHand.App.Activities
 		private Button submitRegistrationBtn;
 		private View focusView;
 		private ISignInService signInService;
+		private ProgressDialogHelper progress;
 
 		public RegisterActivity() {
 			this.signInService = new SignInService();
@@ -37,6 +38,7 @@ namespace MobileSecondHand.App.Activities
 		}
 
 		private void SetupViews() {
+			this.progress = new ProgressDialogHelper(this);
 			emailInput = FindViewById<EditText>(Resource.Id.inputEmailRegistration);
 			passwordInput = FindViewById<EditText>(Resource.Id.inputPasswordRegistration);
 			confirmPasswordInput = FindViewById<EditText>(Resource.Id.inputConfirmPasswordRegistration);
@@ -60,6 +62,7 @@ namespace MobileSecondHand.App.Activities
 		}
 
 		private async Task RegisterUser() {
+			progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
 			var registerModel = new RegisterModel {
 				Email = emailInput.Text,
 				Password = passwordInput.Text,
@@ -70,11 +73,14 @@ namespace MobileSecondHand.App.Activities
 			if (tokenModel != null) {
 				var preferenceHelper = new SharedPreferencesHelper(this);
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
+				progress.CloseProgressDialog();
 				GoToMainActivity();
 			}
 			else {
+				progress.CloseProgressDialog();
 				AlertsService.ShowToast(this, "Coœ posz³o nie tak na serwerze!");
 			}
+			
 		}
 		private void GoToMainActivity() {
 			var mainIntent = new Intent(this, typeof(MainActivity));

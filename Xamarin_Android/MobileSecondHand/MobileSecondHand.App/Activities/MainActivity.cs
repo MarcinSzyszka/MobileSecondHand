@@ -38,7 +38,7 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.App
 {
-	[Activity(Label = "Lista og³oszeñ", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class MainActivity : BaseActivity, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
@@ -58,7 +58,7 @@ namespace MobileSecondHand.App
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 
 			SetContentView(Resource.Layout.MainActivity);
-			base.SetupToolbar();
+			base.SetupToolbar(false);
 			//advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
 			advertisementsPage = 0;
 			await SetupViews();
@@ -196,6 +196,7 @@ namespace MobileSecondHand.App
 				{
 					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, advertisementsKind, this);
 					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
+					advertisementItemListAdapter.DeleteAdvertisementItemClick += AdvertisementItemListAdapter_DeleteAdvertisementItemClick;
 					var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 					advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 					advertisementsRecyclerView.SetAdapter(advertisementItemListAdapter);
@@ -217,6 +218,7 @@ namespace MobileSecondHand.App
 			progress.CloseProgressDialog();
 		}
 
+
 		private void SetAdvertisementListPageNumber(bool resetList)
 		{
 			if (resetList)
@@ -237,6 +239,33 @@ namespace MobileSecondHand.App
 			intent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_DISTANCE, eventArgs.Distance);
 			StartActivity(intent);
 		}
+
+		private async void AdvertisementItemListAdapter_DeleteAdvertisementItemClick(object sender, int advertisementId)
+		{
+			if (advertisementId == 0)
+			{
+				AlertsService.ShowToast(this, "Wyst¹pi³ b³¹d");
+				return;
+			}
+
+			AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz zakoñczyæ to og³oszenie? Przestanie byæ ono widoczne na liœcie og³oszeñ.", async () =>
+			{
+				var success = await this.advertisementItemService.DeleteAdvertisement(advertisementId);
+
+				if (success)
+				{
+					AlertsService.ShowToast(this, "Pomyœlnie zakoñczono og³oszenie");
+					RefreshAdvertisementList();
+				}
+				else
+				{
+					AlertsService.ShowToast(this, "Nie uda³o siê zakoñczyæ og³oszenia");
+				}
+			});
+
+		}
+
+
 
 		private async Task<List<AdvertisementItemShort>> GetAdvertisements()
 		{

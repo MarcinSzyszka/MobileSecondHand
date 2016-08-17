@@ -21,7 +21,7 @@ namespace MobileSecondHand.App.Holders {
 		public TextView AdvertisementKindTextView { get; set; }
 		public com.refractored.fab.FloatingActionButton DeleteAdvertisementFab { get; private set; }
 
-		public AdvertisementItemViewHolder(View itemView, Action<int> clickAction) : base(itemView) {
+		public AdvertisementItemViewHolder(View itemView, Action<int> clickAction, Action<int> deleteAdvertisementAction) : base(itemView) {
 			DistanceTextView = itemView.FindViewById<TextView>(Resource.Id.distanceTextView);
 			TitleTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementOnListTitle);
 			PriceTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementPriceListTextView);
@@ -31,6 +31,8 @@ namespace MobileSecondHand.App.Holders {
 			DeleteAdvertisementFab = itemView.FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fab_remove_advertisement);
 			DeleteAdvertisementFab.BringToFront();
 
+
+			DeleteAdvertisementFab.Click += (s, e) => deleteAdvertisementAction(Position);
 			itemView.Click += (s, e) => clickAction(Position);
 		}
 

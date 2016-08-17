@@ -13,10 +13,12 @@ using MobileSecondHand.Models.Chat;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.Models.Security;
 using Newtonsoft.Json;
+using Android.Views;
+using System;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Lista rozmów")]
+	[Activity]
 	public class ConversationsListActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
@@ -33,6 +35,31 @@ namespace MobileSecondHand.App.Activities
 			base.SetupToolbar();
 			conversationsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.CONVERSATIONS_LIST_PAGE);
 			await SetupViews(savedInstanceState != null);
+		}
+
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.conversationsListMenu, menu);
+			if (menu != null)
+			{
+				menu.FindItem(Resource.Id.home).SetVisible(true);
+			}
+
+			return base.OnCreateOptionsMenu(menu);
+		}
+
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			var handled = false;
+			switch (item.ItemId)
+			{
+				case Resource.Id.home:
+					GoToMainPage();
+					handled = true;
+					break;
+			}
+
+			return handled;
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)

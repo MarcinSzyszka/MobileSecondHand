@@ -15,7 +15,7 @@ namespace MobileSecondHand.App.Infrastructure.ActivityState
 {
 	public class ActivityInstancesWhichStartedServices
 	{
-		public static BaseActivity ActivityWhichStartedMessengerService { get; set; }
-		public static BaseActivity ActivityWhichStartedNotificationsService { get; set; }
+		public static Context ActivityWhichStartedMessengerService { get; set; }
+		public static Context ActivityWhichStartedNotificationsService { get; set; }
 	}
 }

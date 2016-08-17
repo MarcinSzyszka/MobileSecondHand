@@ -6,8 +6,14 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.Models.Consts {
 	public class WebApiConsts {
+#if DEBUG
 		public const string SERWER_URL = "http://192.168.8.102:81/";
 		public const string WEB_API_URL = "http://192.168.8.102:81/api/";
+#else
+		public const string SERWER_URL = "http://www.mobilesecondhand.pl/";
+		public const string WEB_API_URL = "http://www.mobilesecondhand.pl/api/";
+#endif
+
 		public const string WEB_API_ACCOUNT_CONTROLLER = "WebApiAccount/";
 		public const string ADVERTISEMENT_CONTROLLER = "AdvertisementItem/";
 		public const string CONVERSATION_CONTROLLER = "Conversation";

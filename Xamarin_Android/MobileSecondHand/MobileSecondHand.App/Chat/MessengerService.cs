@@ -9,6 +9,7 @@ using Android.Content;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Activities;
@@ -53,6 +54,7 @@ namespace MobileSecondHand.App.Chat
 			ServiceIsRunning = true;
 			
 			DoWork();
+
 			return StartCommandResult.Sticky;
 		}
 
@@ -103,7 +105,7 @@ namespace MobileSecondHand.App.Chat
 					InterlocutorName = message.SenderName
 				};
 				intent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
-				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, 0);
+				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.CancelCurrent);
 				notification.SetLatestEventInfo(this, String.Format("Wiadomoœæ od {0}", message.SenderName), message.MessageContent, pendingIntent);
 				nMgr.Notify(0, notification);
 			}

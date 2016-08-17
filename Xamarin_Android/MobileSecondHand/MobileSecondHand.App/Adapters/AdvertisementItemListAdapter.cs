@@ -30,6 +30,7 @@ namespace MobileSecondHand.App.Adapters {
 		private MainActivity mainActivity2;
 
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
+		public event EventHandler<int> DeleteAdvertisementItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
 		public List<AdvertisementItemShort> AdvertisementItems { get; private set; }
 
@@ -87,8 +88,16 @@ namespace MobileSecondHand.App.Adapters {
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
 			View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.AdvertisementItemRowView, parent, false);
-			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick);
+			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick, OnDeleteAdvertisementClick);
 			return vh;
+		}
+
+		private void OnDeleteAdvertisementClick(int positionId)
+		{
+			if (DeleteAdvertisementItemClick != null)
+			{
+				DeleteAdvertisementItemClick(this, this.AdvertisementItems[positionId].Id);
+			}
 		}
 
 		private void CalculateSizeForPhotoImageView() {

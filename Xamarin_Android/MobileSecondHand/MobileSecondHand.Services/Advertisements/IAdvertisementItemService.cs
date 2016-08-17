@@ -14,6 +14,7 @@ namespace MobileSecondHand.Services.Advertisements {
 		Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray);
 		Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel);
 		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId);
-		Task<bool> CheckForNewAdvertisementsSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel);
+		Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel);
+		Task<bool> DeleteAdvertisement(int advertisementId);
 	}
 }

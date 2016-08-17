@@ -53,6 +53,8 @@
     <Compile Include="Keywords\IKeyworsService.cs" />
     <Compile Include="Keywords\KeywordsService.cs" />
     <Compile Include="Location\IGpsClient.cs" />
+    <Compile Include="PhotosResizing\IPhotoResizerService.cs" />
+    <Compile Include="PhotosResizing\PhotoResizerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

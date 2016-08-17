@@ -10,10 +10,15 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Authentication {
 	public class SignInService : ISignInService {
+		private HttpClient client;
+
+		public SignInService()
+		{
+			client = new HttpClient();
+			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
+		}
 
 		public async Task<bool> SignInUserWithBearerToken(TokenModel bearerToken) {
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken.Token);
 			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "TokenIsActual");
 
@@ -34,10 +39,7 @@ namespace MobileSecondHand.Services.Authentication {
 
 
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action) {
-			var client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			var stringContent = new StringContent(JsonConvert.SerializeObject(modelToSend), Encoding.UTF8, "application/json");
-
 			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + action, stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
 				return null;
