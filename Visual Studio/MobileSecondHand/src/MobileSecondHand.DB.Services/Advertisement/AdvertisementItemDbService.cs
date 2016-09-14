@@ -20,7 +20,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 			this.coordinatesCalculator = coordinatesCalculator;
 		}
 
-		public AdvertisementItem GetAdvertisementDetails(int advertisementId)
+		public AdvertisementItem GetByIdWithDetails(int advertisementId)
 		{
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos)
 												.Include(a => a.CategoryKeywords).ThenInclude(a => a.CategoryKeyword)
@@ -30,24 +30,24 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page)
 		{
-			//return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.ExpirationDate >= DateTime.Now &&
-			//																			a.Latitude >= coordinatesForSearchModel.LatitudeStart
-			//																			&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
-			//																			&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
-			//																			&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
-			//																			.OrderBy(a => a.CreationDate)
-			//																		    .Skip(10 * page).Take(10);
-
-			//workaround buga w EF (chujowe bo ciagne wszystko zeby zwrocic 10)
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.ExpirationDate >= DateTime.Now &&
 																						a.Latitude >= coordinatesForSearchModel.LatitudeStart
 																						&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
 																						&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
 																						&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
-																						.OrderBy(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesForSearchModel.UserLatitude, coordinatesForSearchModel.UserLongitude, a.Latitude, a.Longitude))
-																						.ToList()
-																						.Skip(ITEMS_PER_REQUEST * page)
-																						.Take(ITEMS_PER_REQUEST);
+																						.OrderBy(a => a.CreationDate)
+																						.Skip(ITEMS_PER_REQUEST * page).Take(ITEMS_PER_REQUEST);
+
+			//workaround buga w EF (chujowe bo ciagne wszystko zeby zwrocic 10)
+			//return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.ExpirationDate >= DateTime.Now &&
+			//																			a.Latitude >= coordinatesForSearchModel.LatitudeStart
+			//																			&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
+			//																			&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
+			//																			&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
+			//																			.OrderBy(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesForSearchModel.UserLatitude, coordinatesForSearchModel.UserLongitude, a.Latitude, a.Longitude))
+			//																			.ToList()
+			//																			.Skip(ITEMS_PER_REQUEST * page)
+			//																			.Take(ITEMS_PER_REQUEST);
 
 		}
 
@@ -63,18 +63,20 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IEnumerable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber)
 		{
-			//	return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId)
-			//																			.OrderBy(a => a.CreationDate)
+			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId)
+																					.OrderBy(a => a.CreationDate)
+																					.Skip(pageNumber * ITEMS_PER_REQUEST)
+																					.Take(ITEMS_PER_REQUEST);
+
+
+
+
+
+			//return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId 
+			//																			&& a.ExpirationDate >= DateTime.Now)
+			//																			.OrderBy(a => a.CreationDate).ToList()
 			//																			.Skip(pageNumber * ITEMS_PER_REQUEST)
-			//
-
-
-
-			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId 
-																						&& a.ExpirationDate >= DateTime.Now)
-																						.OrderBy(a => a.CreationDate).ToList()
-																						.Skip(pageNumber * ITEMS_PER_REQUEST)
-																						.Take(ITEMS_PER_REQUEST);
+			//																			.Take(ITEMS_PER_REQUEST);
 		}
 
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem)
@@ -98,6 +100,16 @@ namespace MobileSecondHand.DB.Services.Advertisement
 			dbContext.SaveChanges();
 		}
 
-		
+		public AdvertisementItem GetById(int advertisementId)
+		{
+			return this.dbContext.AdvertisementItem.FirstOrDefault(a => a.Id == advertisementId);
+		}
+
+		public void SaveAdvertisementItem(AdvertisementItem advertisement)
+		{
+			this.dbContext.Entry(advertisement).State = EntityState.Modified;
+
+			this.dbContext.SaveChanges();
+		}
 	}
 }

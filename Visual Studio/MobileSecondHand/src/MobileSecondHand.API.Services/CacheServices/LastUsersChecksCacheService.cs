@@ -25,7 +25,11 @@ namespace MobileSecondHand.API.Services.CacheServices
 			var userCheckModel = usersCheckingList.FirstOrDefault(u => u.UserId == userId);
 			if (userCheckModel == null)
 			{
-				userCheckModel = new LastTimeUserCheckModel { UserId = userId, LastCheckDate = DateTime.Now };
+				userCheckModel = new LastTimeUserCheckModel
+				{
+					UserId = userId
+				};
+
 				usersCheckingList.Add(userCheckModel);
 			}
 
@@ -44,10 +48,18 @@ namespace MobileSecondHand.API.Services.CacheServices
 			return (List<LastTimeUserCheckModel>)this.cache.Get(USERS_CHECKING_LIST);
 		}
 
-		public void UpdateLastTimeUserCheckDate(string userId)
+		public void UpdateLastTimeUserCheckDate(string userId, bool currentLocation)
 		{
 			var lastCheckModel = GetLastTimeUserCheck(userId);
-			lastCheckModel.LastCheckDate = DateTime.Now;
+			if (currentLocation)
+			{
+				lastCheckModel.LastAroundCurrentLocationCheckDate = DateTime.Now;
+			}
+			else
+			{
+				lastCheckModel.LastAroundHomeLocationCheckDate = DateTime.Now;
+			}
+
 		}
 	}
 }

@@ -82,24 +82,45 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return advertisementsViewModels;
 		}
 
-		public bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel)
+		public bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel, bool currentLocation)
 		{
 			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(coordinatesModel.Latitude, coordinatesModel.Longitude, coordinatesModel.MaxDistance);
 			var lastUserCheckModel = this.lastUsersChecksCacheService.GetLastTimeUserCheck(userId);
-			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredAreaSinceLastCheck(lastUserCheckModel.LastCheckDate, userId, coordinatesForSearchModel).ToList();
-			this.lastUsersChecksCacheService.UpdateLastTimeUserCheckDate(userId);
+			var dateToCompare = currentLocation ? lastUserCheckModel.LastAroundCurrentLocationCheckDate : lastUserCheckModel.LastAroundHomeLocationCheckDate;
+			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredAreaSinceLastCheck(dateToCompare, userId, coordinatesForSearchModel).ToList();
+			this.lastUsersChecksCacheService.UpdateLastTimeUserCheckDate(userId, currentLocation);
 
 			return advertisementsFromDb.Count > 0;
 		}
 
 		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId) {
 			var advertisementDetailsViewModel = default(AdvertisementItemDetails);
-			var advertisementFromDb = this.advertisementItemDbService.GetAdvertisementDetails(advertisementId);
+			var advertisementFromDb = this.advertisementItemDbService.GetByIdWithDetails(advertisementId);
 			if (advertisementFromDb != null) {
 				advertisementDetailsViewModel = await MapToDetailsViewModel(advertisementFromDb);
 			}
 
 			return advertisementDetailsViewModel;
+		}
+
+		public bool DeleteAdvertisement(int advertisementId, string userId)
+		{
+			AdvertisementItem advertisement = this.advertisementItemDbService.GetById(advertisementId);
+			if (advertisement == null)
+			{
+				throw new Exception("Nie znaleziono ogłoszenia o podanym ID");
+			}
+
+			if (advertisement.UserId != userId)
+			{
+				throw new Exception("Próba usunięcia ogłoszenia przez nieuprawnionego usera");
+			}
+
+			advertisement.ExpirationDate = DateTime.Now;
+
+			this.advertisementItemDbService.SaveAdvertisementItem(advertisement);
+
+			return true;
 		}
 
 		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb) {
@@ -152,6 +173,5 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return photosDbModelsList;
 		}
 
-		
 	}
 }

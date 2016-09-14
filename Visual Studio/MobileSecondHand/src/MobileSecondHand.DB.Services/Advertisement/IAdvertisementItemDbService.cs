@@ -8,8 +8,10 @@ namespace MobileSecondHand.DB.Services.Advertisement {
     {
 		void SaveNewAdvertisementItem(AdvertisementItem advertisementItem);
 		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page);
-		AdvertisementItem GetAdvertisementDetails(int advertisementId);
+		AdvertisementItem GetByIdWithDetails(int advertisementId);
 		IEnumerable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber);
 		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
+		AdvertisementItem GetById(int advertisementId);
+		void SaveAdvertisementItem(AdvertisementItem advertisement);
 	}
 }

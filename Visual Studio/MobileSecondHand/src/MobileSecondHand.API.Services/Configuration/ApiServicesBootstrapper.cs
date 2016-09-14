@@ -10,6 +10,7 @@ using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.API.Services.Conversation;
 using MobileSecondHand.API.Services.OutsideApisManagers;
+using MobileSecondHand.API.Services.Properties;
 
 namespace MobileSecondHand.API.Services.Configuration {
 	public class ApiServicesBootstrapper {
@@ -29,15 +30,8 @@ namespace MobileSecondHand.API.Services.Configuration {
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {
-			//in production keep RSACryptoServiceProvider in save place
 			RSACryptoServiceProvider keyService = new RSACryptoServiceProvider(2048);
-			var xmlString = String.Empty;
-			var path = @"C:\Users\marcianno\Documents\Key\RsaProvider.txt";
-			using (StreamReader sw = new StreamReader(path)) {
-				xmlString = sw.ReadToEnd();
-			}
-
-			keyService.FromXmlString(xmlString);
+			keyService.FromXmlString(Resources.RsaProvider);
 			RsaSecurityKey key = new RsaSecurityKey(keyService.ExportParameters(true));
 
 			var tokenOptions = new TokenAuthorizationOptions {

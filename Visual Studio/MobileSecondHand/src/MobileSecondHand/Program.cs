@@ -15,7 +15,8 @@ namespace MobileSecondHand
             var host = new Microsoft.AspNetCore.Hosting.WebHostBuilder()
                 .UseKestrel()
                 .UseContentRoot(Directory.GetCurrentDirectory())
-                .UseIISIntegration()
+				.UseUrls("http://localhost")
+				.UseIISIntegration()
                 .UseStartup<Startup>()
                 .Build();
 

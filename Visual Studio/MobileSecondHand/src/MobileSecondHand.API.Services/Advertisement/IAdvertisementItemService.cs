@@ -9,6 +9,7 @@ namespace MobileSecondHand.API.Services.Advertisement {
 		Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchAdvertisementsModel searchModel, string userId);
 		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId);
 		Task<IEnumerable<AdvertisementItemShortModel>> GetUserAdvertisements(string userId, int pageNumber);
-		bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel);
+		bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel, bool currentLocation);
+		bool DeleteAdvertisement(int advertisementId, string userId);
 	}
 }

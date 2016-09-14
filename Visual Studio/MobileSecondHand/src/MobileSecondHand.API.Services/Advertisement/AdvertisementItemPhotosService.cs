@@ -43,7 +43,7 @@ namespace MobileSecondHand.API.Services.Advertisement {
 
 		private Bitmap CreateMinPhoto(Stream readStream) {
 			var image = Image.FromStream(readStream);
-			var divider = image.Width / 150;
+			var divider = image.Width / 300;
 			Bitmap bmpOriginal = new Bitmap(image, new Size(image.Width/divider, image.Height/divider));
 			return bmpOriginal;
 		}

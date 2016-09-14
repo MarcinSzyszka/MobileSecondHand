@@ -238,3 +238,7 @@ _Pvt_Extensions
 *.jpg
 *.png
 Visual Studio/MobileSecondHand/src/MobileSecondHand/wwwroot/lib/*
+Visual Studio/MobileSecondHand/src/MobileSecondHand/logs.txt
+Visual Studio/MobileSecondHand/src/MobileSecondHand/Properties/PublishProfiles/MSH-publish.ps1
+Visual Studio/MobileSecondHand/src/MobileSecondHand/Properties/PublishProfiles/publish-module.psm1
+Visual Studio/MobileSecondHand/src/MobileSecondHand/wwwroot/js/site.min.js

@@ -150,10 +150,10 @@ namespace MobileSecondHand {
 
 		private FacebookOptions GetFacebookOptions(IConfigurationRoot configuration) {
 			var options = new FacebookOptions();
-			var a = Configuration["FacebookAppId"]; ;
-			var b = Configuration["FacebookAppSecret"];
-			options.AppId = Configuration["FacebookAppId"];
-			options.AppSecret = Configuration["FacebookAppSecret"];
+			//options.AppId = Configuration["FacebookAppId"];
+			//options.AppSecret = Configuration["FacebookAppSecret"];
+			options.AppId = "1772882172935332";
+			options.AppSecret = "d64960e5f0d1f0dc58b670057d97b80c";
 			options.Scope.Add("email");
 
 			return options;

@@ -10,6 +10,6 @@ namespace MobileSecondHand.API.Services.CacheServices
 	public interface ILastUsersChecksCacheService
 	{
 		LastTimeUserCheckModel GetLastTimeUserCheck(string userId);
-		void UpdateLastTimeUserCheckDate(string userId);
+		void UpdateLastTimeUserCheckDate(string userId, bool currentLocation);
 	}
 }
