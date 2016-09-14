@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Graphics;
@@ -132,7 +132,7 @@ namespace MobileSecondHand.App.Activities{
 			photoIsTaking = true;
 			int targetW = mPhotoView1.Width;
 			int targetH = mPhotoView1.Height;
-			Bitmap resizedImage = this.bitmapOperationService.ResizeImage(mPhotoPath, targetW, targetH);
+			Bitmap resizedImage = this.bitmapOperationService.GetBitmap(mPhotoPath);
 			mPhotoView1.SetImageBitmap(resizedImage);
 			mButtonTakePicture.Text = "Zrób inne zdjêcie";
 			photoIsTaking = false;
@@ -148,17 +148,17 @@ namespace MobileSecondHand.App.Activities{
 			mButtonTakePicture = (Button)FindViewById(Resource.Id.buttonTakePicture);
 			buttonPublishAdvertisement = FindViewById<Button>(Resource.Id.buttonPublishAdvertisemenetItem);
 
-			buttonPublishAdvertisement.Click += ButtonPublishAdvertisement_Click;
+			buttonPublishAdvertisement.Click += async (s,e) => await ButtonPublishAdvertisement_Click(s, e);
 			mButtonTakePicture.Click += MButtonTakePicture_Click;
 		}
 
-		private async void ButtonPublishAdvertisement_Click(object sender, EventArgs e) {
+		private async Task ButtonPublishAdvertisement_Click(object sender, EventArgs e) {
 			progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 			if (AdvertisementItemDataIsValidate()) {
 				var location = gpsLocationService.GetLocation();
 				if (location.Longitude != 0.0 && location.Latitude != 0.0) {
 					var bytesArray = System.IO.File.ReadAllBytes(mPhotoPath);
-					var resized = this.bitmapOperationService.ResizeImageAndGetByteArray(bytesArray, 900);
+					var resized = this.bitmapOperationService.ResizeImageAndGetByteArray(bytesArray);
 					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(resized);
 					if (photosListModel != null) {
 						var newAdvertisementModel = CreateNewAdvertisementItemModel(photosListModel);

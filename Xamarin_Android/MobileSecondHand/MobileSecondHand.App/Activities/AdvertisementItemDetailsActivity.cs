@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Util;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Consts;
@@ -95,6 +96,8 @@ namespace MobileSecondHand.App.Activities
 			var width = metrics.WidthPixels - 20;
 			this.photoImageViewWitdth = width;
 			this.photoImageViewHeight = (int)(width * 0.8);
+
+			var photoViewWidth = this.photoView.Width;
 		}
 
 		private void SetupViews() {
@@ -141,8 +144,7 @@ namespace MobileSecondHand.App.Activities
 			//photoView.LayoutParameters.Height = photoImageViewHeight;
 			//photoView.RequestLayout();
 			
-			photoView.SetImageBitmap(bitmapOperationService.ResizeImageByWidth(advertisement.Photo, photoImageViewHeight));
-			//photoView.SetImageBitmap(bitmapOperationService.ResizeImage(advertisement.Photo, this.photoView.Width, photoImageViewHeight));
+			photoView.SetImageBitmap(bitmapOperationService.GetBitmap(advertisement.Photo));
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;

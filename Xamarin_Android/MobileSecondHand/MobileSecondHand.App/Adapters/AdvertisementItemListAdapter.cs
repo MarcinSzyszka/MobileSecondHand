@@ -82,7 +82,7 @@ namespace MobileSecondHand.App.Adapters {
 			vh.DistanceTextView.Text = String.Format("{0} km", currentItem.Distance);
 			vh.TitleTextView.Text = currentItem.AdvertisementTitle;
 			vh.PriceTextView.Text = String.Format("{0} z³", currentItem.AdvertisementPrice);
-			vh.PhotoImageView.SetImageBitmap(bitmapOperationService.ResizeImage(currentItem.MainPhoto, vh.PhotoImageView.Width > 0 ? vh.PhotoImageView.Width : photoImageViewWitdth, vh.PhotoImageView.Height > 0 ? vh.PhotoImageView.Height : photoImageViewHeight));
+			vh.PhotoImageView.SetImageBitmap(bitmapOperationService.GetBitmap(currentItem.MainPhoto));
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
 		}
 

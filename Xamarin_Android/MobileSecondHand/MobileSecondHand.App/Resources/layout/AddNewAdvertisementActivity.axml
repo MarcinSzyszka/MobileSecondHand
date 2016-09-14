@@ -199,11 +199,14 @@
                     android:layout_weight="2"
                     android:layout_marginTop="10dp">
                     <ImageView
-                        android:layout_width="300dp"
-                        android:layout_height="230dp"
+                        android:layout_width="match_parent"
+						android:layout_height="wrap_content"
                         android:id="@+id/photoView1"
                         android:layout_centerHorizontal="true"
                         android:src="@drawable/add_photo_image"
+						android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+						android:adjustViewBounds="true"
                         android:layout_below="@+id/buttonTakePicture" />
                     <ImageView
                         android:layout_width="wrap_content"
