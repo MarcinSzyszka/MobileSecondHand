@@ -20,7 +20,8 @@ using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 
-namespace MobileSecondHand.App.Activities{
+namespace MobileSecondHand.App.Activities
+{
 	[Activity]
 	public class AddNewAdvertisementActivity : BaseActivity
 	{
@@ -29,26 +30,32 @@ namespace MobileSecondHand.App.Activities{
 		private EditText advertisementDescription;
 		private EditText advertisementPrice;
 		private EditText advertisementTitle;
-		private Button mButtonTakePicture;
-		private ImageView mPhotoView1;
 		private ProgressDialogHelper progress;
 		private RadioButton rdBtnOnlyForSell;
+		private List<string> photosPaths;
 		private string mPhotoPath;
 		private bool photoIsTaking;
-		private int REQUEST_TAKE_PHOTO = 1;
-		private int imageViewDefaultWidth = 300;
-		private int imageViewDefaultHeight = 230;
+		private int REQUEST_TAKE_PHOTO_1 = 1;
+		private int REQUEST_TAKE_PHOTO_2 = 2;
+		private int REQUEST_TAKE_PHOTO_3 = 3;
 		private string keyAdvertisementTitleText = "advertisementTitleText";
 		private string keyRdBtnOnlyForSellValue = "rdBtnOnlyForSellValue";
 		private string keyAdvertisementDescriptionText = "advertisementDescriptionText";
 		private string keyAdvertisementPriceValue = "advertisementPriceValue";
-		private string keyPhotoView1Path = "mPhotoView1Path";
+		private string keyPhotosPaths = "mPhotoView1Path";
 		private string keyPhotoIsTakingValue = "keyPhotoIsTakingValue";
 		private Button buttonPublishAdvertisement;
 		private View focusView;
 		IAdvertisementItemService advertisementItemService;
+		private ImageView mPhotoView1;
+		private Button mButtonTakePicture1;
+		private ImageView mPhotoView2;
+		private Button mButtonTakePicture2;
+		private ImageView mPhotoView3;
+		private Button mButtonTakePicture3;
 
-		protected override void OnCreate(Bundle savedInstanceState) {
+		protected override void OnCreate(Bundle savedInstanceState)
+		{
 			base.OnCreate(savedInstanceState);
 			this.bitmapOperationService = new BitmapOperationService();
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
@@ -56,16 +63,21 @@ namespace MobileSecondHand.App.Activities{
 			SetContentView(Resource.Layout.AddNewAdvertisementActivity);
 			base.SetupToolbar();
 			SetupViews(savedInstanceState);
-			if (savedInstanceState != null) {
+			photosPaths = new List<string>();
+
+			if (savedInstanceState != null)
+			{
 				RestoreViewFieldsValues(savedInstanceState);
 			}
 		}
 
-		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data) {
+		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+		{
 			base.OnActivityResult(requestCode, resultCode, data);
 
-			if (requestCode == REQUEST_TAKE_PHOTO) {
-				SetPhoto();
+			if (requestCode == REQUEST_TAKE_PHOTO_1 || requestCode == REQUEST_TAKE_PHOTO_2 || requestCode == REQUEST_TAKE_PHOTO_3)
+			{
+				SetPhoto(requestCode);
 			}
 
 		}
@@ -100,80 +112,130 @@ namespace MobileSecondHand.App.Activities{
 			return handled;
 		}
 
-		protected override void OnSaveInstanceState(Bundle outState) {
+		protected override void OnSaveInstanceState(Bundle outState)
+		{
 			base.OnSaveInstanceState(outState);
 			SaveViewFieldsValues(outState);
 		}
 
-		private void SaveViewFieldsValues(Bundle outState) {
+		private void SaveViewFieldsValues(Bundle outState)
+		{
 			outState.PutAll(outState);
 			outState.PutString(keyAdvertisementTitleText, advertisementTitle.Text);
 			outState.PutString(keyAdvertisementDescriptionText, advertisementDescription.Text);
 			outState.PutBoolean(keyRdBtnOnlyForSellValue, rdBtnOnlyForSell.Checked);
 			outState.PutString(keyAdvertisementPriceValue, advertisementPrice.Text);
-			outState.PutString(keyPhotoView1Path, mPhotoPath);
+			outState.PutStringArray(keyPhotosPaths, this.photosPaths.ToArray());
 			outState.PutBoolean(keyPhotoIsTakingValue, photoIsTaking);
 		}
 
-		private void RestoreViewFieldsValues(Bundle savedInstanceState) {
+		private void RestoreViewFieldsValues(Bundle savedInstanceState)
+		{
 			advertisementTitle.Text = savedInstanceState.GetString(keyAdvertisementTitleText, String.Empty);
 			advertisementDescription.Text = savedInstanceState.GetString(keyAdvertisementDescriptionText, String.Empty);
 			advertisementPrice.Text = savedInstanceState.GetString(keyAdvertisementPriceValue, String.Empty);
 			rdBtnOnlyForSell.Checked = savedInstanceState.GetBoolean(keyRdBtnOnlyForSellValue, false);
-			mPhotoPath = savedInstanceState.GetString(keyPhotoView1Path, null);
+			this.photosPaths = savedInstanceState.GetStringArray(keyPhotosPaths).ToList();
 			photoIsTaking = savedInstanceState.GetBoolean(keyPhotoIsTakingValue, true);
-			if (mPhotoPath != null && !photoIsTaking) {
-				SetPhoto();
+			var i = 1;
+			if (this.photosPaths.Count > 0 && !photoIsTaking)
+			{
+				foreach (var item in this.photosPaths)
+				{
+					SetPhoto(i);
+					i++;
+				}
 			}
+
 		}
 
 
-		private void SetPhoto() {
+		private void SetPhoto(int photoNr)
+		{
 			photoIsTaking = true;
-			int targetW = mPhotoView1.Width;
-			int targetH = mPhotoView1.Height;
-			Bitmap resizedImage = this.bitmapOperationService.GetBitmap(mPhotoPath);
-			mPhotoView1.SetImageBitmap(resizedImage);
-			mButtonTakePicture.Text = "Zrób inne zdjêcie";
+			Bitmap resizedImage = this.bitmapOperationService.GetBitmap(this.photosPaths[photoNr - 1]);
+			switch (photoNr)
+			{
+				case 1:
+					{
+						mPhotoView1.SetImageBitmap(resizedImage);
+						mButtonTakePicture1.Text = "Zrób inne zdjêcie";
+						mButtonTakePicture2.Visibility = ViewStates.Visible;
+						mPhotoView2.Visibility = ViewStates.Visible;
+						break;
+					}
+				case 2:
+					{
+						mPhotoView2.SetImageBitmap(resizedImage);
+						mButtonTakePicture2.Text = "Zrób inne zdjêcie";
+						mButtonTakePicture3.Visibility = ViewStates.Visible;
+						mPhotoView3.Visibility = ViewStates.Visible;
+						break;
+					}
+				case 3:
+					{
+						mPhotoView3.SetImageBitmap(resizedImage);
+						mButtonTakePicture3.Text = "Zrób inne zdjêcie";
+						break;
+					}
+				default:
+					break;
+			}
+
 			photoIsTaking = false;
 		}
 
-		private void SetupViews(Bundle savedInstanceState) {
+		private void SetupViews(Bundle savedInstanceState)
+		{
 			rdBtnOnlyForSell = (RadioButton)FindViewById(Resource.Id.rdBtnOnlyForSell);
 			progress = new ProgressDialogHelper(this);
 			advertisementTitle = (EditText)FindViewById(Resource.Id.editTextTitle);
 			advertisementDescription = (EditText)FindViewById(Resource.Id.editTextDescription);
 			advertisementPrice = (EditText)FindViewById(Resource.Id.editTextPrice);
 			mPhotoView1 = (ImageView)FindViewById(Resource.Id.photoView1);
-			mButtonTakePicture = (Button)FindViewById(Resource.Id.buttonTakePicture);
+			mButtonTakePicture1 = (Button)FindViewById(Resource.Id.buttonTakePicture1);
+			mPhotoView2 = (ImageView)FindViewById(Resource.Id.photoView2);
+			mButtonTakePicture2 = (Button)FindViewById(Resource.Id.buttonTakePicture2);
+			mPhotoView3 = (ImageView)FindViewById(Resource.Id.photoView3);
+			mButtonTakePicture3 = (Button)FindViewById(Resource.Id.buttonTakePicture3);
 			buttonPublishAdvertisement = FindViewById<Button>(Resource.Id.buttonPublishAdvertisemenetItem);
 
-			buttonPublishAdvertisement.Click += async (s,e) => await ButtonPublishAdvertisement_Click(s, e);
-			mButtonTakePicture.Click += MButtonTakePicture_Click;
+			buttonPublishAdvertisement.Click += async (s, e) => await ButtonPublishAdvertisement_Click(s, e);
+			mButtonTakePicture1.Click += MButtonTakePicture_Click1;
+			mButtonTakePicture2.Click += MButtonTakePicture_Click2;
+			mButtonTakePicture3.Click += MButtonTakePicture_Click3;
 		}
 
-		private async Task ButtonPublishAdvertisement_Click(object sender, EventArgs e) {
+
+		private async Task ButtonPublishAdvertisement_Click(object sender, EventArgs e)
+		{
 			progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
-			if (AdvertisementItemDataIsValidate()) {
+			if (AdvertisementItemDataIsValidate())
+			{
 				var location = gpsLocationService.GetLocation();
-				if (location.Longitude != 0.0 && location.Latitude != 0.0) {
-					var bytesArray = System.IO.File.ReadAllBytes(mPhotoPath);
-					var resized = this.bitmapOperationService.ResizeImageAndGetByteArray(bytesArray);
-					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(resized);
-					if (photosListModel != null) {
+				if (location.Longitude != 0.0 && location.Latitude != 0.0)
+				{
+					var photosBytesArraysList = GetPhotosByteArray(this.photosPaths);
+
+					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(photosBytesArraysList);
+					if (photosListModel != null)
+					{
 						var newAdvertisementModel = CreateNewAdvertisementItemModel(photosListModel);
 						var success = await this.advertisementItemService.CreateNewAdvertisement(newAdvertisementModel);
-						if (success) {
+						if (success)
+						{
 							AlertsService.ShowToast(this, "Pomyœlnie utworzone nowe og³oszenie");
 							this.Finish();
 						}
-						else {
+						else
+						{
 							AlertsService.ShowToast(this, "Nie uda³o siê utworzyæ nowego og³oszenia. Spróbuj ponownie");
 						}
 
 					}
 				}
-				else {
+				else
+				{
 					//lokalizacja jest chujowa
 					Toast.MakeText(this, "Wspólrzêdne lokalizacji s¹ zerowe", ToastLength.Long).Show();
 				}
@@ -181,7 +243,19 @@ namespace MobileSecondHand.App.Activities{
 			progress.CloseProgressDialog();
 		}
 
-		private NewAdvertisementItem CreateNewAdvertisementItemModel(AdvertisementItemPhotosPaths photosListModel) {
+		private IEnumerable<byte[]> GetPhotosByteArray(List<string> photosPaths)
+		{
+			foreach (var photoPath in photosPaths)
+			{
+				var bytesArray = System.IO.File.ReadAllBytes(photoPath);
+				var resized = this.bitmapOperationService.ResizeImageAndGetByteArray(bytesArray);
+
+				yield return resized;
+			}
+		}
+
+		private NewAdvertisementItem CreateNewAdvertisementItemModel(AdvertisementItemPhotosPaths photosListModel)
+		{
 			var location = this.gpsLocationService.GetLocation();
 			NewAdvertisementItem model = new NewAdvertisementItem();
 			model.AdvertisementTitle = advertisementTitle.Text;
@@ -195,48 +269,79 @@ namespace MobileSecondHand.App.Activities{
 			return model;
 		}
 
-		private bool AdvertisementItemDataIsValidate() {
+		private bool AdvertisementItemDataIsValidate()
+		{
 			bool isValidate = true;
-			if (advertisementTitle.Text.Length < 5) {
+			if (advertisementTitle.Text.Length < 5)
+			{
 				isValidate = false;
 				advertisementTitle.Error = "Tytu³ musi zawieraæ min. 15 znaków";
 				focusView = advertisementTitle;
 			}
-			else if (advertisementDescription.Text.Length < 5) {
+			else if (advertisementDescription.Text.Length < 5)
+			{
 				isValidate = false;
 				advertisementDescription.Error = "Opis musi zawieraæ min 20 znaków";
 				focusView = advertisementDescription;
 			}
-			else if (advertisementPrice.Text.Length == 0) {
+			else if (advertisementPrice.Text.Length == 0)
+			{
 				isValidate = false;
 				advertisementPrice.Error = "Cena musi zostaæ podana";
 				focusView = advertisementPrice;
 			}
-			else if (mPhotoPath == null) {
+			else if (this.photosPaths.Count == 0)
+			{
 				Toast.MakeText(this, "Nie dodano ¿adnego zdjêcia", ToastLength.Long).Show();
 				isValidate = false;
 			}
 			return isValidate;
 		}
 
-		private void MButtonTakePicture_Click(object sender, EventArgs e) {
+		private void MButtonTakePicture_Click1(object sender, EventArgs e)
+		{
+			TakePhoto(1);
+		}
+
+		
+		private void MButtonTakePicture_Click2(object sender, EventArgs e)
+		{
+			TakePhoto(2);
+		}
+		private void MButtonTakePicture_Click3(object sender, EventArgs e)
+		{
+			TakePhoto(3);
+		}
+
+
+		private void TakePhoto(int photoNr)
+		{
 			Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
-			if (takePictureIntent.ResolveActivity(PackageManager) != null) {
+			if (takePictureIntent.ResolveActivity(PackageManager) != null)
+			{
 				Java.IO.File photoFile = null;
-				try {
-					photoFile = CreateImageFile();
-				} catch (Java.IO.IOException ex) {
+				try
+				{
+					photoFile = CreateImageFile(photoNr);
+				}
+				catch (Java.IO.IOException ex)
+				{
 					Toast.MakeText(this, "Coœ sie zjeba³o ze zdjeciem", ToastLength.Long).Show();
 				}
-				if (photoFile != null) {
+				if (photoFile != null)
+				{
 					photoIsTaking = true;
 					takePictureIntent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(photoFile));
-					StartActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO);
+
+					StartActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO_1);
 				}
 			}
 		}
 
-		private Java.IO.File CreateImageFile() {
+
+		private Java.IO.File CreateImageFile(int photoNr)
+		{
+			var photoPathINdex = photoNr - 1;
 			String timeStamp = DateTime.Now.ToString();
 			String imageFileName = "JPEG_" + timeStamp + "_";
 			Java.IO.File storageDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures);
@@ -247,7 +352,15 @@ namespace MobileSecondHand.App.Activities{
 					storageDir      /* directory */
 			);
 
-			mPhotoPath = image.AbsolutePath;
+			if (this.photosPaths.ElementAt(photoPathINdex) != null)
+			{
+				this.photosPaths[photoPathINdex] = image.AbsolutePath;
+			}
+			else
+			{
+				this.photosPaths.Add(image.AbsolutePath);
+			}
+
 			return image;
 		}
 	}

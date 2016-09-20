@@ -198,43 +198,63 @@
                     android:layout_height="fill_parent"
                     android:layout_weight="2"
                     android:layout_marginTop="10dp">
-                    <ImageView
-                        android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-                        android:id="@+id/photoView1"
-                        android:layout_centerHorizontal="true"
-                        android:src="@drawable/add_photo_image"
-						android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-						android:adjustViewBounds="true"
-                        android:layout_below="@+id/buttonTakePicture" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/photoView2"
-                        android:layout_below="@+id/photoView1"
-                        android:layout_alignParentBottom="false"
-                        android:layout_centerHorizontal="true" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/photoView3"
-                        android:layout_below="@+id/photoView2"
-                        android:layout_centerHorizontal="true" />
-                    <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:id="@+id/photoView4"
-                        android:layout_below="@+id/photoView3"
-                        android:layout_centerHorizontal="true" />
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Zrób zdjęcie"
-                        android:id="@+id/buttonTakePicture"
+                        android:id="@+id/buttonTakePicture1"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorPrimaryDark"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoView1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:adjustViewBounds="true"
+                        android:layout_below="@+id/buttonTakePicture1" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Zrób zdjęcie"
+                        android:id="@+id/buttonTakePicture2"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_below="@+id/photoView1" 
+						android:visibility="invisible"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoView2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:adjustViewBounds="true"
+                        android:layout_below="@+id/buttonTakePicture2"
+						android:visibility="invisible" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Zrób zdjęcie"
+                        android:id="@+id/buttonTakePicture3"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_below="@+id/photoView2" 
+						android:visibility="invisible"/>
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoView3"
+                        android:layout_below="@+id/buttonTakePicture3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:adjustViewBounds="true"
+						android:visibility="invisible" />
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"

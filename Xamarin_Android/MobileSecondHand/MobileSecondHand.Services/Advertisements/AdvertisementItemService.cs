@@ -12,8 +12,10 @@ using MobileSecondHand.Models.Location;
 using MobileSecondHand.Models.Security;
 using Newtonsoft.Json;
 
-namespace MobileSecondHand.Services.Advertisements {
-	public class AdvertisementItemService : IAdvertisementItemService {
+namespace MobileSecondHand.Services.Advertisements
+{
+	public class AdvertisementItemService : IAdvertisementItemService
+	{
 		private HttpClient client;
 
 		public AdvertisementItemService(string bearerToken)
@@ -22,10 +24,12 @@ namespace MobileSecondHand.Services.Advertisements {
 			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 		}
-		public async Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel) {
+		public async Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel)
+		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisements", stringContent);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
 				return new List<AdvertisementItemShort>();
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
@@ -71,19 +75,32 @@ namespace MobileSecondHand.Services.Advertisements {
 			return areTherNewAdvertisements;
 		}
 
-		public async Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(byte[] bytesArray) {
+		public async Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList)
+		{
 			MultipartFormDataContent form = new MultipartFormDataContent();
-			HttpContent content = new StringContent("uploadPhoto");
-			form.Add(content, "uploadPhoto");
-			var stream = new MemoryStream(bytesArray);
-			content = new StreamContent(stream);
-			content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data") {
-				Name = "photo0",
-				FileName = "photo0"
-			};
-			form.Add(content);
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "UploadFiles" , form);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+			
+			var sb = new StringBuilder();
+			var i = 0;
+			foreach (var byteArrayPhoto in bytesArrayList)
+			{
+				HttpContent content = new StringContent("uploadPhoto");
+				sb.Append("photo");
+				sb.Append(i);
+				var stream = new MemoryStream(byteArrayPhoto);
+				content = new StreamContent(stream);
+				content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+				{
+					Name = sb.ToString(),
+					FileName = sb.ToString()
+				};
+				form.Add(content);
+				i++;
+				sb.Clear();
+			}
+
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "UploadFiles", form);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
 				return null;
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
@@ -92,19 +109,23 @@ namespace MobileSecondHand.Services.Advertisements {
 			return photosPaths;
 		}
 
-		public async Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel) {
+		public async Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel)
+		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(newAdvertisementModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CreateAdvertisementItem", stringContent);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
 				return false;
 			}
 			return true;
 
 		}
 
-		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId) {
+		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId)
+		{
 			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisementDetail/" + advertisementItemId);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
 				return null;
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
