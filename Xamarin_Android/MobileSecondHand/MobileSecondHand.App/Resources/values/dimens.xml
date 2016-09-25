@@ -6,6 +6,7 @@
 	<dimen name="text_margin">16dp</dimen>
 	<dimen name="app_bar_height">180dp</dimen>
 	<dimen name="settingRowMargin">10dp</dimen>
+	<dimen name="settingRowPhotoMargin">20dp</dimen>
 	<dimen name="smallText">10dp</dimen>
 	<dimen name="mediumText">14dp</dimen>
 	<dimen name="largeText">16dp</dimen>

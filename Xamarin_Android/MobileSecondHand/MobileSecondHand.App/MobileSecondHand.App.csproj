@@ -75,6 +75,9 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\Components\signalr-2.1.2.2\lib\android\Newtonsoft.Json.dll</HintPath>
     </Reference>
+    <Reference Include="PhotoView">
+      <HintPath>..\Components\PhotoView-1.2.4.1\lib\android\PhotoView.dll</HintPath>
+    </Reference>
     <Reference Include="Refractored.Controls.CircleImageView, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Refractored.Controls.CircleImageView.1.0.1\lib\MonoAndroid10\Refractored.Controls.CircleImageView.dll</HintPath>
       <Private>True</Private>
@@ -283,6 +286,10 @@
     <XamarinComponentReference Include="facebookandroid">
       <Visible>False</Visible>
       <Version>4.13.1.0</Version>
+    </XamarinComponentReference>
+    <XamarinComponentReference Include="PhotoView">
+      <Visible>False</Visible>
+      <Version>1.2.4.1</Version>
     </XamarinComponentReference>
     <XamarinComponentReference Include="signalr">
       <Visible>False</Visible>

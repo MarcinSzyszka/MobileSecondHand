@@ -16,9 +16,11 @@ using Java.IO;
 using MobileSecondHand.App.Activities;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.Common.Enumerations;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
+using MobileSecondHand.Common.Extensions;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -33,7 +35,6 @@ namespace MobileSecondHand.App.Activities
 		private ProgressDialogHelper progress;
 		private RadioButton rdBtnOnlyForSell;
 		private List<string> photosPaths;
-		private string mPhotoPath;
 		private bool photoIsTaking;
 		private int REQUEST_TAKE_PHOTO_1 = 1;
 		private int REQUEST_TAKE_PHOTO_2 = 2;
@@ -53,6 +54,7 @@ namespace MobileSecondHand.App.Activities
 		private Button mButtonTakePicture2;
 		private ImageView mPhotoView3;
 		private Button mButtonTakePicture3;
+		private List<string> tempPhotosPaths;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -64,6 +66,7 @@ namespace MobileSecondHand.App.Activities
 			base.SetupToolbar();
 			SetupViews(savedInstanceState);
 			photosPaths = new List<string>();
+			tempPhotosPaths = new List<string>();
 
 			if (savedInstanceState != null)
 			{
@@ -75,11 +78,20 @@ namespace MobileSecondHand.App.Activities
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
 
-			if (requestCode == REQUEST_TAKE_PHOTO_1 || requestCode == REQUEST_TAKE_PHOTO_2 || requestCode == REQUEST_TAKE_PHOTO_3)
+			if (resultCode == Result.Ok && (requestCode == REQUEST_TAKE_PHOTO_1 || requestCode == REQUEST_TAKE_PHOTO_2 || requestCode == REQUEST_TAKE_PHOTO_3))
 			{
+				if (data != null)
+				{
+					var file = CreateImageFile(requestCode);
+					tempPhotosPaths.Add(this.bitmapOperationService.SavePhotoFromUriAndReturnPhysicalPath(data.Data, file, this));
+				}
+
 				SetPhoto(requestCode);
 			}
-
+			else
+			{
+				photoIsTaking = false;
+			}
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
@@ -127,6 +139,14 @@ namespace MobileSecondHand.App.Activities
 			outState.PutString(keyAdvertisementPriceValue, advertisementPrice.Text);
 			outState.PutStringArray(keyPhotosPaths, this.photosPaths.ToArray());
 			outState.PutBoolean(keyPhotoIsTakingValue, photoIsTaking);
+
+			if (!photoIsTaking)
+			{
+				this.mPhotoView1.Dispose();
+				this.mPhotoView2.Dispose();
+				this.mPhotoView3.Dispose();
+			}
+
 		}
 
 		private void RestoreViewFieldsValues(Bundle savedInstanceState)
@@ -137,14 +157,14 @@ namespace MobileSecondHand.App.Activities
 			rdBtnOnlyForSell.Checked = savedInstanceState.GetBoolean(keyRdBtnOnlyForSellValue, false);
 			this.photosPaths = savedInstanceState.GetStringArray(keyPhotosPaths).ToList();
 			photoIsTaking = savedInstanceState.GetBoolean(keyPhotoIsTakingValue, true);
-			var i = 1;
+			var i = 0;
 			if (this.photosPaths.Count > 0 && !photoIsTaking)
 			{
-				foreach (var item in this.photosPaths)
+				do
 				{
-					SetPhoto(i);
 					i++;
-				}
+					SetPhoto(i);
+				} while (i < this.photosPaths.Count);
 			}
 
 		}
@@ -152,24 +172,21 @@ namespace MobileSecondHand.App.Activities
 
 		private void SetPhoto(int photoNr)
 		{
-			photoIsTaking = true;
-			Bitmap resizedImage = this.bitmapOperationService.GetBitmap(this.photosPaths[photoNr - 1]);
+			Bitmap resizedImage = this.bitmapOperationService.ResizeImageAndGetBitMap(this.photosPaths[photoNr - 1]);
 			switch (photoNr)
 			{
 				case 1:
 					{
 						mPhotoView1.SetImageBitmap(resizedImage);
 						mButtonTakePicture1.Text = "Zrób inne zdjêcie";
-						mButtonTakePicture2.Visibility = ViewStates.Visible;
-						mPhotoView2.Visibility = ViewStates.Visible;
+						mButtonTakePicture2.Enabled = true;
 						break;
 					}
 				case 2:
 					{
 						mPhotoView2.SetImageBitmap(resizedImage);
 						mButtonTakePicture2.Text = "Zrób inne zdjêcie";
-						mButtonTakePicture3.Visibility = ViewStates.Visible;
-						mPhotoView3.Visibility = ViewStates.Visible;
+						mButtonTakePicture3.Enabled = true;
 						break;
 					}
 				case 3:
@@ -194,16 +211,19 @@ namespace MobileSecondHand.App.Activities
 			advertisementPrice = (EditText)FindViewById(Resource.Id.editTextPrice);
 			mPhotoView1 = (ImageView)FindViewById(Resource.Id.photoView1);
 			mButtonTakePicture1 = (Button)FindViewById(Resource.Id.buttonTakePicture1);
+			mButtonTakePicture1.Tag = 1;
 			mPhotoView2 = (ImageView)FindViewById(Resource.Id.photoView2);
-			mButtonTakePicture2 = (Button)FindViewById(Resource.Id.buttonTakePicture2);
+			mButtonTakePicture2 = (Button)FindViewById(Resource.Id.buttonTakePicture2); mButtonTakePicture1.Tag = 1;
+			mButtonTakePicture2.Tag = 2;
 			mPhotoView3 = (ImageView)FindViewById(Resource.Id.photoView3);
 			mButtonTakePicture3 = (Button)FindViewById(Resource.Id.buttonTakePicture3);
+			mButtonTakePicture3.Tag = 3;
 			buttonPublishAdvertisement = FindViewById<Button>(Resource.Id.buttonPublishAdvertisemenetItem);
 
 			buttonPublishAdvertisement.Click += async (s, e) => await ButtonPublishAdvertisement_Click(s, e);
-			mButtonTakePicture1.Click += MButtonTakePicture_Click1;
-			mButtonTakePicture2.Click += MButtonTakePicture_Click2;
-			mButtonTakePicture3.Click += MButtonTakePicture_Click3;
+			mButtonTakePicture1.Click += MButtonTakePicture_Click;
+			mButtonTakePicture2.Click += MButtonTakePicture_Click;
+			mButtonTakePicture3.Click += MButtonTakePicture_Click;
 		}
 
 
@@ -222,9 +242,15 @@ namespace MobileSecondHand.App.Activities
 					{
 						var newAdvertisementModel = CreateNewAdvertisementItemModel(photosListModel);
 						var success = await this.advertisementItemService.CreateNewAdvertisement(newAdvertisementModel);
+						
 						if (success)
 						{
+							foreach (var tempPath in tempPhotosPaths)
+							{
+								System.IO.File.Delete(tempPath);
+							}
 							AlertsService.ShowToast(this, "Pomyœlnie utworzone nowe og³oszenie");
+
 							this.Finish();
 						}
 						else
@@ -298,23 +324,42 @@ namespace MobileSecondHand.App.Activities
 			return isValidate;
 		}
 
-		private void MButtonTakePicture_Click1(object sender, EventArgs e)
+		private void MButtonTakePicture_Click(object sender, EventArgs e)
 		{
-			TakePhoto(1);
+			var btnNr = (int)(sender as Button).Tag;
+			TakePhoto(btnNr);
 		}
-
-		
-		private void MButtonTakePicture_Click2(object sender, EventArgs e)
-		{
-			TakePhoto(2);
-		}
-		private void MButtonTakePicture_Click3(object sender, EventArgs e)
-		{
-			TakePhoto(3);
-		}
-
 
 		private void TakePhoto(int photoNr)
+		{
+			var takingPhotoKindNames = Enum.GetValues(typeof(GetPhotoKind)).GetAllItemsDisplayNames();
+			AlertsService.ShowSingleSelectListString(this, takingPhotoKindNames.ToArray(), s =>
+			{
+				var selectedTakingPhotoKind = s.GetEnumValueByDisplayName<GetPhotoKind>();
+				photoIsTaking = true;
+				switch (selectedTakingPhotoKind)
+				{
+					case GetPhotoKind.TakeNewPhotoFromCamera:
+						TakePhotoFromCamera(photoNr);
+						break;
+					case GetPhotoKind.TakeExistingPhotoFromStorage:
+						TakePhotoFromStorage(photoNr);
+						break;
+					default:
+						break;
+				}
+			});
+		}
+
+		private void TakePhotoFromStorage(int photoNr)
+		{
+			var selectExistingPhotoIntent = new Intent();
+			selectExistingPhotoIntent.SetType("image/*");
+			selectExistingPhotoIntent.SetAction(Intent.ActionGetContent);
+			StartActivityForResult(Intent.CreateChooser(selectExistingPhotoIntent, "Wybierz zdjêcie"), photoNr);
+		}
+
+		private void TakePhotoFromCamera(int photoNr)
 		{
 			Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
 			if (takePictureIntent.ResolveActivity(PackageManager) != null)
@@ -330,18 +375,15 @@ namespace MobileSecondHand.App.Activities
 				}
 				if (photoFile != null)
 				{
-					photoIsTaking = true;
 					takePictureIntent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(photoFile));
 
-					StartActivityForResult(takePictureIntent, REQUEST_TAKE_PHOTO_1);
+					base.StartActivityForResult(takePictureIntent, photoNr);
 				}
 			}
 		}
 
-
 		private Java.IO.File CreateImageFile(int photoNr)
 		{
-			var photoPathINdex = photoNr - 1;
 			String timeStamp = DateTime.Now.ToString();
 			String imageFileName = "JPEG_" + timeStamp + "_";
 			Java.IO.File storageDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures);
@@ -352,16 +394,22 @@ namespace MobileSecondHand.App.Activities
 					storageDir      /* directory */
 			);
 
-			if (this.photosPaths.ElementAt(photoPathINdex) != null)
+			SavePhotoPath(photoNr, image.AbsolutePath);
+
+			return image;
+		}
+
+		private void SavePhotoPath(int photoNr, string path)
+		{
+			var photoPathINdex = photoNr - 1;
+			if (this.photosPaths.Count >= photoNr)
 			{
-				this.photosPaths[photoPathINdex] = image.AbsolutePath;
+				this.photosPaths[photoPathINdex] = path;
 			}
 			else
 			{
-				this.photosPaths.Add(image.AbsolutePath);
+				this.photosPaths.Add(path);
 			}
-
-			return image;
 		}
 	}
 }
