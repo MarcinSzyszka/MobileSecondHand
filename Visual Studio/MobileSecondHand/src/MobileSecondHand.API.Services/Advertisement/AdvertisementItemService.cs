@@ -123,7 +123,8 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return true;
 		}
 
-		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb) {
+		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb)
+		{
 			var viewModel = new AdvertisementItemDetails();
 			viewModel.Id = advertisementFromDb.Id;
 			viewModel.Title = advertisementFromDb.Title;
@@ -131,9 +132,20 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.Price = advertisementFromDb.Price;
 			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
 			viewModel.SellerId = advertisementFromDb.UserId;
-			viewModel.Photo = await this.advertisementItemPhotosService.GetPhotoInBytes(advertisementFromDb.AdvertisementPhotos.FirstOrDefault(p => !p.IsMainPhoto).PhotoPath);
+			viewModel.Photos = await GetPhotosList(advertisementFromDb.AdvertisementPhotos.Where(p => !p.IsMainPhoto).ToList());
 			viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(advertisementFromDb.UserId);
 			return viewModel;
+		}
+
+		private async Task<List<byte[]>> GetPhotosList(List<AdvertisementPhoto> photos)
+		{
+			var photosList = new List<byte[]>();
+			foreach (var photo in photos)
+			{
+				photosList.Add(await this.advertisementItemPhotosService.GetPhotoInBytes(photo.PhotoPath));
+			}
+
+			return photosList;
 		}
 
 		private async Task<IEnumerable<AdvertisementItemShortModel>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesForAdvertisementsModel coordinatesModel = null) {
