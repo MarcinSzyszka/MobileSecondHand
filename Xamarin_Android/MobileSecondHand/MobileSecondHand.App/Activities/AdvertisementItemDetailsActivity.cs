@@ -10,6 +10,7 @@ using Android.Runtime;
 using Android.Util;
 using Android.Views;
 using Android.Widget;
+using ImageViews.Photo;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
@@ -27,7 +28,6 @@ namespace MobileSecondHand.App.Activities
 		IAdvertisementItemService advertisementItemService;
 		IMessagesService messagesService;
 		BitmapOperationService bitmapOperationService;
-		SharedPreferencesHelper sharedPreferencesHelper;
 		private TextView sellerNetworkStateInfoTextView;
 		private TextView forSellOrChangeInfoTextView;
 		private TextView price;
@@ -35,30 +35,37 @@ namespace MobileSecondHand.App.Activities
 		private TextView description;
 		private Button showOtherAdvertisementsBtn;
 		private Button startConversationBtn;
-		private ImageView photoView;
+		private ImageView photoView1;
+		private ImageView photoView2;
+		private ImageView photoView3;
 		private TextView distanceTextView;
 		private int photoImageViewWitdth;
 		private int photoImageViewHeight;
 		private AdvertisementItemDetails advertisement;
 		private RelativeLayout advertisementDetailsWrapperLayout;
 
-		protected override async void OnCreate(Bundle savedInstanceState) {
+		protected override async void OnCreate(Bundle savedInstanceState)
+		{
 			base.OnCreate(savedInstanceState);
-			this.sharedPreferencesHelper = new SharedPreferencesHelper(this);
-			var bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			messagesService = new MessagesService(bearerToken);
 			this.bitmapOperationService = new BitmapOperationService();
-			
+
 			SetContentView(Resource.Layout.AdvertisementItemDetailsActivity);
 			base.SetupToolbar();
 			SetupViews();
-			CalculateSizeForPhotoImageView();
 			await GetAndShowAdvertisementDetails();
 		}
-		protected override void OnDestroy()
+
+		protected override void OnSaveInstanceState(Bundle outState)
 		{
-			base.OnDestroy();
+			base.OnSaveInstanceState(outState);
+			SaveViewFieldsValues(outState);
+		}
+
+		private void SaveViewFieldsValues(Bundle outState)
+		{
+			//TODO zrobic zapamietywanie danyc przy zmianie orientacji zeby nie ciagnac znowu danych
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
@@ -91,23 +98,17 @@ namespace MobileSecondHand.App.Activities
 			return handled;
 		}
 
-		private void CalculateSizeForPhotoImageView() {
-			var metrics = this.Resources.DisplayMetrics;
-			var width = metrics.WidthPixels - 20;
-			this.photoImageViewWitdth = width;
-			this.photoImageViewHeight = (int)(width * 0.8);
-
-			var photoViewWidth = this.photoView.Width;
-		}
-
-		private void SetupViews() {
+		private void SetupViews()
+		{
 			this.progress = new ProgressDialogHelper(this);
 			this.advertisementDetailsWrapperLayout = FindViewById<RelativeLayout>(Resource.Id.advertisementDetailsWrapperLayout);
 			this.distanceTextView = FindViewById<TextView>(Resource.Id.distanceDetailsTextView);
 			this.sellerNetworkStateInfoTextView = FindViewById<TextView>(Resource.Id.sellerNetworkState);
 			this.forSellOrChangeInfoTextView = FindViewById<TextView>(Resource.Id.forSellOrChangeInfo);
 			this.startConversationBtn = FindViewById<Button>(Resource.Id.startConvesationBtn);
-			this.photoView = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto);
+			this.photoView1 = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto1);
+			this.photoView2 = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto2);
+			this.photoView3 = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto3);
 			this.price = FindViewById<TextView>(Resource.Id.advertisementDeatilsPrice);
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
@@ -115,7 +116,8 @@ namespace MobileSecondHand.App.Activities
 			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Invisible;
 		}
 
-		private async Task GetAndShowAdvertisementDetails() {
+		private async Task GetAndShowAdvertisementDetails()
+		{
 			progress.ShowProgressDialog("Pobieranie szczegó³ów og³oszenia...");
 			this.advertisementDetailsWrapperLayout.Visibility = ViewStates.Invisible;
 			var advertisementItemId = Intent.GetIntExtra(ExtrasKeys.ADVERTISEMENT_ITEM_ID, 0);
@@ -125,14 +127,17 @@ namespace MobileSecondHand.App.Activities
 			progress.CloseProgressDialog();
 		}
 
-		private void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance) {
+		private void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance)
+		{
 			//distanceTextView.Text = String.Format("{0}{1} km", this.Resources.GetString(Resource.String.distanceDetailsInfo), distance);
 			distanceTextView.Text = String.Format("{0} km", distance);
-			if (advertisement.IsSellerOnline) {
+			if (advertisement.IsSellerOnline)
+			{
 				sellerNetworkStateInfoTextView.Text = this.Resources.GetString(Resource.String.userOnlineStateInfo);
 				sellerNetworkStateInfoTextView.SetTextColor(Android.Graphics.Color.Green);
 			}
-			else {
+			else
+			{
 				sellerNetworkStateInfoTextView.Text = this.Resources.GetString(Resource.String.userOfflineStateInfo);
 				sellerNetworkStateInfoTextView.SetTextColor(Android.Graphics.Color.Red);
 			}
@@ -140,11 +145,8 @@ namespace MobileSecondHand.App.Activities
 			forSellOrChangeInfoTextView.Text = advertisement.IsOnlyForSell ?
 												this.Resources.GetString(Resource.String.onlyForSellInfo) :
 												this.Resources.GetString(Resource.String.forSellOrChangeInfo);
-			//photoView.LayoutParameters.Width = photoImageViewWitdth;
-			//photoView.LayoutParameters.Height = photoImageViewHeight;
-			//photoView.RequestLayout();
-			
-			photoView.SetImageBitmap(bitmapOperationService.GetBitmap(advertisement.Photo));
+
+			SetPhotots(advertisement);
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
@@ -153,11 +155,39 @@ namespace MobileSecondHand.App.Activities
 
 		}
 
-		private void ShowOtherAdvertisementsBtn_Click(object sender, EventArgs e) {
+		private void SetPhotots(AdvertisementItemDetails advertisement)
+		{
+			for (int i = 0; i < advertisement.Photos.Count; i++)
+			{
+				ImageView currentPhotoView;
+				if (i == 0)
+				{
+				
+					currentPhotoView = photoView1;
+				}
+				else if (i == 1)
+				{
+					currentPhotoView = photoView2;
+				}
+				else
+				{
+					currentPhotoView = photoView3;
+				}
+
+				currentPhotoView.SetImageBitmap(bitmapOperationService.GetBitmap(advertisement.Photos[i]));
+				//var attacher = new PhotoViewAttacher(currentPhotoView);
+				
+				currentPhotoView.Visibility = ViewStates.Visible;
+			}
+		}
+
+		private void ShowOtherAdvertisementsBtn_Click(object sender, EventArgs e)
+		{
 			throw new NotImplementedException();
 		}
 
-		private async Task StartConversationBtn_Click(object sender, EventArgs e) {
+		private async Task StartConversationBtn_Click(object sender, EventArgs e)
+		{
 			progress.ShowProgressDialog("Proszê czekaæ. Trwa przetwarzanie informacji..");
 			var conversationInfoModel = await messagesService.GetConversationInfoModel(this.advertisement.SellerId);
 			progress.CloseProgressDialog();
@@ -174,7 +204,8 @@ namespace MobileSecondHand.App.Activities
 			}
 		}
 
-		private async Task<AdvertisementItemDetails> GetAdvertisement(int advertisementItemId) {
+		private async Task<AdvertisementItemDetails> GetAdvertisement(int advertisementItemId)
+		{
 			var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertisementItemId);
 
 			return advertisement;

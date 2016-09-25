@@ -10,7 +10,7 @@ namespace MobileSecondHand.Models.Advertisement {
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public int Price { get; set; }
-		public byte[] Photo { get; set; }
+		public List<byte[]> Photos { get; set; }
 		public bool IsOnlyForSell { get; set; }
 		public bool IsSellerOnline { get; set; }
 		public string SellerId { get; set; }

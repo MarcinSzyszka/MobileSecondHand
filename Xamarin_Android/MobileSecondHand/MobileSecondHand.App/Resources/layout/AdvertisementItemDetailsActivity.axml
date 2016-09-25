@@ -7,33 +7,33 @@
     android:minHeight="25px"
     android:minWidth="25px"
     android:orientation="vertical">
-    <android.support.v4.widget.DrawerLayout
+	<android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="25px"
         android:minWidth="25px"
         android:orientation="vertical">
-        <ScrollView
+		<ScrollView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="25px"
             android:minWidth="25px"
             android:orientation="vertical">
-            <LinearLayout
+			<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <include
+				<include
                     layout="@layout/appbar"
                     android:layout_alignParentTop="true"
                     android:layout_gravity="top" />
-                <RelativeLayout
+				<RelativeLayout
                     android:id="@+id/advertisementDetailsWrapperLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <ImageView
-                        android:id="@+id/advertisementDetailsPhoto"
+					<ImageView
+                        android:id="@+id/advertisementDetailsPhoto1"
                         android:layout_width="fill_parent"
                         android:layout_height="wrap_content"
                         android:layout_centerHorizontal="true"
@@ -41,21 +41,45 @@
                         android:src="@android:drawable/ic_menu_gallery"
                         android:layout_marginLeft="20dp"
                         android:layout_marginRight="20dp"
-						android:adjustViewBounds="true" />
-                    <TextView
+                        android:adjustViewBounds="true" />
+					<ImageView
+						android:id="@+id/advertisementDetailsPhoto2"
+						android:layout_width="fill_parent"
+						android:layout_height="wrap_content"
+						android:layout_centerHorizontal="true"
+						android:layout_marginTop="5dp"
+						android:src="@android:drawable/ic_menu_gallery"
+						android:layout_marginLeft="20dp"
+						android:layout_marginRight="20dp"
+						android:adjustViewBounds="true"
+						android:layout_below="@+id/advertisementDetailsPhoto1"
+						android:visibility="invisible"/>
+					<ImageView
+                        android:id="@+id/advertisementDetailsPhoto3"
+                        android:layout_width="fill_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="5dp"
+                        android:src="@android:drawable/ic_menu_gallery"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="20dp"
+                        android:adjustViewBounds="true"
+						android:layout_below="@+id/advertisementDetailsPhoto2"
+						android:visibility="invisible" />
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Rodzaj ogłoszenia"
                         android:id="@+id/textView10"
-                        android:layout_below="@+id/advertisementDetailsPhoto"
+                        android:layout_below="@+id/advertisementDetailsPhoto3"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:gravity="center"
                         android:background="@color/headerBackground"
                         android:textColor="@color/colorPrimaryDark" />
-                    <Button
+					<Button
                         android:id="@+id/startConvesationBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -64,7 +88,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_marginRight="5dp"
                         android:layout_centerInParent="true" />
-                    <TextView
+					<TextView
                         android:id="@+id/sellerNetworkState"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -76,7 +100,7 @@
                         android:textColor="@color/userOnlineState"
                         android:layout_alignParentLeft="true"
                         android:layout_marginTop="14dp" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -89,7 +113,7 @@
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:gravity="center" />
-                    <TextView
+					<TextView
                         android:id="@+id/advertisementDetailsTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -100,7 +124,7 @@
                         android:text="Tytuł ogłoszenia"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/advertisementDetailsDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -111,7 +135,7 @@
                         android:text="Treść ogłoszenia"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimary" />
-                    <TextView
+					<TextView
                         android:id="@+id/advertisementDeatilsPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -121,7 +145,7 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginTop="5dp" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -134,7 +158,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/forSellOrChangeInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -146,7 +170,7 @@
                         android:layout_alignParentLeft="false"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -159,7 +183,7 @@
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:gravity="center" />
-                    <Button
+					<Button
                         android:id="@+id/showOtherUserAdvertisementsBtn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -167,7 +191,7 @@
                         android:layout_centerHorizontal="true"
                         android:text="Zobacz inne ogłoszenia użytkownika"
                         android:layout_marginTop="5dp" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -177,7 +201,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:background="@color/colorPrimary" />
-                    <TextView
+					<TextView
                         android:id="@+id/distanceDetailsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -188,7 +212,7 @@
                         android:layout_alignParentRight="false"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -201,7 +225,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView3"
@@ -209,14 +233,14 @@
                         android:layout_below="@+id/textView12"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp" />
-                </RelativeLayout>
-            </LinearLayout>
-        </ScrollView>
-        <android.support.design.widget.NavigationView
+				</RelativeLayout>
+			</LinearLayout>
+		</ScrollView>
+		<android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             tools:headerLayout="@layout/headerdrawerlayout" />
-    </android.support.v4.widget.DrawerLayout>
+	</android.support.v4.widget.DrawerLayout>
 </FrameLayout>
