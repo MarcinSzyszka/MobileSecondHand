@@ -6,6 +6,7 @@ using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.Location;
@@ -119,6 +120,14 @@ namespace MobileSecondHand.Services.Advertisements
 			}
 			return true;
 
+		}
+
+		public async Task<string> AddToUserFavouritesAdvertisements(SingleIdModelForPostRequests advertisementId)
+		{
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "AddToUserFavourites", new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json"));
+			var responseContentString = await response.Content.ReadAsStringAsync();
+
+			return responseContentString.Replace("\"\"", "");
 		}
 
 		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId)

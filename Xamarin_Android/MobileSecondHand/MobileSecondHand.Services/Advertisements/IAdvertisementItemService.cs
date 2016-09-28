@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Location;
 using MobileSecondHand.Models.Security;
@@ -16,5 +17,6 @@ namespace MobileSecondHand.Services.Advertisements {
 		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId);
 		Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel);
 		Task<bool> DeleteAdvertisement(int advertisementId);
+		Task<string> AddToUserFavouritesAdvertisements(SingleIdModelForPostRequests advertisementId);
 	}
 }

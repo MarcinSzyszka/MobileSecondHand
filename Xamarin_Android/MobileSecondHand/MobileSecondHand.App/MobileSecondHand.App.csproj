@@ -265,6 +265,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\..\..\Visual Studio\MobileSecondHand\MobileSecondHand.API.Models.Shared\MobileSecondHand.API.Models.Shared.csproj">
+      <Project>{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}</Project>
+      <Name>MobileSecondHand.API.Models.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MobileSecondHand.Common\MobileSecondHand.Common.csproj">
       <Project>{d604bd91-82d3-4241-97a1-ef8f947c8b7b}</Project>
       <Name>MobileSecondHand.Common</Name>

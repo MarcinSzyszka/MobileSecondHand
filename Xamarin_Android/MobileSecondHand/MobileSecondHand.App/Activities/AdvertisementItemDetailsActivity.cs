@@ -11,6 +11,7 @@ using Android.Util;
 using Android.Views;
 using Android.Widget;
 using ImageViews.Photo;
+using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Advertisement;
@@ -35,12 +36,11 @@ namespace MobileSecondHand.App.Activities
 		private TextView description;
 		private Button showOtherAdvertisementsBtn;
 		private Button startConversationBtn;
+		private Button addToFavouriteAdvertsBtn;
 		private ImageView photoView1;
 		private ImageView photoView2;
 		private ImageView photoView3;
 		private TextView distanceTextView;
-		private int photoImageViewWitdth;
-		private int photoImageViewHeight;
 		private AdvertisementItemDetails advertisement;
 		private RelativeLayout advertisementDetailsWrapperLayout;
 
@@ -114,6 +114,7 @@ namespace MobileSecondHand.App.Activities
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.showOtherAdvertisementsBtn = FindViewById<Button>(Resource.Id.showOtherUserAdvertisementsBtn);
 			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Invisible;
+			this.addToFavouriteAdvertsBtn = FindViewById<Button>(Resource.Id.btnAddToFavoriteAdvertisements);
 		}
 
 		private async Task GetAndShowAdvertisementDetails()
@@ -151,6 +152,7 @@ namespace MobileSecondHand.App.Activities
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
+			this.addToFavouriteAdvertsBtn.Click += async (s, e) => await AddToFavouriteAdvertsBtn_Click(s, e);
 			showOtherAdvertisementsBtn.Click += ShowOtherAdvertisementsBtn_Click;
 
 		}
@@ -184,6 +186,13 @@ namespace MobileSecondHand.App.Activities
 		private void ShowOtherAdvertisementsBtn_Click(object sender, EventArgs e)
 		{
 			throw new NotImplementedException();
+		}
+
+		private async Task AddToFavouriteAdvertsBtn_Click(object sender, EventArgs e)
+		{
+			var idApiModel = new SingleIdModelForPostRequests { Id = this.advertisement.Id };
+			var responseMessage = await this.advertisementItemService.AddToUserFavouritesAdvertisements(idApiModel);
+			AlertsService.ShowToast(this, responseMessage);
 		}
 
 		private async Task StartConversationBtn_Click(object sender, EventArgs e)
