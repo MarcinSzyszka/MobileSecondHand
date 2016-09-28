@@ -1,6 +1,23 @@
 {
   "version": 2,
   "exports": {
+    "MobileSecondHand.API.Models.Shared/1.0.0": {
+      "type": "project",
+      "framework": ".NETFramework,Version=v4.5",
+      "compile": {
+        "bin/Debug/MobileSecondHand.API.Models.Shared.dll": {}
+      },
+      "runtime": {
+        "bin/Debug/MobileSecondHand.API.Models.Shared.dll": {}
+      },
+      "contentFiles": {
+        "bin/Debug/MobileSecondHand.API.Models.Shared.pdb": {
+          "buildAction": "None",
+          "codeLanguage": "any",
+          "copyToOutput": true
+        }
+      }
+    },
     "MobileSecondHand.API.Models/1.0.0": {
       "type": "project",
       "framework": ".NETFramework,Version=v4.6",
