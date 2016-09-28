@@ -35,6 +35,10 @@
   </PropertyGroup>
   <ItemGroup>
     <!-- A reference to the entire .NET Framework is automatically included -->
+    <ProjectReference Include="..\..\..\Visual Studio\MobileSecondHand\MobileSecondHand.API.Models.Shared\MobileSecondHand.API.Models.Shared.csproj">
+      <Project>{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}</Project>
+      <Name>MobileSecondHand.API.Models.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MobileSecondHand.Models\MobileSecondHand.Models.csproj">
       <Project>{a06429c2-0fed-40a3-8721-d58cc20773ee}</Project>
       <Name>MobileSecondHand.Models</Name>
