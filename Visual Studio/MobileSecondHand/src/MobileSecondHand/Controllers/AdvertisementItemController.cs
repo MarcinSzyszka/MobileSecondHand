@@ -12,6 +12,7 @@ using System.Diagnostics;
 using System.Collections.Generic;
 using System.Collections;
 using MobileSecondHand.API.Models.Coordinates;
+using MobileSecondHand.API.Models.Shared;
 
 namespace MobileSecondHand.Controllers
 {
@@ -124,6 +125,28 @@ namespace MobileSecondHand.Controllers
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc.Message);
 				return null;
+			}
+		}
+
+
+		[HttpPost]
+		[Route("AddToUserFavourites")]
+		public IActionResult AddToUserFavourites([FromBody]SingleIdModelForPostRequests advertisementId)
+		{
+			try
+			{
+				logger.LogInformation("Dodawanie ogłoszenia do ulubionych");
+				var userId = this.identityService.GetUserId(User.Identity);
+				var success = this.advertisementItemService.AddToUserFavourites(userId, advertisementId.Id);
+				logger.LogInformation("Zakonczono dodawanie ogłoszenia do ulubionych");
+				var messeage = success ? "Ogłoszenie zostało dodane do schowka. Będziesz mieć do niego dostęp z listy ogłoszeń po wybraniu \"Schowek\"" : "Ogłoszenie jest już w Twoim schowku";
+				return Json(messeage);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie dodawania ogłoszenia do ulubionych: " + exc.Message);
+				return Json("Wystąpił błąd na serwerze. Spróbuj pomowmoie później");
 			}
 		}
 

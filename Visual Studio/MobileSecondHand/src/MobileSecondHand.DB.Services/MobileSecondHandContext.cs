@@ -6,18 +6,36 @@ using MobileSecondHand.DB.Models.Keywords;
 using MobileSecondHand.DB.Models.Authentication;
 using MobileSecondHand.DB.Models.Chat;
 
-namespace MobileSecondHand.DB.Services {
-	public class MobileSecondHandContext : IdentityDbContext<ApplicationUser> {
+namespace MobileSecondHand.DB.Services
+{
+	public class MobileSecondHandContext : IdentityDbContext<ApplicationUser>
+	{
 		public MobileSecondHandContext(DbContextOptions<MobileSecondHandContext> options)
-		: base(options) {
+		: base(options)
+		{
 			this.ChangeTracker.AutoDetectChangesEnabled = false;
 			this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
 		}
 
-		protected override void OnModelCreating(ModelBuilder builder) {
+		protected override void OnModelCreating(ModelBuilder builder)
+		{
 			base.OnModelCreating(builder);
-			builder.Entity<CategoryKeywordToAdvertisement>().HasKey(x => new { x.CategoryKeywordId, x.AdvertisementItemId });
 
+
+
+			builder.Entity<UserToFavouriteAdvertisement>().HasKey(x => new { x.ApplicationUserId, x.AdvertisementItemId });
+			builder.Entity<UserToFavouriteAdvertisement>()
+			   .HasOne(pt => pt.ApplicationUser)
+			   .WithMany(p => p.FavouriteAdvertisementItems)
+			   .HasForeignKey(pt => pt.ApplicationUserId);
+
+			builder.Entity<UserToFavouriteAdvertisement>()
+				.HasOne(pt => pt.AdvertisementItem)
+				.WithMany(t => t.UsersWhoAddedToFavourites)
+				.HasForeignKey(pt => pt.AdvertisementItemId);
+
+
+			builder.Entity<CategoryKeywordToAdvertisement>().HasKey(x => new { x.CategoryKeywordId, x.AdvertisementItemId });
 			builder.Entity<CategoryKeywordToAdvertisement>()
 			   .HasOne(pt => pt.CategoryKeyword)
 			   .WithMany(p => p.Advertisements)
@@ -64,5 +82,8 @@ namespace MobileSecondHand.DB.Services {
 		public DbSet<MobileSecondHand.DB.Models.Chat.Conversation> Conversation { get; set; }
 		public DbSet<UserToConversation> UserToConversation { get; set; }
 		public DbSet<ChatMessage> ChatMessage { get; set; }
+		public DbSet<UserToFavouriteAdvertisement> UserToFavouriteAdvertisement { get; set; }
+
+
 	}
 }

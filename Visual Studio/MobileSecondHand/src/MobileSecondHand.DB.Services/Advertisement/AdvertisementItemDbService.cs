@@ -37,18 +37,6 @@ namespace MobileSecondHand.DB.Services.Advertisement
 																						&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
 																						.OrderBy(a => a.CreationDate)
 																						.Skip(ITEMS_PER_REQUEST * page).Take(ITEMS_PER_REQUEST);
-
-			//workaround buga w EF (chujowe bo ciagne wszystko zeby zwrocic 10)
-			//return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.ExpirationDate >= DateTime.Now &&
-			//																			a.Latitude >= coordinatesForSearchModel.LatitudeStart
-			//																			&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
-			//																			&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
-			//																			&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
-			//																			.OrderBy(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesForSearchModel.UserLatitude, coordinatesForSearchModel.UserLongitude, a.Latitude, a.Longitude))
-			//																			.ToList()
-			//																			.Skip(ITEMS_PER_REQUEST * page)
-			//																			.Take(ITEMS_PER_REQUEST);
-
 		}
 
 		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
@@ -67,16 +55,11 @@ namespace MobileSecondHand.DB.Services.Advertisement
 																					.OrderBy(a => a.CreationDate)
 																					.Skip(pageNumber * ITEMS_PER_REQUEST)
 																					.Take(ITEMS_PER_REQUEST);
+		}
 
-
-
-
-
-			//return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId 
-			//																			&& a.ExpirationDate >= DateTime.Now)
-			//																			.OrderBy(a => a.CreationDate).ToList()
-			//																			.Skip(pageNumber * ITEMS_PER_REQUEST)
-			//																			.Take(ITEMS_PER_REQUEST);
+		public UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId)
+		{
+			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).FirstOrDefault(f => f.ApplicationUserId == userId && f.AdvertisementItemId == advertisementId);
 		}
 
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem)
@@ -108,6 +91,21 @@ namespace MobileSecondHand.DB.Services.Advertisement
 		public void SaveAdvertisementItem(AdvertisementItem advertisement)
 		{
 			this.dbContext.Entry(advertisement).State = EntityState.Modified;
+
+			this.dbContext.SaveChanges();
+		}
+
+		public void SaveUserFavouriteAdvertisement(UserToFavouriteAdvertisement favouriteAdvertisement)
+		{
+			if (favouriteAdvertisement.ApplicationUser != null)
+			{
+				this.dbContext.Entry(favouriteAdvertisement).State = EntityState.Modified;
+			}
+			else
+			{
+				this.dbContext.UserToFavouriteAdvertisement.Add(favouriteAdvertisement);
+				this.dbContext.Entry(favouriteAdvertisement).State = EntityState.Added;
+			}
 
 			this.dbContext.SaveChanges();
 		}

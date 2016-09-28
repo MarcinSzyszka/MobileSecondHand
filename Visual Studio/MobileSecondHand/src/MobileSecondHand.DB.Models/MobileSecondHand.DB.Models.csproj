@@ -192,6 +192,7 @@
     <Compile Include="Advertisement\AdvertisementPhoto.cs" />
     <Compile Include="Advertisement\CategoryKeywordToAdvertisement.cs" />
     <Compile Include="Advertisement\ColorKeywordToAdvertisement.cs" />
+    <Compile Include="Advertisement\UserToFavouriteAdvertisement.cs" />
     <Compile Include="Chat\ConversationReadModel.cs" />
     <Compile Include="Keywords\CategoryKeyword.cs" />
     <Compile Include="Keywords\ColorKeyword.cs" />

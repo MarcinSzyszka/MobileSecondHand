@@ -50,6 +50,8 @@ namespace MobileSecondHand.DB.Models.Authentication
 				base.Email = value;
 			}
 		}
+		
+		public List<UserToFavouriteAdvertisement> FavouriteAdvertisementItems { get; set; } = new List<UserToFavouriteAdvertisement>();
 		public List<AdvertisementItem> AdvertisementItems { get; set; } = new List<AdvertisementItem>();
 		public List<UserToConversation> Conversations { get; set; } = new List<UserToConversation>();
 		public List<ChatMessage> ChatMessages { get; set; } = new List<ChatMessage>();

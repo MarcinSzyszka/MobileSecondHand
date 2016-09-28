@@ -8,9 +8,10 @@ using MobileSecondHand.DB.Services;
 namespace MobileSecondHand.Migrations
 {
     [DbContext(typeof(MobileSecondHandContext))]
-    partial class MobileSecondHandContextModelSnapshot : ModelSnapshot
+    [Migration("20160928171654_AddedUserToFavouritesAdvertisementsModel")]
+    partial class AddedUserToFavouritesAdvertisementsModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")

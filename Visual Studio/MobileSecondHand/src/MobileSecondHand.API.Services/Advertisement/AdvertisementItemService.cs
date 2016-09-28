@@ -123,6 +123,21 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return true;
 		}
 
+		public bool AddToUserFavourites(string userId, int advertisementId)
+		{
+			UserToFavouriteAdvertisement favouriteAdvertisement = this.advertisementItemDbService.GetUserFavouriteAdvertisement(userId, advertisementId);
+			if (favouriteAdvertisement != null)
+			{
+				//user already has this advert in his favourites
+				return false;
+			}
+
+			favouriteAdvertisement = new UserToFavouriteAdvertisement { AdvertisementItemId = advertisementId, ApplicationUserId = userId };
+			this.advertisementItemDbService.SaveUserFavouriteAdvertisement(favouriteAdvertisement);
+
+			return true;
+		}
+
 		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb)
 		{
 			var viewModel = new AdvertisementItemDetails();
@@ -185,5 +200,6 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return photosDbModelsList;
 		}
 
+		
 	}
 }

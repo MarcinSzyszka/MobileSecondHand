@@ -13,5 +13,7 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
 		AdvertisementItem GetById(int advertisementId);
 		void SaveAdvertisementItem(AdvertisementItem advertisement);
+		UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId);
+		void SaveUserFavouriteAdvertisement(UserToFavouriteAdvertisement favouriteAdvertisement);
 	}
 }

@@ -25,5 +25,7 @@ namespace MobileSecondHand.DB.Models.Advertisement
 		public List<AdvertisementPhoto> AdvertisementPhotos { get; set; } = new List<AdvertisementPhoto>();
 		public List<ColorKeywordToAdvertisement> ColorKeywords { get; set; } = new List<ColorKeywordToAdvertisement>();
 		public List<CategoryKeywordToAdvertisement> CategoryKeywords { get; set; } = new List<CategoryKeywordToAdvertisement>();
+		public List<UserToFavouriteAdvertisement> UsersWhoAddedToFavourites { get; set; } = new List<UserToFavouriteAdvertisement>();
+		
 	}
 }
