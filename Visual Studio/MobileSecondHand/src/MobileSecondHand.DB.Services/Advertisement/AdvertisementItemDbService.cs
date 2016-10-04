@@ -59,7 +59,15 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId)
 		{
-			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).FirstOrDefault(f => f.ApplicationUserId == userId && f.AdvertisementItemId == advertisementId);
+			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).FirstOrDefault(f => f.ApplicationUserId == userId && f.AdvertisementItemId == advertisementId);
+		}
+
+		public IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId, int pageNumber)
+		{
+			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).Where(f => f.ApplicationUserId == userId)
+																																		.Skip(pageNumber * ITEMS_PER_REQUEST)
+																																		.Take(ITEMS_PER_REQUEST);
+
 		}
 
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem)
@@ -106,6 +114,14 @@ namespace MobileSecondHand.DB.Services.Advertisement
 				this.dbContext.UserToFavouriteAdvertisement.Add(favouriteAdvertisement);
 				this.dbContext.Entry(favouriteAdvertisement).State = EntityState.Added;
 			}
+
+			this.dbContext.SaveChanges();
+		}
+
+		public void DeleteFavouriteAdvertisement(UserToFavouriteAdvertisement advertisement)
+		{
+			this.dbContext.UserToFavouriteAdvertisement.Remove(advertisement);
+			this.dbContext.Entry(advertisement).State = EntityState.Deleted;
 
 			this.dbContext.SaveChanges();
 		}

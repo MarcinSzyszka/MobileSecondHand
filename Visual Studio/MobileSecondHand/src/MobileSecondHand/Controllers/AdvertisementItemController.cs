@@ -109,6 +109,29 @@ namespace MobileSecondHand.Controllers
 		}
 
 		[HttpPost]
+		[Route("DeleteAdvertisementFromFavourites")]
+		public IActionResult DeleteAdvertisementFromFavourites([FromBody]int advertisementId)
+		{
+			try
+			{
+				logger.LogInformation("Usuwanie ogłoszenia z ulubionych");
+				var userId = this.identityService.GetUserId(User.Identity);
+				bool success = this.advertisementItemService.DeleteAdvertisementFromFavourites(advertisementId, userId);
+				logger.LogInformation("Zakonczono usuwanie ogłoszenia z ulubionych");
+				return Json(success);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie usuwania ogłoszenia z ulubionych: " + exc.Message);
+				return Json(false);
+			}
+		}
+
+
+		
+
+		[HttpPost]
 		[Route("CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck")]
 		public IActionResult CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck([FromBody]CoordinatesForAdvertisementsModel coordinatesModel)
 		{
@@ -189,6 +212,28 @@ namespace MobileSecondHand.Controllers
 				return null;
 			}
 		}
+
+		[HttpGet]
+		[Route("GetUserFavouritesAdvertisements/{pageNumber}")]
+		public async Task<IActionResult> GetUserFavouritesAdvertisements(int pageNumber)
+		{
+			try
+			{
+				logger.LogInformation("Pobieranie ulubionych ogłoszeń");
+				var userId = this.identityService.GetUserId(User.Identity);
+				var advertisements = await this.advertisementItemService.GetUserFavouritesAdvertisements(userId, pageNumber);
+				logger.LogInformation("Zakonczono pobieranie ogłoszeń");
+				return Json(advertisements);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie pobierania ulubionych ogłoszeń: " + exc.Message);
+				return null;
+			}
+		}
+
+		
 
 
 		[HttpGet]

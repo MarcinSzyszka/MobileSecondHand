@@ -15,5 +15,7 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		void SaveAdvertisementItem(AdvertisementItem advertisement);
 		UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId);
 		void SaveUserFavouriteAdvertisement(UserToFavouriteAdvertisement favouriteAdvertisement);
+		IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId, int pageNumber);
+		void DeleteFavouriteAdvertisement(UserToFavouriteAdvertisement advertisement);
 	}
 }

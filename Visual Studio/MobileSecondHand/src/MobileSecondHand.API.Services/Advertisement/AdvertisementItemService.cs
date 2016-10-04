@@ -82,6 +82,14 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return advertisementsViewModels;
 		}
 
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetUserFavouritesAdvertisements(string userId, int pageNumber)
+		{
+			var advertisementsFromDb = this.advertisementItemDbService.GetUserFavouritesAdvertisements(userId, pageNumber).ToList();
+			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb.Select(a => a.AdvertisementItem));
+
+			return advertisementsViewModels;
+		}
+
 		public bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel, bool currentLocation)
 		{
 			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(coordinatesModel.Latitude, coordinatesModel.Longitude, coordinatesModel.MaxDistance);
@@ -119,6 +127,24 @@ namespace MobileSecondHand.API.Services.Advertisement
 			advertisement.ExpirationDate = DateTime.Now;
 
 			this.advertisementItemDbService.SaveAdvertisementItem(advertisement);
+
+			return true;
+		}
+
+		public bool DeleteAdvertisementFromFavourites(int advertisementId, string userId)
+		{
+			var advertisement = this.advertisementItemDbService.GetUserFavouriteAdvertisement(userId, advertisementId);
+			if (advertisement == null)
+			{
+				throw new Exception("Nie znaleziono ogłoszenia o podanym ID");
+			}
+
+			if (advertisement.ApplicationUserId != userId)
+			{
+				throw new Exception("Próba usunięcia ogłoszenia przez nieuprawnionego usera");
+			}
+
+			this.advertisementItemDbService.DeleteFavouriteAdvertisement(advertisement);
 
 			return true;
 		}
@@ -200,6 +226,5 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return photosDbModelsList;
 		}
 
-		
 	}
 }

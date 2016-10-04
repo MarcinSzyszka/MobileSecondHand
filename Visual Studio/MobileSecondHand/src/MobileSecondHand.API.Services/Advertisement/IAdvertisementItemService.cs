@@ -12,5 +12,7 @@ namespace MobileSecondHand.API.Services.Advertisement {
 		bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel, bool currentLocation);
 		bool DeleteAdvertisement(int advertisementId, string userId);
 		bool AddToUserFavourites(string userId, int advertisementId);
+		Task<IEnumerable<AdvertisementItemShortModel>> GetUserFavouritesAdvertisements(string userId, int pageNumber);
+		bool DeleteAdvertisementFromFavourites(int advertisementId, string userId);
 	}
 }
