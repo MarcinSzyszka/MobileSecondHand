@@ -49,12 +49,17 @@ namespace MobileSecondHand.App.Infrastructure
 			alert.Show();
 		}
 
-		public static void ShowSingleSelectListString(Context context, string[] items, Action<string> actionOnSelect)
+		public static void ShowSingleSelectListString(Context context, string[] items, Action<string> actionOnSelect, string selectedItemName = null)
 		{
+			var checkedItem = -1;
+			if (selectedItemName != null)
+			{
+				checkedItem = items.ToList().IndexOf(selectedItemName);
+			}
 			var alertDialog = default(AlertDialog);
 			AlertDialog.Builder buider = new AlertDialog.Builder(context);
 			buider.SetTitle("Wybierz element");
-			buider.SetSingleChoiceItems(items, -1, (sender, args) =>
+			buider.SetSingleChoiceItems(items, checkedItem, (sender, args) =>
 			{
 				actionOnSelect(items[args.Which]);
 				alertDialog.Dismiss();

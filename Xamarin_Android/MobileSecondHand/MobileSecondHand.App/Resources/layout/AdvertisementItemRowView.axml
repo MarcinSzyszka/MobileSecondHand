@@ -43,7 +43,7 @@
             android:textSize="@dimen/smallText" />
         <ImageView
             android:src="@android:drawable/ic_menu_gallery"
-            android:layout_width="200dp"
+            android:layout_width="300dp"
             android:layout_height="150dp"
             android:id="@+id/advertisementPhotoImageView"
             android:layout_centerHorizontal="true"

@@ -40,7 +40,7 @@ namespace MobileSecondHand.App.Adapters {
 			this.bitmapOperationService = new BitmapOperationService();
 			this.infiniteScrollListener = infiniteScrollListener;
 			this.advertisementsKind = advertisementsKind;
-			CalculateSizeForPhotoImageView();
+			//CalculateSizeForPhotoImageView();
 		}
 
 
@@ -50,7 +50,7 @@ namespace MobileSecondHand.App.Adapters {
 		}
 
 		public void AddAdvertisements(List<AdvertisementItemShort> advertisements) {
-			CalculateSizeForPhotoImageView();
+			//CalculateSizeForPhotoImageView();
 			this.AdvertisementItems.AddRange(advertisements);
 			this.NotifyDataSetChanged();
 		}
@@ -58,7 +58,7 @@ namespace MobileSecondHand.App.Adapters {
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
-			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser)
+			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser || advertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
 			{
 				vh.DeleteAdvertisementFab.Visibility = ViewStates.Visible;
 			}
@@ -100,17 +100,12 @@ namespace MobileSecondHand.App.Adapters {
 			}
 		}
 
-		private void CalculateSizeForPhotoImageView() {
-			var metrics = context.Resources.DisplayMetrics;
-			var width = metrics.WidthPixels - 20;
-			this.photoImageViewWitdth = width;
-			this.photoImageViewHeight = (int)(width * 0.8);
-		}
-
-		private int ConvertPixelsToDp(float pixelValue) {
-			var dp = (int)((pixelValue) / context.Resources.DisplayMetrics.Density);
-			return dp;
-		}
+		//private void CalculateSizeForPhotoImageView() {
+		//	var metrics = context.Resources.DisplayMetrics;
+		//	var width = metrics.WidthPixels - 20;
+		//	this.photoImageViewWitdth = width;
+		//	this.photoImageViewHeight = (int)(width * 0.8);
+		//}
 
 		private void OnAdvertisementItemClick(int positionId) {
 			if (AdvertisementItemClick != null) {

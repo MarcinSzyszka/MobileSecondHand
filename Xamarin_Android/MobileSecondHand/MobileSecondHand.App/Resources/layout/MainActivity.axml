@@ -1,65 +1,214 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:minWidth="25px"
+    android:fitsSystemWindows="true"
     android:minHeight="25px"
-    android:fitsSystemWindows="true">
+    android:minWidth="25px"
+    android:orientation="vertical">
+
     <android.support.v4.widget.DrawerLayout
-        android:orientation="vertical"
+        android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:minWidth="25px"
         android:minHeight="25px"
-        android:id="@+id/drawer_layout">
+        android:minWidth="25px"
+        android:orientation="vertical">
+
         <RelativeLayout
+            android:id="@+id/mainListLayoutWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout3"
             android:layout_centerInParent="true">
+
             <include
                 layout="@layout/appbar"
-                android:layout_gravity="top"
-                android:layout_alignParentTop="true" />
+                android:layout_alignParentTop="true"
+                android:layout_gravity="top" />
 
-            <TextView
-                android:layout_width="fill_parent"
+            <RelativeLayout
+                android:id="@+id/mainListLayout"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceSmall"
-                android:text="Ogłoszenia wokół Twojej aktualnej lokalizacji"
-                android:id="@+id/advertisementsKindList"
-                android:background="@color/advertisementRowBackground"
-                android:paddingTop="10dp"
-                android:paddingBottom="10dp"
-                android:layout_below="@+id/app_bar"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="center" />
+                android:layout_centerInParent="true"
+                android:visibility="visible"
+                android:layout_below="@+id/app_bar">
 
-            <com.refractored.fab.FloatingActionButton
-                android:id="@+id/fab"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="bottom|right"
-                android:src="@drawable/ic_input_add"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentRight="true"
-                android:layout_marginBottom="15dp"
-                android:layout_marginRight="15dp"
-                tools:fab_colorNormal="@color/colorAccent"
-                tools:fab_colorPressed="#DCE775"
-                tools:fab_colorRipple="#F0F4C3" />
-            <android.support.v7.widget.RecyclerView
-                android:minWidth="25px"
-                android:minHeight="25px"
+                <TextView
+                    android:id="@+id/advertisementsKindList"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/advertisementRowBackground"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="Ogłoszenia wokół Twojej aktualnej lokalizacji"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/categoryName"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/advertisementsKindList"
+                    android:background="@color/advertisementRowBackground"
+                    android:gravity="center"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:text="Wszystkie kategorie"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <com.refractored.fab.FloatingActionButton
+                    android:id="@+id/fab"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ic_input_add"
+                    tools:fab_colorNormal="@color/colorAccent"
+                    tools:fab_colorPressed="#DCE775"
+                    tools:fab_colorRipple="#F0F4C3" />
+
+                <com.refractored.fab.FloatingActionButton
+                    android:id="@+id/fabFilter"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentLeft="true"
+                    android:layout_gravity="bottom|left"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginLeft="15dp"
+                    android:src="@drawable/filter_icon"
+                    tools:fab_colorNormal="@color/colorAccent"
+                    tools:fab_colorPressed="#DCE775"
+                    tools:fab_colorRipple="#F0F4C3" />
+
+                <android.support.v7.widget.RecyclerView
+                    android:id="@+id/advertisementsRecyclerView"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_below="@+id/categoryName"
+                    android:minHeight="25px"
+                    android:minWidth="25px"
+                    tools:reverseLayout="true"
+                    tools:stackFromEnd="true" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/layoutSortingOptions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:id="@+id/advertisementsRecyclerView"
-                tools:stackFromEnd="true"
-                tools:reverseLayout="true"
-                android:layout_below="@+id/advertisementsKindList" />
+                android:layout_gravity="right|top"
+                android:visibility="gone"
+                android:layout_below="@+id/app_bar">
+
+                <TextView
+                    android:id="@+id/textViewOptionsTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/colorPrimary"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:text="Opcje przeglądania"
+                    android:textAppearance="?android:attr/textAppearanceLarge"
+                    android:textColor="@color/advertisementRowBackground" />
+
+                <TextView
+                    android:id="@+id/textViewCategory"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textViewOptionsTitle"
+                    android:layout_marginTop="@dimen/settingRowMargin"
+                    android:background="@color/headerBackground"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Kategoria"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/textViewSelectedCategoryForMainList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_below="@+id/textViewCategory"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"
+                    android:text="Wszystkie kategorie"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageButton
+                    android:id="@+id/btnSelectCategoryForMainList"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/textViewCategory"
+                    android:src="@drawable/settings" />
+
+                <TextView
+                    android:id="@+id/textView17"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="true"
+                    android:layout_below="@+id/btnSelectCategoryForMainList"
+                    android:background="@color/headerBackground"
+                    android:gravity="center"
+                    android:paddingBottom="5dp"
+                    android:paddingTop="5dp"
+                    android:text="Sortowanie"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <TextView
+                    android:id="@+id/textViewSelectedSorting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentLeft="true"
+                    android:layout_alignParentStart="false"
+                    android:layout_below="@+id/textView17"
+                    android:layout_marginTop="10dp"
+                    android:padding="5dp"
+                    android:text="Wg daty (od najnowszych)"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:textColor="@color/colorPrimaryDark" />
+
+                <ImageButton
+                    android:id="@+id/btnSorting"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignParentLeft="false"
+                    android:layout_alignParentRight="true"
+                    android:layout_below="@+id/textView17"
+                    android:src="@drawable/settings" />
+
+                <com.refractored.fab.FloatingActionButton
+                    android:id="@+id/fabMainListOptions"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_alignParentRight="true"
+                    android:layout_gravity="bottom|right"
+                    android:layout_marginBottom="15dp"
+                    android:layout_marginRight="15dp"
+                    android:src="@drawable/ok_btn"
+                    tools:fab_colorNormal="@color/colorAccent"
+                    tools:fab_colorPressed="#DCE775"
+                    tools:fab_colorRipple="#F0F4C3" />
+            </RelativeLayout>
+
         </RelativeLayout>
+
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
@@ -67,11 +216,5 @@
             android:layout_gravity="start"
             tools:headerLayout="@layout/headerdrawerlayout" />
     </android.support.v4.widget.DrawerLayout>
-    <Spinner
-        android:gravity="center"
-        android:id="@+id/spinner"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:spinnerMode="dialog"
-        android:visibility="invisible" />
+
 </FrameLayout>

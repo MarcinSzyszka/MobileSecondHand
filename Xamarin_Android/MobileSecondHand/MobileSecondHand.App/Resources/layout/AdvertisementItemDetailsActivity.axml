@@ -53,7 +53,7 @@
                         android:layout_marginRight="20dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/advertisementDetailsPhoto1"
-                        android:visibility="invisible" />
+                        android:visibility="gone" />
                     <ImageView
                         android:id="@+id/advertisementDetailsPhoto3"
                         android:layout_width="fill_parent"
@@ -65,7 +65,7 @@
                         android:layout_marginRight="20dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/advertisementDetailsPhoto2"
-                        android:visibility="invisible" />
+                        android:visibility="gone" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

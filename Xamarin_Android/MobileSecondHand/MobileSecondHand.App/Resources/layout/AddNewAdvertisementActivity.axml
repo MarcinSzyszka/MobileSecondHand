@@ -197,25 +197,25 @@
                     android:layout_width="match_parent"
                     android:layout_height="fill_parent"
                     android:layout_weight="2">
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:textAppearance="?android:attr/textAppearanceSmall"
-						android:id="@+id/photoView1Divider"
-						android:text="Zdjęcie 1 (widoczne na liście ogłoszeń)"
-						android:layout_marginTop="@dimen/settingRowPhotoMargin"
-						android:gravity="center"
-						android:background="@color/headerPhotoBackground"
-						android:autoText="false"
-						android:textColor="@color/colorPrimaryDark"
-						android:paddingBottom="5dp"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/photoView1Divider"
+                        android:text="Zdjęcie 1 (widoczne na liście ogłoszeń)"
+                        android:layout_marginTop="@dimen/settingRowPhotoMargin"
+                        android:gravity="center"
+                        android:background="@color/headerPhotoBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp" />
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Zrób zdjęcie"
                         android:id="@+id/buttonTakePicture1"
                         android:layout_centerHorizontal="true"
-						android:layout_below="@+id/photoView1Divider"
+                        android:layout_below="@+id/photoView1Divider"
                         android:textColor="@color/colorPrimaryDark"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                     <ImageView
@@ -227,19 +227,20 @@
                         android:layout_marginRight="50dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/buttonTakePicture1" />
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:textAppearance="?android:attr/textAppearanceSmall"
-						android:id="@+id/photoView2Divider"
-						android:text="Zdjęcie 2"
-						android:layout_below="@+id/photoView1"
-						android:layout_marginTop="@dimen/settingRowPhotoMargin"
-						android:gravity="center"
-						android:background="@color/headerPhotoBackground"
-						android:autoText="false"
-						android:textColor="@color/colorPrimaryDark"
-						android:paddingBottom="5dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/photoView2Divider"
+                        android:text="Zdjęcie 2"
+                        android:layout_below="@+id/photoView1"
+                        android:layout_marginTop="@dimen/settingRowPhotoMargin"
+                        android:gravity="center"
+                        android:background="@color/headerPhotoBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp"
+						android:visibility="gone" />
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -248,8 +249,8 @@
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorPrimaryDark"
                         android:textAppearance="?android:attr/textAppearanceSmall"
-                        android:layout_below="@+id/photoView2Divider" 
-						android:enabled="false"/>
+                        android:layout_below="@+id/photoView2Divider"
+                        android:visibility="gone" />
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -258,22 +259,22 @@
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"
                         android:adjustViewBounds="true"
-                        android:layout_below="@+id/buttonTakePicture2"
-						 />
-					<TextView
-						android:layout_width="match_parent"
-						android:layout_height="wrap_content"
-						android:textAppearance="?android:attr/textAppearanceSmall"
-						android:id="@+id/photoView3Divider"
-						android:text="Zdjęcie 3"
-						android:layout_below="@+id/photoView2"
-						android:layout_marginTop="@dimen/settingRowPhotoMargin"
-						android:gravity="center"
-						android:background="@color/headerPhotoBackground"
-						android:autoText="false"
-						android:textColor="@color/colorPrimaryDark"
-						android:paddingBottom="5dp"
-						/>
+                        android:layout_below="@+id/buttonTakePicture2" 
+						android:visibility="gone"/>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/photoView3Divider"
+                        android:text="Zdjęcie 3"
+                        android:layout_below="@+id/photoView2"
+                        android:layout_marginTop="@dimen/settingRowPhotoMargin"
+                        android:gravity="center"
+                        android:background="@color/headerPhotoBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp" 
+						android:visibility="gone"/>
                     <Button
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -283,7 +284,8 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:layout_below="@+id/photoView3Divider"
-						android:enabled="false"/>
+                        android:enabled="false"
+						android:visibility="gone" />
                     <ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -293,7 +295,7 @@
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"
                         android:adjustViewBounds="true"
-						 />
+						android:visibility="gone"/>
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"

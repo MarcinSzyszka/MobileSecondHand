@@ -113,7 +113,7 @@ namespace MobileSecondHand.App.Activities
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.showOtherAdvertisementsBtn = FindViewById<Button>(Resource.Id.showOtherUserAdvertisementsBtn);
-			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Invisible;
+			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Gone;
 			this.addToFavouriteAdvertsBtn = FindViewById<Button>(Resource.Id.btnAddToFavoriteAdvertisements);
 		}
 

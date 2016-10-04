@@ -50,11 +50,14 @@ namespace MobileSecondHand.App.Activities
 		IAdvertisementItemService advertisementItemService;
 		private ImageView mPhotoView1;
 		private Button mButtonTakePicture1;
+
 		private ImageView mPhotoView2;
 		private Button mButtonTakePicture2;
 		private ImageView mPhotoView3;
 		private Button mButtonTakePicture3;
 		private List<string> tempPhotosPaths;
+		private TextView photoDivider2;
+		private TextView photoDivider3;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -179,13 +182,15 @@ namespace MobileSecondHand.App.Activities
 					{
 						mPhotoView1.SetImageBitmap(resizedImage);
 						mButtonTakePicture1.Text = "Zrób inne zdjêcie";
-						mButtonTakePicture2.Enabled = true;
+						photoDivider2.Visibility = ViewStates.Visible;
+						mButtonTakePicture2.Visibility = ViewStates.Visible;
 						break;
 					}
 				case 2:
 					{
 						mPhotoView2.SetImageBitmap(resizedImage);
 						mButtonTakePicture2.Text = "Zrób inne zdjêcie";
+						photoDivider3.Visibility = ViewStates.Visible;
 						mButtonTakePicture3.Enabled = true;
 						break;
 					}
@@ -212,9 +217,11 @@ namespace MobileSecondHand.App.Activities
 			mPhotoView1 = (ImageView)FindViewById(Resource.Id.photoView1);
 			mButtonTakePicture1 = (Button)FindViewById(Resource.Id.buttonTakePicture1);
 			mButtonTakePicture1.Tag = 1;
+			photoDivider2 = (TextView)FindViewById(Resource.Id.photoView2Divider);
 			mPhotoView2 = (ImageView)FindViewById(Resource.Id.photoView2);
 			mButtonTakePicture2 = (Button)FindViewById(Resource.Id.buttonTakePicture2); mButtonTakePicture1.Tag = 1;
 			mButtonTakePicture2.Tag = 2;
+			photoDivider3 = (TextView)FindViewById(Resource.Id.photoView3Divider);
 			mPhotoView3 = (ImageView)FindViewById(Resource.Id.photoView3);
 			mButtonTakePicture3 = (Button)FindViewById(Resource.Id.buttonTakePicture3);
 			mButtonTakePicture3.Tag = 3;

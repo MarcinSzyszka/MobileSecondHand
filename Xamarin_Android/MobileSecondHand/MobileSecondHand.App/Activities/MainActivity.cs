@@ -49,6 +49,8 @@ namespace MobileSecondHand.App
 		private ProgressDialogHelper progress;
 		AdvertisementsKind advertisementsKind;
 		private TextView advertisementsListKindTextView;
+		private RelativeLayout sortingOptionsLayout;
+		private RelativeLayout mainListLayout;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -59,7 +61,6 @@ namespace MobileSecondHand.App
 
 			SetContentView(Resource.Layout.MainActivity);
 			base.SetupToolbar(false);
-			//advertisementsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE);
 			advertisementsPage = 0;
 			await SetupViews();
 		}
@@ -76,13 +77,6 @@ namespace MobileSecondHand.App
 				advertisementsKind = AdvertisementsKind.AdvertisementsAroundUserCurrentLocation;
 			}
 
-		}
-
-		protected override void OnSaveInstanceState(Bundle outState)
-		{
-			//SharedObject.Data = this.advertisementItemListAdapter.AdvertisementItems;
-			//outState.PutInt(ExtrasKeys.ADVERTISEMENTS_LIST_PAGE, advertisementsPage);
-			base.OnSaveInstanceState(outState);
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
@@ -124,14 +118,19 @@ namespace MobileSecondHand.App
 		private void ShowChoosingAdvertisementsKindDialog()
 		{
 			var kindNames = Enum.GetValues(typeof(AdvertisementsKind)).GetAllItemsDisplayNames();
-			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), async s =>
+			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), methodAfterSelect(), this.advertisementsKind.GetDisplayName());
+
+		}
+
+		private Action<string> methodAfterSelect()
+		{
+			return async s =>
 			{
 				advertisementsKind = s.GetEnumValueByDisplayName<AdvertisementsKind>();
 				this.advertisementsListKindTextView.Text = advertisementsKind.GetDisplayName();
 				this.advertisementItemListAdapter.InfiniteScrollDisabled = false;
 				await DownloadAndShowAdvertisements(true);
-			});
-
+			};
 		}
 
 		public async void OnInfiniteScroll()
@@ -171,6 +170,8 @@ namespace MobileSecondHand.App
 			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
 			advertisementsListKindTextView.Text = advertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
+			sortingOptionsLayout = FindViewById<RelativeLayout>(Resource.Id.layoutSortingOptions);
+			mainListLayout = FindViewById<RelativeLayout>(Resource.Id.mainListLayout);
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 			try
@@ -248,18 +249,21 @@ namespace MobileSecondHand.App
 				return;
 			}
 
-			AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz zakoñczyæ to og³oszenie? Przestanie byæ ono widoczne na liœcie og³oszeñ.", async () =>
+			var message = advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser ? "Czy na pewno chcesz zakoñczyæ to og³oszenie? Przestanie byæ ono widoczne na liœcie og³oszeñ."
+																								: "Czy na pewno chcesz wyrzuciæ ze schowka to og³oszenie?";
+
+			AlertsService.ShowConfirmDialog(this, message, async () =>
 			{
-				var success = await this.advertisementItemService.DeleteAdvertisement(advertisementId);
+				var success = await this.advertisementItemService.DeleteAdvertisement(advertisementId, advertisementsKind);
 
 				if (success)
 				{
-					AlertsService.ShowToast(this, "Pomyœlnie zakoñczono og³oszenie");
+					AlertsService.ShowToast(this, "Pomyœlnie zakoñczono tê operacjê.");
 					RefreshAdvertisementList();
 				}
 				else
 				{
-					AlertsService.ShowToast(this, "Nie uda³o siê zakoñczyæ og³oszenia");
+					AlertsService.ShowToast(this, "Nie uda³o siê wykonaæ tej operacji.");
 				}
 			});
 
@@ -270,6 +274,7 @@ namespace MobileSecondHand.App
 		private async Task<List<AdvertisementItemShort>> GetAdvertisements()
 		{
 			var userAdvertisements = false;
+			var favouritesAdvertisements = false;
 			var searchModel = new SearchAdvertisementsModel();
 			searchModel.Page = advertisementsPage;
 
@@ -307,17 +312,24 @@ namespace MobileSecondHand.App
 				case AdvertisementsKind.AdvertisementsCreatedByUser:
 					userAdvertisements = true;
 					break;
+				case AdvertisementsKind.FavouritesAdvertisements:
+					favouritesAdvertisements = true;
+					break;
 			}
 
 			var list = default(List<AdvertisementItemShort>);
 
-			if (!userAdvertisements)
+			if (!userAdvertisements && !favouritesAdvertisements)
 			{
 				list = await this.advertisementItemService.GetAdvertisements(searchModel);
 			}
-			else
+			else if (userAdvertisements)
 			{
 				list = await this.advertisementItemService.GetUserAdvertisements(this.advertisementsPage);
+			}
+			else
+			{
+				list = await this.advertisementItemService.GetUserFavouritesAdvertisements(this.advertisementsPage);
 			}
 
 			return list;
@@ -328,6 +340,38 @@ namespace MobileSecondHand.App
 			var fab = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fab);
 			fab.BringToFront();
 			fab.Click += Fab_Click;
+
+			var fabFilter = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fabFilter);
+			fabFilter.BringToFront();
+			fabFilter.Click += FabFilter_Click;
+
+			var fabMainListOptions = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fabMainListOptions);
+			fabMainListOptions.BringToFront();
+			fabMainListOptions.Click += FabMainListOptions_Click; ;
+		}
+
+		private void FabMainListOptions_Click(object sender, EventArgs e)
+		{
+			TogleLayouts();
+		}
+
+		private void FabFilter_Click(object sender, EventArgs e)
+		{
+			TogleLayouts();
+		}
+
+		private void TogleLayouts()
+		{
+			if (mainListLayout.Visibility == ViewStates.Visible)
+			{
+				mainListLayout.Visibility = ViewStates.Gone;
+				sortingOptionsLayout.Visibility = ViewStates.Visible;
+			}
+			else
+			{
+				sortingOptionsLayout.Visibility = ViewStates.Gone;
+				mainListLayout.Visibility = ViewStates.Visible;
+			}
 		}
 
 		private void Fab_Click(object sender, EventArgs e)
