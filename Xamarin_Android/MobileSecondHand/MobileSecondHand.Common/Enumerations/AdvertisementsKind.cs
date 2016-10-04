@@ -14,6 +14,8 @@ namespace MobileSecondHand.Common.Enumerations
 		[DisplayName("Ogłoszenia wokół Twojej domowej lokalizacji")]
 		AdvertisementsArounUserHomeLocation = 2,
 		[DisplayName("Twoje ogłoszenia")]
-		AdvertisementsCreatedByUser = 3
+		AdvertisementsCreatedByUser = 3,
+		[DisplayName("Schowek (zapamiętane)")]
+		FavouritesAdvertisements = 4
 	}
 }

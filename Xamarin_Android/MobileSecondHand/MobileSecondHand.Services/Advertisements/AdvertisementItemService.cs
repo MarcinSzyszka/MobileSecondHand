@@ -7,6 +7,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Shared;
+using MobileSecondHand.Common.Enumerations;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.Location;
@@ -41,6 +42,18 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber)
 		{
 			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return new List<AdvertisementItemShort>();
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var advertisementList = JsonConvert.DeserializeObject<List<AdvertisementItemShort>>(responseContentString);
+			return advertisementList;
+		}
+
+		public async Task<List<AdvertisementItemShort>> GetUserFavouritesAdvertisements(int pageNumber)
+		{
+			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserFavouritesAdvertisements/" + pageNumber);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return new List<AdvertisementItemShort>();
@@ -127,7 +140,7 @@ namespace MobileSecondHand.Services.Advertisements
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "AddToUserFavourites", new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json"));
 			var responseContentString = await response.Content.ReadAsStringAsync();
 
-			return responseContentString.Replace("\"\"", "");
+			return responseContentString.Replace("\"", "");
 		}
 
 		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId)
@@ -143,10 +156,12 @@ namespace MobileSecondHand.Services.Advertisements
 			return advertisementDetails;
 		}
 
-		public async Task<bool> DeleteAdvertisement(int advertisementId)
+		public async Task<bool> DeleteAdvertisement(int advertisementId, AdvertisementsKind advertisementsKind)
 		{
+			var actionaname = advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser ? "DeleteAdvertisement/" : "DeleteAdvertisementFromFavourites/";
+
 			var stringContent = new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "DeleteAdvertisement/", stringContent);
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + actionaname, stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -156,5 +171,7 @@ namespace MobileSecondHand.Services.Advertisements
 
 			return success;
 		}
+
+
 	}
 }
