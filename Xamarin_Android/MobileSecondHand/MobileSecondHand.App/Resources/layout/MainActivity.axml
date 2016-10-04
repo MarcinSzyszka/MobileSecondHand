@@ -7,7 +7,6 @@
     android:minHeight="25px"
     android:minWidth="25px"
     android:orientation="vertical">
-
     <android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
@@ -15,18 +14,15 @@
         android:minHeight="25px"
         android:minWidth="25px"
         android:orientation="vertical">
-
         <RelativeLayout
             android:id="@+id/mainListLayoutWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true">
-
             <include
                 layout="@layout/appbar"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="top" />
-
             <RelativeLayout
                 android:id="@+id/mainListLayout"
                 android:layout_width="match_parent"
@@ -34,7 +30,6 @@
                 android:layout_centerInParent="true"
                 android:visibility="visible"
                 android:layout_below="@+id/app_bar">
-
                 <TextView
                     android:id="@+id/advertisementsKindList"
                     android:layout_width="fill_parent"
@@ -46,20 +41,6 @@
                     android:text="Ogłoszenia wokół Twojej aktualnej lokalizacji"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorPrimaryDark" />
-
-                <TextView
-                    android:id="@+id/categoryName"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/advertisementsKindList"
-                    android:background="@color/advertisementRowBackground"
-                    android:gravity="center"
-                    android:paddingBottom="10dp"
-                    android:paddingTop="10dp"
-                    android:text="Wszystkie kategorie"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:textColor="@color/colorPrimaryDark" />
-
                 <com.refractored.fab.FloatingActionButton
                     android:id="@+id/fab"
                     android:layout_width="wrap_content"
@@ -73,7 +54,6 @@
                     tools:fab_colorNormal="@color/colorAccent"
                     tools:fab_colorPressed="#DCE775"
                     tools:fab_colorRipple="#F0F4C3" />
-
                 <com.refractored.fab.FloatingActionButton
                     android:id="@+id/fabFilter"
                     android:layout_width="wrap_content"
@@ -87,18 +67,16 @@
                     tools:fab_colorNormal="@color/colorAccent"
                     tools:fab_colorPressed="#DCE775"
                     tools:fab_colorRipple="#F0F4C3" />
-
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/advertisementsRecyclerView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_below="@+id/categoryName"
+                    android:layout_below="@+id/advertisementsKindList"
                     android:minHeight="25px"
                     android:minWidth="25px"
                     tools:reverseLayout="true"
                     tools:stackFromEnd="true" />
             </RelativeLayout>
-
             <RelativeLayout
                 android:id="@+id/layoutSortingOptions"
                 android:layout_width="match_parent"
@@ -106,7 +84,6 @@
                 android:layout_gravity="right|top"
                 android:visibility="gone"
                 android:layout_below="@+id/app_bar">
-
                 <TextView
                     android:id="@+id/textViewOptionsTitle"
                     android:layout_width="match_parent"
@@ -117,7 +94,6 @@
                     android:text="Opcje przeglądania"
                     android:textAppearance="?android:attr/textAppearanceLarge"
                     android:textColor="@color/advertisementRowBackground" />
-
                 <TextView
                     android:id="@+id/textViewCategory"
                     android:layout_width="match_parent"
@@ -131,7 +107,6 @@
                     android:text="Kategoria"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimaryDark" />
-
                 <TextView
                     android:id="@+id/textViewSelectedCategoryForMainList"
                     android:layout_width="wrap_content"
@@ -144,7 +119,6 @@
                     android:text="Wszystkie kategorie"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimaryDark" />
-
                 <ImageButton
                     android:id="@+id/btnSelectCategoryForMainList"
                     android:layout_width="wrap_content"
@@ -153,7 +127,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/textViewCategory"
                     android:src="@drawable/settings" />
-
                 <TextView
                     android:id="@+id/textView17"
                     android:layout_width="match_parent"
@@ -168,7 +141,6 @@
                     android:text="Sortowanie"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimaryDark" />
-
                 <TextView
                     android:id="@+id/textViewSelectedSorting"
                     android:layout_width="wrap_content"
@@ -181,7 +153,6 @@
                     android:text="Wg daty (od najnowszych)"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimaryDark" />
-
                 <ImageButton
                     android:id="@+id/btnSorting"
                     android:layout_width="wrap_content"
@@ -191,7 +162,6 @@
                     android:layout_alignParentRight="true"
                     android:layout_below="@+id/textView17"
                     android:src="@drawable/settings" />
-
                 <com.refractored.fab.FloatingActionButton
                     android:id="@+id/fabMainListOptions"
                     android:layout_width="wrap_content"
@@ -206,9 +176,7 @@
                     tools:fab_colorPressed="#DCE775"
                     tools:fab_colorRipple="#F0F4C3" />
             </RelativeLayout>
-
         </RelativeLayout>
-
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
@@ -216,5 +184,4 @@
             android:layout_gravity="start"
             tools:headerLayout="@layout/headerdrawerlayout" />
     </android.support.v4.widget.DrawerLayout>
-
 </FrameLayout>
