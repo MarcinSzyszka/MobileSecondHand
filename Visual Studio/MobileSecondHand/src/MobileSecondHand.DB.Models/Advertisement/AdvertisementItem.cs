@@ -22,6 +22,9 @@ namespace MobileSecondHand.DB.Models.Advertisement
 		public DateTime? ExpirationDate { get; set; }
 		[ForeignKey("UserId")]
 		public ApplicationUser User { get; set; }
+		public int CategoryId { get; set; }
+		[ForeignKey("CategoryId")]
+		public Category Category { get; set; }
 		public List<AdvertisementPhoto> AdvertisementPhotos { get; set; } = new List<AdvertisementPhoto>();
 		public List<ColorKeywordToAdvertisement> ColorKeywords { get; set; } = new List<ColorKeywordToAdvertisement>();
 		public List<CategoryKeywordToAdvertisement> CategoryKeywords { get; set; } = new List<CategoryKeywordToAdvertisement>();

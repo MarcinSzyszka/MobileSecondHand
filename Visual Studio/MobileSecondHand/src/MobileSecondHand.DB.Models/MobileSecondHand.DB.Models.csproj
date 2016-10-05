@@ -190,6 +190,7 @@
   <ItemGroup>
     <Compile Include="Advertisement\AdvertisementItem.cs" />
     <Compile Include="Advertisement\AdvertisementPhoto.cs" />
+    <Compile Include="Advertisement\Category.cs" />
     <Compile Include="Advertisement\CategoryKeywordToAdvertisement.cs" />
     <Compile Include="Advertisement\ColorKeywordToAdvertisement.cs" />
     <Compile Include="Advertisement\UserToFavouriteAdvertisement.cs" />

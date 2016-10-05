@@ -83,7 +83,6 @@ namespace MobileSecondHand.DB.Services
 		public DbSet<UserToConversation> UserToConversation { get; set; }
 		public DbSet<ChatMessage> ChatMessage { get; set; }
 		public DbSet<UserToFavouriteAdvertisement> UserToFavouriteAdvertisement { get; set; }
-
-
+		public DbSet<Category> Category { get; set; }
 	}
 }

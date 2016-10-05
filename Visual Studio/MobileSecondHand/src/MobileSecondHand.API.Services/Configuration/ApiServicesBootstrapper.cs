@@ -11,6 +11,7 @@ using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.API.Services.Conversation;
 using MobileSecondHand.API.Services.OutsideApisManagers;
 using MobileSecondHand.API.Services.Properties;
+using MobileSecondHand.API.Services.Categories;
 
 namespace MobileSecondHand.API.Services.Configuration {
 	public class ApiServicesBootstrapper {
@@ -26,7 +27,10 @@ namespace MobileSecondHand.API.Services.Configuration {
 			services.AddTransient<IChatHubCacheService, ChatHubCacheService>();
 			services.AddTransient<IConversationService, ConversationService>();
 			services.AddTransient<ILastUsersChecksCacheService, LastUsersChecksCacheService>();
+			services.AddTransient<ICategoryService, CategoryService>();
 			
+
+
 		}
 
 		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {

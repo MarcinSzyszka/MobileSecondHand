@@ -201,6 +201,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Advertisement\AdvertisementItemDbService.cs" />
+    <Compile Include="Advertisement\Categories\CategoryDbService.cs" />
+    <Compile Include="Advertisement\Categories\ICategoryDbService.cs" />
     <Compile Include="Advertisement\IAdvertisementItemDbService.cs" />
     <Compile Include="Advertisement\Keywords\IKeywordsDbService.cs" />
     <Compile Include="Advertisement\Keywords\KeywordsDbService.cs" />

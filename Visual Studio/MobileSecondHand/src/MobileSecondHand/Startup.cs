@@ -18,6 +18,7 @@ using MobileSecondHand.API.Services.Configuration;
 using MobileSecondHand.COMMON;
 using MobileSecondHand.COMMON.Configuration;
 using MobileSecondHand.Data;
+using MobileSecondHand.DB.Models.Advertisement;
 using MobileSecondHand.DB.Services;
 using MobileSecondHand.DB.Services.Configuration;
 using MobileSecondHand.Models;
@@ -26,15 +27,19 @@ using MobileSecondHand.Workarounds;
 using Newtonsoft.Json.Serialization;
 using NLog.Extensions.Logging;
 
-namespace MobileSecondHand {
-	public class Startup {
-		public Startup(IHostingEnvironment env) {
+namespace MobileSecondHand
+{
+	public class Startup
+	{
+		public Startup(IHostingEnvironment env)
+		{
 			var builder = new ConfigurationBuilder()
 				.SetBasePath(env.ContentRootPath)
 				.AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
 				.AddJsonFile($"appsettings.{env.EnvironmentName}.json", optional: true);
 
-			if (env.IsDevelopment()) {
+			if (env.IsDevelopment())
+			{
 				// For more details on using the user secret store see http://go.microsoft.com/fwlink/?LinkID=532709
 				builder.AddUserSecrets();
 
@@ -49,7 +54,8 @@ namespace MobileSecondHand {
 		public IConfigurationRoot Configuration { get; }
 
 		// This method gets called by the runtime. Use this method to add services to the container.
-		public void ConfigureServices(IServiceCollection services) {
+		public void ConfigureServices(IServiceCollection services)
+		{
 			services.AddSingleton<ConnectionStringConfig>(new ConnectionStringConfig { ConnectionString = Configuration.GetConnectionString("DefaultConnection") });
 			// Add framework services.
 			services.AddApplicationInsightsTelemetry(Configuration);
@@ -62,7 +68,8 @@ namespace MobileSecondHand {
 				o.SerializerSettings.ContractResolver = new DefaultContractResolver();
 			});
 
-			services.AddAuthorization(auth => {
+			services.AddAuthorization(auth =>
+			{
 				auth.AddPolicy("Bearer", new AuthorizationPolicyBuilder()
 					.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
 					.RequireAuthenticatedUser().Build());
@@ -76,7 +83,8 @@ namespace MobileSecondHand {
 			policy.Methods.Add("*");
 			policy.Origins.Add("*");
 
-			services.AddCors(config => {
+			services.AddCors(config =>
+			{
 				config.AddPolicy("myPolicy", policy);
 			});
 
@@ -90,38 +98,56 @@ namespace MobileSecondHand {
 		}
 
 		// This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TokenAuthorizationOptions tokenAuthorizationOptions) {
+		public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory, TokenAuthorizationOptions tokenAuthorizationOptions, IMobileSecondHandContextOptions contextOptions)
+		{
 			loggerFactory.AddDebug();
 			loggerFactory.AddNLog();
 			app.UseApplicationInsightsRequestTelemetry();
 			env.ConfigureNLog("nlog.config");
-			if (env.IsDevelopment()) {
+			if (env.IsDevelopment())
+			{
 				app.UseDeveloperExceptionPage();
 				app.UseDatabaseErrorPage();
 				app.UseBrowserLink();
 			}
-			else {
+			else
+			{
 				app.UseExceptionHandler("/Home/Error");
 
 				// For more details on creating database during deployment see http://go.microsoft.com/fwlink/?LinkID=615859
-				try {
+				try
+				{
 					using (var serviceScope = app.ApplicationServices.GetRequiredService<IServiceScopeFactory>()
-						.CreateScope()) {
+						.CreateScope())
+					{
 						serviceScope.ServiceProvider.GetService<MobileSecondHandContext>()
 							 .Database.Migrate();
 					}
-				} catch { }
+				}
+				catch { }
+			}
+
+			var dbCtx = new MobileSecondHandContext(contextOptions.DbContextOptions);
+			var category = dbCtx.Category.FirstOrDefault();
+			if (category == null)
+			{
+				CreateCategories(dbCtx);
 			}
 
 			app.UseApplicationInsightsExceptionTelemetry();
 
 			app.UseStaticFiles();
 
-			app.Use(next => async ctx => {
-				try {
+			app.Use(next => async ctx =>
+			{
+				try
+				{
 					await next(ctx);
-				} catch (Exception exc) {
-					if (ctx.Response.HasStarted) {
+				}
+				catch (Exception exc)
+				{
+					if (ctx.Response.HasStarted)
+					{
 						throw exc;
 					}
 
@@ -136,7 +162,8 @@ namespace MobileSecondHand {
 			app.UseFacebookAuthentication(GetFacebookOptions(Configuration));
 			// Add external authentication middleware below. To configure them please see http://go.microsoft.com/fwlink/?LinkID=532715
 
-			app.UseMvc(routes => {
+			app.UseMvc(routes =>
+			{
 				routes.MapRoute(
 					name: "default",
 					template: "{controller=Home}/{action=Index}/{id?}");
@@ -148,7 +175,51 @@ namespace MobileSecondHand {
 			//app.UseWebSockets();
 		}
 
-		private FacebookOptions GetFacebookOptions(IConfigurationRoot configuration) {
+		private void CreateCategories(MobileSecondHandContext dbCtx)
+		{
+			dbCtx.Category.AddRange(
+				new Category
+				{
+					Name = "Buty"
+				},
+				new Category
+				{
+					Name = "Bluzki"
+				},
+				new Category
+				{
+					Name = "Dresy"
+				},
+				new Category
+				{
+					Name = "Koszule"
+				},
+				new Category
+				{
+					Name = "Legginsy"
+				},
+				new Category
+				{
+					Name = "Marynarki"
+				},
+				new Category
+				{
+					Name = "Spódnice/spódniczki"
+				},
+				new Category
+				{
+					Name = "Sukienki"
+				},
+				new Category
+				{
+					Name = "Swetry"
+				});
+
+			dbCtx.SaveChanges();
+		}
+
+		private FacebookOptions GetFacebookOptions(IConfigurationRoot configuration)
+		{
 			var options = new FacebookOptions();
 			//options.AppId = Configuration["FacebookAppId"];
 			//options.AppSecret = Configuration["FacebookAppSecret"];
@@ -159,7 +230,8 @@ namespace MobileSecondHand {
 			return options;
 		}
 
-		private JwtBearerOptions GetJwtBearerOptions(TokenAuthorizationOptions tokenAuthorizationOptions) {
+		private JwtBearerOptions GetJwtBearerOptions(TokenAuthorizationOptions tokenAuthorizationOptions)
+		{
 			var options = new JwtBearerOptions();
 			options.TokenValidationParameters.IssuerSigningKey = tokenAuthorizationOptions.SigningCredentials.Key;
 			options.TokenValidationParameters.ValidAudience = tokenAuthorizationOptions.Audience;
