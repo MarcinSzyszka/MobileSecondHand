@@ -35,6 +35,7 @@ using MobileSecondHand.Services.Location;
 using Toolbar = Android.Support.V7.Widget.Toolbar;
 using MobileSecondHand.Common.Extensions;
 using Newtonsoft.Json;
+using MobileSecondHand.API.Models.Shared.Advertisements;
 
 namespace MobileSecondHand.App
 {
@@ -51,6 +52,9 @@ namespace MobileSecondHand.App
 		private TextView advertisementsListKindTextView;
 		private RelativeLayout sortingOptionsLayout;
 		private RelativeLayout mainListLayout;
+		private CategoriesSelectingHelper categoriesHelper;
+		AdvertisementsSearchModel advertisementsSearchModel;
+		private TextView textViewSelectCategories;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -58,11 +62,49 @@ namespace MobileSecondHand.App
 			SetAdvertisementsListKind();
 			this.gpsLocationService = new GpsLocationService(this, null);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
+			this.categoriesHelper = new CategoriesSelectingHelper(this);
 
 			SetContentView(Resource.Layout.MainActivity);
 			base.SetupToolbar(false);
 			advertisementsPage = 0;
 			await SetupViews();
+			if (savedInstanceState != null)
+			{
+				//tu dodrobic odtwarzanie przy uzyciu JsonCOnvert
+				this.advertisementsSearchModel = new AdvertisementsSearchModel();
+			}
+			else
+			{
+				this.advertisementsSearchModel = new AdvertisementsSearchModel();
+			}
+			SetupSortingViews();
+			await DownloadAndShowAdvertisements(true);
+		}
+
+		private void SetupSortingViews()
+		{
+			SetupSelectedCategoryView();
+		}
+
+		private void SetupSelectedCategoryView()
+		{
+			var text = String.Empty;
+			if (advertisementsSearchModel.CategoriesModel.Count == 0)
+			{
+				text = "Wszystkie kategorie";
+			}
+			else
+			{
+				var sb = new StringBuilder();
+				foreach (var cat in advertisementsSearchModel.CategoriesModel)
+				{
+					sb.AppendLine(cat.Value);
+				}
+
+				text = sb.ToString();
+			}
+
+			this.textViewSelectCategories.Text = text;
 		}
 
 		private void SetAdvertisementsListKind()
@@ -172,18 +214,37 @@ namespace MobileSecondHand.App
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
 			sortingOptionsLayout = FindViewById<RelativeLayout>(Resource.Id.layoutSortingOptions);
 			mainListLayout = FindViewById<RelativeLayout>(Resource.Id.mainListLayout);
+			var btnSelectCategories = FindViewById<ImageButton>(Resource.Id.btnSelectCategoryForMainList);
+			this.textViewSelectCategories = FindViewById<TextView>(Resource.Id.textViewSelectedCategoryForMainList);
+
+			btnSelectCategories.Click += async (s, e) =>
+			{
+				var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
+				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
+			};
+			var btnSorting = FindViewById<ImageButton>(Resource.Id.btnSorting);
+
+
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
-			try
-			{
-				await DownloadAndShowAdvertisements(true);
-			}
-			catch (Exception)
-			{
-				//throw;
-			}
-
 		}
+		private Action<System.Collections.Generic.List<string>> MethodToExecuteAfterCategoriesSelect(System.Collections.Generic.IDictionary<int, string> allKeywords)
+		{
+			return selectedItemsNames =>
+			{
+				this.advertisementsSearchModel.CategoriesModel.Clear();
+				if (selectedItemsNames.Count != allKeywords.Count)
+				{
+					foreach (var itemName in selectedItemsNames)
+					{
+						this.advertisementsSearchModel.CategoriesModel.Add(allKeywords.First(k => k.Value == itemName));
+					}
+				}
+
+				SetupSelectedCategoryView();
+			};
+		}
+
 
 		private async Task DownloadAndShowAdvertisements(bool resetList)
 		{

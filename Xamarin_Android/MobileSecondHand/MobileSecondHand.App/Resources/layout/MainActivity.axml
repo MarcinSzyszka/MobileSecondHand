@@ -18,7 +18,8 @@
             android:id="@+id/mainListLayoutWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
+            android:layout_centerInParent="true"
+            android:animateLayoutChanges="true">
             <include
                 layout="@layout/appbar"
                 android:layout_alignParentTop="true"
@@ -104,7 +105,7 @@
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:text="Kategoria"
+                    android:text="Kategorie"
                     android:textAppearance="?android:attr/textAppearanceMedium"
                     android:textColor="@color/colorPrimaryDark" />
                 <TextView
@@ -133,14 +134,15 @@
                     android:layout_height="wrap_content"
                     android:layout_alignParentLeft="true"
                     android:layout_alignParentStart="true"
-                    android:layout_below="@+id/btnSelectCategoryForMainList"
+                    android:layout_below="@id/textViewSelectedCategoryForMainList"
                     android:background="@color/headerBackground"
                     android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
                     android:text="Sortowanie"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textColor="@color/colorPrimaryDark" />
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_marginTop="10dp" />
                 <TextView
                     android:id="@+id/textViewSelectedSorting"
                     android:layout_width="wrap_content"

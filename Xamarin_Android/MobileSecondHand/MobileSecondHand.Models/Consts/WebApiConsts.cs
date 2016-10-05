@@ -18,6 +18,7 @@ namespace MobileSecondHand.Models.Consts {
 		public const string ADVERTISEMENT_CONTROLLER = "AdvertisementItem/";
 		public const string CONVERSATION_CONTROLLER = "Conversation";
 		public const string KEYWORDS_CONTROLLER = "Keywords/";
+		public const string CATEGORY_CONTROLLER = "Category/";
 
 		public const string AUTHORIZATION_HEADER_NAME = "Authorization";
 		public const string AUTHORIZATION_HEADER_BEARER_VALUE_NAME = "Bearer ";

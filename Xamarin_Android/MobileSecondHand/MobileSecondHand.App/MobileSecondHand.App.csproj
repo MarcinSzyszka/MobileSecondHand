@@ -168,6 +168,7 @@
     <Compile Include="Infrastructure\ActivityState\ConversationActivityStateModel.cs" />
     <Compile Include="Infrastructure\ActivityState\SharedObject.cs" />
     <Compile Include="Infrastructure\BitmapOperationService.cs" />
+    <Compile Include="Infrastructure\CategoriesSelectingHelper.cs" />
     <Compile Include="Infrastructure\GpsLocationService.cs" />
     <Compile Include="Infrastructure\IAdvertisementsInfiniteScrollListener.cs" />
     <Compile Include="Infrastructure\ProgressDialogHelper.cs" />

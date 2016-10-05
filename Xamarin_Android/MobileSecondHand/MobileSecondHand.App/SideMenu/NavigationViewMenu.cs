@@ -15,12 +15,13 @@ using MobileSecondHand.Services.Google_Api;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.App.Activities;
 using Android.App;
+using MobileSecondHand.Services.Categories;
 
 namespace MobileSecondHand.App.SideMenu
 {
 	public class NavigationViewMenu
 	{
-		IKeyworsService keyworsService;
+		CategoriesSelectingHelper categoriesHelper;
 		private SharedPreferencesHelper sharedPreferencesHelper;
 		private AppSettingsModel appSettings;
 		ProgressDialogHelper progressDialogHelper;
@@ -42,10 +43,10 @@ namespace MobileSecondHand.App.SideMenu
 		public NavigationViewMenu(BaseActivity activity, SharedPreferencesHelper sharedPreferencesHelper)
 		{
 			this.progressDialogHelper = new ProgressDialogHelper(activity);
-			this.keyworsService = new KeywordsService();
 			this.sharedPreferencesHelper = sharedPreferencesHelper;
 			this.gpsService = GpsLocationService.GetServiceInstance(activity);
 			this.googleMapsAPIService = new GoogleMapsAPIService();
+			this.categoriesHelper = new CategoriesSelectingHelper(activity);
 			SetupViews(activity);
 		}
 
@@ -75,39 +76,8 @@ namespace MobileSecondHand.App.SideMenu
 			this.imgBtnKeywords = activity.FindViewById<ImageButton>(Resource.Id.imgBtnKeywords);
 			this.imgBtnKeywords.Click += async (sender, args) =>
 			{
-				this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
-				var token = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-				try
-				{
-					var userSelectesKeywordsNames = appSettings.Keywords.Select(k => k.Value).ToList();
-					var allKeywords = await this.keyworsService.GetKeywords(token);
-					var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
-
-					AlertsService.ShowMultiSelectListString(activity, "Wybierz has³a", allKeywordsNames, userSelectesKeywordsNames, selectedItemsNames =>
-					{
-						appSettings.Keywords.Clear();
-						if (selectedItemsNames.Count != allKeywords.Count)
-						{
-							foreach (var itemName in selectedItemsNames)
-							{
-								appSettings.Keywords.Add(allKeywords.First(k => k.Value == itemName));
-							}
-						}
-
-						SetAppSettings(appSettings);
-						SetKeywordsSettings(appSettings);
-					});
-
-				}
-				catch (Exception exc)
-				{
-					AlertsService.ShowToast(activity, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
-				}
-				finally
-				{
-					this.progressDialogHelper.CloseProgressDialog();
-				}
-
+				var userSelectesKeywordsNames = appSettings.Keywords.Select(k => k.Value).ToList();
+				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
 			};
 
 
@@ -156,6 +126,24 @@ namespace MobileSecondHand.App.SideMenu
 			};
 		}
 
+		private Action<System.Collections.Generic.List<string>> MethodToExecuteAfterCategoriesSelect(System.Collections.Generic.IDictionary<int, string> allKeywords)
+		{
+			return selectedItemsNames =>
+			{
+				appSettings.Keywords.Clear();
+				if (selectedItemsNames.Count != allKeywords.Count)
+				{
+					foreach (var itemName in selectedItemsNames)
+					{
+						appSettings.Keywords.Add(allKeywords.First(k => k.Value == itemName));
+					}
+				}
+
+				SetAppSettings(appSettings);
+				SetKeywordsSettings(appSettings);
+			};
+		}
+
 		private void SetupNotificationsStateView(BaseActivity activity)
 		{
 			this.notificationsStateSwitch = activity.FindViewById<SwitchCompat>(Resource.Id.switchNotificationsState);
@@ -191,9 +179,13 @@ namespace MobileSecondHand.App.SideMenu
 				string[] itemList = activity.Resources.GetStringArray(Resource.Array.notifications_radius);
 				AlertsService.ShowSingleSelectListString(activity, itemList, selectedText =>
 				{
-					var resultRadius = 500;
+					var resultRadius = 0;
 					var selectedRadius = selectedText.Split(new char[] { ' ' })[0];
 					int.TryParse(selectedRadius, out resultRadius);
+					if (resultRadius == 0)
+					{
+						resultRadius = 500;
+					}
 					appSettings.LocationSettings.MaxDistance = resultRadius;
 					SetAppSettings(appSettings);
 

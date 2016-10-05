@@ -53,6 +53,8 @@
     <Compile Include="Advertisements\IAdvertisementItemService.cs" />
     <Compile Include="Authentication\ISignInService.cs" />
     <Compile Include="Authentication\SignInService.cs" />
+    <Compile Include="Categories\CategoryService.cs" />
+    <Compile Include="Categories\ICategoryService.cs" />
     <Compile Include="Chat\ChatHubClientService.cs" />
     <Compile Include="Chat\IMessagesService.cs" />
     <Compile Include="Chat\MessagesService.cs" />
