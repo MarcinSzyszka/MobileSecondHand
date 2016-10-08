@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Drawing;
 using System.IO;
-using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
-using MobileSecondHand.API.Models.Advertisement;
+using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.COMMON.FIleNamesHelpers;
 using MobileSecondHand.COMMON.PathHelpers;
 
-namespace MobileSecondHand.API.Services.Advertisement {
+namespace MobileSecondHand.API.Services.Advertisement
+{
 	public class AdvertisementItemPhotosService : IAdvertisementItemPhotosService {
 		IAppFilesPathHelper appFilesPathHelper;
 		IAppFilesNamesHelper appFilesNamesHelper;

@@ -2,14 +2,13 @@
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
-using MobileSecondHand.API.Models.Advertisement;
 using MobileSecondHand.API.Models.CustomResponsesModels;
 using MobileSecondHand.API.Services.Advertisement;
 using MobileSecondHand.API.Services.Authentication;
 using Microsoft.Extensions.Logging;
 using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.API.Models.Shared.Advertisements;
-using MobileSecondHand.Models.Location;
+using MobileSecondHand.API.Models.Shared.Location;
 
 namespace MobileSecondHand.Controllers
 {
@@ -48,7 +47,7 @@ namespace MobileSecondHand.Controllers
 
 		[HttpPost]
 		[Route("CreateAdvertisementItem")]
-		public IActionResult CreateAdvertisementItem([FromBody]NewAdvertisementItemModel newAdvertisementModel)
+		public IActionResult CreateAdvertisementItem([FromBody]NewAdvertisementItem newAdvertisementModel)
 		{
 			try
 			{

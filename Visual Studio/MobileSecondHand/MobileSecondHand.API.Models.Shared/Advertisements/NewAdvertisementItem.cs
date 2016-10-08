@@ -1,12 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MobileSecondHand.API.Models.Location;
+﻿using System.Collections.Generic;
+using MobileSecondHand.API.Models.Shared.Categories;
 
-namespace MobileSecondHand.API.Models.Advertisement
+namespace MobileSecondHand.API.Models.Shared.Advertisements
 {
-    public class NewAdvertisementItemModel
+	public class NewAdvertisementItem
     {
 		public string AdvertisementTitle { get; set; }
 		public string AdvertisementDescription { get; set; }
@@ -14,6 +11,7 @@ namespace MobileSecondHand.API.Models.Advertisement
 		public bool IsOnlyForSell { get; set; }
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
+		public CategoryInfoModel Category { get; set; }
 		public List<string> PhotosPaths { get; set; }
 	}
 }

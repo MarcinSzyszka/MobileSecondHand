@@ -54,21 +54,16 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Advertisement\AdvertisementItemDetails.cs" />
-    <Compile Include="Advertisement\AdvertisementItemPhotosPaths.cs" />
-    <Compile Include="Advertisement\AdvertisementItemShortModel.cs" />
     <Compile Include="Chat\ConversationInfoModel.cs" />
     <Compile Include="Chat\ConversationItemModel.cs" />
     <Compile Include="CheckingNewAdvertisements\LastTimeUserCheckModel.cs" />
     <Compile Include="Keywords\CategoryKeywordApiModel.cs" />
     <Compile Include="Keywords\ColorKeywordApiModel.cs" />
     <Compile Include="Keywords\IKeywordApiModel.cs" />
-    <Compile Include="Advertisement\NewAdvertisementItemModel.cs" />
     <Compile Include="Chat\ChatMessageReadModel.cs" />
     <Compile Include="Chat\ChatMessageSaveModel.cs" />
     <Compile Include="Chat\UserConnection.cs" />
     <Compile Include="CustomResponsesModels\ErrorResponse.cs" />
-    <Compile Include="Location\Coordinates.cs" />
     <Compile Include="OutsideApisModels\FacebookUserCredentialsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Security\FacebookTokenViewModel.cs" />
@@ -79,6 +74,15 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Location\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\..\MobileSecondHand.API.Models.Shared\MobileSecondHand.API.Models.Shared.csproj">
+      <Project>{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}</Project>
+      <Name>MobileSecondHand.API.Models.Shared</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

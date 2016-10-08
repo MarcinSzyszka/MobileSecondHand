@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
-using MobileSecondHand.API.Models.Advertisement;
 using MobileSecondHand.API.Services.Keywords;
 using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.COMMON.CoordinatesHelpers;
@@ -17,7 +16,8 @@ using MobileSecondHand.API.Models.Shared.Enumerations;
 
 namespace MobileSecondHand.API.Services.Advertisement
 {
-	public class AdvertisementItemService : IAdvertisementItemService {
+	public class AdvertisementItemService : IAdvertisementItemService
+	{
 		IAdvertisementItemDbService advertisementItemDbService;
 		ICoordinatesCalculator coordinatesCalculator;
 		IAdvertisementItemPhotosService advertisementItemPhotosService;
@@ -38,12 +38,14 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.lastUsersChecksCacheService = lastUsersChecksCacheService;
 		}
 
-		public void CreateNewAdvertisementItem(NewAdvertisementItemModel newAdvertisementModel, string userId) {
+		public void CreateNewAdvertisementItem(NewAdvertisementItem newAdvertisementModel, string userId)
+		{
 			var advertisementItemDescription = String.Concat(newAdvertisementModel.AdvertisementTitle, ' ', newAdvertisementModel.AdvertisementDescription);
 			var categoryKeywords = this.keywordsService.RecognizeAndGetKeywordsDbModels<CategoryKeyword>(advertisementItemDescription);
 			var colorKeywords = this.keywordsService.RecognizeAndGetKeywordsDbModels<ColorKeyword>(advertisementItemDescription);
 
-			var model = new AdvertisementItem {
+			var model = new AdvertisementItem
+			{
 				UserId = userId,
 				Title = newAdvertisementModel.AdvertisementTitle,
 				Description = newAdvertisementModel.AdvertisementDescription,
@@ -54,14 +56,21 @@ namespace MobileSecondHand.API.Services.Advertisement
 				Latitude = newAdvertisementModel.Latitude,
 				Longitude = newAdvertisementModel.Longitude,
 				IsOnlyForSell = newAdvertisementModel.IsOnlyForSell,
+				CategoryId = newAdvertisementModel.Category.Id,
 				AdvertisementPhotos = CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosPaths)
 			};
 
-			foreach (var category in categoryKeywords) {
-				model.CategoryKeywords.Add(new CategoryKeywordToAdvertisement { AdvertisementItem = model, CategoryKeyword = category });
+			foreach (var category in categoryKeywords)
+			{
+				model.CategoryKeywords.Add(new CategoryKeywordToAdvertisement
+				{
+					AdvertisementItem = model,
+					CategoryKeyword = category
+				});
 			}
 
-			foreach (var color in colorKeywords) {
+			foreach (var color in colorKeywords)
+			{
 				model.ColorKeywords.Add(new ColorKeywordToAdvertisement { AdvertisementItem = model, ColorKeyword = color });
 			}
 
@@ -69,7 +78,8 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(AdvertisementsSearchModel searchModel, string userId) {
+		public async Task<IEnumerable<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel, string userId)
+		{
 			IQueryable<AdvertisementItem> queryAdvertisements = default(IQueryable<AdvertisementItem>);
 			switch (searchModel.AdvertisementsKind)
 			{
@@ -96,23 +106,23 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 			queryAdvertisements = queryAdvertisements.Skip(ITEMS_PER_REQUEST * searchModel.Page).Take(ITEMS_PER_REQUEST);
 
-			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);
+			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);
 
 			return advertisementsViewModels;
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetUserAdvertisements(string userId, int pageNumber)
+		public async Task<IEnumerable<AdvertisementItemShort>> GetUserAdvertisements(string userId, int pageNumber)
 		{
 			var advertisementsFromDb = this.advertisementItemDbService.GetUserAdvertisements(userId, pageNumber).ToList();
-			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb);
+			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb);
 
 			return advertisementsViewModels;
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetUserFavouritesAdvertisements(string userId, int pageNumber)
+		public async Task<IEnumerable<AdvertisementItemShort>> GetUserFavouritesAdvertisements(string userId, int pageNumber)
 		{
 			var advertisementsFromDb = this.advertisementItemDbService.GetUserFavouritesAdvertisements(userId, pageNumber).ToList();
-			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb.Select(a => a.AdvertisementItem));
+			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb.Select(a => a.AdvertisementItem));
 
 			return advertisementsViewModels;
 		}
@@ -128,10 +138,12 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return advertisementsFromDb.Count > 0;
 		}
 
-		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId) {
+		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId)
+		{
 			var advertisementDetailsViewModel = default(AdvertisementItemDetails);
 			var advertisementFromDb = this.advertisementItemDbService.GetByIdWithDetails(advertisementId);
-			if (advertisementFromDb != null) {
+			if (advertisementFromDb != null)
+			{
 				advertisementDetailsViewModel = await MapToDetailsViewModel(advertisementFromDb);
 			}
 
@@ -216,17 +228,19 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return photosList;
 		}
 
-		private async Task<IEnumerable<AdvertisementItemShortModel>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesForAdvertisementsModel coordinatesModel = null) {
-			var viewModelsList = new List<AdvertisementItemShortModel>();
-			foreach (var dbModel in advertisementsFromDb) {
-				var viewModel = new AdvertisementItemShortModel();
+		private async Task<IEnumerable<AdvertisementItemShort>> MapDbModelsToShortViewModels(IEnumerable<AdvertisementItem> advertisementsFromDb, CoordinatesForAdvertisementsModel coordinatesModel = null)
+		{
+			var viewModelsList = new List<AdvertisementItemShort>();
+			foreach (var dbModel in advertisementsFromDb)
+			{
+				var viewModel = new AdvertisementItemShort();
 				viewModel.Id = dbModel.Id;
 				viewModel.AdvertisementTitle = dbModel.Title;
 				viewModel.AdvertisementPrice = dbModel.Price;
 				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoPath);
 				if (coordinatesModel != null)
 				{
-				viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
+					viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
 				}
 				else
 				{
@@ -240,9 +254,11 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return viewModelsList;
 		}
 
-		private List<AdvertisementPhoto> CreateAdvertisementPhotosModels(IEnumerable<string> advertisementPhotosPaths) {
+		private List<AdvertisementPhoto> CreateAdvertisementPhotosModels(IEnumerable<string> advertisementPhotosPaths)
+		{
 			var photosDbModelsList = new List<AdvertisementPhoto>();
-			foreach (var photoPath in advertisementPhotosPaths) {
+			foreach (var photoPath in advertisementPhotosPaths)
+			{
 				var model = new AdvertisementPhoto();
 				model.PhotoPath = photoPath;
 				var a = Path.GetDirectoryName(photoPath);

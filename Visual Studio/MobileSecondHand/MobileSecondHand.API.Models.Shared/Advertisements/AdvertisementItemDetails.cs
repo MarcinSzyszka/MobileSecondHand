@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MobileSecondHand.API.Models.Advertisement
+namespace MobileSecondHand.API.Models.Shared.Advertisements
 {
 	public class AdvertisementItemDetails
 	{

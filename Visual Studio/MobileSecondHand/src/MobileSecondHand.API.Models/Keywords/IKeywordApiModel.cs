@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MobileSecondHand.API.Models.Advertisement;
+﻿using System.Collections.Generic;
+using MobileSecondHand.API.Models.Shared.Advertisements;
 
-namespace MobileSecondHand.API.Models.Keywords {
+namespace MobileSecondHand.API.Models.Keywords
+{
 	public interface IKeywordApiModel {
 		int Id { get; set; }
 		string Name { get; set; }
-		IEnumerable<AdvertisementItemShortModel> AdvertisementsShortModels { get; set; }
+		IEnumerable<AdvertisementItemShort> AdvertisementsShortModels { get; set; }
 	}
 }
