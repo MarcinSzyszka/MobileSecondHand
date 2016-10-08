@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MobileSecondHand.Models.Location;
+﻿using System.Collections.Generic;
+using MobileSecondHand.API.Models.Shared.Location;
 
 namespace MobileSecondHand.Models.Settings
 {

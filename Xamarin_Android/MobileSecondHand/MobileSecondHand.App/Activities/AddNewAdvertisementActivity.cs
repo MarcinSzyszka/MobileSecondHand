@@ -1,8 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.IO;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -12,15 +10,11 @@ using Android.Provider;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
-using Java.IO;
-using MobileSecondHand.App.Activities;
-using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Common.Enumerations;
 using MobileSecondHand.Models.Advertisement;
-using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
-using MobileSecondHand.Common.Extensions;
+using MobileSecondHand.API.Models.Shared.Enumerations;
+using MobileSecondHand.API.Models.Shared.Extensions;
 
 namespace MobileSecondHand.App.Activities
 {

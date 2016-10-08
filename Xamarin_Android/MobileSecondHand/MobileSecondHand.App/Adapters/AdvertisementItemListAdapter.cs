@@ -1,23 +1,17 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 using Android.App;
-using Android.Content;
-using Android.Content.Res;
-using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
-using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Common.Enumerations;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.EventArgs;
 
-namespace MobileSecondHand.App.Adapters {
+namespace MobileSecondHand.App.Adapters
+{
 	public class AdvertisementItemListAdapter : RecyclerView.Adapter {
 		Activity context;
 		BitmapOperationService bitmapOperationService;

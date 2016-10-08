@@ -1,17 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Shared;
-using MobileSecondHand.Common.Enumerations;
+using MobileSecondHand.API.Models.Shared.Advertisements;
+using MobileSecondHand.API.Models.Shared.Enumerations;
+using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.Models.Advertisement;
-using MobileSecondHand.Models.Location;
-using MobileSecondHand.Models.Security;
 
-namespace MobileSecondHand.Services.Advertisements {
+namespace MobileSecondHand.Services.Advertisements
+{
 	public interface IAdvertisementItemService {
-		Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel);
+		Task<List<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel);
 		Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber);
 		Task<List<AdvertisementItemShort>> GetUserFavouritesAdvertisements(int pageNumber);
 		Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList);

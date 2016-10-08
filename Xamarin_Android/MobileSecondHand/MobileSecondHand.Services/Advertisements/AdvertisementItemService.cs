@@ -1,17 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Shared;
-using MobileSecondHand.Common.Enumerations;
+using MobileSecondHand.API.Models.Shared.Advertisements;
+using MobileSecondHand.API.Models.Shared.Enumerations;
+using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
-using MobileSecondHand.Models.Location;
-using MobileSecondHand.Models.Security;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Advertisements
@@ -26,7 +25,7 @@ namespace MobileSecondHand.Services.Advertisements
 			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 		}
-		public async Task<List<AdvertisementItemShort>> GetAdvertisements(SearchAdvertisementsModel searchModel)
+		public async Task<List<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisements", stringContent);

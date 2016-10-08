@@ -1,12 +1,9 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -15,10 +12,9 @@ using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.Services.Chat;
-using MobileSecondHand.Common.Extensions;
 using MobileSecondHand.App.Infrastructure.ActivityState;
-using Android.Content.Res;
 using Newtonsoft.Json;
+using MobileSecondHand.API.Models.Shared.Extensions;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -155,11 +151,6 @@ namespace MobileSecondHand.App.Activities
 		private void ConversationMessagesListAdapter_NewMessageAdded(object sender, EventArgs e)
 		{
 			this.conversationMessagesRecyclerView.SmoothScrollToPosition(0);
-		}
-
-		private void BtnBack_Click(object sender, EventArgs e)
-		{
-			this.Finish();
 		}
 
 		private void EditTextMessage_KeyPress(object sender, View.KeyEventArgs e)

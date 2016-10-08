@@ -1,19 +1,12 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using Android;
 using Android.App;
 using Android.Content;
 using Android.Locations;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
-using Android.Support.V4.App;
-using Android.Views;
-using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.App.Consts;
-using MobileSecondHand.Models.Location;
 using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Location;
 
