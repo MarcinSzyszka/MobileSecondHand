@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Advertisement;
-using MobileSecondHand.API.Models.Coordinates;
 using MobileSecondHand.API.Services.Keywords;
 using MobileSecondHand.API.Services.CacheServices;
 using MobileSecondHand.COMMON.CoordinatesHelpers;
@@ -12,6 +11,9 @@ using MobileSecondHand.COMMON.PathHelpers;
 using MobileSecondHand.DB.Models.Advertisement;
 using MobileSecondHand.DB.Services.Advertisement;
 using MobileSecondHand.DB.Models.Keywords;
+using MobileSecondHand.API.Models.Shared.Advertisements;
+using MobileSecondHand.API.Models.Shared.Location;
+using MobileSecondHand.API.Models.Shared.Enumerations;
 
 namespace MobileSecondHand.API.Services.Advertisement
 {
@@ -23,6 +25,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 		IKeywordsService keywordsService;
 		IChatHubCacheService chatHubCacheService;
 		ILastUsersChecksCacheService lastUsersChecksCacheService;
+		const int ITEMS_PER_REQUEST = 20;
 
 		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService, ILastUsersChecksCacheService lastUsersChecksCacheService)
 		{
@@ -66,10 +69,34 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
 
-		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(SearchAdvertisementsModel searchModel, string userId) {
-			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
-			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page).ToList();
-			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, searchModel.CoordinatesModel);
+		public async Task<IEnumerable<AdvertisementItemShortModel>> GetAdvertisements(AdvertisementsSearchModel searchModel, string userId) {
+			IQueryable<AdvertisementItem> queryAdvertisements = default(IQueryable<AdvertisementItem>);
+			switch (searchModel.AdvertisementsKind)
+			{
+				case AdvertisementsKind.AdvertisementsAroundUserCurrentLocation:
+				case AdvertisementsKind.AdvertisementsArounUserHomeLocation:
+					var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
+					queryAdvertisements = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page);
+					break;
+				case AdvertisementsKind.AdvertisementsCreatedByUser:
+					queryAdvertisements = this.advertisementItemDbService.GetUserAdvertisements(userId, searchModel.Page);
+					break;
+				case AdvertisementsKind.FavouritesAdvertisements:
+					queryAdvertisements = this.advertisementItemDbService.GetUserFavouritesAdvertisements(userId, searchModel.Page).ToList().Select(a => a.AdvertisementItem).AsQueryable();
+					break;
+				default:
+					break;
+			}
+
+			if (searchModel.CategoriesModel.Count > 0)
+			{
+				var categoriesIds = searchModel.CategoriesModel.Select(c => c.Key).ToList();
+				queryAdvertisements = queryAdvertisements.Where(a => categoriesIds.Contains(a.CategoryId));
+			}
+
+			queryAdvertisements = queryAdvertisements.Skip(ITEMS_PER_REQUEST * searchModel.Page).Take(ITEMS_PER_REQUEST);
+
+			IEnumerable<AdvertisementItemShortModel> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);
 
 			return advertisementsViewModels;
 		}

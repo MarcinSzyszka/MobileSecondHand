@@ -6,13 +6,10 @@ using MobileSecondHand.API.Models.Advertisement;
 using MobileSecondHand.API.Models.CustomResponsesModels;
 using MobileSecondHand.API.Services.Advertisement;
 using MobileSecondHand.API.Services.Authentication;
-using System.Web.Script.Serialization;
 using Microsoft.Extensions.Logging;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Collections;
-using MobileSecondHand.API.Models.Coordinates;
 using MobileSecondHand.API.Models.Shared;
+using MobileSecondHand.API.Models.Shared.Advertisements;
+using MobileSecondHand.Models.Location;
 
 namespace MobileSecondHand.Controllers
 {
@@ -70,7 +67,7 @@ namespace MobileSecondHand.Controllers
 
 		[HttpPost]
 		[Route("GetAdvertisements")]
-		public async Task<IActionResult> GetAdvertisements([FromBody]SearchAdvertisementsModel searchModel)
+		public async Task<IActionResult> GetAdvertisements([FromBody]AdvertisementsSearchModel searchModel)
 		{
 			try
 			{

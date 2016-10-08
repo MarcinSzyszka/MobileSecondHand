@@ -12,7 +12,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 	{
 		MobileSecondHandContext dbContext;
 		ICoordinatesCalculator coordinatesCalculator;
-		const int ITEMS_PER_REQUEST = 20;
+		
 
 		public AdvertisementItemDbService(MobileSecondHandContext context, ICoordinatesCalculator coordinatesCalculator)
 		{
@@ -28,15 +28,15 @@ namespace MobileSecondHand.DB.Services.Advertisement
 												.FirstOrDefault(a => a.Id == advertisementId);
 		}
 
-		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page)
+		public IQueryable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page)
 		{
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.ExpirationDate >= DateTime.Now &&
 																						a.Latitude >= coordinatesForSearchModel.LatitudeStart
 																						&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
 																						&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
 																						&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
-																						.OrderBy(a => a.CreationDate)
-																						.Skip(ITEMS_PER_REQUEST * page).Take(ITEMS_PER_REQUEST);
+																						.OrderBy(a => a.CreationDate);
+																						
 		}
 
 		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
@@ -49,12 +49,10 @@ namespace MobileSecondHand.DB.Services.Advertisement
 																				.Take(1);
 		}
 
-		public IEnumerable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber)
+		public IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber)
 		{
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId)
-																					.OrderBy(a => a.CreationDate)
-																					.Skip(pageNumber * ITEMS_PER_REQUEST)
-																					.Take(ITEMS_PER_REQUEST);
+																					.OrderBy(a => a.CreationDate);
 		}
 
 		public UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId)
@@ -64,9 +62,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId, int pageNumber)
 		{
-			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).Where(f => f.ApplicationUserId == userId)
-																																		.Skip(pageNumber * ITEMS_PER_REQUEST)
-																																		.Take(ITEMS_PER_REQUEST);
+			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).Where(f => f.ApplicationUserId == userId);
 
 		}
 

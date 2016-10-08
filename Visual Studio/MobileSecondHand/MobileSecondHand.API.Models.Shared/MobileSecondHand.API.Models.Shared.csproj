@@ -34,10 +34,15 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <!-- A reference to the entire .NET Framework is automatically included -->
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Advertisements\AdvertisementsSearchModel.cs" />
+    <Compile Include="Advertisements\SearchModel.cs" />
+    <Compile Include="Enumerations\AdvertisementsKind.cs" />
+    <Compile Include="Enumerations\DisplayNameAttribute.cs" />
+    <Compile Include="Enumerations\GetPhotoKind.cs" />
+    <Compile Include="Extensions\DateTimeExtensions.cs" />
+    <Compile Include="Extensions\EnumExtensions.cs" />
+    <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Location\CoordinatesForAdvertisementsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SingleIdModelForPostRequests.cs" />
   </ItemGroup>

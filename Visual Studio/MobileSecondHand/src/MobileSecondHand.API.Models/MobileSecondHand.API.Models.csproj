@@ -64,11 +64,9 @@
     <Compile Include="Keywords\ColorKeywordApiModel.cs" />
     <Compile Include="Keywords\IKeywordApiModel.cs" />
     <Compile Include="Advertisement\NewAdvertisementItemModel.cs" />
-    <Compile Include="Advertisement\SearchModel.cs" />
     <Compile Include="Chat\ChatMessageReadModel.cs" />
     <Compile Include="Chat\ChatMessageSaveModel.cs" />
     <Compile Include="Chat\UserConnection.cs" />
-    <Compile Include="Coordinates\CoordinatesForAdvertisementsModel.cs" />
     <Compile Include="CustomResponsesModels\ErrorResponse.cs" />
     <Compile Include="Location\Coordinates.cs" />
     <Compile Include="OutsideApisModels\FacebookUserCredentialsResponse.cs" />
