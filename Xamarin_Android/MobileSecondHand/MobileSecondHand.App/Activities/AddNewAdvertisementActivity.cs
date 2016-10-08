@@ -11,10 +11,11 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Extensions;
+using MobileSecondHand.API.Models.Shared.Categories;
+using MobileSecondHand.API.Models.Shared.Advertisements;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -23,6 +24,7 @@ namespace MobileSecondHand.App.Activities
 	{
 		BitmapOperationService bitmapOperationService;
 		GpsLocationService gpsLocationService;
+		CategoriesSelectingHelper categoriesSelectingHelper;
 		private EditText advertisementDescription;
 		private EditText advertisementPrice;
 		private EditText advertisementTitle;
@@ -44,6 +46,8 @@ namespace MobileSecondHand.App.Activities
 		IAdvertisementItemService advertisementItemService;
 		private ImageView mPhotoView1;
 		private Button mButtonTakePicture1;
+		private ImageButton btnChoseCategory;
+		private TextView textViewChodesdCategory;
 
 		private ImageView mPhotoView2;
 		private Button mButtonTakePicture2;
@@ -52,6 +56,7 @@ namespace MobileSecondHand.App.Activities
 		private List<string> tempPhotosPaths;
 		private TextView photoDivider2;
 		private TextView photoDivider3;
+		CategoryInfoModel categoryInfoModel;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -59,6 +64,8 @@ namespace MobileSecondHand.App.Activities
 			this.bitmapOperationService = new BitmapOperationService();
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.gpsLocationService = new GpsLocationService(this, null);
+			this.categoriesSelectingHelper = new CategoriesSelectingHelper(this);
+			this.categoryInfoModel = new CategoryInfoModel();
 			SetContentView(Resource.Layout.AddNewAdvertisementActivity);
 			base.SetupToolbar();
 			SetupViews(savedInstanceState);
@@ -175,7 +182,7 @@ namespace MobileSecondHand.App.Activities
 				case 1:
 					{
 						mPhotoView1.SetImageBitmap(resizedImage);
-						mButtonTakePicture1.Text = "Zrób inne zdjêcie";
+						mButtonTakePicture1.Text = "Zmieñ zdjêcie";
 						photoDivider2.Visibility = ViewStates.Visible;
 						mButtonTakePicture2.Visibility = ViewStates.Visible;
 						break;
@@ -183,7 +190,7 @@ namespace MobileSecondHand.App.Activities
 				case 2:
 					{
 						mPhotoView2.SetImageBitmap(resizedImage);
-						mButtonTakePicture2.Text = "Zrób inne zdjêcie";
+						mButtonTakePicture2.Text = "Zmieñ inne zdjêcie";
 						photoDivider3.Visibility = ViewStates.Visible;
 						mButtonTakePicture3.Enabled = true;
 						break;
@@ -191,7 +198,7 @@ namespace MobileSecondHand.App.Activities
 				case 3:
 					{
 						mPhotoView3.SetImageBitmap(resizedImage);
-						mButtonTakePicture3.Text = "Zrób inne zdjêcie";
+						mButtonTakePicture3.Text = "Zmieñ inne zdjêcie";
 						break;
 					}
 				default:
@@ -221,12 +228,30 @@ namespace MobileSecondHand.App.Activities
 			mButtonTakePicture3.Tag = 3;
 			buttonPublishAdvertisement = FindViewById<Button>(Resource.Id.buttonPublishAdvertisemenetItem);
 
+			btnChoseCategory = (ImageButton)FindViewById(Resource.Id.btnAddAdvCategoryChosing);
+			btnChoseCategory.Click += BtnChoseCategory_Click;
+			textViewChodesdCategory = (TextView)FindViewById(Resource.Id.textViewChosedCategory);
+
 			buttonPublishAdvertisement.Click += async (s, e) => await ButtonPublishAdvertisement_Click(s, e);
 			mButtonTakePicture1.Click += MButtonTakePicture_Click;
 			mButtonTakePicture2.Click += MButtonTakePicture_Click;
 			mButtonTakePicture3.Click += MButtonTakePicture_Click;
 		}
 
+		private async void BtnChoseCategory_Click(object sender, EventArgs e)
+		{
+			await this.categoriesSelectingHelper.ShowCategoriesSingleSelectAndMakeAction(GetMethodToExecuteAfterCategoryChosing(), this.categoryInfoModel.Name);
+		}
+
+		private Action<int, string> GetMethodToExecuteAfterCategoryChosing()
+		{
+			return (id, name) =>
+			{
+				this.textViewChodesdCategory.Text = name;
+				this.categoryInfoModel.Id = id;
+				this.categoryInfoModel.Name = name;
+			};
+		}
 
 		private async Task ButtonPublishAdvertisement_Click(object sender, EventArgs e)
 		{
@@ -243,7 +268,7 @@ namespace MobileSecondHand.App.Activities
 					{
 						var newAdvertisementModel = CreateNewAdvertisementItemModel(photosListModel);
 						var success = await this.advertisementItemService.CreateNewAdvertisement(newAdvertisementModel);
-						
+
 						if (success)
 						{
 							foreach (var tempPath in tempPhotosPaths)
@@ -291,6 +316,7 @@ namespace MobileSecondHand.App.Activities
 			model.Longitude = location.Longitude;
 			model.IsOnlyForSell = rdBtnOnlyForSell.Checked;
 			model.AdvertisementPrice = Int32.Parse(advertisementPrice.Text);
+			model.Category = this.categoryInfoModel;
 			model.PhotosPaths = photosListModel.PhotosPaths;
 
 			return model;
@@ -320,6 +346,11 @@ namespace MobileSecondHand.App.Activities
 			else if (this.photosPaths.Count == 0)
 			{
 				Toast.MakeText(this, "Nie dodano ¿adnego zdjêcia", ToastLength.Long).Show();
+				isValidate = false;
+			}
+			else if (this.categoryInfoModel.Id == 0)
+			{
+				Toast.MakeText(this, "Nie wybrano kategorii", ToastLength.Long).Show();
 				isValidate = false;
 			}
 			return isValidate;

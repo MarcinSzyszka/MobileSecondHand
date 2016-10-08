@@ -4,10 +4,10 @@ using System.Collections.Generic;
 using Android.App;
 using Android.Support.V7.Widget;
 using Android.Views;
+using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.EventArgs;
 
 namespace MobileSecondHand.App.Adapters

@@ -1,28 +1,21 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
-using Android.Util;
 using Android.Views;
 using Android.Widget;
-using ImageViews.Photo;
 using MobileSecondHand.API.Models.Shared;
+using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Models.Advertisement;
-using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity]
+	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class AdvertisementItemDetailsActivity : BaseActivity
 	{
 		private ProgressDialogHelper progress;
@@ -164,7 +157,7 @@ namespace MobileSecondHand.App.Activities
 				ImageView currentPhotoView;
 				if (i == 0)
 				{
-				
+
 					currentPhotoView = photoView1;
 				}
 				else if (i == 1)
@@ -178,7 +171,7 @@ namespace MobileSecondHand.App.Activities
 
 				currentPhotoView.SetImageBitmap(bitmapOperationService.GetBitmap(advertisement.Photos[i]));
 				//var attacher = new PhotoViewAttacher(currentPhotoView);
-				
+
 				currentPhotoView.Visibility = ViewStates.Visible;
 			}
 		}

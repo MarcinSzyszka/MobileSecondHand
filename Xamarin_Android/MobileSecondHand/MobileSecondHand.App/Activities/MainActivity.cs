@@ -13,7 +13,6 @@ using MobileSecondHand.App.Activities;
 using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Advertisements;
@@ -174,7 +173,7 @@ namespace MobileSecondHand.App
 				}
 				else
 				{
-					this.fabOpenFilterOptions.Visibility = ViewStates.Invisible;
+					this.fabOpenFilterOptions.Visibility = ViewStates.Visible;
 				}
 				this.advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 				this.advertisementItemListAdapter.InfiniteScrollDisabled = false;
@@ -401,10 +400,11 @@ namespace MobileSecondHand.App
 			fabApplySortingOptions.Click += FabMainListOptions_Click; ;
 		}
 
-		private void FabMainListOptions_Click(object sender, EventArgs e)
+		private async void FabMainListOptions_Click(object sender, EventArgs e)
 		{
 			TogleLayouts();
 			ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
+			await DownloadAndShowAdvertisements(true);
 		}
 
 		private void ChangeFabOpenFilterOptionsDependsOnSelectedOptions()

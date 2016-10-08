@@ -9,7 +9,6 @@ using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Location;
-using MobileSecondHand.Models.Advertisement;
 using MobileSecondHand.Models.Consts;
 using Newtonsoft.Json;
 

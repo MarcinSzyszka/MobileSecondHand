@@ -50,5 +50,27 @@ namespace MobileSecondHand.App.Infrastructure
 				this.progressDialogHelper.CloseProgressDialog();
 			}
 		}
+
+
+		internal async Task ShowCategoriesSingleSelectAndMakeAction(Action<int, string> actionOnSelect, string selectedItemName = null)
+		{
+			this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
+			try
+			{
+				var allKeywords = await this.categoryService.GetCategories();
+				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
+
+				AlertsService.ShowSingleSelectListString(ctx, allKeywordsNames, s => actionOnSelect(allKeywords.First(v => v.Value == s).Key, s) , selectedItemName);
+
+			}
+			catch (Exception exc)
+			{
+				AlertsService.ShowToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
+			}
+			finally
+			{
+				this.progressDialogHelper.CloseProgressDialog();
+			}
+		}
 	}
 }
