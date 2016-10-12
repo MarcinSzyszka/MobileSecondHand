@@ -238,12 +238,12 @@
                         android:text="Kliknij aby zobaczyć inne ogłoszenia użytkowniczki"
                         android:id="@+id/textViewUserOtherAdverts"
                         android:layout_below="@+id/showOtherUserAdvertisementsBtn"
-                        android:background="@color/headerBackground"
+                        android:background="@color/colorPrimary"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:gravity="center"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-                        android:textColor="@color/colorPrimaryDark" />
+						android:textColor="@color/white"/>
                 </RelativeLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
@@ -258,11 +258,11 @@
                 android:textAppearance="?android:attr/textAppearanceMedium"
                 android:text="Kliknij aby powrócić do szczegółów ogłoszenia"
                 android:id="@+id/textViewHideUserAdvertisements"
-                android:background="@color/headerBackground"
+                android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp"
-                android:textColor="@color/colorPrimaryDark" />
+                android:paddingBottom="5dp" 
+				android:textColor="@color/white"/>
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/advertisementsRecyclerViewOnAdvertDetails"
                 android:layout_width="match_parent"
