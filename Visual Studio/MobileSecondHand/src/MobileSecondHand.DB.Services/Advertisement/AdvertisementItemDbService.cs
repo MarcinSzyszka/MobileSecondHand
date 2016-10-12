@@ -12,7 +12,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 	{
 		MobileSecondHandContext dbContext;
 		ICoordinatesCalculator coordinatesCalculator;
-		
+
 
 		public AdvertisementItemDbService(MobileSecondHandContext context, ICoordinatesCalculator coordinatesCalculator)
 		{
@@ -23,8 +23,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 		public AdvertisementItem GetByIdWithDetails(int advertisementId)
 		{
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos)
-												.Include(a => a.CategoryKeywords).ThenInclude(a => a.CategoryKeyword)
-												.Include(a => a.ColorKeywords).ThenInclude(a => a.ColorKeyword)
+												.Include(a => a.User)
 												.FirstOrDefault(a => a.Id == advertisementId);
 		}
 
@@ -36,7 +35,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 																						&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
 																						&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
 																						.OrderBy(a => a.CreationDate);
-																						
+
 		}
 
 		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
@@ -51,8 +50,10 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber)
 		{
-			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId)
-																					.OrderBy(a => a.CreationDate);
+			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId && a.ExpirationDate >= DateTime.Now)
+																					.OrderBy(a => a.CreationDate)
+																					.Skip(20 * pageNumber)
+																					.Take(20);
 		}
 
 		public UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId)

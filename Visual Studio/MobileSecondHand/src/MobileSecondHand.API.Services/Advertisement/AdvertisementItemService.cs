@@ -212,6 +212,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.Price = advertisementFromDb.Price;
 			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
 			viewModel.SellerId = advertisementFromDb.UserId;
+			viewModel.SellerName = advertisementFromDb.User.UserName;
 			viewModel.Photos = await GetPhotosList(advertisementFromDb.AdvertisementPhotos.Where(p => !p.IsMainPhoto).ToList());
 			viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(advertisementFromDb.UserId);
 			return viewModel;

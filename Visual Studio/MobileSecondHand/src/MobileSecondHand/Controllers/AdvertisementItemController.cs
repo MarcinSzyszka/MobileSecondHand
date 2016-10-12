@@ -190,13 +190,12 @@ namespace MobileSecondHand.Controllers
 		}
 
 		[HttpGet]
-		[Route("GetUserAdvertisements/{pageNumber}")]
-		public async Task<IActionResult> GetUserAdvertisements(int pageNumber)
+		[Route("GetUserAdvertisements/{pageNumber}/{userId}")]
+		public async Task<IActionResult> GetUserAdvertisements(int pageNumber, string userId)
 		{
 			try
 			{
 				logger.LogInformation("Pobieranie ogłoszeń utworzonych przez użytkownika");
-				var userId = this.identityService.GetUserId(User.Identity);
 				var advertisements = await this.advertisementItemService.GetUserAdvertisements(userId, pageNumber);
 				logger.LogInformation("Zakonczono pobieranie ogłoszeń");
 				return Json(advertisements);

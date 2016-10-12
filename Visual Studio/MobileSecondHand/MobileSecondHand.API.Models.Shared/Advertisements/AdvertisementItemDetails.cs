@@ -15,5 +15,6 @@ namespace MobileSecondHand.API.Models.Shared.Advertisements
 		public bool IsOnlyForSell { get; set; }
 		public bool IsSellerOnline { get; set; }
 		public string SellerId { get; set; }
+		public string SellerName { get; set; }
 	}
 }
