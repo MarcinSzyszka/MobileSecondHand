@@ -50,6 +50,7 @@ namespace MobileSecondHand.App.Activities
 		private TextView showUserAdvertisement;
 		private TextView hideUserAdvertisement;
 		private bool firstEntryOnUserAdvertisementsList;
+		private RecyclerView photosRecyclerView;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -133,12 +134,20 @@ namespace MobileSecondHand.App.Activities
 			this.hideUserAdvertisement.Click += TogleLayouts;
 
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerViewOnAdvertDetails);
-
-			advertisementsRecyclerView.NestedScrollingEnabled = true;
-			advertisementsRecyclerView.HasFixedSize = true;
-
+			//advertisementsRecyclerView.NestedScrollingEnabled = true;
+			//advertisementsRecyclerView.HasFixedSize = true;
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
+
+
+
+
+			photosRecyclerView = FindViewById<RecyclerView>(Resource.Id.photosRecyclerViewOnAdvertDetails);
+			var photoRecyclerLayoutManager = new LinearLayoutManager(this);
+			photoRecyclerLayoutManager.Orientation = LinearLayoutManager.Horizontal;
+			photosRecyclerView.SetLayoutManager(photoRecyclerLayoutManager);
+
+
 
 			this.nestedScrollViewLayout.RequestLayout();
 		}
@@ -232,7 +241,8 @@ namespace MobileSecondHand.App.Activities
 												this.Resources.GetString(Resource.String.onlyForSellInfo) :
 												this.Resources.GetString(Resource.String.forSellOrChangeInfo);
 
-			SetPhotots(advertisement);
+			photosRecyclerView.SetAdapter(new AdvertisementPhotosListAdapter(this.advertisement.Photos));
+			//SetPhotots(advertisement);
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
@@ -264,7 +274,7 @@ namespace MobileSecondHand.App.Activities
 				currentPhotoView.SetImageBitmap(bitmapOperationService.GetBitmap(advertisement.Photos[i]));
 				//var attacher = new PhotoViewAttacher(currentPhotoView);
 
-				currentPhotoView.Visibility = ViewStates.Visible;
+				//currentPhotoView.Visibility = ViewStates.Visible;
 			}
 		}
 

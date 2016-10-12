@@ -88,9 +88,8 @@ namespace MobileSecondHand.App.Activities
 				{
 					var file = CreateImageFile(requestCode);
 					tempPhotosPaths.Add(this.bitmapOperationService.SavePhotoFromUriAndReturnPhysicalPath(data.Data, file, this));
+					SetPhoto(requestCode);
 				}
-
-				SetPhoto(requestCode);
 			}
 			else
 			{
@@ -184,21 +183,23 @@ namespace MobileSecondHand.App.Activities
 						mPhotoView1.SetImageBitmap(resizedImage);
 						mButtonTakePicture1.Text = "Zmieñ zdjêcie";
 						photoDivider2.Visibility = ViewStates.Visible;
+						mPhotoView2.Visibility = ViewStates.Visible;
 						mButtonTakePicture2.Visibility = ViewStates.Visible;
 						break;
 					}
 				case 2:
 					{
 						mPhotoView2.SetImageBitmap(resizedImage);
-						mButtonTakePicture2.Text = "Zmieñ inne zdjêcie";
+						mButtonTakePicture2.Text = "Zmieñ zdjêcie";
 						photoDivider3.Visibility = ViewStates.Visible;
-						mButtonTakePicture3.Enabled = true;
+						mPhotoView3.Visibility = ViewStates.Visible;
+						mButtonTakePicture3.Visibility = ViewStates.Visible;
 						break;
 					}
 				case 3:
 					{
 						mPhotoView3.SetImageBitmap(resizedImage);
-						mButtonTakePicture3.Text = "Zmieñ inne zdjêcie";
+						mButtonTakePicture3.Text = "Zmieñ zdjêcie";
 						break;
 					}
 				default:

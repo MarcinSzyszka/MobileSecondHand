@@ -35,6 +35,13 @@
                     android:id="@+id/advertisementDetailsWrapperLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
+                    <android.support.v7.widget.RecyclerView
+                        android:id="@+id/photosRecyclerViewOnAdvertDetails"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:minHeight="25dp"
+                        android:minWidth="25dp"
+                        android:maxHeight="400dp" />
                     <ImageView
                         android:id="@+id/advertisementDetailsPhoto1"
                         android:layout_width="fill_parent"
@@ -43,7 +50,8 @@
                         android:layout_marginTop="5dp"
                         android:src="@android:drawable/ic_menu_gallery"
                         android:adjustViewBounds="true"
-                        android:maxHeight="400dp" />
+                        android:maxHeight="400dp"
+                        android:visibility="gone" />
                     <ImageView
                         android:id="@+id/advertisementDetailsPhoto2"
                         android:layout_width="fill_parent"
@@ -53,7 +61,7 @@
                         android:src="@android:drawable/ic_menu_gallery"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/advertisementDetailsPhoto1"
-						android:maxHeight="400dp"
+                        android:maxHeight="400dp"
                         android:visibility="gone" />
                     <ImageView
                         android:id="@+id/advertisementDetailsPhoto3"
@@ -64,7 +72,7 @@
                         android:src="@android:drawable/ic_menu_gallery"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/advertisementDetailsPhoto2"
-						android:maxHeight="400dp"
+                        android:maxHeight="400dp"
                         android:visibility="gone" />
                     <TextView
                         android:layout_width="match_parent"
@@ -72,7 +80,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Rodzaj ogłoszenia"
                         android:id="@+id/textView10"
-                        android:layout_below="@+id/advertisementDetailsPhoto3"
+                        android:layout_below="@+id/photosRecyclerViewOnAdvertDetails"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
@@ -243,7 +251,7 @@
                         android:gravity="center"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
-						android:textColor="@color/white"/>
+                        android:textColor="@color/white" />
                 </RelativeLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
@@ -261,8 +269,8 @@
                 android:background="@color/colorPrimary"
                 android:gravity="center"
                 android:paddingTop="5dp"
-                android:paddingBottom="5dp" 
-				android:textColor="@color/white"/>
+                android:paddingBottom="5dp"
+                android:textColor="@color/white" />
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/advertisementsRecyclerViewOnAdvertDetails"
                 android:layout_width="match_parent"
