@@ -74,9 +74,7 @@
                     android:layout_height="match_parent"
                     android:layout_below="@+id/advertisementsKindList"
                     android:minHeight="25px"
-                    android:minWidth="25px"
-                    tools:reverseLayout="true"
-                    tools:stackFromEnd="true" />
+                    android:minWidth="25px"/>
             </RelativeLayout>
             <RelativeLayout
                 android:id="@+id/layoutSortingOptions"

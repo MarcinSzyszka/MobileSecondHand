@@ -12,29 +12,25 @@ using MobileSecondHand.Models.EventArgs;
 
 namespace MobileSecondHand.App.Adapters
 {
-	public class AdvertisementItemListAdapter : RecyclerView.Adapter {
+	public class AdvertisementItemListAdapter : RecyclerView.Adapter
+	{
 		Activity context;
 		BitmapOperationService bitmapOperationService;
 		IInfiniteScrollListener infiniteScrollListener;
-		private int photoImageViewWitdth;
-		private int photoImageViewHeight;
-		private MainActivity mainActivity1;
-		private List<AdvertisementItemShort> advertisements;
 		private AdvertisementsKind advertisementsKind;
-		private MainActivity mainActivity2;
 
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
 		public event EventHandler<int> DeleteAdvertisementItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
 		public List<AdvertisementItemShort> AdvertisementItems { get; private set; }
 
-		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, AdvertisementsKind advertisementsKind, IInfiniteScrollListener infiniteScrollListener) {
+		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, AdvertisementsKind advertisementsKind, IInfiniteScrollListener infiniteScrollListener)
+		{
 			this.AdvertisementItems = advertisementItems;
 			this.context = context;
 			this.bitmapOperationService = new BitmapOperationService();
 			this.infiniteScrollListener = infiniteScrollListener;
 			this.advertisementsKind = advertisementsKind;
-			//CalculateSizeForPhotoImageView();
 		}
 
 
@@ -43,13 +39,14 @@ namespace MobileSecondHand.App.Adapters
 			get { return this.AdvertisementItems.Count; }
 		}
 
-		public void AddAdvertisements(List<AdvertisementItemShort> advertisements) {
-			//CalculateSizeForPhotoImageView();
+		public void AddAdvertisements(List<AdvertisementItemShort> advertisements)
+		{
 			this.AdvertisementItems.AddRange(advertisements);
 			this.NotifyDataSetChanged();
 		}
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		{
 			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
 			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser || advertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
@@ -80,7 +77,8 @@ namespace MobileSecondHand.App.Adapters
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
 		}
 
-		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+		{
 			View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.AdvertisementItemRowView, parent, false);
 			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick, OnDeleteAdvertisementClick);
 			return vh;
@@ -94,21 +92,18 @@ namespace MobileSecondHand.App.Adapters
 			}
 		}
 
-		//private void CalculateSizeForPhotoImageView() {
-		//	var metrics = context.Resources.DisplayMetrics;
-		//	var width = metrics.WidthPixels - 20;
-		//	this.photoImageViewWitdth = width;
-		//	this.photoImageViewHeight = (int)(width * 0.8);
-		//}
-
-		private void OnAdvertisementItemClick(int positionId) {
-			if (AdvertisementItemClick != null) {
+		private void OnAdvertisementItemClick(int positionId)
+		{
+			if (AdvertisementItemClick != null)
+			{
 				AdvertisementItemClick(this, new ShowAdvertisementDetailsEventArgs { Id = this.AdvertisementItems[positionId].Id, Distance = this.AdvertisementItems[positionId].Distance });
 			}
 		}
 
-		private void RaiseOnInfiniteScrollWhenItemIsLastInList(AdvertisementItemShort currentItem, AdvertisementItemViewHolder viewHolder) {
-			if (this.AdvertisementItems.IndexOf(currentItem) == (this.AdvertisementItems.Count - 1) && !InfiniteScrollDisabled) {
+		private void RaiseOnInfiniteScrollWhenItemIsLastInList(AdvertisementItemShort currentItem, AdvertisementItemViewHolder viewHolder)
+		{
+			if (this.AdvertisementItems.IndexOf(currentItem) == (this.AdvertisementItems.Count - 1) && !InfiniteScrollDisabled)
+			{
 				this.infiniteScrollListener.OnInfiniteScroll();
 			}
 		}

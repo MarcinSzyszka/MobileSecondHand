@@ -37,9 +37,9 @@ namespace MobileSecondHand.Services.Advertisements
 			return advertisementList;
 		}
 
-		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber)
+		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber, string userId)
 		{
-			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber);
+			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber + "/" + userId);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return new List<AdvertisementItemShort>();

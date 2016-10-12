@@ -13,8 +13,11 @@
         android:layout_height="match_parent"
         android:minHeight="25px"
         android:minWidth="25px"
-        android:orientation="vertical">
-        <ScrollView
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nestedScrollViewLayout"
+            android:fillViewport="true"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:minHeight="25px"
@@ -39,9 +42,8 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
                         android:src="@android:drawable/ic_menu_gallery"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
-                        android:adjustViewBounds="true" />
+                        android:adjustViewBounds="true"
+                        android:maxHeight="400dp" />
                     <ImageView
                         android:id="@+id/advertisementDetailsPhoto2"
                         android:layout_width="fill_parent"
@@ -49,10 +51,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
                         android:src="@android:drawable/ic_menu_gallery"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/advertisementDetailsPhoto1"
+						android:maxHeight="400dp"
                         android:visibility="gone" />
                     <ImageView
                         android:id="@+id/advertisementDetailsPhoto3"
@@ -61,10 +62,9 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp"
                         android:src="@android:drawable/ic_menu_gallery"
-                        android:layout_marginLeft="20dp"
-                        android:layout_marginRight="20dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/advertisementDetailsPhoto2"
+						android:maxHeight="400dp"
                         android:visibility="gone" />
                     <TextView
                         android:layout_width="match_parent"
@@ -192,16 +192,6 @@
                         android:text="Zobacz inne ogłoszenia użytkownika"
                         android:layout_marginTop="5dp" />
                     <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:id="@+id/textView15"
-                        android:layout_below="@+id/showOtherUserAdvertisementsBtn"
-                        android:layout_marginTop="@dimen/settingRowMargin"
-                        android:paddingTop="5dp"
-                        android:paddingBottom="5dp"
-                        android:background="@color/colorPrimary" />
-                    <TextView
                         android:id="@+id/distanceDetailsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -241,9 +231,46 @@
                         android:id="@+id/btnAddToFavoriteAdvertisements"
                         android:gravity="center"
                         android:layout_centerHorizontal="true" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Kliknij aby zobaczyć inne ogłoszenia użytkowniczki"
+                        android:id="@+id/textViewUserOtherAdverts"
+                        android:layout_below="@+id/showOtherUserAdvertisementsBtn"
+                        android:background="@color/headerBackground"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:gravity="center"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp"
+                        android:textColor="@color/colorPrimaryDark" />
                 </RelativeLayout>
             </LinearLayout>
-        </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
+        <RelativeLayout
+            android:id="@+id/userAdvertisementsRecyclerViewWrapper"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Kliknij aby powrócić do szczegółów ogłoszenia"
+                android:id="@+id/textViewHideUserAdvertisements"
+                android:background="@color/headerBackground"
+                android:gravity="center"
+                android:paddingTop="5dp"
+                android:paddingBottom="5dp"
+                android:textColor="@color/colorPrimaryDark" />
+            <android.support.v7.widget.RecyclerView
+                android:id="@+id/advertisementsRecyclerViewOnAdvertDetails"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:minHeight="25dp"
+                android:minWidth="25dp"
+                android:layout_below="@+id/textViewHideUserAdvertisements" />
+        </RelativeLayout>
         <android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"

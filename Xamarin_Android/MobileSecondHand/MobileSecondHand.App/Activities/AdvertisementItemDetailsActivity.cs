@@ -1,14 +1,20 @@
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V4.Widget;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.API.Models.Shared.Advertisements;
+using MobileSecondHand.API.Models.Shared.Enumerations;
+using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
 using Newtonsoft.Json;
@@ -16,8 +22,10 @@ using Newtonsoft.Json;
 namespace MobileSecondHand.App.Activities
 {
 	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	public class AdvertisementItemDetailsActivity : BaseActivity
+	public class AdvertisementItemDetailsActivity : BaseActivity, IInfiniteScrollListener
 	{
+		RecyclerView advertisementsRecyclerView;
+		AdvertisementItemListAdapter advertisementItemListAdapter;
 		private ProgressDialogHelper progress;
 		IAdvertisementItemService advertisementItemService;
 		IMessagesService messagesService;
@@ -36,6 +44,12 @@ namespace MobileSecondHand.App.Activities
 		private TextView distanceTextView;
 		private AdvertisementItemDetails advertisement;
 		private RelativeLayout advertisementDetailsWrapperLayout;
+		private int userAdvertsPageNumber;
+		private NestedScrollView nestedScrollViewLayout;
+		private RelativeLayout userAdvertsLayout;
+		private TextView showUserAdvertisement;
+		private TextView hideUserAdvertisement;
+		private bool firstEntryOnUserAdvertisementsList;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -48,6 +62,7 @@ namespace MobileSecondHand.App.Activities
 			base.SetupToolbar();
 			SetupViews();
 			await GetAndShowAdvertisementDetails();
+			firstEntryOnUserAdvertisementsList = true;
 		}
 
 		protected override void OnSaveInstanceState(Bundle outState)
@@ -96,6 +111,7 @@ namespace MobileSecondHand.App.Activities
 			this.progress = new ProgressDialogHelper(this);
 			this.advertisementDetailsWrapperLayout = FindViewById<RelativeLayout>(Resource.Id.advertisementDetailsWrapperLayout);
 			this.distanceTextView = FindViewById<TextView>(Resource.Id.distanceDetailsTextView);
+
 			this.sellerNetworkStateInfoTextView = FindViewById<TextView>(Resource.Id.sellerNetworkState);
 			this.forSellOrChangeInfoTextView = FindViewById<TextView>(Resource.Id.forSellOrChangeInfo);
 			this.startConversationBtn = FindViewById<Button>(Resource.Id.startConvesationBtn);
@@ -108,6 +124,82 @@ namespace MobileSecondHand.App.Activities
 			this.showOtherAdvertisementsBtn = FindViewById<Button>(Resource.Id.showOtherUserAdvertisementsBtn);
 			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Gone;
 			this.addToFavouriteAdvertsBtn = FindViewById<Button>(Resource.Id.btnAddToFavoriteAdvertisements);
+			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
+			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
+			this.showUserAdvertisement = FindViewById<TextView>(Resource.Id.textViewUserOtherAdverts);
+			this.hideUserAdvertisement = FindViewById<TextView>(Resource.Id.textViewHideUserAdvertisements);
+
+			this.showUserAdvertisement.Click += TogleLayouts;
+			this.hideUserAdvertisement.Click += TogleLayouts;
+
+			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerViewOnAdvertDetails);
+
+			advertisementsRecyclerView.NestedScrollingEnabled = true;
+			advertisementsRecyclerView.HasFixedSize = true;
+
+			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
+			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
+
+			this.nestedScrollViewLayout.RequestLayout();
+		}
+
+		private async void TogleLayouts(object sender, EventArgs e)
+		{
+			if (nestedScrollViewLayout.Visibility == ViewStates.Visible)
+			{
+				nestedScrollViewLayout.Visibility = ViewStates.Gone;
+				this.hideUserAdvertisement.Text = String.Format("Og³oszenia u¿ytkowniczki: {0}\nKliknij aby powróciæ do szczegó³ów og³oszenia", advertisement.SellerName);
+				userAdvertsLayout.Visibility = ViewStates.Visible;
+				if (firstEntryOnUserAdvertisementsList)
+				{
+					await DownloadAndShowAdvertisements();
+					firstEntryOnUserAdvertisementsList = false;
+				}
+			}
+			else
+			{
+				nestedScrollViewLayout.Visibility = ViewStates.Visible;
+				userAdvertsLayout.Visibility = ViewStates.Gone;
+			}
+		}
+
+		private async Task DownloadAndShowAdvertisements()
+		{
+			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
+			List<AdvertisementItemShort> advertisements = await this.advertisementItemService.GetUserAdvertisements(userAdvertsPageNumber, this.advertisement.SellerId);
+
+			if (advertisements.Count > 0)
+			{
+				if (advertisementItemListAdapter == null)
+				{
+					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, AdvertisementsKind.AdvertisementsAroundUserCurrentLocation, this);
+					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
+					advertisementsRecyclerView.SetAdapter(advertisementItemListAdapter);
+				}
+				else
+				{
+					advertisementItemListAdapter.AddAdvertisements(advertisements);
+				}
+			}
+			else
+			{
+				if (advertisementItemListAdapter == null)
+				{
+					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), AdvertisementsKind.AdvertisementsAroundUserCurrentLocation, this);
+				}
+				advertisementItemListAdapter.InfiniteScrollDisabled = true;
+			}
+			progress.CloseProgressDialog();
+		}
+
+
+		private void AdvertisementItemListAdapter_AdvertisementItemClick(object sender, ShowAdvertisementDetailsEventArgs e)
+		{
+			//przejœcie do widoku detalue dokumentu
+			var intent = new Intent(this, typeof(AdvertisementItemDetailsActivity));
+			intent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_ID, e.Id);
+			intent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_DISTANCE, e.Distance);
+			StartActivity(intent);
 		}
 
 		private async Task GetAndShowAdvertisementDetails()
@@ -211,6 +303,12 @@ namespace MobileSecondHand.App.Activities
 			var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertisementItemId);
 
 			return advertisement;
+		}
+
+		public async void OnInfiniteScroll()
+		{
+			userAdvertsPageNumber++;
+			await DownloadAndShowAdvertisements();
 		}
 	}
 }
