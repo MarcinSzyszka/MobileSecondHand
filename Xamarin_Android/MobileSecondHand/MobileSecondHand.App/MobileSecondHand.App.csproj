@@ -152,6 +152,7 @@
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
     <Compile Include="Activities\ConversationsListActivity.cs" />
+    <Compile Include="Activities\PhotosViewerActivity.cs" />
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
     <Compile Include="Adapters\AdvertisementPhotosListAdapter.cs" />
     <Compile Include="Adapters\ConversationMessagesListAdapter.cs" />
@@ -167,6 +168,7 @@
     <Compile Include="Holders\ConversationMessageViewHolder.cs" />
     <Compile Include="Holders\ConversationViewHolder.cs" />
     <Compile Include="Infrastructure\ActivityState\ActivityInstanceWhichStartedMessengerService.cs" />
+    <Compile Include="Infrastructure\ActivityState\ActivityStateConsts.cs" />
     <Compile Include="Infrastructure\ActivityState\ConversationActivityStateModel.cs" />
     <Compile Include="Infrastructure\ActivityState\SharedObject.cs" />
     <Compile Include="Infrastructure\BitmapOperationService.cs" />
@@ -251,6 +253,9 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\advertisementPhotoRowView.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\PhotosViewerActivity.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

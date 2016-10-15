@@ -14,6 +14,7 @@ using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
@@ -35,12 +36,8 @@ namespace MobileSecondHand.App.Activities
 		private TextView price;
 		private TextView title;
 		private TextView description;
-		private Button showOtherAdvertisementsBtn;
 		private Button startConversationBtn;
 		private Button addToFavouriteAdvertsBtn;
-		private ImageView photoView1;
-		private ImageView photoView2;
-		private ImageView photoView3;
 		private TextView distanceTextView;
 		private AdvertisementItemDetails advertisement;
 		private RelativeLayout advertisementDetailsWrapperLayout;
@@ -64,17 +61,6 @@ namespace MobileSecondHand.App.Activities
 			SetupViews();
 			await GetAndShowAdvertisementDetails();
 			firstEntryOnUserAdvertisementsList = true;
-		}
-
-		protected override void OnSaveInstanceState(Bundle outState)
-		{
-			base.OnSaveInstanceState(outState);
-			SaveViewFieldsValues(outState);
-		}
-
-		private void SaveViewFieldsValues(Bundle outState)
-		{
-			//TODO zrobic zapamietywanie danyc przy zmianie orientacji zeby nie ciagnac znowu danych
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
@@ -112,18 +98,12 @@ namespace MobileSecondHand.App.Activities
 			this.progress = new ProgressDialogHelper(this);
 			this.advertisementDetailsWrapperLayout = FindViewById<RelativeLayout>(Resource.Id.advertisementDetailsWrapperLayout);
 			this.distanceTextView = FindViewById<TextView>(Resource.Id.distanceDetailsTextView);
-
 			this.sellerNetworkStateInfoTextView = FindViewById<TextView>(Resource.Id.sellerNetworkState);
 			this.forSellOrChangeInfoTextView = FindViewById<TextView>(Resource.Id.forSellOrChangeInfo);
 			this.startConversationBtn = FindViewById<Button>(Resource.Id.startConvesationBtn);
-			this.photoView1 = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto1);
-			this.photoView2 = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto2);
-			this.photoView3 = FindViewById<ImageView>(Resource.Id.advertisementDetailsPhoto3);
 			this.price = FindViewById<TextView>(Resource.Id.advertisementDeatilsPrice);
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
-			this.showOtherAdvertisementsBtn = FindViewById<Button>(Resource.Id.showOtherUserAdvertisementsBtn);
-			this.showOtherAdvertisementsBtn.Visibility = ViewStates.Gone;
 			this.addToFavouriteAdvertsBtn = FindViewById<Button>(Resource.Id.btnAddToFavoriteAdvertisements);
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
@@ -134,20 +114,13 @@ namespace MobileSecondHand.App.Activities
 			this.hideUserAdvertisement.Click += TogleLayouts;
 
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerViewOnAdvertDetails);
-			//advertisementsRecyclerView.NestedScrollingEnabled = true;
-			//advertisementsRecyclerView.HasFixedSize = true;
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
-
-
-
 
 			photosRecyclerView = FindViewById<RecyclerView>(Resource.Id.photosRecyclerViewOnAdvertDetails);
 			var photoRecyclerLayoutManager = new LinearLayoutManager(this);
 			photoRecyclerLayoutManager.Orientation = LinearLayoutManager.Horizontal;
 			photosRecyclerView.SetLayoutManager(photoRecyclerLayoutManager);
-
-
 
 			this.nestedScrollViewLayout.RequestLayout();
 		}
@@ -224,7 +197,6 @@ namespace MobileSecondHand.App.Activities
 
 		private void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance)
 		{
-			//distanceTextView.Text = String.Format("{0}{1} km", this.Resources.GetString(Resource.String.distanceDetailsInfo), distance);
 			distanceTextView.Text = String.Format("{0} km", distance);
 			if (advertisement.IsSellerOnline)
 			{
@@ -241,46 +213,23 @@ namespace MobileSecondHand.App.Activities
 												this.Resources.GetString(Resource.String.onlyForSellInfo) :
 												this.Resources.GetString(Resource.String.forSellOrChangeInfo);
 
-			photosRecyclerView.SetAdapter(new AdvertisementPhotosListAdapter(this.advertisement.Photos));
-			//SetPhotots(advertisement);
+			var photosAdapter = new AdvertisementPhotosListAdapter(this.advertisement.Photos, true);
+			photosAdapter.PhotoClicked += PhotosAdapter_PhotoClicked;
+			photosRecyclerView.SetAdapter(photosAdapter);
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 			this.addToFavouriteAdvertsBtn.Click += async (s, e) => await AddToFavouriteAdvertsBtn_Click(s, e);
-			showOtherAdvertisementsBtn.Click += ShowOtherAdvertisementsBtn_Click;
-
 		}
 
-		private void SetPhotots(AdvertisementItemDetails advertisement)
+		private void PhotosAdapter_PhotoClicked(object sender, int photoIndex)
 		{
-			for (int i = 0; i < advertisement.Photos.Count; i++)
-			{
-				ImageView currentPhotoView;
-				if (i == 0)
-				{
+			var photosViewerIntent = new Intent(this, typeof(PhotosViewerActivity));
+			SharedObject.Data = this.advertisement.Photos;
+			photosViewerIntent.PutExtra(ActivityStateConsts.SELECTED_PHOTO_INDEX_TO_START_ON_PHOTOS_VIEWER, photoIndex);
 
-					currentPhotoView = photoView1;
-				}
-				else if (i == 1)
-				{
-					currentPhotoView = photoView2;
-				}
-				else
-				{
-					currentPhotoView = photoView3;
-				}
-
-				currentPhotoView.SetImageBitmap(bitmapOperationService.GetBitmap(advertisement.Photos[i]));
-				//var attacher = new PhotoViewAttacher(currentPhotoView);
-
-				//currentPhotoView.Visibility = ViewStates.Visible;
-			}
-		}
-
-		private void ShowOtherAdvertisementsBtn_Click(object sender, EventArgs e)
-		{
-			throw new NotImplementedException();
+			StartActivity(photosViewerIntent);
 		}
 
 		private async Task AddToFavouriteAdvertsBtn_Click(object sender, EventArgs e)

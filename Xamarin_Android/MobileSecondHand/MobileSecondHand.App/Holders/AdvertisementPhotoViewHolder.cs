@@ -17,11 +17,15 @@ namespace MobileSecondHand.App.Holders
 	{
 		public ImageView PhotoImageView { get; private set; }
 
+
 		public AdvertisementPhotoViewHolder(View itemView) : base(itemView)
 		{
 			PhotoImageView = itemView.FindViewById<ImageView>(Resource.Id.advertPhotoView);
 		}
 
-
+		internal void SetActionOnClick(Action action)
+		{
+			PhotoImageView.Click += (s, e) => action();
+		}
 	}
 }
