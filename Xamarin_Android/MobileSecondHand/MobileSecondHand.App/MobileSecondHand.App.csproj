@@ -159,6 +159,7 @@
     <Compile Include="Activities\AddNewAdvertisementActivity.cs" />
     <Compile Include="Activities\AdvertisementItemDetailsActivity.cs" />
     <Compile Include="Adapters\ConversationsListAdapter.cs" />
+    <Compile Include="Adapters\PhotosViewPagerAdapter.cs" />
     <Compile Include="Chat\MessengerService.cs" />
     <Compile Include="Consts\ExtrasKeys.cs" />
     <Compile Include="Consts\SharedPreferencesKeys.cs" />
@@ -427,6 +428,18 @@
   </ItemGroup>
   <ItemGroup>
     <AndroidResource Include="Resources\drawable\ok_btn.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\sendMessage.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\userffline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\userOnline.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <AndroidResource Include="Resources\drawable\addToFavourites.png" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath)\Xamarin\Android\Xamarin.Android.CSharp.targets" />
   <Import Project="..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets" Condition="Exists('..\packages\Xamarin.GooglePlayServices.Basement.29.0.0.2\build\Xamarin.GooglePlayServices.Basement.targets')" />

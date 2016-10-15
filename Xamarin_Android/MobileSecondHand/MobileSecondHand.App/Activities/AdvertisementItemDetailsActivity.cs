@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
+using Android.Support.V4.Content;
 using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -31,13 +32,13 @@ namespace MobileSecondHand.App.Activities
 		IAdvertisementItemService advertisementItemService;
 		IMessagesService messagesService;
 		BitmapOperationService bitmapOperationService;
-		private TextView sellerNetworkStateInfoTextView;
+		private ImageView sellerNetworkStateInfoImageView;
 		private TextView forSellOrChangeInfoTextView;
 		private TextView price;
 		private TextView title;
 		private TextView description;
-		private Button startConversationBtn;
-		private Button addToFavouriteAdvertsBtn;
+		private ImageView startConversationBtn;
+		private ImageView addToFavouriteAdvertsBtn;
 		private TextView distanceTextView;
 		private AdvertisementItemDetails advertisement;
 		private RelativeLayout advertisementDetailsWrapperLayout;
@@ -98,13 +99,13 @@ namespace MobileSecondHand.App.Activities
 			this.progress = new ProgressDialogHelper(this);
 			this.advertisementDetailsWrapperLayout = FindViewById<RelativeLayout>(Resource.Id.advertisementDetailsWrapperLayout);
 			this.distanceTextView = FindViewById<TextView>(Resource.Id.distanceDetailsTextView);
-			this.sellerNetworkStateInfoTextView = FindViewById<TextView>(Resource.Id.sellerNetworkState);
+			this.sellerNetworkStateInfoImageView = FindViewById<ImageView>(Resource.Id.sellerNetworkState);
 			this.forSellOrChangeInfoTextView = FindViewById<TextView>(Resource.Id.forSellOrChangeInfo);
-			this.startConversationBtn = FindViewById<Button>(Resource.Id.startConvesationBtn);
+			this.startConversationBtn = FindViewById<ImageView>(Resource.Id.startConvesationBtn);
 			this.price = FindViewById<TextView>(Resource.Id.advertisementDeatilsPrice);
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
-			this.addToFavouriteAdvertsBtn = FindViewById<Button>(Resource.Id.btnAddToFavoriteAdvertisements);
+			this.addToFavouriteAdvertsBtn = FindViewById<ImageView>(Resource.Id.btnAddToFavoriteAdvertisements);
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
 			this.showUserAdvertisement = FindViewById<TextView>(Resource.Id.textViewUserOtherAdverts);
@@ -200,20 +201,18 @@ namespace MobileSecondHand.App.Activities
 			distanceTextView.Text = String.Format("{0} km", distance);
 			if (advertisement.IsSellerOnline)
 			{
-				sellerNetworkStateInfoTextView.Text = this.Resources.GetString(Resource.String.userOnlineStateInfo);
-				sellerNetworkStateInfoTextView.SetTextColor(Android.Graphics.Color.Green);
+				sellerNetworkStateInfoImageView.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.userOnline));
 			}
 			else
 			{
-				sellerNetworkStateInfoTextView.Text = this.Resources.GetString(Resource.String.userOfflineStateInfo);
-				sellerNetworkStateInfoTextView.SetTextColor(Android.Graphics.Color.Red);
+				sellerNetworkStateInfoImageView.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.userffline));
 			}
 
 			forSellOrChangeInfoTextView.Text = advertisement.IsOnlyForSell ?
 												this.Resources.GetString(Resource.String.onlyForSellInfo) :
 												this.Resources.GetString(Resource.String.forSellOrChangeInfo);
 
-			var photosAdapter = new AdvertisementPhotosListAdapter(this.advertisement.Photos, true);
+			var photosAdapter = new AdvertisementPhotosListAdapter(this.advertisement.Photos);
 			photosAdapter.PhotoClicked += PhotosAdapter_PhotoClicked;
 			photosRecyclerView.SetAdapter(photosAdapter);
 			price.Text = String.Format("{0} z³", advertisement.Price);

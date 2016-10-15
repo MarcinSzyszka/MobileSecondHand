@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.View;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -21,7 +22,7 @@ namespace MobileSecondHand.App.Activities
 	public class PhotosViewerActivity : AppCompatActivity
 	{
 		private List<byte[]> photosList;
-		private RecyclerView photosRecycler;
+		private ViewPager photosViewPager;
 		private int selectedPhotoIndex;
 
 		protected override void OnCreate(Bundle savedInstanceState)
@@ -57,14 +58,9 @@ namespace MobileSecondHand.App.Activities
 
 		private void SetupViews()
 		{
-			var adpater = new AdvertisementPhotosListAdapter(this.photosList, zoomable: true);
-
-			this.photosRecycler = FindViewById<RecyclerView>(Resource.Id.photosRecyclerViewOnPhotosViewer);
-			var photoRecyclerLayoutManager = new LinearLayoutManager(this);
-			photoRecyclerLayoutManager.Orientation = LinearLayoutManager.Horizontal;
-			photosRecycler.SetLayoutManager(photoRecyclerLayoutManager);
-			photosRecycler.SetAdapter(adpater);
-			photosRecycler.ScrollToPosition(selectedPhotoIndex);
+			this.photosViewPager = FindViewById<ViewPager>(Resource.Id.photosRecyclerViewOnPhotosViewer);
+			photosViewPager.Adapter = new PhotosViewPagerAdapter(this.photosList);
+			photosViewPager.SetCurrentItem(selectedPhotoIndex, false);
 		}
 	}
 }

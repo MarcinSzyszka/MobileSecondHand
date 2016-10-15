@@ -42,40 +42,28 @@
                         android:minHeight="25dp"
                         android:minWidth="25dp"
                         android:maxHeight="400dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/photosRecyclerViewOnAdvertDetails"
+                        android:id="@+id/btnAddToFavoriteAdvertisements"
+                        android:src="@drawable/addtofavourites"
+                        android:gravity="center"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Rodzaj ogłoszenia"
                         android:id="@+id/textView10"
-                        android:layout_below="@+id/photosRecyclerViewOnAdvertDetails"
+                        android:layout_below="@+id/btnAddToFavoriteAdvertisements"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:gravity="center"
                         android:background="@color/headerBackground"
                         android:textColor="@color/colorPrimaryDark" />
-                    <Button
-                        android:id="@+id/startConvesationBtn"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Napisz"
-                        android:layout_below="@+id/textView11"
-                        android:layout_alignParentRight="true"
-                        android:layout_marginRight="5dp"
-                        android:layout_centerInParent="true" />
-                    <TextView
-                        android:id="@+id/sellerNetworkState"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@+id/textView11"
-                        android:layout_centerHorizontal="true"
-                        android:padding="5dp"
-                        android:text="@string/userOnlineStateInfo"
-                        android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:textColor="@color/userOnlineState"
-                        android:layout_alignParentLeft="true"
-                        android:layout_marginTop="14dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -191,27 +179,38 @@
                         android:layout_below="@+id/textView12"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp" />
-                    <Button
-                        android:text="Dodaj do schowka"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/advertisementDetailsDescription"
-                        android:id="@+id/btnAddToFavoriteAdvertisements"
-                        android:gravity="center"
-                        android:layout_centerHorizontal="true" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Kliknij aby zobaczyć inne ogłoszenia użytkowniczki"
                         android:id="@+id/textViewUserOtherAdverts"
-                        android:layout_below="@+id/btnAddToFavoriteAdvertisements"
+                        android:layout_below="@+id/advertisementDetailsDescription"
                         android:background="@color/colorPrimary"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:gravity="center"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/white" />
+                    <ImageView
+                        android:src="@drawable/sendmessage"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView11"
+                        android:id="@+id/startConvesationBtn"
+                        android:layout_alignParentRight="true"
+                        android:layout_marginRight="50dp"
+                        android:layout_marginTop="18dp"
+                        android:layout_marginBottom="2dp" />
+                    <ImageView
+                        android:src="@drawable/useronline"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/textView11"
+                        android:id="@+id/sellerNetworkState"
+                        android:layout_alignParentLeft="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginTop="5dp" />
                 </RelativeLayout>
             </LinearLayout>
         </android.support.v4.widget.NestedScrollView>
