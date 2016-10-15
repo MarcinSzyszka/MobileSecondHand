@@ -53,8 +53,10 @@ namespace MobileSecondHand.DB.Services.Chat
 		{
 			var resultDictionary = new Dictionary<int, ChatMessage>();
 
-			var groupedByConversationId = this.dbContext.ChatMessage.Include(m => m.Author)
-											.Where(m => !m.Received && m.AuthorId != userId)
+			var groupedByConversationId = this.dbContext.ChatMessage
+											.Include(m => m.Author)
+											.Include(m => m.Conversation).ThenInclude(c => c.Users)
+											.Where(m => !m.Received && m.AuthorId != userId && m.Conversation.Users.Any(u => u.UserId == userId))
 											.GroupBy(m => m.ConversationId)
 											.Select(m => new { ConversationId = m.Key, Message = m.OrderByDescending(ms => ms.Date).FirstOrDefault() })
 											.ToList();

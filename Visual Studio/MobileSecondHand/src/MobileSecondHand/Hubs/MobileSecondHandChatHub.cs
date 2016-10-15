@@ -47,7 +47,7 @@ namespace MobileSecondHand.Hubs
 
 		public override Task OnReconnected()
 		{
-			ConnectUser("recconect ");
+			//ConnectUser("recconect ");
 
 			return base.OnReconnected();
 		}
@@ -109,20 +109,20 @@ namespace MobileSecondHand.Hubs
 				this.chatHubCacheService.AddConnectedClient(new UserConnection { ConnectionId = Context.ConnectionId, UserId = userId });
 			}
 
-			using (var sw = new StreamWriter(@"C:\Users\marcianno\Desktop\logs.txt", true))
-			{
+			//using (var sw = new StreamWriter(@"C:\Users\marcianno\Desktop\logs.txt", true))
+			//{
 
-				if (userId == "ef15eb21-d31a-4325-bedb-cc8173a98073")
-				{
-					sw.WriteLine("Htc się podłączył: " + Context.ConnectionId + " " + info);
-				}
-				else
-				{
-					sw.WriteLine("Samsung się podłączył: " + Context.ConnectionId + " " + info);
-				}
+			//	if (userId == "ef15eb21-d31a-4325-bedb-cc8173a98073")
+			//	{
+			//		sw.WriteLine("Htc się podłączył: " + Context.ConnectionId + " " + info);
+			//	}
+			//	else
+			//	{
+			//		sw.WriteLine("Samsung się podłączył: " + Context.ConnectionId + " " + info);
+			//	}
 
-				sw.WriteLine();
-			}
+			//	sw.WriteLine();
+			//}
 
 			IEnumerable<ChatMessageReadModel> messages = this.conversationService.GetNotReceivedMessagesAndMarkThemReceived(userId);
 			foreach (var chatMessage in messages)
