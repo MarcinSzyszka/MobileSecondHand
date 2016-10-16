@@ -9,9 +9,9 @@ using MobileSecondHand.DB.Models.Chat;
 
 namespace MobileSecondHand.DB.Models.Authentication
 {
-    // Add profile data for application users by adding properties to the ApplicationUser class
-    public class ApplicationUser : IdentityUser
-    {
+	// Add profile data for application users by adding properties to the ApplicationUser class
+	public class ApplicationUser : IdentityUser
+	{
 		[Key]
 		public override string Id
 		{
@@ -50,7 +50,8 @@ namespace MobileSecondHand.DB.Models.Authentication
 				base.Email = value;
 			}
 		}
-		
+
+		public bool UserNameIsSetByHimself { get; set; }
 		public List<UserToFavouriteAdvertisement> FavouriteAdvertisementItems { get; set; } = new List<UserToFavouriteAdvertisement>();
 		public List<AdvertisementItem> AdvertisementItems { get; set; } = new List<AdvertisementItem>();
 		public List<UserToConversation> Conversations { get; set; } = new List<UserToConversation>();
