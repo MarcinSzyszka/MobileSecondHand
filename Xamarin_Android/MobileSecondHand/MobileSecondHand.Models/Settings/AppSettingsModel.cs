@@ -9,5 +9,6 @@ namespace MobileSecondHand.Models.Settings
 		public IDictionary<int, string> Keywords { get; set; } = new Dictionary<int, string>();
 		public bool ChatDisabled { get; set; }
 		public bool NotificationsDisabled { get; set; }
+		public string UserName { get; set; }
 	}
 }

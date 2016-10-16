@@ -10,6 +10,8 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.App.Consts;
+using MobileSecondHand.Models.Settings;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Infrastructure
@@ -75,6 +77,28 @@ namespace MobileSecondHand.App.Infrastructure
 				preferencesEditor.PutString(key, json);
 			}
 			preferencesEditor.Commit();
+		}
+
+		public static AppSettingsModel GetAppSettings(Context context)
+		{
+			AppSettingsModel settingsModel;
+
+			var appSettingsString = PreferenceManager.GetDefaultSharedPreferences(context).GetString(SharedPreferencesKeys.APP_SETTINGS, null);
+			if (appSettingsString != null)
+			{
+				settingsModel = JsonConvert.DeserializeObject<AppSettingsModel>(appSettingsString);
+			}
+			else
+			{
+				settingsModel = new AppSettingsModel();
+				settingsModel.LocationSettings.MaxDistance = 500;
+				appSettingsString = JsonConvert.SerializeObject(settingsModel);
+				var preference = PreferenceManager.GetDefaultSharedPreferences(context);
+				var preferencesEditor = preference.Edit();
+				preferencesEditor.PutString(SharedPreferencesKeys.APP_SETTINGS, appSettingsString);
+			}
+
+			return settingsModel;
 		}
 	}
 }

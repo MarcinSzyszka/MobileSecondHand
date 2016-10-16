@@ -13,6 +13,7 @@ using MobileSecondHand.Models.Exceptions;
 using MobileSecondHand.API.Models.Shared.Security;
 using Android.Support.V7.App;
 using Android.Widget;
+using MobileSecondHand.Models.Settings;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -103,7 +104,9 @@ namespace MobileSecondHand.App.Activities
 					this.progressHelper.CloseProgressDialog();
 					if (result)
 					{
-						this.preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.USER_NAME, userNameEditText.Text);
+						var settingsModel = SharedPreferencesHelper.GetAppSettings(this);
+						settingsModel.UserName = userNameEditText.Text;
+						this.preferenceHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, settingsModel);
 						StartMainOrLoginActivity(true);
 					}
 					else

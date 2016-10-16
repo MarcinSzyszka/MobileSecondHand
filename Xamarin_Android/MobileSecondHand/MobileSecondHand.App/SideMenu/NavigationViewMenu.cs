@@ -39,9 +39,11 @@ namespace MobileSecondHand.App.SideMenu
 		private TextView textViewNotificationsRadius;
 		private TextView textViewNotificationsState;
 		private TextView textViewUserName;
+		private BaseActivity activity;
 
 		public NavigationViewMenu(BaseActivity activity, SharedPreferencesHelper sharedPreferencesHelper)
 		{
+			this.activity = activity;
 			this.progressDialogHelper = new ProgressDialogHelper(activity);
 			this.sharedPreferencesHelper = sharedPreferencesHelper;
 			this.gpsService = GpsLocationService.GetServiceInstance(activity);
@@ -226,7 +228,8 @@ namespace MobileSecondHand.App.SideMenu
 
 		internal void SetupMenu()
 		{
-			this.appSettings = GetAppSettings();
+			this.appSettings = SharedPreferencesHelper.GetAppSettings(activity);
+			textViewUserName.Text = appSettings.UserName;
 			SetChatSettings();
 			SetNotificationsSettings();
 			SetKeywordsSettings(appSettings);
@@ -236,19 +239,6 @@ namespace MobileSecondHand.App.SideMenu
 		private void SetAppSettings(AppSettingsModel appSettings)
 		{
 			this.sharedPreferencesHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, appSettings);
-		}
-
-		private AppSettingsModel GetAppSettings()
-		{
-			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
-			if (settingsModel == null)
-			{
-				settingsModel = new AppSettingsModel();
-				settingsModel.LocationSettings.MaxDistance = 500;
-				this.sharedPreferencesHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, settingsModel);
-			}
-
-			return settingsModel;
 		}
 
 		private void SetHomeLocationSettings(AppSettingsModel settingsModel)
