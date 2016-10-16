@@ -19,6 +19,7 @@ namespace MobileSecondHand.App.Activities
 	[Activity(MainLauncher = true, Icon = "@drawable/logo_icon")]
 	public class StartActivity : AppCompatActivity, ISettingWindowCloseListener
 	{
+		ProgressDialogHelper progressHelper;
 		ISignInService signInService;
 		Action<bool> actionToExecuteAfterCloseSettingsDialog;
 		private bool settingsAlertIsShow;
@@ -27,6 +28,8 @@ namespace MobileSecondHand.App.Activities
 		RelativeLayout logoLayout;
 		private EditText userNameEditText;
 		private Button btnSetNickName;
+		private static TokenModel tokenModel;
+		private SharedPreferencesHelper preferenceHelper;
 
 		public StartActivity()
 		{
@@ -39,6 +42,7 @@ namespace MobileSecondHand.App.Activities
 			FacebookSdk.SdkInitialize(this);
 			SetFullscreenOptions();
 			SetContentView(Resource.Layout.StartActivity);
+			progressHelper = new ProgressDialogHelper(this);
 			SetupViews();
 			var gps = new GpsLocationService(this, this);
 			if (!gps.CanGetLocation)
@@ -47,8 +51,6 @@ namespace MobileSecondHand.App.Activities
 				gps.ShowSettingsAlert();
 
 			}
-
-
 
 			try
 			{
@@ -82,6 +84,39 @@ namespace MobileSecondHand.App.Activities
 			setUserNameLayout = FindViewById<RelativeLayout>(Resource.Id.setUserNameLayout);
 			userNameEditText = FindViewById<EditText>(Resource.Id.editTextNickName);
 			btnSetNickName = FindViewById<Button>(Resource.Id.btnSaveNickName);
+			btnSetNickName.Click += BtnSetNickName_Click;
+		}
+
+		private async void BtnSetNickName_Click(object sender, EventArgs e)
+		{
+			userNameEditText.Text = userNameEditText.Text.Replace(" ", "");
+			if (userNameEditText.Text.Length < 4)
+			{
+				AlertsService.ShowToast(this, "Nick musi składać się z conajmniej czterech znaków");
+			}
+			else
+			{
+				try
+				{
+					this.progressHelper.ShowProgressDialog("Przetwarzanie danych..");
+					bool result = await this.signInService.SetUserName(userNameEditText.Text, GetTokenModel());
+					this.progressHelper.CloseProgressDialog();
+					if (result)
+					{
+						this.preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.USER_NAME, userNameEditText.Text);
+						StartMainOrLoginActivity(true);
+					}
+					else
+					{
+						AlertsService.ShowToast(this, "Podany nick jest już zajęty. Wpisz inny nick.");
+					}
+				}
+				catch (Exception exc)
+				{
+					AlertsService.ShowToast(this, "Wystąpił błąd połączenia z serwerem.");
+					this.progressHelper.CloseProgressDialog();
+				}
+			}
 		}
 
 		protected override void OnResume()
@@ -112,11 +147,11 @@ namespace MobileSecondHand.App.Activities
 		private async Task<bool> SignInUser()
 		{
 			var userIsLogged = false;
-			var preferenceHelper = new SharedPreferencesHelper(this);
+			preferenceHelper = new SharedPreferencesHelper(this);
 			var bearerToken = (string)preferenceHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 			if (bearerToken != null)
 			{
-				userIsLogged = await signInService.SignInUserWithBearerToken(new TokenModel { Token = bearerToken });
+				userIsLogged = await signInService.SignInUserWithBearerToken(GetTokenModel());
 			}
 			if (!userIsLogged)
 			{
@@ -137,6 +172,17 @@ namespace MobileSecondHand.App.Activities
 			}
 
 			return userIsLogged;
+		}
+
+		private TokenModel GetTokenModel()
+		{
+			if (tokenModel == null)
+			{
+				var bearerToken = (string)preferenceHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+				tokenModel = new TokenModel { Token = bearerToken };
+			}
+
+			return tokenModel;
 		}
 
 		private void SetFullscreenOptions()

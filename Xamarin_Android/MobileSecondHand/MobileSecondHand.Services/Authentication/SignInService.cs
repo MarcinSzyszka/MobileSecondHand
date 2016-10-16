@@ -46,6 +46,34 @@ namespace MobileSecondHand.Services.Authentication
 			return await GetTokenFromApi<RegisterModel>(registerModel, "Register");
 		}
 
+		public async Task<bool> SetUserName(string nickName, TokenModel bearerToken)
+		{
+			if (!client.DefaultRequestHeaders.Contains(WebApiConsts.AUTHORIZATION_HEADER_NAME))
+			{
+				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken.Token);
+			}
+
+			var stringContent = new StringContent(JsonConvert.SerializeObject(nickName), Encoding.UTF8, "application/json");
+
+
+			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "SetUserName", stringContent);
+
+			if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
+			{
+				return false;
+			}
+			else if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				throw new Exception("Wystąpił błą połączenia z serwerem");
+			}
+			else
+			{
+				return true;
+			}
+
+
+		}
+
 
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)
 		{

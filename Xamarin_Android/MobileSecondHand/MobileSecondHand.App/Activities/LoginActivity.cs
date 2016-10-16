@@ -38,8 +38,6 @@ namespace MobileSecondHand.App.Activities
 		}
 		protected override void OnCreate(Bundle savedInstanceState) {
 			base.OnCreate(savedInstanceState);
-			//FacebookSdk.SdkInitialize(this.ApplicationContext);
-
 			SetContentView(Resource.Layout.LoginActivity);
 
 			SetupViews();
@@ -123,7 +121,6 @@ namespace MobileSecondHand.App.Activities
 			facebookLoginBtn.SetReadPermissions("public_profile", "email");
 			var loginCallback = new FacebookCallback<LoginResult> {
 				HandleSuccess = async loginResult => {
-					AlertsService.ShowToast(this, "Facebook zwróci³ token");
 					progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
 					var token = await LoginWithFacebook();
 					if (token != null) {

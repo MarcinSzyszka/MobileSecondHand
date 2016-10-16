@@ -78,10 +78,5 @@
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/colorPrimaryDark" />
         </RelativeLayout>
-        <android.support.design.widget.TextInputEditText
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/relativeLayout3"
-            android:id="@+id/textInputEditText1" />
     </RelativeLayout>
 </LinearLayout>

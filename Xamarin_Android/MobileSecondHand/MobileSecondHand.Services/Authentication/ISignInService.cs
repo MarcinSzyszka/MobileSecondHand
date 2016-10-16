@@ -8,5 +8,6 @@ namespace MobileSecondHand.Services.Authentication
 		Task<TokenModel> SignInUserWithFacebookToken(FacebookTokenViewModel facebookToken);
 		Task<TokenModel> SignInUserStandard(LoginModel loginModel);
 		Task<TokenModel> RegisterUser(RegisterModel registerModel);
+		Task<bool> SetUserName(string nickName, TokenModel bearerToken);
 	}
 }

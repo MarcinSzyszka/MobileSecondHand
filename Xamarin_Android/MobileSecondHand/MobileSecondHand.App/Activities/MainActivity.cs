@@ -23,7 +23,7 @@ using MobileSecondHand.API.Models.Shared.Extensions;
 
 namespace MobileSecondHand.App
 {
-	[Activity(LaunchMode = Android.Content.PM.LaunchMode.SingleInstance, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class MainActivity : BaseActivity, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
@@ -61,18 +61,14 @@ namespace MobileSecondHand.App
 				this.advertisementsSearchModel = new AdvertisementsSearchModel();
 			}
 			SetAdvertisementsListKind();
-			await SetupViews();
+			SetupViews();
 			SetupSortingViews();
 			await DownloadAndShowAdvertisements(true);
 		}
 
 		public override void OnBackPressed()
 		{
-			if (sortingOptionsLayout.Visibility == ViewStates.Invisible)
-			{
-				TogleLayouts();
-			}
-			else
+			if (sortingOptionsLayout.Visibility != ViewStates.Visible)
 			{
 				base.OnBackPressed();
 			}
@@ -217,7 +213,7 @@ namespace MobileSecondHand.App
 
 		}
 
-		private async Task SetupViews()
+		private void SetupViews()
 		{
 			progress = new ProgressDialogHelper(this);
 			SetupFab();
@@ -355,7 +351,7 @@ namespace MobileSecondHand.App
 			StartActivity(intent);
 		}
 
-		private async void AdvertisementItemListAdapter_DeleteAdvertisementItemClick(object sender, int advertisementId)
+		private void AdvertisementItemListAdapter_DeleteAdvertisementItemClick(object sender, int advertisementId)
 		{
 			if (advertisementId == 0)
 			{

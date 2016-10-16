@@ -52,7 +52,8 @@
                 android:id="@+id/textView3"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_centerHorizontal="true"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:gravity="center" />
             <TextView
                 android:text="Utwórz swój nick"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -69,7 +70,7 @@
                 android:layout_below="@id/textView4"
                 android:id="@+id/editTextNickName"
                 android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimary"
                 android:hint="nick"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
