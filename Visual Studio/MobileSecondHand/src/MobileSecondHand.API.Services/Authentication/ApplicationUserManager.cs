@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Authentication;
@@ -35,6 +36,14 @@ namespace MobileSecondHand.API.Services.Authentication {
 			return await userManager.CheckPasswordAsync(user, password);
 		}
 
+		public async Task<ApplicationUser> GetByUserName(string nickName)
+		{
+			return await userManager.FindByNameAsync(nickName);
+		}
 
+		public Task<IdentityResult> SaveUserName(ApplicationUser user, string nickName)
+		{
+			return userManager.SetUserNameAsync(user, nickName);
+		}
 	}
 }

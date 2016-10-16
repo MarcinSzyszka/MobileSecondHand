@@ -8,5 +8,6 @@ namespace MobileSecondHand.API.Services.Authentication {
 		Task<TokenModel> Register(RegisterModel registerViewModel);
 		Task<TokenModel> LoginStandard(LoginModel loginStandardViewModel);
 		Task<bool> IsUserNameSetByHimself(string userId);
+		Task<bool> SetUserName(string userId, string nickName);
 	}
 }

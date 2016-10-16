@@ -57,7 +57,7 @@ namespace MobileSecondHand.API.Services.Conversation
 
 			result.ConversationId = conversation.ConversationId;
 			result.InterlocutorId = addresseeId;
-			result.InterlocutorName = conversation.Users.First(u => u.UserId != userId).User.GetUserName();
+			result.InterlocutorName = conversation.Users.First(u => u.UserId != userId).User.UserName;
 
 			return result;
 		}
@@ -124,7 +124,7 @@ namespace MobileSecondHand.API.Services.Conversation
 				var model = new ConversationItemModel();
 				model.Id = conversation.ConversationId;
 				model.InterLocutorId = conversation.Users.First(u => u.Id != userId).Id;
-				model.InterlocutorName = conversation.Users.First(u => u.Id != userId).GetUserName();
+				model.InterlocutorName = conversation.Users.First(u => u.Id != userId).UserName;
 				model.LastMessage = conversation.Messages[0].Content;
 				model.LastMessageDate = GetDateString(conversation.Messages[0].Date);
 
@@ -143,13 +143,13 @@ namespace MobileSecondHand.API.Services.Conversation
 			messageViewModel.MessageContent = message.Content;
 			messageViewModel.UserWasSender = userId == message.AuthorId;
 			messageViewModel.SenderId = message.AuthorId;
-			messageViewModel.SenderName = message.Author.GetUserName();
+			messageViewModel.SenderName = message.Author.UserName;
 			return messageViewModel;
 		}
 
 		private string GetMessageHeader(string userId, ChatMessage message)
 		{
-			return string.Format("{0}, {1} {2}", userId == message.AuthorId ? "ja" : message.Author.GetUserName(), GetDateString(message.Date), message.Date.GetTimeColonStringFormat());
+			return string.Format("{0}, {1} {2}", userId == message.AuthorId ? "ja" : message.Author.UserName, GetDateString(message.Date), message.Date.GetTimeColonStringFormat());
 		}
 
 		private string GetDateString(DateTime date)

@@ -52,7 +52,6 @@
     <Compile Include="Configuration\CommonServicesBootstrapper.cs" />
     <Compile Include="CoordinatesHelpers\CoordinatesCalculator.cs" />
     <Compile Include="CoordinatesHelpers\ICoordinatesCalculator.cs" />
-    <Compile Include="Extensions\ApplictionUserExtensions.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
     <Compile Include="FIleNamesHelpers\AppFilesNamesHelper.cs" />

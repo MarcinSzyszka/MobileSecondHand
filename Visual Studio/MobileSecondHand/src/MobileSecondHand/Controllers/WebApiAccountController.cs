@@ -71,6 +71,27 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
+		[HttpPost]
+		[Route("SetUserName")]
+		public async Task<IActionResult> SetUserName([FromBody]string nickName)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				var nameIsSet = await this.applicationSignInManager.SetUserName(userId, nickName);
+				if (!nameIsSet)
+				{
+					Response.StatusCode = (int)HttpStatusCode.Conflict;
+				}
+				return Json("ok");
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
+			}
+		}
+
 
 		[HttpGet]
 		[Authorize("Bearer")]

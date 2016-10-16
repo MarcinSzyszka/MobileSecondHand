@@ -80,6 +80,24 @@ namespace MobileSecondHand.API.Services.Authentication
 			return user.UserNameIsSetByHimself;
 		}
 
+		public async Task<bool> SetUserName(string userId, string nickName)
+		{
+			var user = await applicationUserManager.GetByUserName(nickName);
+
+			if (user != null)
+			{
+				return false;
+			}
+
+			user = await applicationUserManager.GetUserById(userId);
+			user.UserNameIsSetByHimself = true;
+
+			var result = await applicationUserManager.SaveUserName(user, nickName);
+
+
+			return result.Succeeded;
+		}
+
 		private async Task<ApplicationUser> CreateUser(FacebookUserCredentialsResponse facebookResponse)
 		{
 			ApplicationUser user = new ApplicationUser { UserName = facebookResponse.email, Email = facebookResponse.email };
@@ -132,5 +150,7 @@ namespace MobileSecondHand.API.Services.Authentication
 
 			return tokenDescriptor;
 		}
+
+	
 	}
 }

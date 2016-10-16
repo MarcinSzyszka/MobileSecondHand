@@ -11,5 +11,7 @@ namespace MobileSecondHand.API.Services.Authentication {
 		Task<IdentityResult> AddLoginAsync(ApplicationUser user, UserLoginInfo userLoginInfo);
 		Task<bool> PasswordIsValid(ApplicationUser user, string password);
 		Task<IdentityResult> CreateAsync(ApplicationUser user, string password);
+		Task<ApplicationUser> GetByUserName(string nickName);
+		Task<IdentityResult> SaveUserName(ApplicationUser user, string nickName);
 	}
 }
