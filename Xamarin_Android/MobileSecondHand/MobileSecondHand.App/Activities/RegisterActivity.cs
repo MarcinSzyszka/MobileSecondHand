@@ -1,23 +1,20 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
-using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Authentication;
 
 namespace MobileSecondHand.App.Activities
 {
 	[Activity]
-	public class RegisterActivity : Activity {
+	public class RegisterActivity : AppCompatActivity {
 		private EditText confirmPasswordInput;
 		private EditText emailInput;
 		private EditText passwordInput;
@@ -74,7 +71,7 @@ namespace MobileSecondHand.App.Activities
 				var preferenceHelper = new SharedPreferencesHelper(this);
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
 				progress.CloseProgressDialog();
-				GoToMainActivity();
+				GoToStartActivity();
 			}
 			else {
 				progress.CloseProgressDialog();
@@ -82,10 +79,10 @@ namespace MobileSecondHand.App.Activities
 			}
 			
 		}
-		private void GoToMainActivity() {
-			var mainIntent = new Intent(this, typeof(MainActivity));
+		private void GoToStartActivity() {
+			var startIntent = new Intent(this, typeof(StartActivity));
 			this.Finish();
-			StartActivity(mainIntent);
+			StartActivity(startIntent);
 		}
 	}
 }

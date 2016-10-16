@@ -47,11 +47,8 @@
     <Compile Include="Chat\SearchConversationsModel.cs" />
     <Compile Include="Consts\WebApiConsts.cs" />
     <Compile Include="EventArgs\ShowAdvertisementDetailsEventArgs.cs" />
+    <Compile Include="Exceptions\UserHasToSetNickNameException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\FacebookTokenViewModel.cs" />
-    <Compile Include="Security\LoginModel.cs" />
-    <Compile Include="Security\RegisterModel.cs" />
-    <Compile Include="Security\TokenModel.cs" />
     <Compile Include="Settings\AppSettingsModel.cs" />
   </ItemGroup>
   <ItemGroup>

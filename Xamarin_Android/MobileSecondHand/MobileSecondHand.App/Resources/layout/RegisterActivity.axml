@@ -19,7 +19,8 @@
             android:textStyle="bold"
             android:textSize="30dp"
             android:gravity="center"
-            android:layout_centerInParent="true" />
+            android:layout_centerInParent="true"
+            android:textColor="@color/colorPrimaryDark" />
     </RelativeLayout>
     <RelativeLayout
         android:minWidth="25px"
@@ -42,7 +43,10 @@
                 android:id="@+id/inputEmailRegistration"
                 android:gravity="center"
                 android:layout_centerHorizontal="true"
-                android:hint="email" />
+                android:hint="email"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:layout_below="@+id/inputNickNameRegistration" />
             <EditText
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
@@ -51,7 +55,9 @@
                 android:id="@+id/inputPasswordRegistration"
                 android:layout_centerHorizontal="true"
                 android:hint="hasło (min 6 znaków)"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimaryDark" />
             <EditText
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
@@ -60,14 +66,22 @@
                 android:id="@+id/inputConfirmPasswordRegistration"
                 android:layout_centerHorizontal="true"
                 android:hint="potwierdź hasło"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark" />
             <Button
                 android:text="@string/registrationButton"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/inputConfirmPasswordRegistration"
                 android:id="@+id/buttonSubmitRegistration"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorPrimaryDark" />
         </RelativeLayout>
+        <android.support.design.widget.TextInputEditText
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@id/relativeLayout3"
+            android:id="@+id/textInputEditText1" />
     </RelativeLayout>
 </LinearLayout>

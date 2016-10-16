@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using MobileSecondHand.Models.Security;
+﻿using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared.Security;
 
-namespace MobileSecondHand.Services.Authentication {
+namespace MobileSecondHand.Services.Authentication
+{
 	public interface ISignInService {
 		Task<bool> SignInUserWithBearerToken(TokenModel bearerToken);
 		Task<TokenModel> SignInUserWithFacebookToken(FacebookTokenViewModel facebookToken);

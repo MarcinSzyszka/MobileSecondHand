@@ -1,15 +1,16 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.Models.Consts;
-using MobileSecondHand.Models.Security;
+using MobileSecondHand.Models.Exceptions;
 using Newtonsoft.Json;
 
-namespace MobileSecondHand.Services.Authentication {
-	public class SignInService : ISignInService {
+namespace MobileSecondHand.Services.Authentication
+{
+	public class SignInService : ISignInService
+	{
 		private HttpClient client;
 
 		public SignInService()
@@ -18,30 +19,40 @@ namespace MobileSecondHand.Services.Authentication {
 			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 		}
 
-		public async Task<bool> SignInUserWithBearerToken(TokenModel bearerToken) {
+		public async Task<bool> SignInUserWithBearerToken(TokenModel bearerToken)
+		{
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken.Token);
 			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "TokenIsActual");
 
+			if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
+			{
+				throw new UserHasToSetNickNameException();
+			}
 			return response.StatusCode == System.Net.HttpStatusCode.OK;
 		}
 
-		public async Task<TokenModel> SignInUserWithFacebookToken(FacebookTokenViewModel facebookToken) {
+		public async Task<TokenModel> SignInUserWithFacebookToken(FacebookTokenViewModel facebookToken)
+		{
 			return await GetTokenFromApi<FacebookTokenViewModel>(facebookToken, "LoginWithFacebook");
 		}
 
-		public async Task<TokenModel> SignInUserStandard(LoginModel loginModel) {
+		public async Task<TokenModel> SignInUserStandard(LoginModel loginModel)
+		{
 			return await GetTokenFromApi<LoginModel>(loginModel, "LoginStandard");
 		}
 
-		public async Task<TokenModel> RegisterUser(RegisterModel registerModel) {
+		public async Task<TokenModel> RegisterUser(RegisterModel registerModel)
+		{
 			return await GetTokenFromApi<RegisterModel>(registerModel, "Register");
 		}
 
 
-		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action) {
+		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)
+		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(modelToSend), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + action, stringContent);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK) {
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
 				return null;
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();

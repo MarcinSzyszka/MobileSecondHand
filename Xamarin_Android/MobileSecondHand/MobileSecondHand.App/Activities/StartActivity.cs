@@ -1,29 +1,32 @@
 ﻿using System;
 using Android.App;
 using Android.Content;
-using Android.Runtime;
 using Android.Views;
-using Android.Widget;
 using Android.OS;
-using Android.Provider;
 using MobileSecondHand.Services.Authentication;
 using Xamarin.Facebook;
-using Android.Preferences;
 using MobileSecondHand.App.Consts;
 using System.Threading.Tasks;
-using MobileSecondHand.Models.Security;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Services.Location;
+using MobileSecondHand.Models.Exceptions;
+using MobileSecondHand.API.Models.Shared.Security;
+using Android.Support.V7.App;
+using Android.Widget;
 
 namespace MobileSecondHand.App.Activities
 {
 	[Activity(MainLauncher = true, Icon = "@drawable/logo_icon")]
-	public class StartActivity : Activity, ISettingWindowCloseListener
+	public class StartActivity : AppCompatActivity, ISettingWindowCloseListener
 	{
 		ISignInService signInService;
 		Action<bool> actionToExecuteAfterCloseSettingsDialog;
 		private bool settingsAlertIsShow;
 		private bool userIsLogged;
+		RelativeLayout setUserNameLayout;
+		RelativeLayout logoLayout;
+		private EditText userNameEditText;
+		private Button btnSetNickName;
 
 		public StartActivity()
 		{
@@ -36,6 +39,7 @@ namespace MobileSecondHand.App.Activities
 			FacebookSdk.SdkInitialize(this);
 			SetFullscreenOptions();
 			SetContentView(Resource.Layout.StartActivity);
+			SetupViews();
 			var gps = new GpsLocationService(this, this);
 			if (!gps.CanGetLocation)
 			{
@@ -43,13 +47,23 @@ namespace MobileSecondHand.App.Activities
 				gps.ShowSettingsAlert();
 
 			}
+
+
+
 			try
 			{
 				userIsLogged = await SignInUser();
 			}
+			catch (UserHasToSetNickNameException exc)
+			{
+				logoLayout.Visibility = ViewStates.Gone;
+				setUserNameLayout.Visibility = ViewStates.Visible;
+				return;
+			}
 			catch (Exception exc)
 			{
 				AlertsService.ShowAlertDialog(this, "Wystąpił problem z połączeniem z serwerem. Spróbuj ponownie później");
+				return;
 			}
 
 			if (!settingsAlertIsShow)
@@ -60,6 +74,14 @@ namespace MobileSecondHand.App.Activities
 			{
 				actionToExecuteAfterCloseSettingsDialog = StartMainOrLoginActivity;
 			}
+		}
+
+		private void SetupViews()
+		{
+			logoLayout = FindViewById<RelativeLayout>(Resource.Id.logoLayout);
+			setUserNameLayout = FindViewById<RelativeLayout>(Resource.Id.setUserNameLayout);
+			userNameEditText = FindViewById<EditText>(Resource.Id.editTextNickName);
+			btnSetNickName = FindViewById<Button>(Resource.Id.btnSaveNickName);
 		}
 
 		protected override void OnResume()
@@ -105,6 +127,10 @@ namespace MobileSecondHand.App.Activities
 					if (tokenModel != null)
 					{
 						preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
+						if (tokenModel.UserHasToSetNickName)
+						{
+							throw new UserHasToSetNickNameException();
+						}
 						userIsLogged = true;
 					}
 				}

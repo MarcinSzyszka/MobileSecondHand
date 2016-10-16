@@ -11,10 +11,8 @@ using MobileSecondHand.App.Consts;
 using System.Threading.Tasks;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.App.Infrastructure.ActivityState;
-using MobileSecondHand.Models.Security;
 using Newtonsoft.Json;
 using Android.Views;
-using System;
 
 namespace MobileSecondHand.App.Activities
 {

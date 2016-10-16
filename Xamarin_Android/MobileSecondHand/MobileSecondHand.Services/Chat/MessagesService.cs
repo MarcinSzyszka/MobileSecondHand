@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.Models.Consts;
-using MobileSecondHand.Models.Security;
 using Newtonsoft.Json;
 
-namespace MobileSecondHand.Services.Chat {
+namespace MobileSecondHand.Services.Chat
+{
 	public class MessagesService : IMessagesService {
 		private HttpClient client;
 

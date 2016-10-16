@@ -1,18 +1,15 @@
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
-using MobileSecondHand.Models.Security;
 using MobileSecondHand.Services.Authentication;
 using Xamarin.Facebook;
 using Xamarin.Facebook.Login;
@@ -23,7 +20,8 @@ using Xamarin.Facebook.Login.Widget;
 namespace MobileSecondHand.App.Activities
 {
 	[Activity]
-	public class LoginActivity : Activity {
+	public class LoginActivity : AppCompatActivity
+	{
 		private ICallbackManager callbackManager;
 		private ISignInService signInService;
 		private SharedPreferencesHelper preferenceHelper;
@@ -98,7 +96,15 @@ namespace MobileSecondHand.App.Activities
 			if (tokenModel != null) {
 				progress.CloseProgressDialog();
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
-				GoToMainActivity();
+				if (tokenModel.UserHasToSetNickName)
+				{
+					GoToActivity(new Intent(this, typeof(StartActivity)));
+				}
+				else
+				{
+					GoToActivity(new Intent(this, typeof(MainActivity)));
+				}
+
 			}
 			else {
 				progress.CloseProgressDialog();
@@ -119,10 +125,18 @@ namespace MobileSecondHand.App.Activities
 				HandleSuccess = async loginResult => {
 					AlertsService.ShowToast(this, "Facebook zwróci³ token");
 					progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
-					var userIsLogged = await LoginWithFacebook();
-					if (userIsLogged) {
+					var token = await LoginWithFacebook();
+					if (token != null) {
 						progress.CloseProgressDialog();
-						GoToMainActivity();
+						if (token.UserHasToSetNickName)
+						{
+							GoToActivity(new Intent(this, typeof(StartActivity)));
+						}
+						else
+						{
+							GoToActivity(new Intent(this, typeof(MainActivity)));
+						}
+						
 					}
 					else {
 						progress.CloseProgressDialog();
@@ -141,21 +155,20 @@ namespace MobileSecondHand.App.Activities
 			facebookLoginBtn.RegisterCallback(this.callbackManager, loginCallback);
 		}
 
-		private void GoToMainActivity() {
-			var mainIntent = new Intent(this, typeof(MainActivity));
+		private void GoToActivity(Intent intentToStart) {
 			this.Finish();
-			StartActivity(mainIntent);
+			StartActivity(intentToStart);
 		}
 
-		private async Task<bool> LoginWithFacebook() {
-			var userIsLogged = false;
+		private async Task<TokenModel> LoginWithFacebook() {
 			var fbTokenViewModel = new FacebookTokenViewModel { FacebookToken = AccessToken.CurrentAccessToken.Token };
 			var bearerToken = await this.signInService.SignInUserWithFacebookToken(fbTokenViewModel);
-			if (bearerToken != null) {
+			if (bearerToken != null)
+			{
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, bearerToken.Token);
-				userIsLogged = true;
 			}
-			return userIsLogged;
+			
+			return bearerToken;
 		}
 	}
 }
