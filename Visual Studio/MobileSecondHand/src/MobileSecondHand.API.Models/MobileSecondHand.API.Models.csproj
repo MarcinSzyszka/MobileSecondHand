@@ -66,11 +66,7 @@
     <Compile Include="CustomResponsesModels\ErrorResponse.cs" />
     <Compile Include="OutsideApisModels\FacebookUserCredentialsResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Security\FacebookTokenViewModel.cs" />
-    <Compile Include="Security\LoginViewModel.cs" />
-    <Compile Include="Security\RegisterViewModel.cs" />
     <Compile Include="Security\TokenAuthorizationOptions.cs" />
-    <Compile Include="Security\TokenModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

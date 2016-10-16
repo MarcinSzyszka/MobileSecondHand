@@ -50,6 +50,10 @@
     <Compile Include="Location\Coordinates.cs" />
     <Compile Include="Location\CoordinatesForAdvertisementsModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Security\FacebookTokenViewModel.cs" />
+    <Compile Include="Security\LoginModel.cs" />
+    <Compile Include="Security\RegisterModel.cs" />
+    <Compile Include="Security\TokenModel.cs" />
     <Compile Include="SingleIdModelForPostRequests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />
