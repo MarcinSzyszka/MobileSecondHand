@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
@@ -98,6 +100,19 @@ namespace MobileSecondHand.API.Services.Authentication
 			return result.Succeeded;
 		}
 
+		public IEnumerable<UserInfoModel> GetUserNamesModels(string userId, string partName)
+		{
+			var resultList = new List<UserInfoModel>();
+			var users = applicationUserManager.GetAllUsers().Where(u => u.UserName.ToLower().StartsWith(partName.ToLower())).ToList();
+
+			foreach (var user in users)
+			{
+				resultList.Add(new UserInfoModel { Id = user.Id, UserName = user.UserName });
+			}
+
+			return resultList;
+		}
+
 		private async Task<ApplicationUser> CreateUser(FacebookUserCredentialsResponse facebookResponse)
 		{
 			ApplicationUser user = new ApplicationUser { UserName = facebookResponse.email, Email = facebookResponse.email };
@@ -136,7 +151,7 @@ namespace MobileSecondHand.API.Services.Authentication
 
 			var securityToken = handler.CreateToken(GetTokenOptions(identity));
 
-			return new TokenModel { Token = handler.WriteToken(securityToken), UserHasToSetNickName = !user.UserNameIsSetByHimself };
+			return new TokenModel { Token = handler.WriteToken(securityToken), UserHasToSetNickName = !user.UserNameIsSetByHimself, UserName = user.UserName };
 		}
 
 		private SecurityTokenDescriptor GetTokenOptions(ClaimsIdentity identity)
@@ -151,6 +166,6 @@ namespace MobileSecondHand.API.Services.Authentication
 			return tokenDescriptor;
 		}
 
-	
+
 	}
 }

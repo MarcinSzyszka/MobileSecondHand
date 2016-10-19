@@ -72,6 +72,7 @@ namespace MobileSecondHand.Controllers
 		}
 
 		[HttpPost]
+		[Authorize("Bearer")]
 		[Route("SetUserName")]
 		public async Task<IActionResult> SetUserName([FromBody]string nickName)
 		{
@@ -92,6 +93,24 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
+		[HttpGet]
+		[Authorize("Bearer")]
+		[Route("GetUserInfoModels/{partName}")]
+		public IActionResult GetUserInfoModels(string partName)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				var userNamesModels = this.applicationSignInManager.GetUserNamesModels(userId, partName);
+
+				return Json(userNamesModels);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
+			}
+		}
 
 		[HttpGet]
 		[Authorize("Bearer")]

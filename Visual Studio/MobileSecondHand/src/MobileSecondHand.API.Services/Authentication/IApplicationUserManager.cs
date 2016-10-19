@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
 using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Authentication;
@@ -13,5 +14,6 @@ namespace MobileSecondHand.API.Services.Authentication {
 		Task<IdentityResult> CreateAsync(ApplicationUser user, string password);
 		Task<ApplicationUser> GetByUserName(string nickName);
 		Task<IdentityResult> SaveUserName(ApplicationUser user, string nickName);
+		IQueryable<ApplicationUser> GetAllUsers();
 	}
 }

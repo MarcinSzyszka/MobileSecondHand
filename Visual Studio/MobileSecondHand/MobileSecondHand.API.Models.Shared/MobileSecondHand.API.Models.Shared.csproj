@@ -54,6 +54,7 @@
     <Compile Include="Security\LoginModel.cs" />
     <Compile Include="Security\RegisterModel.cs" />
     <Compile Include="Security\TokenModel.cs" />
+    <Compile Include="Security\UserInfoModel.cs" />
     <Compile Include="SingleIdModelForPostRequests.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\Portable\$(TargetFrameworkVersion)\Microsoft.Portable.CSharp.targets" />

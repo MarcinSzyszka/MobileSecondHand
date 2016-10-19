@@ -6,10 +6,9 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.API.Models.Shared.Security
 {
-	public class TokenModel
+	public class UserInfoModel
 	{
-		public string Token { get; set; }
+		public string Id { get; set; }
 		public string UserName { get; set; }
-		public bool UserHasToSetNickName { get; set; }
 	}
 }
