@@ -9,6 +9,7 @@ using Android.OS;
 using Android.Runtime;
 using Android.Support.V4.Widget;
 using Android.Support.V7.App;
+using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.App.Chat;
@@ -25,10 +26,9 @@ namespace MobileSecondHand.App.Activities
 	[Activity]
 	public class BaseActivity : AppCompatActivity
 	{
-		private DrawerLayout drawerLayout;
-		NavigationViewMenu navigationViewMenu;
 		protected SharedPreferencesHelper sharedPreferencesHelper;
 		protected string bearerToken;
+		protected Toolbar toolbar;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -37,48 +37,19 @@ namespace MobileSecondHand.App.Activities
 			bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 		}
 
-		protected void SetupToolbar(bool navigationVisible = true)
+		protected void SetupToolbar()
 		{
-			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-
-			var toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
+			this.toolbar = FindViewById<Toolbar>(Resource.Id.app_bar);
 			SetSupportActionBar(toolbar);
-
-
-			//SupportActionBar.SetTitle(Resource.String.app);
-
+			SupportActionBar.SetHomeButtonEnabled(true);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 			SupportActionBar.SetDisplayShowHomeEnabled(true);
-
-			// Create ActionBarDrawerToggle button and add it to the toolbar
-			var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
-			drawerLayout.SetDrawerListener(drawerToggle);
-			drawerToggle.SyncState();
-			drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
-			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
-			{
-				SetupSideMenu();
-			}
+			toolbar.NavigationClick += Toolbar_NavigationClick;		
 		}
 
-		protected override void OnStart()
+		private void Toolbar_NavigationClick(object sender, Toolbar.NavigationClickEventArgs e)
 		{
-			base.OnStart();
-			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
-			if (settingsModel != null)
-			{
-				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
-				{
-					StartService(new Intent(this.BaseContext, typeof(MessengerService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this.BaseContext;
-				}
-				if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
-				{
-					StartService(new Intent(this.BaseContext, typeof(NewsService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this.BaseContext;
-				}
-			}
-
+			Finish();
 		}
 
 		protected void GoToMainPage()
@@ -93,32 +64,6 @@ namespace MobileSecondHand.App.Activities
 			StartActivity(intent);
 		}
 
-		private void SetupSideMenu()
-		{
-			if (navigationViewMenu == null)
-			{
-				navigationViewMenu = new NavigationViewMenu(this, this.sharedPreferencesHelper);
-			}
-
-			navigationViewMenu.SetupMenu();
-		}
-
-		private void DrawerLayout_DrawerOpened(object sender, DrawerLayout.DrawerOpenedEventArgs e)
-		{
-			SetupSideMenu();
-		}
-
-		public override void OnBackPressed()
-		{
-			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
-			{
-				drawerLayout.CloseDrawers();
-			}
-			else
-			{
-				base.OnBackPressed();
-			}
-
-		}
+		
 	}
 }

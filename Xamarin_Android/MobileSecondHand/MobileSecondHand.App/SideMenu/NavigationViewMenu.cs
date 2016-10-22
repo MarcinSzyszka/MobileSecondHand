@@ -16,6 +16,7 @@ using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.App.Activities;
 using Android.App;
 using MobileSecondHand.Services.Categories;
+using MobileSecondHand.Models.Consts;
 
 namespace MobileSecondHand.App.SideMenu
 {
@@ -282,7 +283,7 @@ namespace MobileSecondHand.App.SideMenu
 				this.textViewKeywords.Text = "Wszystkie";
 			}
 
-			this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance < 500 ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
+			this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
 
 		}
 

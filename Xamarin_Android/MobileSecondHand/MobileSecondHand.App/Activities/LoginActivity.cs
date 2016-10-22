@@ -100,6 +100,7 @@ namespace MobileSecondHand.App.Activities
 				}
 				else
 				{
+					SetUserNameInAppSettings(tokenModel.UserName);
 					GoToActivity(new Intent(this, typeof(MainActivity)));
 				}
 
@@ -131,6 +132,7 @@ namespace MobileSecondHand.App.Activities
 						}
 						else
 						{
+							SetUserNameInAppSettings(token.UserName);
 							GoToActivity(new Intent(this, typeof(MainActivity)));
 						}
 						
@@ -150,6 +152,11 @@ namespace MobileSecondHand.App.Activities
 				}
 			};
 			facebookLoginBtn.RegisterCallback(this.callbackManager, loginCallback);
+		}
+
+		private void SetUserNameInAppSettings(string userName)
+		{
+			SharedPreferencesHelper.SetUserNameInAppSettings(this, userName);
 		}
 
 		private void GoToActivity(Intent intentToStart) {

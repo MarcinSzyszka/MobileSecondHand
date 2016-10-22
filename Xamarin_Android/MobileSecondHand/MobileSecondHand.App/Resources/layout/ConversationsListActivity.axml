@@ -7,37 +7,23 @@
     android:minHeight="25dp"
     android:minWidth="25dp"
     android:orientation="vertical">
-    <android.support.v4.widget.DrawerLayout
-        android:id="@+id/drawer_layout"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:minHeight="25px"
-        android:minWidth="25px"
-        android:orientation="vertical">
-        <RelativeLayout
-            android:id="@+id/relativeLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true">
-            <include
-                layout="@layout/appbar"
-                android:layout_alignParentTop="true"
-                android:layout_gravity="top" />
-            <android.support.v7.widget.RecyclerView
-                android:minWidth="25px"
-                android:minHeight="25px"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:id="@+id/conversationsRecyclerView"
-                tools:stackFromEnd="true"
-                tools:reverseLayout="true"
-                android:layout_below="@+id/app_bar" />
-        </RelativeLayout>
-		<android.support.design.widget.NavigationView
-		  android:id="@+id/nav_view"
-		  android:layout_width="match_parent"
-		  android:layout_height="match_parent"
-		  android:layout_gravity="start"
-		  tools:headerLayout="@layout/headerdrawerlayout" />
-    </android.support.v4.widget.DrawerLayout>
+	<RelativeLayout
+		android:id="@+id/relativeLayout3"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content"
+		android:layout_centerInParent="true">
+		<include
+			layout="@layout/appbar"
+			android:layout_alignParentTop="true"
+			android:layout_gravity="top" />
+		<android.support.v7.widget.RecyclerView
+			android:minWidth="25px"
+			android:minHeight="25px"
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/conversationsRecyclerView"
+			tools:stackFromEnd="true"
+			tools:reverseLayout="true"
+			android:layout_below="@+id/app_bar" />
+	</RelativeLayout>
 </FrameLayout>

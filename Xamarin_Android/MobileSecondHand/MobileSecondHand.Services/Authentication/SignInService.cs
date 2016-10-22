@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
@@ -74,6 +75,24 @@ namespace MobileSecondHand.Services.Authentication
 
 		}
 
+		public async Task<IEnumerable<UserInfoModel>> GetUserNamesModels(string bearerToken, string partName)
+		{
+			if (!client.DefaultRequestHeaders.Contains(WebApiConsts.AUTHORIZATION_HEADER_NAME))
+			{
+				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			}
+
+			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "GetUserInfoModels/" + partName);
+
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return new List<UserInfoModel>();
+			}
+
+			var modelsString = await response.Content.ReadAsStringAsync();
+
+			return JsonConvert.DeserializeObject<IEnumerable<UserInfoModel>>(modelsString);
+		}
 
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)
 		{

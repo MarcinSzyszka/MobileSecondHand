@@ -104,9 +104,7 @@ namespace MobileSecondHand.App.Activities
 					this.progressHelper.CloseProgressDialog();
 					if (result)
 					{
-						var settingsModel = SharedPreferencesHelper.GetAppSettings(this);
-						settingsModel.UserName = userNameEditText.Text;
-						this.preferenceHelper.SetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS, settingsModel);
+						SharedPreferencesHelper.SetUserNameInAppSettings(this, userNameEditText.Text);
 						StartMainOrLoginActivity(true);
 					}
 					else
@@ -168,6 +166,10 @@ namespace MobileSecondHand.App.Activities
 						if (tokenModel.UserHasToSetNickName)
 						{
 							throw new UserHasToSetNickNameException();
+						}
+						else
+						{
+						SharedPreferencesHelper.SetUserNameInAppSettings(this, tokenModel.UserName);
 						}
 						userIsLogged = true;
 					}

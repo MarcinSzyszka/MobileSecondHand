@@ -151,10 +151,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Activities\BaseActivity.cs" />
+    <Compile Include="Activities\BaseActivityWithNavigationDrawer.cs" />
     <Compile Include="Activities\ConversationsListActivity.cs" />
+    <Compile Include="Activities\FindUserActivity.cs" />
     <Compile Include="Activities\PhotosViewerActivity.cs" />
     <Compile Include="Adapters\AdvertisementItemListAdapter.cs" />
     <Compile Include="Adapters\AdvertisementPhotosListAdapter.cs" />
+    <Compile Include="Adapters\AutoCompleteSearchUserAdapter.cs" />
     <Compile Include="Adapters\ConversationMessagesListAdapter.cs" />
     <Compile Include="Activities\AddNewAdvertisementActivity.cs" />
     <Compile Include="Activities\AdvertisementItemDetailsActivity.cs" />
@@ -257,6 +260,12 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\PhotosViewerActivity.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\FindUserActivity.axml">
+      <SubType>Designer</SubType>
+    </AndroidResource>
+    <AndroidResource Include="Resources\layout\MatchUserNameRow.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
   </ItemGroup>

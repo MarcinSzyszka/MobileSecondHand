@@ -20,11 +20,14 @@ using Newtonsoft.Json;
 using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Extensions;
+using MobileSecondHand.App.Infrastructure.ActivityState;
+using Android.Runtime;
+using MobileSecondHand.API.Models.Shared.Security;
 
 namespace MobileSecondHand.App
 {
 	[Activity(LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	public class MainActivity : BaseActivity, IInfiniteScrollListener
+	public class MainActivity : BaseActivityWithNavigationDrawer, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
 		AdvertisementItemListAdapter advertisementItemListAdapter;
@@ -39,6 +42,9 @@ namespace MobileSecondHand.App
 		AdvertisementsSearchModel advertisementsSearchModel;
 		private TextView textViewSelectCategories;
 		private com.refractored.fab.FloatingActionButton fabOpenFilterOptions;
+		private TextView textViewSelectedDistance;
+		private TextView textViewSelectedUser;
+		private TextView textViewSelectedSorting;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -48,22 +54,26 @@ namespace MobileSecondHand.App
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.categoriesHelper = new CategoriesSelectingHelper(this);
 			SetContentView(Resource.Layout.MainActivity);
-			base.SetupToolbar(false);
+			SetupToolbar();
+			SetupDrawer();
 			advertisementsPage = 0;
-
-			if (savedInstanceState != null)
-			{
-				//tu dodrobic odtwarzanie przy uzyciu JsonCOnvert
-				this.advertisementsSearchModel = new AdvertisementsSearchModel();
-			}
-			else
-			{
-				this.advertisementsSearchModel = new AdvertisementsSearchModel();
-			}
 			SetAdvertisementsListKind();
+			SetSortingOptionsLayout();
 			SetupViews();
 			SetupSortingViews();
 			await DownloadAndShowAdvertisements(true);
+		}
+
+		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+		{
+			base.OnActivityResult(requestCode, resultCode, data);
+			if (resultCode == Result.Ok && requestCode == FindUserActivity.FIND_USER_REQUEST_CODE && data != null)
+			{
+				var userInfoModelString = data.GetStringExtra(ActivityStateConsts.USER_INFO_MODEL);
+				var userInfoModel = JsonConvert.DeserializeObject<UserInfoModel>(userInfoModelString);
+				advertisementsSearchModel.UserInfo = userInfoModel;
+				SetupSortingViews();
+			}
 		}
 
 		public override void OnBackPressed()
@@ -77,6 +87,19 @@ namespace MobileSecondHand.App
 		private void SetupSortingViews()
 		{
 			SetupSelectedCategoryView();
+			SetupSelectedUserView();
+		}
+
+		private void SetupSelectedUserView()
+		{
+			if (advertisementsSearchModel.UserInfo == null)
+			{
+				this.textViewSelectedUser.Text = "Wszyscy";
+			}
+			else
+			{
+				this.textViewSelectedUser.Text = advertisementsSearchModel.UserInfo.UserName;
+			}
 		}
 
 		private void SetupSelectedCategoryView()
@@ -102,6 +125,8 @@ namespace MobileSecondHand.App
 
 		private void SetAdvertisementsListKind()
 		{
+			//sytuacja gdy activity jest wywo³ywane z serwisu sprawdzaj¹cego nowosci
+			this.advertisementsSearchModel = new AdvertisementsSearchModel();
 			var kindExtra = Intent.GetStringExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND);
 			if (kindExtra != null)
 			{
@@ -162,55 +187,21 @@ namespace MobileSecondHand.App
 			return async s =>
 			{
 				this.advertisementsSearchModel.AdvertisementsKind = s.GetEnumValueByDisplayName<AdvertisementsKind>();
-				if (this.advertisementsSearchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser || this.advertisementsSearchModel.AdvertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
-				{
-					ClearAdvertisementSearchAndHideFilterFabModel();
-					this.fabOpenFilterOptions.Visibility = ViewStates.Invisible;
-				}
-				else
-				{
-					this.fabOpenFilterOptions.Visibility = ViewStates.Visible;
-				}
 				this.advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 				this.advertisementItemListAdapter.InfiniteScrollDisabled = false;
 				await DownloadAndShowAdvertisements(true);
 			};
 		}
 
-		private void ClearAdvertisementSearchAndHideFilterFabModel()
-		{
-			this.advertisementsSearchModel.CategoriesModel.Clear();
-			ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
-		}
-
 		public async void OnInfiniteScroll()
 		{
-			try
-			{
-				await DownloadAndShowAdvertisements(false);
-			}
-			catch (Exception)
-			{
-
-				//throw;
-			}
-
+			await DownloadAndShowAdvertisements(false);
 		}
-
 
 		private async void RefreshAdvertisementList()
 		{
 			advertisementItemListAdapter.InfiniteScrollDisabled = false;
-			try
-			{
-				await DownloadAndShowAdvertisements(true);
-			}
-			catch (Exception)
-			{
-
-				//throw;
-			}
-
+			await DownloadAndShowAdvertisements(true);
 		}
 
 		private void SetupViews()
@@ -220,8 +211,14 @@ namespace MobileSecondHand.App
 			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
-			sortingOptionsLayout = FindViewById<RelativeLayout>(Resource.Id.layoutSortingOptions);
 			mainListLayout = FindViewById<RelativeLayout>(Resource.Id.mainListLayout);
+			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
+			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
+		}
+
+		private void SetSortingOptionsLayout()
+		{
+			sortingOptionsLayout = FindViewById<RelativeLayout>(Resource.Id.layoutSortingOptions);
 			var btnSelectCategories = FindViewById<ImageButton>(Resource.Id.btnSelectCategoryForMainList);
 			this.textViewSelectCategories = FindViewById<TextView>(Resource.Id.textViewSelectedCategoryForMainList);
 
@@ -230,12 +227,24 @@ namespace MobileSecondHand.App
 				var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
 				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
 			};
+
+
+			var btnDistance = FindViewById<ImageButton>(Resource.Id.btnDistance);
+			this.textViewSelectedDistance = FindViewById<TextView>(Resource.Id.textViewSelectedDistance);
+
+			var btnSelectUser = FindViewById<ImageButton>(Resource.Id.btnSelectUser);
+			btnSelectUser.Click += (s, e) =>
+			{
+				var intent = new Intent(this, typeof(FindUserActivity));
+				intent.PutExtra(ActivityStateConsts.CALLING_ACTIVITY_NAME, ActivityStateConsts.MAIN_ACTIVITY_NAME);
+				StartActivityForResult(intent, FindUserActivity.FIND_USER_REQUEST_CODE);
+			};
+			this.textViewSelectedUser = FindViewById<TextView>(Resource.Id.textViewSelectedUser);
+
 			var btnSorting = FindViewById<ImageButton>(Resource.Id.btnSorting);
-
-
-			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
-			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
+			this.textViewSelectedSorting = FindViewById<TextView>(Resource.Id.textViewSelectedSorting);
 		}
+
 		private Action<System.Collections.Generic.List<string>> MethodToExecuteAfterCategoriesSelect(System.Collections.Generic.IDictionary<int, string> allKeywords)
 		{
 			return selectedItemsNames =>
@@ -316,7 +325,6 @@ namespace MobileSecondHand.App
 						AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
 						return new List<AdvertisementItemShort>();
 					}
-
 					break;
 			}
 
@@ -407,6 +415,10 @@ namespace MobileSecondHand.App
 		{
 			var optionsSelected = false;
 			if (this.advertisementsSearchModel.CategoriesModel.Count > 0)
+			{
+				optionsSelected = true;
+			}
+			if (this.advertisementsSearchModel.UserInfo != null)
 			{
 				optionsSelected = true;
 			}

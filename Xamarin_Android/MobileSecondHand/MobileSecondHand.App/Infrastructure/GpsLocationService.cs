@@ -7,6 +7,7 @@ using Android.Provider;
 using Android.Runtime;
 using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.App.Consts;
+using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Location;
 
@@ -132,7 +133,7 @@ namespace MobileSecondHand.App.Infrastructure
 				}
 				else
 				{
-					coordinatesModel.MaxDistance = 500;
+					coordinatesModel.MaxDistance = ValueConsts.MAX_DISTANCE_VALUE;
 				}
 			}
 
