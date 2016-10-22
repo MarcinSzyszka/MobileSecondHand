@@ -104,6 +104,11 @@ namespace MobileSecondHand.API.Services.Advertisement
 				queryAdvertisements = queryAdvertisements.Where(a => categoriesIds.Contains(a.CategoryId));
 			}
 
+			if (searchModel.UserInfo != null)
+			{
+				queryAdvertisements = queryAdvertisements.Where(a => a.UserId == searchModel.UserInfo.Id);
+			}
+
 			queryAdvertisements = queryAdvertisements.Skip(ITEMS_PER_REQUEST * searchModel.Page).Take(ITEMS_PER_REQUEST);
 
 			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);

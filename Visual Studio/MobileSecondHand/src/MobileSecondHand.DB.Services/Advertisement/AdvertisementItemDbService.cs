@@ -58,7 +58,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId)
 		{
-			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).FirstOrDefault(f => f.ApplicationUserId == userId && f.AdvertisementItemId == advertisementId);
+			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).FirstOrDefault(f => f.ApplicationUserId == userId && f.AdvertisementItemId == advertisementId && f.AdvertisementItem.ExpirationDate >= DateTime.Now);
 		}
 
 		public IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId, int pageNumber)
