@@ -30,7 +30,7 @@ namespace MobileSecondHand.App.Infrastructure
 			this.categoryService = new CategoryService(token);
 		}
 
-		internal async Task ShowCategoriesListAndMakeAction(List<string> userSelectesKeywordsNames, Func<IDictionary<int, string>, Action<List<string>>> methodToExecuteAfterCategoriesSelect)
+		public async Task ShowCategoriesListAndMakeAction(List<string> userSelectesKeywordsNames, Func<IDictionary<int, string>, Action<List<string>>> methodToExecuteAfterCategoriesSelect)
 		{
 			this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 			try
@@ -52,7 +52,7 @@ namespace MobileSecondHand.App.Infrastructure
 		}
 
 
-		internal async Task ShowCategoriesSingleSelectAndMakeAction(Action<int, string> actionOnSelect, string selectedItemName = null)
+		public async Task ShowCategoriesSingleSelectAndMakeAction(Action<int, string> actionOnSelect, string selectedItemName = null)
 		{
 			this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 			try

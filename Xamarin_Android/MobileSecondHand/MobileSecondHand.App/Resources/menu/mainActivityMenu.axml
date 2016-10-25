@@ -18,4 +18,14 @@
         app:showAsAction="always"
         android:title="Odśwież"
         android:icon="@drawable/refresh" />
+	<item
+		android:id="@+id/clearFilterOptions"
+		app:showAsAction="always"
+		android:title="Wyczyść"
+		android:icon="@drawable/clear_flter_options" />
+	<item
+        android:id="@+id/applyFilterOptions"
+        app:showAsAction="always"
+        android:title="Filtruj"
+        android:icon="@drawable/save_flter_options" />
 </menu>

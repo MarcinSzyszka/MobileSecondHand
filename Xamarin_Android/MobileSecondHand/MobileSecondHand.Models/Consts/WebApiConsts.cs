@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 namespace MobileSecondHand.Models.Consts {
 	public class WebApiConsts {
 #if DEBUG
-		public const string SERWER_URL = "http://192.168.8.100:81/";
-		public const string WEB_API_URL = "http://192.168.8.100:81/api/";
+		public const string SERWER_URL = "http://192.168.8.101:81/";
+		public const string WEB_API_URL = "http://192.168.8.101:81/api/";
 #else
 		public const string SERWER_URL = "http://www.mobilesecondhand.pl/";
 		public const string WEB_API_URL = "http://www.mobilesecondhand.pl/api/";

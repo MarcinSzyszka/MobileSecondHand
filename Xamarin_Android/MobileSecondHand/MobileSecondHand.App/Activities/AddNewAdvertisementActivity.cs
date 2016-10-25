@@ -16,6 +16,7 @@ using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Extensions;
 using MobileSecondHand.API.Models.Shared.Categories;
 using MobileSecondHand.API.Models.Shared.Advertisements;
+using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -41,13 +42,17 @@ namespace MobileSecondHand.App.Activities
 		private string keyAdvertisementPriceValue = "advertisementPriceValue";
 		private string keyPhotosPaths = "mPhotoView1Path";
 		private string keyPhotoIsTakingValue = "keyPhotoIsTakingValue";
+		private string keySelectedCategory = "keySelectedCategory";
+		private string keySelectedSize = "keySelectedSize";
 		private Button buttonPublishAdvertisement;
 		private View focusView;
 		IAdvertisementItemService advertisementItemService;
 		private ImageView mPhotoView1;
 		private Button mButtonTakePicture1;
-		private ImageButton btnChoseCategory;
+		private ImageView btnChoseCategory;
+		private ImageView btnChoseSize;
 		private TextView textViewChodesdCategory;
+		private TextView textViewChodesdSize;
 
 		private ImageView mPhotoView2;
 		private Button mButtonTakePicture2;
@@ -57,6 +62,7 @@ namespace MobileSecondHand.App.Activities
 		private TextView photoDivider2;
 		private TextView photoDivider3;
 		CategoryInfoModel categoryInfoModel;
+		private ClothSize size;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -68,7 +74,7 @@ namespace MobileSecondHand.App.Activities
 			this.categoryInfoModel = new CategoryInfoModel();
 			SetContentView(Resource.Layout.AddNewAdvertisementActivity);
 			base.SetupToolbar();
-			SetupViews(savedInstanceState);
+			SetupViews();
 			photosPaths = new List<string>();
 			tempPhotosPaths = new List<string>();
 
@@ -142,6 +148,8 @@ namespace MobileSecondHand.App.Activities
 			outState.PutString(keyAdvertisementPriceValue, advertisementPrice.Text);
 			outState.PutStringArray(keyPhotosPaths, this.photosPaths.ToArray());
 			outState.PutBoolean(keyPhotoIsTakingValue, photoIsTaking);
+			outState.PutInt(keySelectedSize, (int)this.size);
+			outState.PutString(keySelectedCategory, JsonConvert.SerializeObject(categoryInfoModel));
 
 			if (!photoIsTaking)
 			{
@@ -154,12 +162,26 @@ namespace MobileSecondHand.App.Activities
 
 		private void RestoreViewFieldsValues(Bundle savedInstanceState)
 		{
+			RestorePhotos(savedInstanceState);
 			advertisementTitle.Text = savedInstanceState.GetString(keyAdvertisementTitleText, String.Empty);
 			advertisementDescription.Text = savedInstanceState.GetString(keyAdvertisementDescriptionText, String.Empty);
 			advertisementPrice.Text = savedInstanceState.GetString(keyAdvertisementPriceValue, String.Empty);
 			rdBtnOnlyForSell.Checked = savedInstanceState.GetBoolean(keyRdBtnOnlyForSellValue, false);
-			this.photosPaths = savedInstanceState.GetStringArray(keyPhotosPaths).ToList();
+
 			photoIsTaking = savedInstanceState.GetBoolean(keyPhotoIsTakingValue, true);
+			var selectedSizeEnumValue = savedInstanceState.GetInt(keySelectedSize);
+			if (selectedSizeEnumValue > 0)
+			{
+				this.size = (ClothSize)selectedSizeEnumValue;
+				this.textViewChodesdSize.Text = this.size.GetDisplayName();
+			}
+			categoryInfoModel = JsonConvert.DeserializeObject<CategoryInfoModel>(savedInstanceState.GetString(keySelectedCategory, String.Empty));
+			this.textViewChodesdCategory.Text = categoryInfoModel.Name;
+		}
+
+		private void RestorePhotos(Bundle savedInstanceState)
+		{
+			this.photosPaths = savedInstanceState.GetStringArray(keyPhotosPaths).ToList();
 			var i = 0;
 			if (this.photosPaths.Count > 0 && !photoIsTaking)
 			{
@@ -169,9 +191,7 @@ namespace MobileSecondHand.App.Activities
 					SetPhoto(i);
 				} while (i < this.photosPaths.Count);
 			}
-
 		}
-
 
 		private void SetPhoto(int photoNr)
 		{
@@ -209,7 +229,7 @@ namespace MobileSecondHand.App.Activities
 			photoIsTaking = false;
 		}
 
-		private void SetupViews(Bundle savedInstanceState)
+		private void SetupViews()
 		{
 			rdBtnOnlyForSell = (RadioButton)FindViewById(Resource.Id.rdBtnOnlyForSell);
 			progress = new ProgressDialogHelper(this);
@@ -229,9 +249,14 @@ namespace MobileSecondHand.App.Activities
 			mButtonTakePicture3.Tag = 3;
 			buttonPublishAdvertisement = FindViewById<Button>(Resource.Id.buttonPublishAdvertisemenetItem);
 
-			btnChoseCategory = (ImageButton)FindViewById(Resource.Id.btnAddAdvCategoryChosing);
+			btnChoseCategory = (ImageView)FindViewById(Resource.Id.btnAddAdvCategoryChosing);
 			btnChoseCategory.Click += BtnChoseCategory_Click;
 			textViewChodesdCategory = (TextView)FindViewById(Resource.Id.textViewChosedCategory);
+
+			btnChoseSize = (ImageView)FindViewById(Resource.Id.btnAddSize);
+			btnChoseSize.Click += BtnChoseSize_Click;
+			textViewChodesdSize = (TextView)FindViewById(Resource.Id.textViewSelectedSize);
+
 
 			buttonPublishAdvertisement.Click += async (s, e) => await ButtonPublishAdvertisement_Click(s, e);
 			mButtonTakePicture1.Click += MButtonTakePicture_Click;
@@ -239,9 +264,29 @@ namespace MobileSecondHand.App.Activities
 			mButtonTakePicture3.Click += MButtonTakePicture_Click;
 		}
 
+		private void BtnChoseSize_Click(object sender, EventArgs e)
+		{
+			Action<string> methodAfterSelect = (s) =>
+			{
+				this.size = s.GetEnumValueByDisplayName<ClothSize>();
+				this.textViewChodesdSize.Text = size.GetDisplayName();
+			};
+			var sizeNames = Enum.GetValues(typeof(ClothSize)).GetAllItemsDisplayNames();
+			AlertsService.ShowSingleSelectListString(this, sizeNames.ToArray(), methodAfterSelect);
+
+		}
+
 		private async void BtnChoseCategory_Click(object sender, EventArgs e)
 		{
-			await this.categoriesSelectingHelper.ShowCategoriesSingleSelectAndMakeAction(GetMethodToExecuteAfterCategoryChosing(), this.categoryInfoModel.Name);
+			try
+			{
+				await this.categoriesSelectingHelper.ShowCategoriesSingleSelectAndMakeAction(GetMethodToExecuteAfterCategoryChosing(), this.categoryInfoModel.Name);
+			}
+			catch (Exception exc)
+			{
+				//dziwne wyjatki wystepuj¹ gdy nie zlapie tego w try catch
+			}
+
 		}
 
 		private Action<int, string> GetMethodToExecuteAfterCategoryChosing()
@@ -313,6 +358,7 @@ namespace MobileSecondHand.App.Activities
 			NewAdvertisementItem model = new NewAdvertisementItem();
 			model.AdvertisementTitle = advertisementTitle.Text;
 			model.AdvertisementDescription = advertisementDescription.Text;
+			model.Size = this.size;
 			model.Latitude = location.Latitude;
 			model.Longitude = location.Longitude;
 			model.IsOnlyForSell = rdBtnOnlyForSell.Checked;
@@ -352,6 +398,11 @@ namespace MobileSecondHand.App.Activities
 			else if (this.categoryInfoModel.Id == 0)
 			{
 				Toast.MakeText(this, "Nie wybrano kategorii", ToastLength.Long).Show();
+				isValidate = false;
+			}
+			else if (this.size == default(ClothSize))
+			{
+				Toast.MakeText(this, "Nie wybrano rozmiaru", ToastLength.Long).Show();
 				isValidate = false;
 			}
 			return isValidate;

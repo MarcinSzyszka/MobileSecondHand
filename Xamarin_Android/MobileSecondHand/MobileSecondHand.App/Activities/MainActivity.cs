@@ -25,10 +25,11 @@ using Android.Runtime;
 using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.API.Models.Shared.Consts;
+using Android.Support.V4.Widget;
 
 namespace MobileSecondHand.App
 {
-	[Activity(LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label ="", LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class MainActivity : BaseActivityWithNavigationDrawer, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
@@ -38,7 +39,7 @@ namespace MobileSecondHand.App
 		int advertisementsPage;
 		private ProgressDialogHelper progress;
 		private TextView advertisementsListKindTextView;
-		private RelativeLayout sortingOptionsLayout;
+		private NestedScrollView sortingOptionsLayout;
 		private RelativeLayout mainListLayout;
 		private CategoriesSelectingHelper categoriesHelper;
 		AdvertisementsSearchModel advertisementsSearchModel;
@@ -47,6 +48,7 @@ namespace MobileSecondHand.App
 		private TextView textViewSelectedDistance;
 		private TextView textViewSelectedUser;
 		private TextView textViewSelectedSorting;
+		private IMenu menu;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -153,12 +155,33 @@ namespace MobileSecondHand.App
 			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
 			if (menu != null)
 			{
-				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(true);
-				menu.FindItem(Resource.Id.chat).SetVisible(true);
-				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(true);
+				this.menu = menu;
+				SetAppBarOptions(false);
 			}
 
 			return base.OnCreateOptionsMenu(menu);
+		}
+
+		private void SetAppBarOptions(bool isOnOptionsLayout)
+		{
+			if (isOnOptionsLayout)
+			{
+				this.menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(true);
+				this.menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(true);
+				this.menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
+				this.menu.FindItem(Resource.Id.chat).SetVisible(false);
+				this.menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
+			}
+			else
+			{
+				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(true);
+				menu.FindItem(Resource.Id.chat).SetVisible(true);
+				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(true);
+				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
+				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
+			}
+
+
 		}
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
@@ -177,6 +200,14 @@ namespace MobileSecondHand.App
 					break;
 				case Resource.Id.choosingAdvertisementsList:
 					ShowChoosingAdvertisementsKindDialog();
+					handled = true;
+					break;
+				case Resource.Id.clearFilterOptions:
+					ClearFilterOptions();
+					handled = true;
+					break;
+				case Resource.Id.applyFilterOptions:
+					ApplyFilterOptions();
 					handled = true;
 					break;
 			}
@@ -223,8 +254,8 @@ namespace MobileSecondHand.App
 
 		private void SetSortingOptionsLayout()
 		{
-			sortingOptionsLayout = FindViewById<RelativeLayout>(Resource.Id.layoutSortingOptions);
-			var btnSelectCategories = FindViewById<ImageButton>(Resource.Id.btnSelectCategoryForMainList);
+			sortingOptionsLayout = FindViewById<NestedScrollView>(Resource.Id.layoutSortingOptions);
+			var btnSelectCategories = FindViewById<ImageView>(Resource.Id.btnSelectCategoryForMainList);
 			this.textViewSelectCategories = FindViewById<TextView>(Resource.Id.textViewSelectedCategoryForMainList);
 
 			btnSelectCategories.Click += async (s, e) =>
@@ -234,7 +265,7 @@ namespace MobileSecondHand.App
 			};
 
 
-			var btnDistance = FindViewById<ImageButton>(Resource.Id.btnDistance);
+			var btnDistance = FindViewById<ImageView>(Resource.Id.btnDistance);
 			this.textViewSelectedDistance = FindViewById<TextView>(Resource.Id.textViewSelectedDistance);
 			btnDistance.Click += (sender, args) =>
 			{
@@ -255,7 +286,7 @@ namespace MobileSecondHand.App
 			};
 
 
-			var btnSelectUser = FindViewById<ImageButton>(Resource.Id.btnSelectUser);
+			var btnSelectUser = FindViewById<ImageView>(Resource.Id.btnSelectUser);
 			btnSelectUser.Click += (s, e) =>
 			{
 				var intent = new Intent(this, typeof(FindUserActivity));
@@ -264,7 +295,7 @@ namespace MobileSecondHand.App
 			};
 			this.textViewSelectedUser = FindViewById<TextView>(Resource.Id.textViewSelectedUser);
 
-			var btnSorting = FindViewById<ImageButton>(Resource.Id.btnSorting);
+			var btnSorting = FindViewById<ImageView>(Resource.Id.btnSorting);
 			this.textViewSelectedSorting = FindViewById<TextView>(Resource.Id.textViewSelectedSorting);
 			btnSorting.Click += (s, e) =>
 			{
@@ -433,16 +464,9 @@ namespace MobileSecondHand.App
 			fabOpenFilterOptions = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fabFilter);
 			fabOpenFilterOptions.BringToFront();
 			fabOpenFilterOptions.Click += FabFilter_Click;
-
-			var fabApplySortingOptions = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fabMainListOptions);
-			fabApplySortingOptions.BringToFront();
-			fabApplySortingOptions.Click += FabMainListOptions_Click;
-
-			var fabFilterClear = FindViewById<com.refractored.fab.FloatingActionButton>(Resource.Id.fabClearFilters);
-			fabFilterClear.Click += FabFilterClear_Click;
 		}
 
-		private void FabFilterClear_Click(object sender, EventArgs e)
+		private void ClearFilterOptions()
 		{
 			SetDefaultSearchOptions();
 			SetupSortingViews();
@@ -461,7 +485,7 @@ namespace MobileSecondHand.App
 			this.textViewSelectedSorting.Text = this.advertisementsSearchModel.SortingBy.GetDisplayName();
 		}
 
-		private async void FabMainListOptions_Click(object sender, EventArgs e)
+		private async void ApplyFilterOptions()
 		{
 			TogleLayouts();
 			ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
@@ -507,11 +531,13 @@ namespace MobileSecondHand.App
 		{
 			if (mainListLayout.Visibility == ViewStates.Visible)
 			{
+				SetAppBarOptions(true);
 				mainListLayout.Visibility = ViewStates.Gone;
 				sortingOptionsLayout.Visibility = ViewStates.Visible;
 			}
 			else
 			{
+				SetAppBarOptions(false);
 				sortingOptionsLayout.Visibility = ViewStates.Gone;
 				mainListLayout.Visibility = ViewStates.Visible;
 			}
