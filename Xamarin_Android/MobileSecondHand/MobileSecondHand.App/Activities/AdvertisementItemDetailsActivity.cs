@@ -219,7 +219,17 @@ namespace MobileSecondHand.App.Activities
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
-			this.addToFavouriteAdvertsBtn.Click += async (s, e) => await AddToFavouriteAdvertsBtn_Click(s, e);
+			this.addToFavouriteAdvertsBtn.Click += AddToFavourites;
+		}
+
+		private void AddToFavourites(object s, EventArgs e)
+		{
+			AlertsService.ShowConfirmDialog(this, "Czy na pewno dodaæ to og³oszenie do schowka?", async () =>
+			{
+				var idApiModel = new SingleIdModelForPostRequests { Id = this.advertisement.Id };
+				var responseMessage = await this.advertisementItemService.AddToUserFavouritesAdvertisements(idApiModel);
+				AlertsService.ShowToast(this, responseMessage);
+			});
 		}
 
 		private void PhotosAdapter_PhotoClicked(object sender, int photoIndex)
@@ -229,13 +239,6 @@ namespace MobileSecondHand.App.Activities
 			photosViewerIntent.PutExtra(ActivityStateConsts.SELECTED_PHOTO_INDEX_TO_START_ON_PHOTOS_VIEWER, photoIndex);
 
 			StartActivity(photosViewerIntent);
-		}
-
-		private async Task AddToFavouriteAdvertsBtn_Click(object sender, EventArgs e)
-		{
-			var idApiModel = new SingleIdModelForPostRequests { Id = this.advertisement.Id };
-			var responseMessage = await this.advertisementItemService.AddToUserFavouritesAdvertisements(idApiModel);
-			AlertsService.ShowToast(this, responseMessage);
 		}
 
 		private async Task StartConversationBtn_Click(object sender, EventArgs e)

@@ -17,6 +17,7 @@ using MobileSecondHand.App.Activities;
 using Android.App;
 using MobileSecondHand.Services.Categories;
 using MobileSecondHand.Models.Consts;
+using MobileSecondHand.API.Models.Shared.Consts;
 
 namespace MobileSecondHand.App.SideMenu
 {
@@ -61,13 +62,6 @@ namespace MobileSecondHand.App.SideMenu
 			this.textViewNotificationsRadius = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsRadius);
 			this.textViewKeywords = activity.FindViewById<TextView>(Resource.Id.textViewKeywords);
 			this.textViewHomeLocalization = activity.FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
-			this.imgBtnConversations = activity.FindViewById<ImageButton>(Resource.Id.imgBtnConversations);
-			this.imgBtnConversations.Click += (s, e) =>
-			{
-				var intent = new Intent(activity, typeof(ConversationsListActivity));
-				activity.StartActivity(intent);
-			};
-
 
 			//conversations
 			SetupChatStateView(activity);
@@ -187,7 +181,7 @@ namespace MobileSecondHand.App.SideMenu
 					int.TryParse(selectedRadius, out resultRadius);
 					if (resultRadius == 0)
 					{
-						resultRadius = 500;
+						resultRadius = ValueConsts.MAX_DISTANCE_VALUE;
 					}
 					appSettings.LocationSettings.MaxDistance = resultRadius;
 					SetAppSettings(appSettings);

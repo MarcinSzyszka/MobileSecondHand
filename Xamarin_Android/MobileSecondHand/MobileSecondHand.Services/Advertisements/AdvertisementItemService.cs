@@ -49,18 +49,6 @@ namespace MobileSecondHand.Services.Advertisements
 			return advertisementList;
 		}
 
-		public async Task<List<AdvertisementItemShort>> GetUserFavouritesAdvertisements(int pageNumber)
-		{
-			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserFavouritesAdvertisements/" + pageNumber);
-			if (response.StatusCode != System.Net.HttpStatusCode.OK)
-			{
-				return new List<AdvertisementItemShort>();
-			}
-			var responseContentString = await response.Content.ReadAsStringAsync();
-			var advertisementList = JsonConvert.DeserializeObject<List<AdvertisementItemShort>>(responseContentString);
-			return advertisementList;
-		}
-
 		public async Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(coordinatesMOdel), Encoding.UTF8, "application/json");

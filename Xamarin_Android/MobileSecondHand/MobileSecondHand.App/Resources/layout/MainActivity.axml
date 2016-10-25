@@ -247,6 +247,19 @@
                     tools:fab_colorNormal="@color/colorAccent"
                     tools:fab_colorPressed="#DCE775"
                     tools:fab_colorRipple="#F0F4C3" />
+				<com.refractored.fab.FloatingActionButton
+				   android:id="@+id/fabClearFilters"
+				   android:layout_width="wrap_content"
+				   android:layout_height="wrap_content"
+				   android:layout_alignParentBottom="true"
+				   android:layout_alignParentLeft="true"
+				   android:layout_gravity="bottom|left"
+				   android:layout_marginBottom="15dp"
+				   android:layout_marginLeft="15dp"
+				   android:src="@drawable/filter_clear"
+				   tools:fab_colorNormal="@color/colorAccent"
+				   tools:fab_colorPressed="#DCE775"
+				   tools:fab_colorRipple="#F0F4C3" />
             </RelativeLayout>
         </RelativeLayout>
         <android.support.design.widget.NavigationView

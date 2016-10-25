@@ -10,6 +10,7 @@ using Android.Preferences;
 using Android.Runtime;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Consts;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.Settings;

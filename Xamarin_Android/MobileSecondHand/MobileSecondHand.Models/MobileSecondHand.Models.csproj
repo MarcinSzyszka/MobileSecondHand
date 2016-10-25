@@ -44,8 +44,6 @@
     <Compile Include="Chat\ConversationInfoModel.cs" />
     <Compile Include="Chat\ConversationItemModel.cs" />
     <Compile Include="Chat\ConversationMessage.cs" />
-    <Compile Include="Chat\SearchConversationsModel.cs" />
-    <Compile Include="Consts\ValueConsts.cs" />
     <Compile Include="Consts\WebApiConsts.cs" />
     <Compile Include="EventArgs\ShowAdvertisementDetailsEventArgs.cs" />
     <Compile Include="Exceptions\UserHasToSetNickNameException.cs" />

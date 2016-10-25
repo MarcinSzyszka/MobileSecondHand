@@ -97,11 +97,6 @@ namespace MobileSecondHand.App.Activities
 			Finish();
 		}
 
-		private void TextViewAutoComplete_ItemSelected(object sender, AdapterView.ItemSelectedEventArgs e)
-		{
-			AlertsService.ShowAlertDialog(this, "Wybrano usera: " + this.textViewAutoComplete.Text);
-		}
-
 		private void TextViewAutoComplete_TextChanged(object sender, Android.Text.TextChangedEventArgs e)
 		{
 			timer.Stop();

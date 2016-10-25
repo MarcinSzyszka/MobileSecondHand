@@ -5,6 +5,7 @@ using Android.Locations;
 using Android.OS;
 using Android.Provider;
 using Android.Runtime;
+using MobileSecondHand.API.Models.Shared.Consts;
 using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.Models.Consts;
@@ -113,7 +114,7 @@ namespace MobileSecondHand.App.Infrastructure
 			return location;
 		}
 
-		public CoordinatesForAdvertisementsModel GetCoordinatesModel()
+		public CoordinatesForAdvertisementsModel GetCoordinatesModel(int maxDistance = -1)
 		{
 			CoordinatesForAdvertisementsModel coordinatesModel = new CoordinatesForAdvertisementsModel();
 			var location = GetLocation();
@@ -127,7 +128,11 @@ namespace MobileSecondHand.App.Infrastructure
 			{
 				coordinatesModel.Latitude = latitude;
 				coordinatesModel.Longitude = longitude;
-				if (settingsMOdel != null)
+				if (maxDistance > -1)
+				{
+					coordinatesModel.MaxDistance = maxDistance;
+				}
+				else if (settingsMOdel != null)
 				{
 					coordinatesModel.MaxDistance = settingsMOdel.LocationSettings.MaxDistance;
 				}
