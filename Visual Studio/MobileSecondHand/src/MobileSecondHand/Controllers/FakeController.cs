@@ -3,21 +3,39 @@ using Microsoft.AspNetCore.Mvc;
 
 // For more information on enabling Web API for empty projects, visit http://go.microsoft.com/fwlink/?LinkID=397860
 
-namespace MobileSecondHand.Controllers {
+namespace MobileSecondHand.Controllers
+{
 	[Route("api/[controller]")]
-    public class FakeController : Controller
-    {
+	public class FakeController : Controller
+	{
 		DB.Services.MobileSecondHandContext context;
-		public FakeController(DB.Services.MobileSecondHandContext context) {
+		public FakeController(DB.Services.MobileSecondHandContext context)
+		{
 			this.context = context;
 		}
 		[HttpGet]
 		[Route("CreateFakeAdvertisements")]
-		public void CreateFakeAdvertisements() {
+		public void CreateFakeAdvertisements()
+		{
+			AddFiveAdvertisements();
+		}
+
+		[HttpGet]
+		[Route("CreateALotOfFakeAdvertisements")]
+		public void CreateALotOfFakeAdvertisements()
+		{
+			for (int i = 0; i < 1000; i++)
+			{
+				AddFiveAdvertisements();
+			}
+		}
+
+		private void AddFiveAdvertisements()
+		{
 			var fakeUser = new DB.Models.Authentication.ApplicationUser { UserName = "test", PasswordHash = "test" };
 			context.ApplicationUser.Add(fakeUser);
 
-			var advertisement = new DB.Models.Advertisement.AdvertisementItem {CategoryId = 1, IsActive = true, ExpirationDate = DateTime.Now.AddDays(7), Title = "Spodnie klasyczne, materiałowe, rozm 40", Price = 40, Latitude = 52.0217376, Longitude = 20.8240181, User = fakeUser };
+			var advertisement = new DB.Models.Advertisement.AdvertisementItem { CategoryId = 1, IsActive = true, ExpirationDate = DateTime.Now.AddDays(7), Title = "Spodnie klasyczne, materiałowe, rozm 40", Price = 40, Latitude = 52.0217376, Longitude = 20.8240181, User = fakeUser };
 			var avdertisementPhoto = new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = true, PhotoPath = "./wwwroot/images/advertisementItem/foty/spodnie 2min.jpg" };
 			advertisement.AdvertisementPhotos.Add(avdertisementPhoto);
 			advertisement.AdvertisementPhotos.Add(new DB.Models.Advertisement.AdvertisementPhoto { AdvertisementItem = advertisement, IsMainPhoto = false, PhotoPath = "./wwwroot/images/advertisementItem/foty/spodnie 2.jpg" });
@@ -49,5 +67,6 @@ namespace MobileSecondHand.Controllers {
 			context.AdvertisementItem.Add(advertisement5);
 			context.SaveChanges();
 		}
-    }
+
+	}
 }

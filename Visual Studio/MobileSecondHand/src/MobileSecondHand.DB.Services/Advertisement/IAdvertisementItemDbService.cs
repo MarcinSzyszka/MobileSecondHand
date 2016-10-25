@@ -8,15 +8,16 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 	public interface IAdvertisementItemDbService
     {
 		void SaveNewAdvertisementItem(AdvertisementItem advertisementItem);
-		IQueryable<AdvertisementItem> GetAdvertisementsFromDeclaredArea(CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel, int page);
+		IQueryable<AdvertisementItem> GetAdvertisements();
 		AdvertisementItem GetByIdWithDetails(int advertisementId);
-		IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber);
+		IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber = -1);
 		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
 		AdvertisementItem GetById(int advertisementId);
 		void SaveAdvertisementItem(AdvertisementItem advertisement);
 		UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId);
 		void SaveUserFavouriteAdvertisement(UserToFavouriteAdvertisement favouriteAdvertisement);
-		IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId, int pageNumber);
+		IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId);
 		void DeleteFavouriteAdvertisement(UserToFavouriteAdvertisement advertisement);
+	
 	}
 }

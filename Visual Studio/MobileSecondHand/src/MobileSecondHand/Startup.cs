@@ -17,7 +17,6 @@ using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.Configuration;
 using MobileSecondHand.COMMON;
 using MobileSecondHand.COMMON.Configuration;
-using MobileSecondHand.Data;
 using MobileSecondHand.DB.Models.Advertisement;
 using MobileSecondHand.DB.Services;
 using MobileSecondHand.DB.Services.Configuration;

@@ -158,14 +158,14 @@ namespace MobileSecondHand.Controllers
 				var userId = this.identityService.GetUserId(User.Identity);
 				var success = this.advertisementItemService.AddToUserFavourites(userId, advertisementId.Id);
 				logger.LogInformation("Zakonczono dodawanie ogłoszenia do ulubionych");
-				var messeage = success ? "Ogłoszenie zostało dodane do schowka. Będziesz mieć do niego dostęp z listy ogłoszeń po wybraniu \"Schowek\"" : "Ogłoszenie jest już w Twoim schowku";
+				var messeage = success ? "Ogłoszenie zostało dodane do schowka." : "Ogłoszenie jest już w Twoim schowku";
 				return Json(messeage);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				logger.LogError("Wystąpił wyjątek w trakcie dodawania ogłoszenia do ulubionych: " + exc.Message);
-				return Json("Wystąpił błąd na serwerze. Spróbuj pomowmoie później");
+				return Json("Wystąpił błąd na serwerze. Spróbuj ponownie później");
 			}
 		}
 
@@ -207,29 +207,6 @@ namespace MobileSecondHand.Controllers
 				return null;
 			}
 		}
-
-		[HttpGet]
-		[Route("GetUserFavouritesAdvertisements/{pageNumber}")]
-		public async Task<IActionResult> GetUserFavouritesAdvertisements(int pageNumber)
-		{
-			try
-			{
-				logger.LogInformation("Pobieranie ulubionych ogłoszeń");
-				var userId = this.identityService.GetUserId(User.Identity);
-				var advertisements = await this.advertisementItemService.GetUserFavouritesAdvertisements(userId, pageNumber);
-				logger.LogInformation("Zakonczono pobieranie ogłoszeń");
-				return Json(advertisements);
-			}
-			catch (Exception exc)
-			{
-				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie pobierania ulubionych ogłoszeń: " + exc.Message);
-				return null;
-			}
-		}
-
-		
-
 
 		[HttpGet]
 		[Route("GetAdvertisementDetail/{advertisementId}")]

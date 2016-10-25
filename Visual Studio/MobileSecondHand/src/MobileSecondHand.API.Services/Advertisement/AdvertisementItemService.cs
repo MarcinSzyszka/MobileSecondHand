@@ -13,6 +13,7 @@ using MobileSecondHand.DB.Models.Keywords;
 using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.API.Models.Shared.Enumerations;
+using MobileSecondHand.API.Models.Shared.Consts;
 
 namespace MobileSecondHand.API.Services.Advertisement
 {
@@ -49,6 +50,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				UserId = userId,
 				Title = newAdvertisementModel.AdvertisementTitle,
 				Description = newAdvertisementModel.AdvertisementDescription,
+				Size = newAdvertisementModel.Size,
 				Price = newAdvertisementModel.AdvertisementPrice,
 				IsActive = true,
 				CreationDate = DateTime.Now,
@@ -85,19 +87,27 @@ namespace MobileSecondHand.API.Services.Advertisement
 			{
 				case AdvertisementsKind.AdvertisementsAroundUserCurrentLocation:
 				case AdvertisementsKind.AdvertisementsArounUserHomeLocation:
-					var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
-					queryAdvertisements = this.advertisementItemDbService.GetAdvertisementsFromDeclaredArea(coordinatesForSearchModel, searchModel.Page);
+					queryAdvertisements = this.advertisementItemDbService.GetAdvertisements();
 					break;
 				case AdvertisementsKind.AdvertisementsCreatedByUser:
-					queryAdvertisements = this.advertisementItemDbService.GetUserAdvertisements(userId, searchModel.Page);
+					queryAdvertisements = this.advertisementItemDbService.GetUserAdvertisements(userId);
 					break;
 				case AdvertisementsKind.FavouritesAdvertisements:
-					queryAdvertisements = this.advertisementItemDbService.GetUserFavouritesAdvertisements(userId, searchModel.Page).ToList().Select(a => a.AdvertisementItem).AsQueryable();
+					queryAdvertisements = this.advertisementItemDbService.GetUserFavouritesAdvertisements(userId).ToList().Select(a => a.AdvertisementItem).AsQueryable();
 					break;
 				default:
 					break;
 			}
 
+			queryAdvertisements = FilterResultBySearchModelOptions(searchModel, queryAdvertisements);
+
+			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);
+
+			return advertisementsViewModels;
+		}
+
+		private IQueryable<AdvertisementItem> FilterResultBySearchModelOptions(AdvertisementsSearchModel searchModel, IQueryable<AdvertisementItem> queryAdvertisements)
+		{
 			if (searchModel.CategoriesModel.Count > 0)
 			{
 				var categoriesIds = searchModel.CategoriesModel.Select(c => c.Key).ToList();
@@ -109,25 +119,44 @@ namespace MobileSecondHand.API.Services.Advertisement
 				queryAdvertisements = queryAdvertisements.Where(a => a.UserId == searchModel.UserInfo.Id);
 			}
 
+			if (searchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE)
+			{
+				var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
+				queryAdvertisements = queryAdvertisements.Where(a => a.Latitude >= coordinatesForSearchModel.LatitudeStart
+																	&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
+																	&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
+																	&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd);
+			}
+
+			queryAdvertisements = SortQuery(queryAdvertisements, searchModel);
+
 			queryAdvertisements = queryAdvertisements.Skip(ITEMS_PER_REQUEST * searchModel.Page).Take(ITEMS_PER_REQUEST);
+			return queryAdvertisements;
+		}
 
-			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);
-
-			return advertisementsViewModels;
+		private IQueryable<AdvertisementItem> SortQuery(IQueryable<AdvertisementItem> queryAdvertisements, AdvertisementsSearchModel searchModel)
+		{
+			switch (searchModel.SortingBy)
+			{
+				case SortingBy.sortByNearest:
+					return queryAdvertisements.OrderBy(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, a.Latitude, a.Longitude));
+				case SortingBy.sortByFarthest:
+					return queryAdvertisements.OrderByDescending(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, a.Latitude, a.Longitude));
+				case SortingBy.sortByLowestPrice:
+					return queryAdvertisements.OrderBy(a => a.Price);
+				case SortingBy.sortByHighestPrice:
+					return queryAdvertisements.OrderByDescending(a => a.Price);
+				case SortingBy.sortByNewest:
+					return queryAdvertisements.OrderByDescending(a => a.CreationDate);
+				default:
+					return queryAdvertisements;
+			}
 		}
 
 		public async Task<IEnumerable<AdvertisementItemShort>> GetUserAdvertisements(string userId, int pageNumber)
 		{
 			var advertisementsFromDb = this.advertisementItemDbService.GetUserAdvertisements(userId, pageNumber).ToList();
 			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb);
-
-			return advertisementsViewModels;
-		}
-
-		public async Task<IEnumerable<AdvertisementItemShort>> GetUserFavouritesAdvertisements(string userId, int pageNumber)
-		{
-			var advertisementsFromDb = this.advertisementItemDbService.GetUserFavouritesAdvertisements(userId, pageNumber).ToList();
-			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb.Select(a => a.AdvertisementItem));
 
 			return advertisementsViewModels;
 		}
@@ -214,6 +243,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.Id = advertisementFromDb.Id;
 			viewModel.Title = advertisementFromDb.Title;
 			viewModel.Description = advertisementFromDb.Description;
+			viewModel.Size = advertisementFromDb.Size;
 			viewModel.Price = advertisementFromDb.Price;
 			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
 			viewModel.SellerId = advertisementFromDb.UserId;
@@ -241,6 +271,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			{
 				var viewModel = new AdvertisementItemShort();
 				viewModel.Id = dbModel.Id;
+				viewModel.Size = dbModel.Size;
 				viewModel.AdvertisementTitle = dbModel.Title;
 				viewModel.AdvertisementPrice = dbModel.Price;
 				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoPath);

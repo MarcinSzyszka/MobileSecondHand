@@ -2,6 +2,7 @@
     "userSecretsId": "aspnet-MobileSecondHand-f33155b0-bbd8-4a11-9dc7-b2f7bf033a86",
 
     "dependencies": {
+        "Microsoft.AspNetCore.Server.Kestrel": "1.0.1",
         "Microsoft.ApplicationInsights.AspNetCore": "1.0.0",
         "Microsoft.AspNetCore.Authentication.Cookies": "1.0.0",
         "Microsoft.AspNetCore.Authentication.JwtBearer": "1.0.0",
@@ -41,7 +42,8 @@
         "Microsoft.AspNetCore.Mvc": "1.0.1",
         "Microsoft.EntityFrameworkCore.SqlServer": "1.0.1",
         "Microsoft.AspNetCore.SignalR.Server": "0.1.0-rtm-21431",
-        "Microsoft.EntityFrameworkCore.Relational.Design": "1.0.1"    },
+        "Microsoft.EntityFrameworkCore.Relational.Design": "1.0.1"
+    },
     "tools": {
         "Microsoft.AspNetCore.Server.IISIntegration.Tools": {
             "version": "1.0.0-preview2-final",
@@ -107,7 +109,6 @@
         ]
     },
     "scripts": {
-        "prepublish": [ "npm install", "bower install", "gulp clean", "gulp min" ],
         "postpublish": [ "dotnet publish-iis --publish-folder %publish:OutputPath% --framework %publish:FullTargetFramework%" ]
     }
 

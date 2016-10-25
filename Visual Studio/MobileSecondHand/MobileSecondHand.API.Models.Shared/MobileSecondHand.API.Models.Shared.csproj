@@ -39,11 +39,13 @@
     <Compile Include="Advertisements\AdvertisementItemShort.cs" />
     <Compile Include="Advertisements\AdvertisementsSearchModel.cs" />
     <Compile Include="Advertisements\NewAdvertisementItem.cs" />
-    <Compile Include="Advertisements\SearchModel.cs" />
     <Compile Include="Categories\CategoryInfoModel.cs" />
+    <Compile Include="Consts\ValueConsts.cs" />
     <Compile Include="Enumerations\AdvertisementsKind.cs" />
+    <Compile Include="Enumerations\ClothSize.cs" />
     <Compile Include="Enumerations\DisplayNameAttribute.cs" />
     <Compile Include="Enumerations\GetPhotoKind.cs" />
+    <Compile Include="Enumerations\SortingBy.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
