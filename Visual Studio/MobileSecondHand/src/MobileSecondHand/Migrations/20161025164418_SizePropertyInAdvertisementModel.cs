@@ -12,7 +12,7 @@ namespace MobileSecondHand.Migrations
                 name: "Size",
                 table: "AdvertisementItem",
                 nullable: false,
-                defaultValue: ClothSize.0);
+                defaultValue: 0);
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
