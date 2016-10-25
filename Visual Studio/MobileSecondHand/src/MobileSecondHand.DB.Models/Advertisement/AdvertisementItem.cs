@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.DB.Models.Authentication;
 
 namespace MobileSecondHand.DB.Models.Advertisement
@@ -13,6 +14,7 @@ namespace MobileSecondHand.DB.Models.Advertisement
 		public string UserId { get; set; }
 		public string Title { get; set; }
 		public string Description { get; set; }
+		public ClothSize Size { get; set; }
 		public int Price { get; set; }
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
@@ -29,6 +31,6 @@ namespace MobileSecondHand.DB.Models.Advertisement
 		public List<ColorKeywordToAdvertisement> ColorKeywords { get; set; } = new List<ColorKeywordToAdvertisement>();
 		public List<CategoryKeywordToAdvertisement> CategoryKeywords { get; set; } = new List<CategoryKeywordToAdvertisement>();
 		public List<UserToFavouriteAdvertisement> UsersWhoAddedToFavourites { get; set; } = new List<UserToFavouriteAdvertisement>();
-		
+
 	}
 }

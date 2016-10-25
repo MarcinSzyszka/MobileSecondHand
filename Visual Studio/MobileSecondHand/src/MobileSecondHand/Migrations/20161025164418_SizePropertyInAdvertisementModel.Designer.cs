@@ -8,9 +8,10 @@ using MobileSecondHand.DB.Services;
 namespace MobileSecondHand.Migrations
 {
     [DbContext(typeof(MobileSecondHandContext))]
-    partial class MobileSecondHandContextModelSnapshot : ModelSnapshot
+    [Migration("20161025164418_SizePropertyInAdvertisementModel")]
+    partial class SizePropertyInAdvertisementModel
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
             modelBuilder
                 .HasAnnotation("ProductVersion", "1.0.1")
