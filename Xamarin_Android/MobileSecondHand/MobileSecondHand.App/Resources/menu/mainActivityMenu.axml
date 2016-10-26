@@ -4,6 +4,11 @@
       xmlns:tools="http://schemas.android.com/tools">
 
 	<item
+        android:id="@+id/home"
+        app:showAsAction="always"
+        android:title="Strona główna"
+        android:icon="@drawable/home" />
+	<item
         android:id="@+id/choosingAdvertisementsList"
         app:showAsAction="always"
         android:title="Wybierz ogłoszenia"

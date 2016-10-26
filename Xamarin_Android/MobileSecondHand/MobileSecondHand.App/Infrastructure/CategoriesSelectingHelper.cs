@@ -18,15 +18,13 @@ namespace MobileSecondHand.App.Infrastructure
 	{
 		private Context ctx;
 		private ProgressDialogHelper progressDialogHelper;
-		private SharedPreferencesHelper sharedPreferencesHelper;
 		ICategoryService categoryService;
 
-		public CategoriesSelectingHelper(Context ctx)
+		public CategoriesSelectingHelper(Context ctx, string bearerToken)
 		{
 			this.ctx = ctx;
 			this.progressDialogHelper = new ProgressDialogHelper(ctx);
-			this.sharedPreferencesHelper = new SharedPreferencesHelper(ctx);
-			var token = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+			var token = bearerToken;
 			this.categoryService = new CategoryService(token);
 		}
 

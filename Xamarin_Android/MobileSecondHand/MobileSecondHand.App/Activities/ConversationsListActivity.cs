@@ -37,9 +37,14 @@ namespace MobileSecondHand.App.Activities
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
-			MenuInflater.Inflate(Resource.Menu.conversationsListMenu, menu);
+			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
 			if (menu != null)
 			{
+				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
+				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
+				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
+				menu.FindItem(Resource.Id.chat).SetVisible(false);
+				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
 				menu.FindItem(Resource.Id.home).SetVisible(true);
 			}
 

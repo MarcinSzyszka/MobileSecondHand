@@ -26,6 +26,7 @@ namespace MobileSecondHand.App.Activities
 		BitmapOperationService bitmapOperationService;
 		GpsLocationService gpsLocationService;
 		CategoriesSelectingHelper categoriesSelectingHelper;
+		SizeSelectingHelper sizeSelectingHelper;
 		private EditText advertisementDescription;
 		private EditText advertisementPrice;
 		private EditText advertisementTitle;
@@ -70,7 +71,8 @@ namespace MobileSecondHand.App.Activities
 			this.bitmapOperationService = new BitmapOperationService();
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.gpsLocationService = new GpsLocationService(this, null);
-			this.categoriesSelectingHelper = new CategoriesSelectingHelper(this);
+			this.categoriesSelectingHelper = new CategoriesSelectingHelper(this, bearerToken);
+			this.sizeSelectingHelper = new SizeSelectingHelper(this);
 			this.categoryInfoModel = new CategoryInfoModel();
 			SetContentView(Resource.Layout.AddNewAdvertisementActivity);
 			base.SetupToolbar();
@@ -105,11 +107,15 @@ namespace MobileSecondHand.App.Activities
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
 		{
-			MenuInflater.Inflate(Resource.Menu.conversationMenu, menu);
+			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
 			if (menu != null)
 			{
-				menu.FindItem(Resource.Id.home).SetVisible(true);
+				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
+				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
+				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
 				menu.FindItem(Resource.Id.chat).SetVisible(true);
+				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
+				menu.FindItem(Resource.Id.home).SetVisible(true);
 			}
 
 			return base.OnCreateOptionsMenu(menu);
@@ -266,13 +272,13 @@ namespace MobileSecondHand.App.Activities
 
 		private void BtnChoseSize_Click(object sender, EventArgs e)
 		{
-			Action<string> methodAfterSelect = (s) =>
+			var selectedName = this.size != default(ClothSize) ? this.size.GetDisplayName() : null;
+			Action<ClothSize> methodAfterSelect = (s) =>
 			{
-				this.size = s.GetEnumValueByDisplayName<ClothSize>();
+				this.size = s;
 				this.textViewChodesdSize.Text = size.GetDisplayName();
 			};
-			var sizeNames = Enum.GetValues(typeof(ClothSize)).GetAllItemsDisplayNames();
-			AlertsService.ShowSingleSelectListString(this, sizeNames.ToArray(), methodAfterSelect);
+			this.sizeSelectingHelper.ShowSizeSingleSelectAndMakeAction(methodAfterSelect, selectedName);
 
 		}
 

@@ -186,6 +186,7 @@
     <Compile Include="Infrastructure\FormValidator.cs" />
     <Compile Include="Activities\LoginActivity.cs" />
     <Compile Include="Activities\MainActivity.cs" />
+    <Compile Include="Infrastructure\SizeSelectingHelper.cs" />
     <Compile Include="Notifications\NewsService.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
     <Compile Include="Receivers\ServicesLauncher.cs" />
@@ -248,12 +249,6 @@
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\ConversationItemRovView.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\menu\conversationsListMenu.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
-    <AndroidResource Include="Resources\menu\conversationMenu.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
     <AndroidResource Include="Resources\layout\advertisementPhotoRowView.axml">

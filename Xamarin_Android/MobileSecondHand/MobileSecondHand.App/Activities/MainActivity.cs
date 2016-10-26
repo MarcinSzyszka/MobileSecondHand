@@ -29,7 +29,7 @@ using Android.Support.V4.Widget;
 
 namespace MobileSecondHand.App
 {
-	[Activity(Label ="", LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label = "", LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class MainActivity : BaseActivityWithNavigationDrawer, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
@@ -48,7 +48,10 @@ namespace MobileSecondHand.App
 		private TextView textViewSelectedDistance;
 		private TextView textViewSelectedUser;
 		private TextView textViewSelectedSorting;
+		private TextView textViewSelectedSize;
 		private IMenu menu;
+		private SizeSelectingHelper sizeSelectingHelper;
+		private ImageView btnSize;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -56,7 +59,8 @@ namespace MobileSecondHand.App
 
 			this.gpsLocationService = new GpsLocationService(this, null);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
-			this.categoriesHelper = new CategoriesSelectingHelper(this);
+			this.categoriesHelper = new CategoriesSelectingHelper(this, bearerToken);
+			this.sizeSelectingHelper = new SizeSelectingHelper(this);
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
 			SetupDrawer();
@@ -94,6 +98,7 @@ namespace MobileSecondHand.App
 			SetupSelectedUserView();
 			SetupSelectedMaxDistanceView();
 			SetupSelectedSortingByView();
+			SetupSelectedSizesView();
 		}
 
 		private void SetupSelectedMaxDistanceView()
@@ -156,6 +161,7 @@ namespace MobileSecondHand.App
 			if (menu != null)
 			{
 				this.menu = menu;
+				menu.FindItem(Resource.Id.home).SetVisible(true);
 				SetAppBarOptions(false);
 			}
 
@@ -260,8 +266,44 @@ namespace MobileSecondHand.App
 
 			btnSelectCategories.Click += async (s, e) =>
 			{
+				Func<System.Collections.Generic.IDictionary<int, string>, Action<System.Collections.Generic.List<string>>> methodToExecuteAfterCategoriesSelect = (allKeywords) =>
+				{
+					return (selectedItemsNames) =>
+					{
+						this.advertisementsSearchModel.CategoriesModel.Clear();
+						if (selectedItemsNames.Count != allKeywords.Count)
+						{
+							foreach (var itemName in selectedItemsNames)
+							{
+								this.advertisementsSearchModel.CategoriesModel.Add(allKeywords.First(k => k.Value == itemName));
+							}
+						}
+
+						SetupSelectedCategoryView();
+					};
+				};
+
+
 				var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
-				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
+				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect);
+			};
+
+
+			this.textViewSelectedSize = FindViewById<TextView>(Resource.Id.textViewSelectedSizes);
+			this.btnSize = FindViewById<ImageView>(Resource.Id.btnSize);
+			btnSize.Click += (s, e) =>
+			{
+				var selectedSizesNames = new List<String>();
+				foreach (var size in this.advertisementsSearchModel.Sizes)
+				{
+					selectedSizesNames.Add(size.GetDisplayName());
+				}
+				Action<List<ClothSize>> actionAfterSelect = (selectedSizes) =>
+				{
+					this.advertisementsSearchModel.Sizes = selectedSizes;
+					SetupSelectedSizesView();
+				};
+				this.sizeSelectingHelper.ShowSizesListAndMakeAction(selectedSizesNames, actionAfterSelect);
 			};
 
 
@@ -308,25 +350,6 @@ namespace MobileSecondHand.App
 				AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName());
 			};
 
-		}
-
-
-
-		private Action<System.Collections.Generic.List<string>> MethodToExecuteAfterCategoriesSelect(System.Collections.Generic.IDictionary<int, string> allKeywords)
-		{
-			return selectedItemsNames =>
-			{
-				this.advertisementsSearchModel.CategoriesModel.Clear();
-				if (selectedItemsNames.Count != allKeywords.Count)
-				{
-					foreach (var itemName in selectedItemsNames)
-					{
-						this.advertisementsSearchModel.CategoriesModel.Add(allKeywords.First(k => k.Value == itemName));
-					}
-				}
-
-				SetupSelectedCategoryView();
-			};
 		}
 
 
@@ -475,6 +498,7 @@ namespace MobileSecondHand.App
 		private void SetDefaultSearchOptions()
 		{
 			this.advertisementsSearchModel.CategoriesModel.Clear();
+			this.advertisementsSearchModel.Sizes.Clear();
 			this.advertisementsSearchModel.UserInfo = null;
 			this.advertisementsSearchModel.CoordinatesModel.MaxDistance = ValueConsts.MAX_DISTANCE_VALUE;
 			this.advertisementsSearchModel.SortingBy = SortingBy.sortByNearest;
@@ -483,6 +507,22 @@ namespace MobileSecondHand.App
 		private void SetupSelectedSortingByView()
 		{
 			this.textViewSelectedSorting.Text = this.advertisementsSearchModel.SortingBy.GetDisplayName();
+		}
+
+		private void SetupSelectedSizesView()
+		{
+			if (this.advertisementsSearchModel.Sizes.Count == 0)
+			{
+				this.textViewSelectedSize.Text = "Wszystkie rozmiary";
+			}
+			else
+			{
+				this.textViewSelectedSize.Text = "";
+				foreach (var size in this.advertisementsSearchModel.Sizes)
+				{
+					this.textViewSelectedSize.Text += size.GetDisplayName() + "\r\n";
+				}
+			}
 		}
 
 		private async void ApplyFilterOptions()

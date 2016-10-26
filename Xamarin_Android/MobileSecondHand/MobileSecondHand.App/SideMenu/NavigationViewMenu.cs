@@ -50,7 +50,7 @@ namespace MobileSecondHand.App.SideMenu
 			this.sharedPreferencesHelper = sharedPreferencesHelper;
 			this.gpsService = GpsLocationService.GetServiceInstance(activity);
 			this.googleMapsAPIService = new GoogleMapsAPIService();
-			this.categoriesHelper = new CategoriesSelectingHelper(activity);
+			this.categoriesHelper = new CategoriesSelectingHelper(activity, (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN));
 			SetupViews(activity);
 		}
 
