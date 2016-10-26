@@ -142,6 +142,19 @@ namespace MobileSecondHand.Services.Advertisements
 			return advertisementDetails;
 		}
 
+		public async Task<bool> RestartAdvertisement(int advertisementId)
+		{
+			var stringContent = new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json");
+			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "RestartAdvertisement", stringContent);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return false;
+			}
+			var responseContentString = await response.Content.ReadAsStringAsync();
+			var success = JsonConvert.DeserializeObject<bool>(responseContentString);
+
+			return success;
+		}
 		public async Task<bool> DeleteAdvertisement(int advertisementId, AdvertisementsKind advertisementsKind)
 		{
 			var actionaname = advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser ? "DeleteAdvertisement/" : "DeleteAdvertisementFromFavourites/";

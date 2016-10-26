@@ -2406,8 +2406,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f02008f
 			public const int nawigacja = 2130837647;
 			
-			// aapt resource value: 0x7f02009e
-			public const int notification_template_icon_bg = 2130837662;
+			// aapt resource value: 0x7f02009f
+			public const int notification_template_icon_bg = 2130837663;
 			
 			// aapt resource value: 0x7f020090
 			public const int ok_btn = 2130837648;
@@ -2419,37 +2419,40 @@ namespace MobileSecondHand.App
 			public const int refresh = 2130837650;
 			
 			// aapt resource value: 0x7f020093
-			public const int rounded_chat_state_offline = 2130837651;
+			public const int restart = 2130837651;
 			
 			// aapt resource value: 0x7f020094
-			public const int rounded_chat_state_online = 2130837652;
+			public const int rounded_chat_state_offline = 2130837652;
 			
 			// aapt resource value: 0x7f020095
-			public const int rozmowy_toolbar = 2130837653;
+			public const int rounded_chat_state_online = 2130837653;
 			
 			// aapt resource value: 0x7f020096
-			public const int save_flter_options = 2130837654;
+			public const int rozmowy_toolbar = 2130837654;
 			
 			// aapt resource value: 0x7f020097
-			public const int sendMessage = 2130837655;
+			public const int save_flter_options = 2130837655;
 			
 			// aapt resource value: 0x7f020098
-			public const int setting_header = 2130837656;
+			public const int sendMessage = 2130837656;
 			
 			// aapt resource value: 0x7f020099
-			public const int setting_row = 2130837657;
+			public const int setting_header = 2130837657;
 			
 			// aapt resource value: 0x7f02009a
-			public const int settings = 2130837658;
+			public const int setting_row = 2130837658;
 			
 			// aapt resource value: 0x7f02009b
-			public const int userffline = 2130837659;
+			public const int settings = 2130837659;
 			
 			// aapt resource value: 0x7f02009c
-			public const int userOnline = 2130837660;
+			public const int userffline = 2130837660;
 			
 			// aapt resource value: 0x7f02009d
-			public const int wybor_listy = 2130837661;
+			public const int userOnline = 2130837661;
+			
+			// aapt resource value: 0x7f02009e
+			public const int wybor_listy = 2130837662;
 			
 			static Drawable()
 			{

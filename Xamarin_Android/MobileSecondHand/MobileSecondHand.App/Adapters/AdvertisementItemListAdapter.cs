@@ -20,7 +20,7 @@ namespace MobileSecondHand.App.Adapters
 		private AdvertisementsKind advertisementsKind;
 
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
-		public event EventHandler<int> DeleteAdvertisementItemClick;
+		public event EventHandler<FabOnAdvertisementItemRowClicked> DeleteAdvertisementItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
 		public List<AdvertisementItemShort> AdvertisementItems { get; private set; }
 
@@ -52,6 +52,10 @@ namespace MobileSecondHand.App.Adapters
 			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser || advertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
 			{
 				vh.DeleteAdvertisementFab.Visibility = ViewStates.Visible;
+				if (currentItem.IsExpired && advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser)
+				{
+					vh.DeleteAdvertisementFab.SetImageResource(Resource.Drawable.restart);
+				}
 			}
 			else
 			{
@@ -88,7 +92,21 @@ namespace MobileSecondHand.App.Adapters
 		{
 			if (DeleteAdvertisementItemClick != null)
 			{
-				DeleteAdvertisementItemClick(this, this.AdvertisementItems[positionId].Id);
+				var clickArgs = new FabOnAdvertisementItemRowClicked();
+				clickArgs.Id = this.AdvertisementItems[positionId].Id;
+				if (this.AdvertisementItems[positionId].IsExpired && advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser)
+				{
+					clickArgs.Action = Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.Restart;
+				}
+				else if (this.AdvertisementItems[positionId].IsExpired || advertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
+				{
+					clickArgs.Action = Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.DeleteFromFavourites;
+				}
+				else
+				{
+					clickArgs.Action = Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.MarkAsExpired;
+				}
+				DeleteAdvertisementItemClick(this, clickArgs);
 			}
 		}
 

@@ -16,6 +16,6 @@ namespace MobileSecondHand.Services.Advertisements
 		Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel);
 		Task<bool> DeleteAdvertisement(int advertisementId, AdvertisementsKind advertisementsKind);
 		Task<string> AddToUserFavouritesAdvertisements(SingleIdModelForPostRequests advertisementId);
-		
+		Task<bool> RestartAdvertisement(int id);
 	}
 }

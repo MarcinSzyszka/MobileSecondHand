@@ -481,20 +481,27 @@ namespace MobileSecondHand.App
 			StartActivity(intent);
 		}
 
-		private void AdvertisementItemListAdapter_DeleteAdvertisementItemClick(object sender, int advertisementId)
+		private void AdvertisementItemListAdapter_DeleteAdvertisementItemClick(object sender, FabOnAdvertisementItemRowClicked clickArgs)
 		{
-			if (advertisementId == 0)
+			if (clickArgs.Id == 0)
 			{
 				AlertsService.ShowToast(this, "Wyst¹pi³ b³¹d");
 				return;
 			}
 
-			var message = this.advertisementsSearchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser ? "Czy na pewno chcesz zakoñczyæ to og³oszenie? Przestanie byæ ono widoczne na liœcie og³oszeñ."
-																								: "Czy na pewno chcesz wyrzuciæ ze schowka to og³oszenie?";
+			var message = clickArgs.Action.GetDisplayName();
 
 			AlertsService.ShowConfirmDialog(this, message, async () =>
 			{
-				var success = await this.advertisementItemService.DeleteAdvertisement(advertisementId, this.advertisementsSearchModel.AdvertisementsKind);
+				var success = false;
+				if (clickArgs.Action == Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.Restart)
+				{
+					success = await this.advertisementItemService.RestartAdvertisement(clickArgs.Id);
+				}
+				else
+				{
+					success = await this.advertisementItemService.DeleteAdvertisement(clickArgs.Id, this.advertisementsSearchModel.AdvertisementsKind);
+				}
 
 				if (success)
 				{
