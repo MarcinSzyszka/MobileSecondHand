@@ -46,6 +46,7 @@
     <Compile Include="Enumerations\DisplayNameAttribute.cs" />
     <Compile Include="Enumerations\GetPhotoKind.cs" />
     <Compile Include="Enumerations\SortingBy.cs" />
+    <Compile Include="Enumerations\TransactionKind.cs" />
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />

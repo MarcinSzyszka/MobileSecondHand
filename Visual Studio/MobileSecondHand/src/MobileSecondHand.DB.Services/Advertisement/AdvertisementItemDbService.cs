@@ -27,7 +27,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IQueryable<AdvertisementItem> GetAdvertisements()
 		{
-			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.ExpirationDate >= DateTime.Now);
+			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos);
 		}
 
 		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
@@ -42,11 +42,17 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber = -1)
 		{
-			IQueryable<AdvertisementItem> queryAdvertisements = dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId && a.ExpirationDate >= DateTime.Now).OrderBy(a => a.ExpirationDate);
+			IQueryable<AdvertisementItem> queryAdvertisements = default(IQueryable<AdvertisementItem>);
 
 			if (pageNumber > -1)
 			{
+				queryAdvertisements = dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId && a.ExpirationDate >= DateTime.Now).OrderBy(a => a.ExpirationDate);
 				queryAdvertisements = queryAdvertisements.Skip(20 * pageNumber).Take(20);
+			}
+			else
+			{
+				//advertisement createdByUser - expired adverts should be returned because maybe user might want to restart them
+				queryAdvertisements = dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId);
 			}
 
 
@@ -60,7 +66,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IEnumerable<UserToFavouriteAdvertisement> GetUserFavouritesAdvertisements(string userId)
 		{
-			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).Where(f => f.ApplicationUserId == userId && f.AdvertisementItem.ExpirationDate >= DateTime.Now);
+			return this.dbContext.UserToFavouriteAdvertisement.Include(f => f.AdvertisementItem).ThenInclude(a => a.AdvertisementPhotos).Where(f => f.ApplicationUserId == userId);
 
 		}
 

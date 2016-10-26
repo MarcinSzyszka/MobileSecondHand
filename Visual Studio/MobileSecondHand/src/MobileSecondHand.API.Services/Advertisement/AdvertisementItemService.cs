@@ -108,17 +108,41 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 		private IQueryable<AdvertisementItem> FilterResultBySearchModelOptions(AdvertisementsSearchModel searchModel, IQueryable<AdvertisementItem> queryAdvertisements)
 		{
+			//---------IfNotExpiredExpired-------------------
+			if (!searchModel.ExpiredAdvertisements)
+			{
+				queryAdvertisements = queryAdvertisements.Where(a => a.ExpirationDate >= DateTime.Now);
+			}
+			//---------TransactionKind-----------
+			if (searchModel.TransactionKind == TransactionKind.OnlyWithChange)
+			{
+				queryAdvertisements = queryAdvertisements.Where(a => !a.IsOnlyForSell);
+			}
+			else if (searchModel.TransactionKind == TransactionKind.OnlyWithSell)
+			{
+				queryAdvertisements = queryAdvertisements.Where(a => a.IsOnlyForSell);
+			}
+
+			//---------Categories-----------
 			if (searchModel.CategoriesModel.Count > 0)
 			{
 				var categoriesIds = searchModel.CategoriesModel.Select(c => c.Key).ToList();
 				queryAdvertisements = queryAdvertisements.Where(a => categoriesIds.Contains(a.CategoryId));
 			}
 
+			//---------Sizes-----------
+			if (searchModel.Sizes.Count > 0)
+			{
+				queryAdvertisements = queryAdvertisements.Where(a => searchModel.Sizes.Contains(a.Size));
+			}
+
+			//---------SelectedUser-----------
 			if (searchModel.UserInfo != null)
 			{
 				queryAdvertisements = queryAdvertisements.Where(a => a.UserId == searchModel.UserInfo.Id);
 			}
 
+			//---------Coordinates-----------
 			if (searchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE)
 			{
 				var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, searchModel.CoordinatesModel.MaxDistance);
@@ -128,30 +152,15 @@ namespace MobileSecondHand.API.Services.Advertisement
 																	&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd);
 			}
 
+
+			//---------SortingBy-----------
 			queryAdvertisements = SortQuery(queryAdvertisements, searchModel);
 
 			queryAdvertisements = queryAdvertisements.Skip(ITEMS_PER_REQUEST * searchModel.Page).Take(ITEMS_PER_REQUEST);
 			return queryAdvertisements;
 		}
 
-		private IQueryable<AdvertisementItem> SortQuery(IQueryable<AdvertisementItem> queryAdvertisements, AdvertisementsSearchModel searchModel)
-		{
-			switch (searchModel.SortingBy)
-			{
-				case SortingBy.sortByNearest:
-					return queryAdvertisements.OrderBy(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, a.Latitude, a.Longitude));
-				case SortingBy.sortByFarthest:
-					return queryAdvertisements.OrderByDescending(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, a.Latitude, a.Longitude));
-				case SortingBy.sortByLowestPrice:
-					return queryAdvertisements.OrderBy(a => a.Price);
-				case SortingBy.sortByHighestPrice:
-					return queryAdvertisements.OrderByDescending(a => a.Price);
-				case SortingBy.sortByNewest:
-					return queryAdvertisements.OrderByDescending(a => a.CreationDate);
-				default:
-					return queryAdvertisements;
-			}
-		}
+
 
 		public async Task<IEnumerable<AdvertisementItemShort>> GetUserAdvertisements(string userId, int pageNumber)
 		{
@@ -235,6 +244,25 @@ namespace MobileSecondHand.API.Services.Advertisement
 			this.advertisementItemDbService.SaveUserFavouriteAdvertisement(favouriteAdvertisement);
 
 			return true;
+		}
+
+		private IQueryable<AdvertisementItem> SortQuery(IQueryable<AdvertisementItem> queryAdvertisements, AdvertisementsSearchModel searchModel)
+		{
+			switch (searchModel.SortingBy)
+			{
+				case SortingBy.sortByNearest:
+					return queryAdvertisements.OrderBy(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, a.Latitude, a.Longitude));
+				case SortingBy.sortByFarthest:
+					return queryAdvertisements.OrderByDescending(a => this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(searchModel.CoordinatesModel.Latitude, searchModel.CoordinatesModel.Longitude, a.Latitude, a.Longitude));
+				case SortingBy.sortByLowestPrice:
+					return queryAdvertisements.OrderBy(a => a.Price);
+				case SortingBy.sortByHighestPrice:
+					return queryAdvertisements.OrderByDescending(a => a.Price);
+				case SortingBy.sortByNewest:
+					return queryAdvertisements.OrderByDescending(a => a.CreationDate);
+				default:
+					return queryAdvertisements;
+			}
 		}
 
 		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb)

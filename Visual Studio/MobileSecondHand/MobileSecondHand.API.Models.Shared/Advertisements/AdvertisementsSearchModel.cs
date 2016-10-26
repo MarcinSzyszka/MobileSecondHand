@@ -8,7 +8,10 @@ namespace MobileSecondHand.API.Models.Shared.Advertisements
 {
 	public class AdvertisementsSearchModel
 	{
+		public TransactionKind TransactionKind { get; set; } = TransactionKind.All;
+		public bool ExpiredAdvertisements { get; set; }
 		public SortingBy SortingBy { get; set; } = SortingBy.sortByNearest;
+		public List<ClothSize> Sizes { get; set; } = new List<ClothSize>();
 		public IDictionary<int, string> CategoriesModel { get; set; } = new Dictionary<int, string>();
 		public AdvertisementsKind AdvertisementsKind { get; set; }
 		public CoordinatesForAdvertisementsModel CoordinatesModel { get; set; } = new CoordinatesForAdvertisementsModel();
