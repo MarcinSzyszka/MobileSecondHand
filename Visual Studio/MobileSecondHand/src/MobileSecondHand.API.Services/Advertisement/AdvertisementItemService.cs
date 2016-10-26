@@ -108,8 +108,12 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 		private IQueryable<AdvertisementItem> FilterResultBySearchModelOptions(AdvertisementsSearchModel searchModel, IQueryable<AdvertisementItem> queryAdvertisements)
 		{
-			//---------IfNotExpiredExpired-------------------
-			if (!searchModel.ExpiredAdvertisements)
+			//---------ExpiredStatus-------------------
+			if (searchModel.ExpiredAdvertisements)
+			{
+				queryAdvertisements = queryAdvertisements.Where(a => a.ExpirationDate <= DateTime.Now);
+			}
+			else
 			{
 				queryAdvertisements = queryAdvertisements.Where(a => a.ExpirationDate >= DateTime.Now);
 			}
