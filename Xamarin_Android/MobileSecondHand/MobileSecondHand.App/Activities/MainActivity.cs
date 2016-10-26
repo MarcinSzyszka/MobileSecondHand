@@ -49,10 +49,13 @@ namespace MobileSecondHand.App
 		private TextView textViewSelectedUser;
 		private TextView textViewSelectedSorting;
 		private TextView textViewSelectedSize;
+		private TextView textViewSelectedAdvertsStatus;
+		private TextView textViewSelectedTransactionKind;
 		private IMenu menu;
 		private SizeSelectingHelper sizeSelectingHelper;
 		private ImageView btnSize;
-
+		string activeStatus = "Trwaj¹ce";
+		string expiredStatus = "Zakoñczone";
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -99,6 +102,8 @@ namespace MobileSecondHand.App
 			SetupSelectedMaxDistanceView();
 			SetupSelectedSortingByView();
 			SetupSelectedSizesView();
+			SetupSelectedAdvertStatus();
+			SetupSelectedTransactionKind();
 		}
 
 		private void SetupSelectedMaxDistanceView()
@@ -161,7 +166,7 @@ namespace MobileSecondHand.App
 			if (menu != null)
 			{
 				this.menu = menu;
-				menu.FindItem(Resource.Id.home).SetVisible(true);
+				menu.FindItem(Resource.Id.home).SetVisible(false);
 				SetAppBarOptions(false);
 			}
 
@@ -261,6 +266,34 @@ namespace MobileSecondHand.App
 		private void SetSortingOptionsLayout()
 		{
 			sortingOptionsLayout = FindViewById<NestedScrollView>(Resource.Id.layoutSortingOptions);
+
+			textViewSelectedTransactionKind = FindViewById<TextView>(Resource.Id.textViewSelectedTransactionKind);
+			var btnTransaction = FindViewById<ImageView>(Resource.Id.btnSelectTransactionKind);
+			btnTransaction.Click += (s, e) =>
+			{
+				Action<string> action = (transactionKindName) =>
+				{
+					var selectedKind = transactionKindName.GetEnumValueByDisplayName<TransactionKind>();
+					this.advertisementsSearchModel.TransactionKind = selectedKind;
+					SetupSelectedTransactionKind();
+				};
+				var transactionKindsNames = Enum.GetValues(typeof(TransactionKind)).GetAllItemsDisplayNames();
+				AlertsService.ShowSingleSelectListString(this, transactionKindsNames.ToArray(), action, this.textViewSelectedTransactionKind.Text);
+			};
+
+			textViewSelectedAdvertsStatus = FindViewById<TextView>(Resource.Id.textViewSelectedAdvertsStatus);
+			var btnAdvertsStatus = FindViewById<ImageView>(Resource.Id.btnSelectAdvertsStatus);
+			btnAdvertsStatus.Click += (s, e) =>
+			{
+				Action<string> action = (status) =>
+				{
+					this.advertisementsSearchModel.ExpiredAdvertisements = status == expiredStatus ? true : false;
+					SetupSelectedAdvertStatus();
+				};
+				var statuses = new string[] { activeStatus, expiredStatus };
+				AlertsService.ShowSingleSelectListString(this, statuses, action, this.textViewSelectedAdvertsStatus.Text);
+			};
+
 			var btnSelectCategories = FindViewById<ImageView>(Resource.Id.btnSelectCategoryForMainList);
 			this.textViewSelectCategories = FindViewById<TextView>(Resource.Id.textViewSelectedCategoryForMainList);
 
@@ -502,6 +535,7 @@ namespace MobileSecondHand.App
 			this.advertisementsSearchModel.UserInfo = null;
 			this.advertisementsSearchModel.CoordinatesModel.MaxDistance = ValueConsts.MAX_DISTANCE_VALUE;
 			this.advertisementsSearchModel.SortingBy = SortingBy.sortByNearest;
+			this.advertisementsSearchModel.ExpiredAdvertisements = false;
 		}
 
 		private void SetupSelectedSortingByView()
@@ -525,6 +559,16 @@ namespace MobileSecondHand.App
 			}
 		}
 
+
+		public void SetupSelectedTransactionKind()
+		{
+			this.textViewSelectedTransactionKind.Text = this.advertisementsSearchModel.TransactionKind.GetDisplayName();
+		}
+		public void SetupSelectedAdvertStatus()
+		{
+			this.textViewSelectedAdvertsStatus.Text = this.advertisementsSearchModel.ExpiredAdvertisements ? expiredStatus : activeStatus;
+		}
+
 		private async void ApplyFilterOptions()
 		{
 			TogleLayouts();
@@ -536,6 +580,18 @@ namespace MobileSecondHand.App
 		{
 			var optionsSelected = false;
 			if (this.advertisementsSearchModel.CategoriesModel.Count > 0)
+			{
+				optionsSelected = true;
+			}
+			if (this.advertisementsSearchModel.Sizes.Count > 0)
+			{
+				optionsSelected = true;
+			}
+			if (this.advertisementsSearchModel.ExpiredAdvertisements == true)
+			{
+				optionsSelected = true;
+			}
+			if (this.advertisementsSearchModel.TransactionKind != TransactionKind.All)
 			{
 				optionsSelected = true;
 			}
