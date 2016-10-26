@@ -8,7 +8,7 @@ namespace MobileSecondHand.API.Models.Shared.Enumerations
 {
 	public class DisplayNameAttribute : Attribute
 	{
-		internal DisplayNameAttribute(string displayName)
+		public DisplayNameAttribute(string displayName)
 		{
 			this.DisplayName = displayName;
 		}

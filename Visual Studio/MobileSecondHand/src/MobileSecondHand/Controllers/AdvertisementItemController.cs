@@ -105,6 +105,26 @@ namespace MobileSecondHand.Controllers
 		}
 
 		[HttpPost]
+		[Route("RestartAdvertisement")]
+		public IActionResult RestartAdvertisement([FromBody]int advertisementId)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				bool success = this.advertisementItemService.RestartAdvertisement(advertisementId, userId);
+				return Json(success);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie restartowania ogłoszenia: " + exc);
+				return Json(false);
+			}
+		}
+
+		
+
+		[HttpPost]
 		[Route("DeleteAdvertisementFromFavourites")]
 		public IActionResult DeleteAdvertisementFromFavourites([FromBody]int advertisementId)
 		{

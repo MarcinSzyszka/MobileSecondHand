@@ -14,5 +14,6 @@ namespace MobileSecondHand.API.Services.Advertisement
 		bool DeleteAdvertisement(int advertisementId, string userId);
 		bool AddToUserFavourites(string userId, int advertisementId);
 		bool DeleteAdvertisementFromFavourites(int advertisementId, string userId);
+		bool RestartAdvertisement(int advertisementId, string userId);
 	}
 }

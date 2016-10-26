@@ -54,7 +54,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				Price = newAdvertisementModel.AdvertisementPrice,
 				IsActive = true,
 				CreationDate = DateTime.Now,
-				ExpirationDate = DateTime.Now.AddDays(7),
+				ExpirationDate = GetExpirationDate(),
 				Latitude = newAdvertisementModel.Latitude,
 				Longitude = newAdvertisementModel.Longitude,
 				IsOnlyForSell = newAdvertisementModel.IsOnlyForSell,
@@ -79,6 +79,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
+
 
 		public async Task<IEnumerable<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel, string userId)
 		{
@@ -195,6 +196,26 @@ namespace MobileSecondHand.API.Services.Advertisement
 			}
 
 			return advertisementDetailsViewModel;
+		}
+
+		public bool RestartAdvertisement(int advertisementId, string userId)
+		{
+			AdvertisementItem advertisement = this.advertisementItemDbService.GetById(advertisementId);
+			if (advertisement == null)
+			{
+				throw new Exception("Nie znaleziono ogłoszenia o podanym ID");
+			}
+
+			if (advertisement.UserId != userId)
+			{
+				throw new Exception("Próba restartu ogłoszenia przez nieuprawnionego usera");
+			}
+
+			advertisement.ExpirationDate = GetExpirationDate();
+
+			this.advertisementItemDbService.SaveAdvertisementItem(advertisement);
+
+			return true;
 		}
 
 		public bool DeleteAdvertisement(int advertisementId, string userId)
@@ -317,6 +338,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				}
 				viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(dbModel.UserId);
 				viewModel.IsOnlyForSell = dbModel.IsOnlyForSell;
+				viewModel.IsExpired = dbModel.ExpirationDate < DateTime.Now;
 				viewModelsList.Add(viewModel);
 			}
 
@@ -336,6 +358,11 @@ namespace MobileSecondHand.API.Services.Advertisement
 			}
 
 			return photosDbModelsList;
+		}
+
+		private DateTime GetExpirationDate()
+		{
+			return DateTime.Now.AddDays(14);
 		}
 
 	}
