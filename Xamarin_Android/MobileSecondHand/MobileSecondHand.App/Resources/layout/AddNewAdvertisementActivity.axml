@@ -7,417 +7,410 @@
     android:minWidth="25px"
     android:minHeight="25px"
     android:fitsSystemWindows="true">
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:id="@+id/addNewAdvertisementScrollView">
-        <LinearLayout
-            android:orientation="vertical"
+        android:layout_height="wrap_content">
+        <include
+            layout="@layout/appbar"
+            android:layout_gravity="top"
+            android:layout_alignParentTop="true" />
+        <android.support.v4.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-            <include
-                layout="@layout/appbar"
-                android:layout_gravity="top"
-                android:layout_alignParentTop="true" />
+            android:layout_height="match_parent"
+            android:id="@+id/addNewAdvertisementScrollView"
+            android:layout_below="@+id/app_bar">
             <RelativeLayout
-                android:id="@+id/relativeLayout4"
+                android:id="@+id/relativeLayoutInNestedScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
-                <TextView
-                    android:id="@+id/textView4"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentStart="false"
-                    android:layout_alignParentTop="false"
-                    android:layout_centerHorizontal="true"
-                    android:text="Tytuł zawierający nazwę, rozmiar i kolor"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:textAlignment="center"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:background="@color/headerBackground"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
-                <EditText
-                    android:id="@+id/editTextTitle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentBottom="false"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_alignParentTop="false"
-                    android:layout_alignWithParentIfMissing="false"
-                    android:layout_below="@+id/textView4"
-                    android:ems="10"
-                    android:hint="np. Czerwona sukienka rozm. 40"
-                    android:inputType="textMultiLine"
-                    android:textAlignment="center"
-                    android:layout_marginLeft="@dimen/settingRowMargin"
-                    android:layout_marginRight="@dimen/settingRowMargin"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <TextView
-                    android:id="@+id/textView6"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentStart="false"
-                    android:layout_below="@+id/editTextTitle"
-                    android:layout_centerHorizontal="true"
-                    android:text="Dodatkowe informacje o przedmiocie"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:textAlignment="center"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    style="@drawable/setting_header"
-                    android:background="@color/headerBackground"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
-                <EditText
-                    android:id="@+id/editTextDescription"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_alignParentLeft="true"
-                    android:layout_alignParentRight="true"
-                    android:layout_alignParentStart="true"
-                    android:layout_below="@+id/textView6"
-                    android:ems="10"
-                    android:hint="np. Tylko przymierzona. Kupiona miesiąc temu w sklepie XYZ"
-                    android:inputType="textMultiLine"
-                    android:textAlignment="center"
-                    android:layout_marginLeft="@dimen/settingRowMargin"
-                    android:layout_marginRight="@dimen/settingRowMargin"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <TextView
-                    android:id="@+id/textView7"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentStart="false"
-                    android:layout_below="@+id/textViewSelectedSize"
-                    android:layout_centerHorizontal="true"
-                    android:text="Cena"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="center"
-                    android:background="@color/headerBackground"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp" />
-                <EditText
-                    android:id="@+id/editTextPrice"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView7"
-                    android:layout_centerHorizontal="true"
-                    android:ems="10"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:inputType="number"
-                    android:textAlignment="center"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceMedium" />
-                <TextView
-                    android:id="@+id/textViewCategoryChosing"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentLeft="false"
-                    android:layout_alignParentStart="false"
-                    android:layout_below="@+id/editTextDescription"
-                    android:layout_centerHorizontal="true"
-                    android:text="Kategoria"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="center"
-                    android:background="@color/headerBackground"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp" />
-                <TextView
-                    android:id="@+id/textViewChosedCategory"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewCategoryChosing"
-                    android:layout_centerHorizontal="true"
-                    android:text="Wybierz"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:textAlignment="center"
-                    android:gravity="center"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Rodzaj ogłoszenia"
-                    android:id="@+id/textView2"
-                    android:layout_below="@id/editTextPrice"
-                    android:layout_centerHorizontal="true"
-                    android:background="@color/headerBackground"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:gravity="center"
-                    android:layout_marginTop="@dimen/settingRowMargin"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp" />
                 <RelativeLayout
-                    android:id="@+id/relativeLayout3"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginTop="10dp">
-                    <RadioGroup
+                    android:id="@+id/relativeLayout4"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/textView4"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentStart="false"
+                        android:layout_alignParentTop="false"
+                        android:layout_centerHorizontal="true"
+                        android:text="Tytuł zawierający nazwę, rozmiar i kolor"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:background="@color/headerBackground"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp" />
+                    <EditText
+                        android:id="@+id/editTextTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_alignParentTop="true"
-                        android:layout_centerHorizontal="true">
-                        <RadioButton
-                            android:id="@+id/rdBtnOnlyForSell"
+                        android:layout_alignParentBottom="false"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_alignParentTop="false"
+                        android:layout_alignWithParentIfMissing="false"
+                        android:layout_below="@+id/textView4"
+                        android:ems="10"
+                        android:hint="np. Czerwona sukienka rozm. 40"
+                        android:inputType="textMultiLine"
+                        android:textAlignment="center"
+                        android:layout_marginLeft="@dimen/settingRowMargin"
+                        android:layout_marginRight="@dimen/settingRowMargin"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <TextView
+                        android:id="@+id/textView6"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentStart="false"
+                        android:layout_below="@+id/editTextTitle"
+                        android:layout_centerHorizontal="true"
+                        android:text="Dodatkowe informacje o przedmiocie"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        style="@drawable/setting_header"
+                        android:background="@color/headerBackground"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp" />
+                    <EditText
+                        android:id="@+id/editTextDescription"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentLeft="true"
+                        android:layout_alignParentRight="true"
+                        android:layout_alignParentStart="true"
+                        android:layout_below="@+id/textView6"
+                        android:ems="10"
+                        android:hint="np. Tylko przymierzona. Kupiona miesiąc temu w sklepie XYZ"
+                        android:inputType="textMultiLine"
+                        android:textAlignment="center"
+                        android:layout_marginLeft="@dimen/settingRowMargin"
+                        android:layout_marginRight="@dimen/settingRowMargin"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <TextView
+                        android:id="@+id/textView7"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentStart="false"
+                        android:layout_below="@+id/textViewSelectedSize"
+                        android:layout_centerHorizontal="true"
+                        android:text="Cena"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="center"
+                        android:background="@color/headerBackground"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp" />
+                    <EditText
+                        android:id="@+id/editTextPrice"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView7"
+                        android:layout_centerHorizontal="true"
+                        android:ems="10"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:inputType="number"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceMedium" />
+                    <TextView
+                        android:id="@+id/textViewCategoryChosing"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentLeft="false"
+                        android:layout_alignParentStart="false"
+                        android:layout_below="@+id/editTextDescription"
+                        android:layout_centerHorizontal="true"
+                        android:text="Kategoria"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="center"
+                        android:background="@color/headerBackground"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp" />
+                    <TextView
+                        android:id="@+id/textViewChosedCategory"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewCategoryChosing"
+                        android:layout_centerHorizontal="true"
+                        android:text="Wybierz"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:textAlignment="center"
+                        android:gravity="center"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Rodzaj ogłoszenia"
+                        android:id="@+id/textView2"
+                        android:layout_below="@id/editTextPrice"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/headerBackground"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:gravity="center"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:paddingTop="5dp"
+                        android:paddingBottom="5dp" />
+                    <RelativeLayout
+                        android:id="@+id/relativeLayout3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textView2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="10dp">
+                        <RadioGroup
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="tylko sprzedaż"
-                            android:checked="true"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-                        <RadioButton
-                            android:id="@+id/rdBtnForSellAndChange"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="sprzedaż/zamiana"
-                            android:textColor="@color/colorPrimaryDark"
-                            android:textAppearance="?android:attr/textAppearanceMedium" />
-                    </RadioGroup>
+                            android:layout_alignParentTop="true"
+                            android:layout_centerHorizontal="true">
+                            <RadioButton
+                                android:id="@+id/rdBtnOnlyForSell"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="tylko sprzedaż"
+                                android:checked="true"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+                            <RadioButton
+                                android:id="@+id/rdBtnForSellAndChange"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="sprzedaż/zamiana"
+                                android:textColor="@color/colorPrimaryDark"
+                                android:textAppearance="?android:attr/textAppearanceMedium" />
+                        </RadioGroup>
+                    </RelativeLayout>
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:text="Zdjęcia"
+                        android:id="@+id/textView8"
+                        android:layout_below="@+id/relativeLayout3"
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:gravity="center"
+                        android:background="@color/headerBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnAddSize"
+                        android:src="@drawable/settings"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/textViewSize"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp" />
+                    <TextView
+                        android:text="Rozmiar"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/textViewSize"
+                        android:layout_below="@id/textViewChosedCategory"
+                        android:background="@color/headerBackground"
+                        android:layout_centerHorizontal="true"
+                        android:gravity="center_horizontal"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_marginTop="@dimen/settingRowMargin" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/btnAddAdvCategoryChosing"
+                        android:src="@drawable/settings"
+                        android:layout_alignParentEnd="true"
+                        android:layout_below="@+id/textViewCategoryChosing"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp" />
+                    <TextView
+                        android:text="Wybierz"
+                        android:textAppearance="?android:attr/textAppearanceMedium"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/textViewSize"
+                        android:id="@+id/textViewSelectedSize"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:layout_centerHorizontal="true"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp"
+                        android:layout_marginTop="@dimen/settingRowMargin" />
+                </RelativeLayout>
+                <RelativeLayout
+                    android:id="@+id/layoutPhotos"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/relativeLayout4">
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/photoView1Divider"
+                        android:text="Zdjęcie 1 (widoczne na liście ogłoszeń)"
+                        android:layout_marginTop="@dimen/settingRowPhotoMargin"
+                        android:gravity="center"
+                        android:background="@color/headerPhotoBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp"
+                        android:paddingTop="5dp" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dodaj zdjęcie"
+                        android:id="@+id/buttonTakePicture1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_below="@+id/photoView1Divider"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceSmall" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoView1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:adjustViewBounds="true"
+                        android:layout_below="@+id/buttonTakePicture1" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/photoView2Divider"
+                        android:text="Zdjęcie 2"
+                        android:layout_below="@+id/photoView1"
+                        android:layout_marginTop="@dimen/settingRowPhotoMargin"
+                        android:gravity="center"
+                        android:background="@color/headerPhotoBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dodaj zdjęcie"
+                        android:id="@+id/buttonTakePicture2"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_below="@+id/photoView2Divider"
+                        android:visibility="gone" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoView2"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="50dp"
+                        android:layout_marginRight="50dp"
+                        android:adjustViewBounds="true"
+                        android:layout_below="@+id/buttonTakePicture2"
+                        android:visibility="gone" />
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:id="@+id/photoView3Divider"
+                        android:text="Zdjęcie 3"
+                        android:layout_below="@+id/photoView2"
+                        android:layout_marginTop="@dimen/settingRowPhotoMargin"
+                        android:gravity="center"
+                        android:background="@color/headerPhotoBackground"
+                        android:autoText="false"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:paddingBottom="5dp"
+                        android:visibility="gone" />
+                    <Button
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Dodaj zdjęcie"
+                        android:id="@+id/buttonTakePicture3"
+                        android:layout_centerHorizontal="true"
+                        android:textColor="@color/colorPrimaryDark"
+                        android:textAppearance="?android:attr/textAppearanceSmall"
+                        android:layout_below="@+id/photoView3Divider"
+                        android:enabled="false"
+                        android:visibility="gone" />
+                    <ImageView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/photoView3"
+                        android:layout_below="@+id/buttonTakePicture3"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
+                        android:adjustViewBounds="true"
+                        android:visibility="gone" />
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:text="Zdjęcia"
-                    android:id="@+id/textView8"
-                    android:layout_below="@+id/relativeLayout3"
+                    android:text="Lokalizacja"
+                    android:id="@+id/textView9"
                     android:layout_marginTop="@dimen/settingRowMargin"
-                    android:gravity="center"
                     android:background="@color/headerBackground"
-                    android:autoText="false"
                     android:textColor="@color/colorPrimaryDark"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnAddSize"
-                    android:src="@drawable/settings"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/textViewSize"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp" />
-                <TextView
-                    android:text="Rozmiar"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/textViewSize"
-                    android:layout_below="@id/textViewChosedCategory"
-                    android:background="@color/headerBackground"
-                    android:layout_centerHorizontal="true"
-                    android:gravity="center_horizontal"
+                    android:gravity="center"
                     android:paddingBottom="5dp"
                     android:paddingTop="5dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_marginTop="@dimen/settingRowMargin" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/btnAddAdvCategoryChosing"
-                    android:src="@drawable/settings"
-                    android:layout_alignParentEnd="true"
-                    android:layout_below="@+id/textViewCategoryChosing"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginTop="10dp" />
-                <TextView
-                    android:text="Wybierz"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/textViewSize"
-                    android:id="@+id/textViewSelectedSize"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:layout_centerHorizontal="true"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp"
-                    android:layout_marginTop="@dimen/settingRowMargin" />
-            </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="fill_parent"
-                android:layout_weight="2">
-                <TextView
+                    android:layout_below="@+id/layoutPhotos" />
+                <RelativeLayout
+                    android:id="@+id/layoutLocalization"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/photoView1Divider"
-                    android:text="Zdjęcie 1 (widoczne na liście ogłoszeń)"
-                    android:layout_marginTop="@dimen/settingRowPhotoMargin"
-                    android:gravity="center"
-                    android:background="@color/headerPhotoBackground"
-                    android:autoText="false"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:paddingBottom="5dp"
-                    android:paddingTop="5dp" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dodaj zdjęcie"
-                    android:id="@+id/buttonTakePicture1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_below="@+id/photoView1Divider"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceSmall" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/photoView1"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:adjustViewBounds="true"
-                    android:layout_below="@+id/buttonTakePicture1" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/photoView2Divider"
-                    android:text="Zdjęcie 2"
-                    android:layout_below="@+id/photoView1"
-                    android:layout_marginTop="@dimen/settingRowPhotoMargin"
-                    android:gravity="center"
-                    android:background="@color/headerPhotoBackground"
-                    android:autoText="false"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:paddingBottom="5dp"
-                    android:visibility="gone" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dodaj zdjęcie"
-                    android:id="@+id/buttonTakePicture2"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_below="@+id/photoView2Divider"
-                    android:visibility="gone" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/photoView2"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="50dp"
-                    android:layout_marginRight="50dp"
-                    android:adjustViewBounds="true"
-                    android:layout_below="@+id/buttonTakePicture2"
-                    android:visibility="gone" />
-                <TextView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:id="@+id/photoView3Divider"
-                    android:text="Zdjęcie 3"
-                    android:layout_below="@+id/photoView2"
-                    android:layout_marginTop="@dimen/settingRowPhotoMargin"
-                    android:gravity="center"
-                    android:background="@color/headerPhotoBackground"
-                    android:autoText="false"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:paddingBottom="5dp"
-                    android:visibility="gone" />
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Dodaj zdjęcie"
-                    android:id="@+id/buttonTakePicture3"
-                    android:layout_centerHorizontal="true"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceSmall"
-                    android:layout_below="@+id/photoView3Divider"
-                    android:enabled="false"
-                    android:visibility="gone" />
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:id="@+id/photoView3"
-                    android:layout_below="@+id/buttonTakePicture3"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginLeft="60dp"
-                    android:layout_marginRight="60dp"
-                    android:adjustViewBounds="true"
-                    android:visibility="gone" />
-            </RelativeLayout>
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="Lokalizacja"
-                android:id="@+id/textView9"
-                android:layout_marginTop="@dimen/settingRowMargin"
-                android:background="@color/headerBackground"
-                android:textColor="@color/colorPrimaryDark"
-                android:gravity="center"
-                android:paddingBottom="5dp"
-                android:paddingTop="5dp" />
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:layout_marginTop="10dp">
-                <RadioGroup
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true">
-                    <RadioButton
+                    android:layout_below="@+id/textView9"
+                    android:layout_marginTop="10dp">
+                    <RadioGroup
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Użyj mojej bieżącej lokalizacji"
-                        android:id="@+id/radioButton3"
-                        android:checked="true"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-                    <RadioButton
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Użyj mojej domowej lokalizacji"
-                        android:id="@+id/radioButton4"
-                        android:textColor="@color/colorPrimaryDark"
-                        android:textAppearance="?android:attr/textAppearanceMedium" />
-                </RadioGroup>
+                        android:layout_centerInParent="true">
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Użyj mojej bieżącej lokalizacji"
+                            android:id="@+id/radioButton3"
+                            android:checked="true"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                        <RadioButton
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Użyj mojej domowej lokalizacji"
+                            android:id="@+id/radioButton4"
+                            android:textColor="@color/colorPrimaryDark"
+                            android:textAppearance="?android:attr/textAppearanceMedium" />
+                    </RadioGroup>
+                </RelativeLayout>
             </RelativeLayout>
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_marginTop="15dp">
-                <Button
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Opublikuj"
-                    android:id="@+id/buttonPublishAdvertisemenetItem"
-                    android:layout_centerHorizontal="true"
-                    android:layout_marginBottom="15dp"
-                    android:textColor="@color/colorPrimaryDark"
-                    android:textAppearance="?android:attr/textAppearanceMedium"
-                    android:textStyle="bold" />
-            </RelativeLayout>
-        </LinearLayout>
-    </ScrollView>
+        </android.support.v4.widget.NestedScrollView>
+    </RelativeLayout>
 </FrameLayout>

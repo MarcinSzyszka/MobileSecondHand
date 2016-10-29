@@ -45,7 +45,6 @@ namespace MobileSecondHand.App.Activities
 		private string keyPhotoIsTakingValue = "keyPhotoIsTakingValue";
 		private string keySelectedCategory = "keySelectedCategory";
 		private string keySelectedSize = "keySelectedSize";
-		private Button buttonPublishAdvertisement;
 		private View focusView;
 		IAdvertisementItemService advertisementItemService;
 		private ImageView mPhotoView1;
@@ -64,6 +63,7 @@ namespace MobileSecondHand.App.Activities
 		private TextView photoDivider3;
 		CategoryInfoModel categoryInfoModel;
 		private ClothSize size;
+		private Action CreateAdvertMenuItemClicked;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -110,12 +110,12 @@ namespace MobileSecondHand.App.Activities
 			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
 			if (menu != null)
 			{
-				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
+				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(true);
 				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
 				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
-				menu.FindItem(Resource.Id.chat).SetVisible(true);
+				menu.FindItem(Resource.Id.chat).SetVisible(false);
 				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
-				menu.FindItem(Resource.Id.home).SetVisible(true);
+				menu.FindItem(Resource.Id.home).SetVisible(false);
 			}
 
 			return base.OnCreateOptionsMenu(menu);
@@ -126,12 +126,8 @@ namespace MobileSecondHand.App.Activities
 			var handled = false;
 			switch (item.ItemId)
 			{
-				case Resource.Id.home:
-					GoToMainPage();
-					handled = true;
-					break;
-				case Resource.Id.chat:
-					GoToChat();
+				case Resource.Id.applyFilterOptions:
+					CreateAdvertMenuItemClicked();
 					handled = true;
 					break;
 			}
@@ -237,6 +233,10 @@ namespace MobileSecondHand.App.Activities
 
 		private void SetupViews()
 		{
+			this.CreateAdvertMenuItemClicked = async () =>
+			{
+				await CreateAdvertisement();
+			};
 			rdBtnOnlyForSell = (RadioButton)FindViewById(Resource.Id.rdBtnOnlyForSell);
 			progress = new ProgressDialogHelper(this);
 			advertisementTitle = (EditText)FindViewById(Resource.Id.editTextTitle);
@@ -253,7 +253,6 @@ namespace MobileSecondHand.App.Activities
 			mPhotoView3 = (ImageView)FindViewById(Resource.Id.photoView3);
 			mButtonTakePicture3 = (Button)FindViewById(Resource.Id.buttonTakePicture3);
 			mButtonTakePicture3.Tag = 3;
-			buttonPublishAdvertisement = FindViewById<Button>(Resource.Id.buttonPublishAdvertisemenetItem);
 
 			btnChoseCategory = (ImageView)FindViewById(Resource.Id.btnAddAdvCategoryChosing);
 			btnChoseCategory.Click += BtnChoseCategory_Click;
@@ -263,8 +262,6 @@ namespace MobileSecondHand.App.Activities
 			btnChoseSize.Click += BtnChoseSize_Click;
 			textViewChodesdSize = (TextView)FindViewById(Resource.Id.textViewSelectedSize);
 
-
-			buttonPublishAdvertisement.Click += async (s, e) => await ButtonPublishAdvertisement_Click(s, e);
 			mButtonTakePicture1.Click += MButtonTakePicture_Click;
 			mButtonTakePicture2.Click += MButtonTakePicture_Click;
 			mButtonTakePicture3.Click += MButtonTakePicture_Click;
@@ -305,7 +302,7 @@ namespace MobileSecondHand.App.Activities
 			};
 		}
 
-		private async Task ButtonPublishAdvertisement_Click(object sender, EventArgs e)
+		private async Task CreateAdvertisement()
 		{
 			progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 			if (AdvertisementItemDataIsValidate())
