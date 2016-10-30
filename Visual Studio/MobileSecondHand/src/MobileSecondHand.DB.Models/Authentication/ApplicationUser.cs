@@ -52,6 +52,7 @@ namespace MobileSecondHand.DB.Models.Authentication
 		}
 
 		public bool UserNameIsSetByHimself { get; set; }
+		public string UserProfilePhotoName { get; set; }
 		public List<UserToFavouriteAdvertisement> FavouriteAdvertisementItems { get; set; } = new List<UserToFavouriteAdvertisement>();
 		public List<AdvertisementItem> AdvertisementItems { get; set; } = new List<AdvertisementItem>();
 		public List<UserToConversation> Conversations { get; set; } = new List<UserToConversation>();

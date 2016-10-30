@@ -7,6 +7,7 @@ using MobileSecondHand.API.Models.CustomResponsesModels;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using MobileSecondHand.API.Models.Shared.Security;
+using Microsoft.Extensions.Logging;
 
 namespace MobileSecondHand.Controllers
 {
@@ -15,11 +16,13 @@ namespace MobileSecondHand.Controllers
 	{
 		IApplicationSignInManager applicationSignInManager;
 		IIdentityService identityService;
+		private ILogger logger;
 
-		public WebApiAccountController(IApplicationSignInManager applicationSignInManager, IIdentityService identityService)
+		public WebApiAccountController(IApplicationSignInManager applicationSignInManager, IIdentityService identityService, ILoggerFactory loggerFactory)
 		{
 			this.applicationSignInManager = applicationSignInManager;
 			this.identityService = identityService;
+			this.logger = loggerFactory.CreateLogger<AdvertisementItemController>(); ;
 		}
 
 		[HttpPost]
@@ -107,6 +110,25 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
+			}
+		}
+
+		[HttpPost("UploadUserProfilePhoto")]
+		[Authorize("Bearer")]
+		public async Task<IActionResult> UploadUserProfilePhoto()
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				var result = await this.applicationSignInManager.SaveUserProfilePhoto(userId, Request.Form.Files);
+
+				return Json("ok");
+			}
+			catch (Exception exc)
+			{
+				this.logger.LogError("Wystąpił błąd podczas uploadu profilowego zdjęcia usera :" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}

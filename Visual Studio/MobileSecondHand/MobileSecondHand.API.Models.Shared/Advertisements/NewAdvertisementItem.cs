@@ -14,6 +14,6 @@ namespace MobileSecondHand.API.Models.Shared.Advertisements
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
 		public CategoryInfoModel Category { get; set; }
-		public List<string> PhotosPaths { get; set; }
+		public List<string> PhotosNames { get; set; }
 	}
 }

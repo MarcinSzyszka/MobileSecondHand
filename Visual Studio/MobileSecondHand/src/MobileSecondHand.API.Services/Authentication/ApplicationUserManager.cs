@@ -55,6 +55,11 @@ namespace MobileSecondHand.API.Services.Authentication
 			return userManager.SetUserNameAsync(user, nickName);
 		}
 
+		public async Task<IdentityResult> UpdateUserMdel(ApplicationUser user)
+		{
+			return await userManager.UpdateAsync(user);
+		}
+
 		public IQueryable<ApplicationUser> GetAllUsers()
 		{
 			return userManager.Users;

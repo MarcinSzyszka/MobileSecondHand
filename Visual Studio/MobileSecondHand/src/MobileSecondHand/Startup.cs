@@ -13,10 +13,12 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using MobileSecondHand.API.Models.Config;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.Configuration;
 using MobileSecondHand.COMMON;
 using MobileSecondHand.COMMON.Configuration;
+using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Advertisement;
 using MobileSecondHand.DB.Services;
 using MobileSecondHand.DB.Services.Configuration;
@@ -73,6 +75,9 @@ namespace MobileSecondHand
 					.AddAuthenticationSchemes(JwtBearerDefaults.AuthenticationScheme‌​)
 					.RequireAuthenticatedUser().Build());
 			});
+			var appConfig = new AppConfiguration();
+			appConfig.FileRepositoryPath = Configuration.GetSection("FileRepository")["Path"];
+			services.AddSingleton<AppConfiguration>(appConfig);
 			DbServicesBootstrapper.RegisterServices(services);
 			ApiServicesBootstrapper.RegisterServices(services);
 			CommonServicesBootstrapper.RegisterServices(services);

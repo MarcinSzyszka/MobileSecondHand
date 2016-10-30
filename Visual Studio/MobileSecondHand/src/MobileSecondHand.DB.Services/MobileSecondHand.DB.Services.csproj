@@ -211,7 +211,6 @@
     <Compile Include="Chat\ConversationDbService.cs" />
     <Compile Include="Chat\IConversationDbService.cs" />
     <Compile Include="IMobileSecondHandContextOptions.cs" />
-    <Compile Include="MobileSecondHandContext.cs" />
     <Compile Include="MobileSecondHandContextOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

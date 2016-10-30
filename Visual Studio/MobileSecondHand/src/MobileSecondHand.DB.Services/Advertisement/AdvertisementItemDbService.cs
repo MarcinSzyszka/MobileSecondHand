@@ -4,6 +4,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using MobileSecondHand.COMMON.CoordinatesHelpers;
 using MobileSecondHand.COMMON.Models;
+using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Advertisement;
 
 namespace MobileSecondHand.DB.Services.Advertisement

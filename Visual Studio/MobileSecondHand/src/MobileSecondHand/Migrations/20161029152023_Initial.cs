@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore.Metadata;
 
 namespace MobileSecondHand.Migrations
 {
-    public partial class initialMigration : Migration
+    public partial class Initial : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
@@ -38,6 +38,58 @@ namespace MobileSecondHand.Migrations
                 });
 
             migrationBuilder.CreateTable(
+                name: "Category",
+                columns: table => new
+                {
+                    Id = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    Name = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Category", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "AspNetUsers",
+                columns: table => new
+                {
+                    Id = table.Column<string>(nullable: false),
+                    AccessFailedCount = table.Column<int>(nullable: false),
+                    ConcurrencyStamp = table.Column<string>(nullable: true),
+                    Email = table.Column<string>(maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(nullable: false),
+                    LockoutEnabled = table.Column<bool>(nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
+                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
+                    PasswordHash = table.Column<string>(nullable: true),
+                    PhoneNumber = table.Column<string>(nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
+                    SecurityStamp = table.Column<string>(nullable: true),
+                    TwoFactorEnabled = table.Column<bool>(nullable: false),
+                    UserName = table.Column<string>(maxLength: 256, nullable: true),
+                    UserNameIsSetByHimself = table.Column<bool>(nullable: false),
+                    UserProfilePhotoName = table.Column<string>(nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Conversation",
+                columns: table => new
+                {
+                    ConversationId = table.Column<int>(nullable: false)
+                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Conversation", x => x.ConversationId);
+                });
+
+            migrationBuilder.CreateTable(
                 name: "CategoryKeyword",
                 columns: table => new
                 {
@@ -61,43 +113,6 @@ namespace MobileSecondHand.Migrations
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_ColorKeyword", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "AspNetUsers",
-                columns: table => new
-                {
-                    Id = table.Column<string>(nullable: false),
-                    AccessFailedCount = table.Column<int>(nullable: false),
-                    ConcurrencyStamp = table.Column<string>(nullable: true),
-                    Email = table.Column<string>(maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(nullable: false),
-                    LockoutEnabled = table.Column<bool>(nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(nullable: true),
-                    NormalizedEmail = table.Column<string>(maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(maxLength: 256, nullable: true),
-                    PasswordHash = table.Column<string>(nullable: true),
-                    PhoneNumber = table.Column<string>(nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(nullable: false),
-                    SecurityStamp = table.Column<string>(nullable: true),
-                    TwoFactorEnabled = table.Column<bool>(nullable: false),
-                    UserName = table.Column<string>(maxLength: 256, nullable: true)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_AspNetUsers", x => x.Id);
-                });
-
-            migrationBuilder.CreateTable(
-                name: "Conversation",
-                columns: table => new
-                {
-                    ConversationId = table.Column<int>(nullable: false)
-                        .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn)
-                },
-                constraints: table =>
-                {
-                    table.PrimaryKey("PK_Conversation", x => x.ConversationId);
                 });
 
             migrationBuilder.CreateTable(
@@ -192,6 +207,7 @@ namespace MobileSecondHand.Migrations
                 {
                     Id = table.Column<int>(nullable: false)
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
+                    CategoryId = table.Column<int>(nullable: false),
                     CreationDate = table.Column<DateTime>(nullable: false),
                     Description = table.Column<string>(nullable: true),
                     ExpirationDate = table.Column<DateTime>(nullable: true),
@@ -200,12 +216,19 @@ namespace MobileSecondHand.Migrations
                     Latitude = table.Column<double>(nullable: false),
                     Longitude = table.Column<double>(nullable: false),
                     Price = table.Column<int>(nullable: false),
+                    Size = table.Column<int>(nullable: false),
                     Title = table.Column<string>(nullable: true),
                     UserId = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_AdvertisementItem", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_AdvertisementItem_Category_CategoryId",
+                        column: x => x.CategoryId,
+                        principalTable: "Category",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
                         name: "FK_AdvertisementItem_AspNetUsers_UserId",
                         column: x => x.UserId,
@@ -223,7 +246,8 @@ namespace MobileSecondHand.Migrations
                     AuthorId = table.Column<string>(nullable: true),
                     Content = table.Column<string>(nullable: true),
                     ConversationId = table.Column<int>(nullable: false),
-                    Date = table.Column<DateTime>(nullable: false)
+                    Date = table.Column<DateTime>(nullable: false),
+                    Received = table.Column<bool>(nullable: false)
                 },
                 constraints: table =>
                 {
@@ -274,7 +298,7 @@ namespace MobileSecondHand.Migrations
                         .Annotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn),
                     AdvertisementItemId = table.Column<int>(nullable: false),
                     IsMainPhoto = table.Column<bool>(nullable: false),
-                    PhotoPath = table.Column<string>(nullable: true)
+                    PhotoName = table.Column<string>(nullable: true)
                 },
                 constraints: table =>
                 {
@@ -335,6 +359,30 @@ namespace MobileSecondHand.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
+            migrationBuilder.CreateTable(
+                name: "UserToFavouriteAdvertisement",
+                columns: table => new
+                {
+                    ApplicationUserId = table.Column<string>(nullable: false),
+                    AdvertisementItemId = table.Column<int>(nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_UserToFavouriteAdvertisement", x => new { x.ApplicationUserId, x.AdvertisementItemId });
+                    table.ForeignKey(
+                        name: "FK_UserToFavouriteAdvertisement_AdvertisementItem_AdvertisementItemId",
+                        column: x => x.AdvertisementItemId,
+                        principalTable: "AdvertisementItem",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_UserToFavouriteAdvertisement_AspNetUsers_ApplicationUserId",
+                        column: x => x.ApplicationUserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Cascade);
+                });
+
             migrationBuilder.CreateIndex(
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
@@ -366,6 +414,11 @@ namespace MobileSecondHand.Migrations
                 column: "UserId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_AdvertisementItem_CategoryId",
+                table: "AdvertisementItem",
+                column: "CategoryId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_AdvertisementItem_UserId",
                 table: "AdvertisementItem",
                 column: "UserId");
@@ -394,6 +447,16 @@ namespace MobileSecondHand.Migrations
                 name: "IX_ColorKeywordToAdvertisement_ColorKeywordId",
                 table: "ColorKeywordToAdvertisement",
                 column: "ColorKeywordId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserToFavouriteAdvertisement_AdvertisementItemId",
+                table: "UserToFavouriteAdvertisement",
+                column: "AdvertisementItemId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_UserToFavouriteAdvertisement_ApplicationUserId",
+                table: "UserToFavouriteAdvertisement",
+                column: "ApplicationUserId");
 
             migrationBuilder.CreateIndex(
                 name: "EmailIndex",
@@ -454,6 +517,9 @@ namespace MobileSecondHand.Migrations
                 name: "ColorKeywordToAdvertisement");
 
             migrationBuilder.DropTable(
+                name: "UserToFavouriteAdvertisement");
+
+            migrationBuilder.DropTable(
                 name: "ChatMessage");
 
             migrationBuilder.DropTable(
@@ -466,13 +532,16 @@ namespace MobileSecondHand.Migrations
                 name: "CategoryKeyword");
 
             migrationBuilder.DropTable(
-                name: "AdvertisementItem");
-
-            migrationBuilder.DropTable(
                 name: "ColorKeyword");
 
             migrationBuilder.DropTable(
+                name: "AdvertisementItem");
+
+            migrationBuilder.DropTable(
                 name: "Conversation");
+
+            migrationBuilder.DropTable(
+                name: "Category");
 
             migrationBuilder.DropTable(
                 name: "AspNetUsers");

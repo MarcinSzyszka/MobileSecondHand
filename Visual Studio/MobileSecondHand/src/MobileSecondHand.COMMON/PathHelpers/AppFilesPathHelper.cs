@@ -3,30 +3,60 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Config;
 
-namespace MobileSecondHand.COMMON.PathHelpers {
-	public class AppFilesPathHelper : IAppFilesPathHelper {
-		const string ADVERTISEMENT_PHOTOS_MAIN_PATH = @"./wwwroot/images/advertisementItem/" + PHOTOS_DIRECTORY_NAME;
-		public const string ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH = ADVERTISEMENT_PHOTOS_MAIN_PATH + "/" + MIN_PHOTOS_DIRECTORY_NAME;
-		const string MIN_PHOTOS_DIRECTORY_NAME = "min";
-		const string PHOTOS_DIRECTORY_NAME = "photos";
-
-		public string GetAdvertisementPhotosMainPath() {
-			CreateDirectoryIfNotExists(ADVERTISEMENT_PHOTOS_MAIN_PATH);
-			return ADVERTISEMENT_PHOTOS_MAIN_PATH;
+namespace MobileSecondHand.COMMON.PathHelpers
+{
+	public class AppFilesPathHelper : IAppFilesPathHelper
+	{
+		private AppConfiguration config;
+		string UserProfilePhotosDirectory
+		{
+			get
+			{
+				return Path.Combine(this.config.FileRepositoryPath, "UserProfilesPhotos");
+			}
 		}
-		public string GetAdvertisementMinPhotosMainPath() {
-			CreateDirectoryIfNotExists(ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH);
-			return ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH;
+		string AdvertisementPhotosDirectory
+		{
+			get
+			{
+				return Path.Combine(this.config.FileRepositoryPath, "AdvertisementsPhotos");
+			}
+		}
+		string AdvertisemenPhotosMinDirectory
+		{
+			get
+			{
+				return Path.Combine(this.config.FileRepositoryPath, "AdvertisementsPhotosMin");
+			}
+		}
+	
+
+		public AppFilesPathHelper(AppConfiguration appConfig)
+		{
+			this.config = appConfig;
+		}
+		public string GetAdvertisementMainPhotosPath()
+		{
+			CreateDirectoryIfNotExists(AdvertisementPhotosDirectory);
+			return AdvertisementPhotosDirectory;
+		}
+		public string GetAdvertisementMinPhotosMainPath()
+		{
+			CreateDirectoryIfNotExists(AdvertisemenPhotosMinDirectory);
+			return AdvertisemenPhotosMinDirectory;
+		}
+		public string GetUsersProfilesPhotosMainPath()
+		{
+			CreateDirectoryIfNotExists(UserProfilePhotosDirectory);
+			return UserProfilePhotosDirectory;
 		}
 
-		public bool IsMiniaturePhotoDirectory(string path) {
-			var photoDirectory = Path.GetDirectoryName(path);
-			return photoDirectory.Replace('\\', '/') == ADVERTISEMENT_MIN_PHOTOS_MAIN_PATH;
-		}
-
-		private void CreateDirectoryIfNotExists(string path) {
-			if (!Directory.Exists(path)) {
+		private void CreateDirectoryIfNotExists(string path)
+		{
+			if (!Directory.Exists(path))
+			{
 				Directory.CreateDirectory(path);
 			}
 		}

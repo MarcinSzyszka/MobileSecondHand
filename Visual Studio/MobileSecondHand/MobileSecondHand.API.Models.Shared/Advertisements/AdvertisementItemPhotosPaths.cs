@@ -5,12 +5,12 @@ using System.Threading.Tasks;
 
 namespace MobileSecondHand.API.Models.Shared.Advertisements
 {
-    public class AdvertisementItemPhotosPaths
+    public class AdvertisementItemPhotosNames
     {
-		public List<string> PhotosPaths { get; set; }
+		public List<string> PhotosNames { get; set; }
 
-		public AdvertisementItemPhotosPaths() {
-			this.PhotosPaths = new List<string>();
+		public AdvertisementItemPhotosNames() {
+			this.PhotosNames = new List<string>();
 		}
 	}
 }

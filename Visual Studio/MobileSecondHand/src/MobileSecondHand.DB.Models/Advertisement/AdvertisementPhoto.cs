@@ -9,7 +9,7 @@ namespace MobileSecondHand.DB.Models.Advertisement
     public class AdvertisementPhoto
     {
 		public int AdvertisementPhotoId { get; set; }
-		public string PhotoPath { get; set; }
+		public string PhotoName { get; set; }
 		public bool IsMainPhoto { get; set; }
 		public int AdvertisementItemId { get; set; }
 		[ForeignKey("AdvertisementItemId")]

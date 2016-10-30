@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Models.Shared.Security;
 
@@ -14,5 +15,6 @@ namespace MobileSecondHand.API.Services.Authentication
 		Task<bool> IsUserNameSetByHimself(string userId);
 		Task<bool> SetUserName(string userId, string nickName);
 		IEnumerable<UserInfoModel> GetUserNamesModels(string userId, string partName);
+		Task<bool> SaveUserProfilePhoto(string userId, IFormFileCollection files);
 	}
 }

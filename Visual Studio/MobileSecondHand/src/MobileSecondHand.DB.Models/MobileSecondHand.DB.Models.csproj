@@ -202,6 +202,7 @@
     <Compile Include="Chat\ChatMessage.cs" />
     <Compile Include="Chat\Conversation.cs" />
     <Compile Include="Chat\UserToConversation.cs" />
+    <Compile Include="MobileSecondHandContext.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -213,6 +214,9 @@
       <Project>{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}</Project>
       <Name>MobileSecondHand.API.Models.Shared</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Migrations\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

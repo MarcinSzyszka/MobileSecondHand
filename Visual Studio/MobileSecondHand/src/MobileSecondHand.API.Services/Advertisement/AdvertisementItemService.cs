@@ -14,6 +14,7 @@ using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Consts;
+using MobileSecondHand.API.Services.Photos;
 
 namespace MobileSecondHand.API.Services.Advertisement
 {
@@ -21,14 +22,14 @@ namespace MobileSecondHand.API.Services.Advertisement
 	{
 		IAdvertisementItemDbService advertisementItemDbService;
 		ICoordinatesCalculator coordinatesCalculator;
-		IAdvertisementItemPhotosService advertisementItemPhotosService;
+		IPhotosService advertisementItemPhotosService;
 		IAppFilesPathHelper appFilesPathHelper;
 		IKeywordsService keywordsService;
 		IChatHubCacheService chatHubCacheService;
 		ILastUsersChecksCacheService lastUsersChecksCacheService;
 		const int ITEMS_PER_REQUEST = 20;
 
-		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IAdvertisementItemPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService, ILastUsersChecksCacheService lastUsersChecksCacheService)
+		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService, ILastUsersChecksCacheService lastUsersChecksCacheService)
 		{
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
@@ -59,7 +60,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				Longitude = newAdvertisementModel.Longitude,
 				IsOnlyForSell = newAdvertisementModel.IsOnlyForSell,
 				CategoryId = newAdvertisementModel.Category.Id,
-				AdvertisementPhotos = CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosPaths)
+				AdvertisementPhotos = CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosNames)
 			};
 
 			foreach (var category in categoryKeywords)
@@ -311,7 +312,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			var photosList = new List<byte[]>();
 			foreach (var photo in photos)
 			{
-				photosList.Add(await this.advertisementItemPhotosService.GetPhotoInBytes(photo.PhotoPath));
+				photosList.Add(await this.advertisementItemPhotosService.GetAdvertisementMainPhotoInBytes(photo.PhotoName));
 			}
 
 			return photosList;
@@ -327,7 +328,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				viewModel.Size = dbModel.Size;
 				viewModel.AdvertisementTitle = dbModel.Title;
 				viewModel.AdvertisementPrice = dbModel.Price;
-				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoPath);
+				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetAdvertisementMinPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoName);
 				if (coordinatesModel != null)
 				{
 					viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
@@ -345,15 +346,14 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return viewModelsList;
 		}
 
-		private List<AdvertisementPhoto> CreateAdvertisementPhotosModels(IEnumerable<string> advertisementPhotosPaths)
+		private List<AdvertisementPhoto> CreateAdvertisementPhotosModels(IEnumerable<string> advertisementPhotosNames)
 		{
 			var photosDbModelsList = new List<AdvertisementPhoto>();
-			foreach (var photoPath in advertisementPhotosPaths)
+			foreach (var photoName in advertisementPhotosNames)
 			{
 				var model = new AdvertisementPhoto();
-				model.PhotoPath = photoPath;
-				var a = Path.GetDirectoryName(photoPath);
-				model.IsMainPhoto = this.appFilesPathHelper.IsMiniaturePhotoDirectory(photoPath);
+				model.PhotoName = photoName;
+				model.IsMainPhoto = photoName.StartsWith("mini");
 				photosDbModelsList.Add(model);
 			}
 

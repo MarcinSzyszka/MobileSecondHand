@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MobileSecondHand.COMMON;
+using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Chat;
 
 namespace MobileSecondHand.DB.Services.Chat

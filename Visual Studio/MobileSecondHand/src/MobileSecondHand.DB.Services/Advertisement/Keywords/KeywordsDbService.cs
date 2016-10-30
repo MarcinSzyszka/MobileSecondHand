@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using MobileSecondHand.DB.Models;
 using MobileSecondHand.DB.Models.Keywords;
 
 namespace MobileSecondHand.DB.Services.Advertisement.Keywords

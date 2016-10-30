@@ -5,12 +5,14 @@ using System.Linq;
 using System.Security.Claims;
 using System.Security.Principal;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.IdentityModel.Tokens;
 using MobileSecondHand.API.Models.OutsideApisModels;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.API.Services.OutsideApisManagers;
+using MobileSecondHand.API.Services.Photos;
 using MobileSecondHand.DB.Models.Authentication;
 
 namespace MobileSecondHand.API.Services.Authentication
@@ -20,13 +22,15 @@ namespace MobileSecondHand.API.Services.Authentication
 		SignInManager<ApplicationUser> signInManager;
 		IApplicationUserManager applicationUserManager;
 		IFacebookApiManager facebookApiManager;
+		IPhotosService advertisementItemPhotosUploader;
 		TokenAuthorizationOptions tokenAuthorizationOptions;
 
-		public ApplicationSignInManager(SignInManager<ApplicationUser> signInManager, IApplicationUserManager applicationUserManager, IFacebookApiManager facebookApiManager, TokenAuthorizationOptions tokenAuthorizationOptions)
+		public ApplicationSignInManager(SignInManager<ApplicationUser> signInManager, IApplicationUserManager applicationUserManager, IFacebookApiManager facebookApiManager, IPhotosService advertisementItemPhotosUploader, TokenAuthorizationOptions tokenAuthorizationOptions)
 		{
 			this.signInManager = signInManager;
 			this.applicationUserManager = applicationUserManager;
 			this.facebookApiManager = facebookApiManager;
+			this.advertisementItemPhotosUploader = advertisementItemPhotosUploader;
 			this.tokenAuthorizationOptions = tokenAuthorizationOptions;
 		}
 
@@ -111,6 +115,24 @@ namespace MobileSecondHand.API.Services.Authentication
 			}
 
 			return resultList;
+		}
+
+		public async Task<bool> SaveUserProfilePhoto(string userId, IFormFileCollection files)
+		{
+			var user = await this.applicationUserManager.GetUserById(userId);
+			if (user == null)
+			{
+				throw new Exception("User o podanym id nie istnieje");
+			}
+			var photoName = this.advertisementItemPhotosUploader.SaveUserProfilePhoto(files);
+			user.UserProfilePhotoName = photoName;
+			var result = await this.applicationUserManager.UpdateUserMdel(user);
+			if (!result.Succeeded)
+			{
+				throw new Exception("Wystąpił błąd podczas update'u usera w bazie");
+			}
+
+			return true;
 		}
 
 		private async Task<ApplicationUser> CreateUser(FacebookUserCredentialsResponse facebookResponse)

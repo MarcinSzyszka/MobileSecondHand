@@ -9,6 +9,7 @@ using Microsoft.Extensions.Logging;
 using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Location;
+using MobileSecondHand.API.Services.Photos;
 
 namespace MobileSecondHand.Controllers
 {
@@ -16,17 +17,17 @@ namespace MobileSecondHand.Controllers
 	[Route("api/[controller]")]
 	public class AdvertisementItemController : Controller
 	{
-		IAdvertisementItemPhotosService advertisementItemPhotosUploader;
+		IPhotosService advertisementItemPhotosUploader;
 		IAdvertisementItemService advertisementItemService;
 		IIdentityService identityService;
 		private ILogger logger;
 
-		public AdvertisementItemController(IAdvertisementItemPhotosService advertisementItemPhotosUploader, IAdvertisementItemService advertisementItemService, IIdentityService identityService, ILoggerFactory loggerFactory)
+		public AdvertisementItemController(IPhotosService advertisementItemPhotosUploader, IAdvertisementItemService advertisementItemService, IIdentityService identityService, ILoggerFactory loggerFactory)
 		{
 			this.advertisementItemPhotosUploader = advertisementItemPhotosUploader;
 			this.advertisementItemService = advertisementItemService;
 			this.identityService = identityService;
-			this.logger = loggerFactory.CreateLogger<AdvertisementItemController>(); ;
+			this.logger = loggerFactory.CreateLogger<AdvertisementItemController>();
 		}
 
 		[HttpPost]
@@ -35,7 +36,7 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				AdvertisementItemPhotosPaths photosPaths = await this.advertisementItemPhotosUploader.SaveAdvertisementPhotos(Request.Form.Files);
+				AdvertisementItemPhotosNames photosPaths = await this.advertisementItemPhotosUploader.SaveAdvertisementPhotos(Request.Form.Files);
 				return Json(photosPaths);
 			}
 			catch (Exception exc)

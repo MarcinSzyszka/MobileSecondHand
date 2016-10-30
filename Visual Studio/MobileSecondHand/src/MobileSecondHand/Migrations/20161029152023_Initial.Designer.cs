@@ -3,13 +3,13 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MobileSecondHand.DB.Services;
+using MobileSecondHand.DB.Models;
 
 namespace MobileSecondHand.Migrations
 {
     [DbContext(typeof(MobileSecondHandContext))]
-    [Migration("20161005174150_AddedCategoryModel")]
-    partial class AddedCategoryModel
+    [Migration("20161029152023_Initial")]
+    partial class Initial
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -147,6 +147,8 @@ namespace MobileSecondHand.Migrations
 
                     b.Property<int>("Price");
 
+                    b.Property<int>("Size");
+
                     b.Property<string>("Title");
 
                     b.Property<string>("UserId");
@@ -169,7 +171,7 @@ namespace MobileSecondHand.Migrations
 
                     b.Property<bool>("IsMainPhoto");
 
-                    b.Property<string>("PhotoPath");
+                    b.Property<string>("PhotoName");
 
                     b.HasKey("AdvertisementPhotoId");
 
@@ -271,6 +273,10 @@ namespace MobileSecondHand.Migrations
 
                     b.Property<string>("UserName")
                         .HasAnnotation("MaxLength", 256);
+
+                    b.Property<bool>("UserNameIsSetByHimself");
+
+                    b.Property<string>("UserProfilePhotoName");
 
                     b.HasKey("Id");
 

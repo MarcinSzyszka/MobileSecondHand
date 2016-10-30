@@ -12,6 +12,7 @@ using MobileSecondHand.API.Services.Conversation;
 using MobileSecondHand.API.Services.OutsideApisManagers;
 using MobileSecondHand.API.Services.Properties;
 using MobileSecondHand.API.Services.Categories;
+using MobileSecondHand.API.Services.Photos;
 
 namespace MobileSecondHand.API.Services.Configuration {
 	public class ApiServicesBootstrapper {
@@ -20,7 +21,7 @@ namespace MobileSecondHand.API.Services.Configuration {
 			services.AddTransient<IApplicationUserManager, ApplicationUserManager>();
 			services.AddTransient<IApplicationSignInManager, ApplicationSignInManager>();
 			services.AddTransient<IFacebookApiManager, FacebookApiManager>();
-			services.AddTransient<IAdvertisementItemPhotosService, AdvertisementItemPhotosService>();
+			services.AddTransient<IPhotosService, PhotosService>();
 			services.AddTransient<IAdvertisementItemService, AdvertisementItemService>();
 			services.AddTransient<IIdentityService, IdentityService>();
 			services.AddTransient<IKeywordsService, KeywordsService>();

@@ -15,5 +15,6 @@ namespace MobileSecondHand.API.Services.Authentication {
 		Task<ApplicationUser> GetByUserName(string nickName);
 		Task<IdentityResult> SaveUserName(ApplicationUser user, string nickName);
 		IQueryable<ApplicationUser> GetAllUsers();
+		Task<IdentityResult> UpdateUserMdel(ApplicationUser user);
 	}
 }

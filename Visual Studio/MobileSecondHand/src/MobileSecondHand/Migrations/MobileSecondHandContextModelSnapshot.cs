@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
 using Microsoft.EntityFrameworkCore.Migrations;
-using MobileSecondHand.DB.Services;
+using MobileSecondHand.DB.Models;
 
 namespace MobileSecondHand.Migrations
 {
@@ -170,7 +170,7 @@ namespace MobileSecondHand.Migrations
 
                     b.Property<bool>("IsMainPhoto");
 
-                    b.Property<string>("PhotoPath");
+                    b.Property<string>("PhotoName");
 
                     b.HasKey("AdvertisementPhotoId");
 
@@ -274,6 +274,8 @@ namespace MobileSecondHand.Migrations
                         .HasAnnotation("MaxLength", 256);
 
                     b.Property<bool>("UserNameIsSetByHimself");
+
+                    b.Property<string>("UserProfilePhotoName");
 
                     b.HasKey("Id");
 

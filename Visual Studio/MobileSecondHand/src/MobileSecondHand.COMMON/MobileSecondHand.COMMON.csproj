@@ -63,6 +63,10 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\MobileSecondHand.API.Models\MobileSecondHand.API.Models.csproj">
+      <Project>{F413839B-3271-4D47-9594-65BD01846E1E}</Project>
+      <Name>MobileSecondHand.API.Models</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MobileSecondHand.DB.Models\MobileSecondHand.DB.Models.csproj">
       <Project>{B383A10E-FA12-45B9-A17F-656537C6EEE9}</Project>
       <Name>MobileSecondHand.DB.Models</Name>

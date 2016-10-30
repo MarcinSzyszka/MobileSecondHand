@@ -224,9 +224,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Advertisement\AdvertisementItemPhotosService.cs" />
+    <Compile Include="Photos\PhotosService.cs" />
     <Compile Include="Advertisement\AdvertisementItemService.cs" />
-    <Compile Include="Advertisement\IAdvertisementItemPhotosUploader.cs" />
+    <Compile Include="Photos\IPhotosService.cs" />
     <Compile Include="Advertisement\IAdvertisementItemService.cs" />
     <Compile Include="CacheServices\ILastUsersChecksCacheService.cs" />
     <Compile Include="CacheServices\LastUsersChecksCacheService.cs" />
