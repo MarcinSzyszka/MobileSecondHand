@@ -39,10 +39,11 @@ namespace MobileSecondHand.API.Services.Photos
 					//first file (name ends with "0") will be main photo
 					if (i == 0)
 					{
+						var minPhotoName = "mini" + newFileName;
 						var minImage = CreateMinPhoto(readStream);
-						var newMinFilePath = Path.Combine(this.appFilesPathHelper.GetAdvertisementMinPhotosMainPath(), "mini" + newFileName);
+						var newMinFilePath = Path.Combine(this.appFilesPathHelper.GetAdvertisementMinPhotosMainPath(), minPhotoName);
 						minImage.Save(newMinFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
-						photosPathsModel.PhotosNames.Add(newFileName);
+						photosPathsModel.PhotosNames.Add(minPhotoName);
 					}
 				}
 			}
