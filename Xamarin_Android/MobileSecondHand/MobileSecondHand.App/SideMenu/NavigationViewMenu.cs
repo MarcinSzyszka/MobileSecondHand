@@ -18,19 +18,29 @@ using Android.App;
 using MobileSecondHand.Services.Categories;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.API.Models.Shared.Consts;
+using Refractored.Controls;
+using MobileSecondHand.API.Models.Shared.Enumerations;
+using MobileSecondHand.API.Models.Shared.Extensions;
+using Android.Provider;
+using Android.Content.PM;
+using Android.Runtime;
+using Android.Graphics;
+using MobileSecondHand.Services.Authentication;
+using System.Threading.Tasks;
 
 namespace MobileSecondHand.App.SideMenu
 {
 	public class NavigationViewMenu
 	{
+		ISignInService signInService;
 		CategoriesSelectingHelper categoriesHelper;
 		private SharedPreferencesHelper sharedPreferencesHelper;
+		BitmapOperationService bitmapOperationService;
 		private AppSettingsModel appSettings;
 		ProgressDialogHelper progressDialogHelper;
 		GpsLocationService gpsService;
 		IGoogleMapsAPIService googleMapsAPIService;
 		private SwitchCompat chatStateSwitch;
-		private ImageButton imgBtnConversations;
 		private ImageButton imgBtnHomeLocalization;
 		private ImageButton imgBtnKeywords;
 		private SwitchCompat notificationsStateSwitch;
@@ -41,21 +51,34 @@ namespace MobileSecondHand.App.SideMenu
 		private TextView textViewNotificationsRadius;
 		private TextView textViewNotificationsState;
 		private TextView textViewUserName;
-		private BaseActivity activity;
+		private BaseActivityWithNavigationDrawer activity;
+		CircleImageView userProfilePhoto;
+		public const int PHOTO_REQUEST_KEY = 111;
+		private string profilePhotoPath;
+		private string profileTempPhotoPath;
 
-		public NavigationViewMenu(BaseActivity activity, SharedPreferencesHelper sharedPreferencesHelper)
+		public NavigationViewMenu(BaseActivityWithNavigationDrawer activity, SharedPreferencesHelper sharedPreferencesHelper)
 		{
 			this.activity = activity;
+			signInService = new SignInService();
+			this.bitmapOperationService = new BitmapOperationService();
 			this.progressDialogHelper = new ProgressDialogHelper(activity);
 			this.sharedPreferencesHelper = sharedPreferencesHelper;
 			this.gpsService = GpsLocationService.GetServiceInstance(activity);
 			this.googleMapsAPIService = new GoogleMapsAPIService();
 			this.categoriesHelper = new CategoriesSelectingHelper(activity, (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN));
+			this.appSettings = SharedPreferencesHelper.GetAppSettings(activity);
 			SetupViews(activity);
 		}
 
 		private void SetupViews(BaseActivity activity)
 		{
+			this.userProfilePhoto = activity.FindViewById<CircleImageView>(Resource.Id.profile_image);
+			if (!String.IsNullOrEmpty(appSettings.ProfileImagePath))
+			{
+				this.userProfilePhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(appSettings.ProfileImagePath));
+			}
+			userProfilePhoto.Click += UserProfilePhoto_Click;
 			this.textViewUserName = activity.FindViewById<TextView>(Resource.Id.textViewUserName);
 			this.textViewNotificationsState = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsState);
 			this.textViewChatState = activity.FindViewById<TextView>(Resource.Id.textViewChatState);
@@ -121,6 +144,132 @@ namespace MobileSecondHand.App.SideMenu
 
 				});
 			};
+		}
+
+		internal void OnAddPhotoTequestResult(Intent data)
+		{
+
+			if (profilePhotoPath != null)
+			{
+				SetPhoto(profilePhotoPath);
+			}
+			else if (data != null)
+			{
+				var file = CreateImageFile();
+				profileTempPhotoPath = this.bitmapOperationService.SavePhotoFromUriAndReturnPhysicalPath(data.Data, file, activity);
+				SetPhoto(profileTempPhotoPath);
+				System.IO.File.Delete(profileTempPhotoPath);
+			}
+
+		}
+
+		private async void SetPhoto(string photoPath)
+		{
+			await SaveProfilePhoto(photoPath);
+			if (!String.IsNullOrEmpty(appSettings.ProfileImagePath))
+			{
+				this.userProfilePhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(appSettings.ProfileImagePath));
+			}
+		}
+
+		private async Task SaveProfilePhoto(string profilePhotoPath)
+		{
+			//wysy³anko do serwera
+			try
+			{
+				this.progressDialogHelper.ShowProgressDialog("Zapisywanie zdjêcia profilowego");
+				var photoResized= this.bitmapOperationService.ResizeImageAndGetByteArray(System.IO.File.ReadAllBytes(profilePhotoPath), true);
+				var profileImagePath = System.IO.Path.Combine(Application.Context.FilesDir.AbsolutePath, "profilePicture.jpg");
+				System.IO.File.WriteAllBytes(profileImagePath, photoResized);
+				appSettings.ProfileImagePath = profileImagePath;
+				SetAppSettings(appSettings);
+				await signInService.UploadUserProfilePhoto(activity.BearerToken, photoResized);
+			}
+			catch (Exception exc)
+			{
+				AlertsService.ShowToast(activity, "Wyst¹pi³ b³¹d.");
+			}
+			finally
+			{
+				this.progressDialogHelper.CloseProgressDialog();
+			}
+		
+		}
+
+		private void UserProfilePhoto_Click(object sender, EventArgs e)
+		{
+			Action changeProfilePiuctureAction = () =>
+			{
+				TakePhoto();
+			};
+			AlertsService.ShowConfirmDialog(activity, "Czy chcesz zmieniæ zdjêcie profilowe?", changeProfilePiuctureAction);
+		}
+
+		private void TakePhoto()
+		{
+			var takingPhotoKindNames = Enum.GetValues(typeof(GetPhotoKind)).GetAllItemsDisplayNames();
+			AlertsService.ShowSingleSelectListString(activity, takingPhotoKindNames.ToArray(), s =>
+			{
+				var selectedTakingPhotoKind = s.GetEnumValueByDisplayName<GetPhotoKind>();
+				switch (selectedTakingPhotoKind)
+				{
+					case GetPhotoKind.TakeNewPhotoFromCamera:
+						TakePhotoFromCamera();
+						break;
+					case GetPhotoKind.TakeExistingPhotoFromStorage:
+						TakePhotoFromStorage();
+						break;
+					default:
+						break;
+				}
+			});
+		}
+
+		private void TakePhotoFromStorage()
+		{
+			profilePhotoPath = null;
+			var selectExistingPhotoIntent = new Intent();
+			selectExistingPhotoIntent.SetType("image/*");
+			selectExistingPhotoIntent.SetAction(Intent.ActionGetContent);
+			activity.StartActivityForResult(Intent.CreateChooser(selectExistingPhotoIntent, "Wybierz zdjêcie"), PHOTO_REQUEST_KEY);
+		}
+
+		private void TakePhotoFromCamera()
+		{
+			Intent takePictureIntent = new Intent(MediaStore.ActionImageCapture);
+			if (takePictureIntent.ResolveActivity(activity.PackageManager) != null)
+			{
+				Java.IO.File photoFile = null;
+				try
+				{
+					photoFile = CreateImageFile();
+				}
+				catch (Java.IO.IOException ex)
+				{
+					Toast.MakeText(activity, "Nie uda³o siê utworzyæ pliku dla zdjêcia.", ToastLength.Long).Show();
+				}
+				if (photoFile != null)
+				{
+					takePictureIntent.PutExtra(MediaStore.ExtraOutput, Android.Net.Uri.FromFile(photoFile));
+					activity.StartActivityForResult(takePictureIntent, PHOTO_REQUEST_KEY);
+				}
+			}
+		}
+
+		private Java.IO.File CreateImageFile()
+		{
+			String timeStamp = DateTime.Now.ToString();
+			String imageFileName = "JPEG_" + timeStamp + "_";
+			Java.IO.File storageDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures);
+
+			Java.IO.File image = Java.IO.File.CreateTempFile(
+					imageFileName,  /* prefix */
+					".jpg",         /* suffix */
+					storageDir      /* directory */
+			);
+
+			profilePhotoPath = image.AbsolutePath;
+			return image;
 		}
 
 		private Action<System.Collections.Generic.List<string>> MethodToExecuteAfterCategoriesSelect(System.Collections.Generic.IDictionary<int, string> allKeywords)
@@ -223,7 +372,6 @@ namespace MobileSecondHand.App.SideMenu
 
 		internal void SetupMenu()
 		{
-			this.appSettings = SharedPreferencesHelper.GetAppSettings(activity);
 			textViewUserName.Text = appSettings.UserName;
 			SetChatSettings();
 			SetNotificationsSettings();

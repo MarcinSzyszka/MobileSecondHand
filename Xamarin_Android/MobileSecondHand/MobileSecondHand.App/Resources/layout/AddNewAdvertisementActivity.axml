@@ -22,7 +22,8 @@
             <RelativeLayout
                 android:id="@+id/relativeLayoutInNestedScroll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+				android:paddingBottom="10dp">
                 <RelativeLayout
                     android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"

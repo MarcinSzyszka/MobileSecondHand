@@ -75,7 +75,7 @@ namespace MobileSecondHand.Services.Advertisements
 			return areTherNewAdvertisements;
 		}
 
-		public async Task<AdvertisementItemPhotosPaths> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList)
+		public async Task<AdvertisementItemPhotosNames> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList)
 		{
 			MultipartFormDataContent form = new MultipartFormDataContent();
 			
@@ -105,7 +105,7 @@ namespace MobileSecondHand.Services.Advertisements
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
 
-			var photosPaths = JsonConvert.DeserializeObject<AdvertisementItemPhotosPaths>(responseContentString);
+			var photosPaths = JsonConvert.DeserializeObject<AdvertisementItemPhotosNames>(responseContentString);
 			return photosPaths;
 		}
 

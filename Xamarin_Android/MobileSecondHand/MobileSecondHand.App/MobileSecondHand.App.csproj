@@ -242,9 +242,6 @@
     <AndroidResource Include="Resources\layout\headerdrawerlayout.axml">
       <SubType>Designer</SubType>
     </AndroidResource>
-    <AndroidResource Include="Resources\menu\sidenav.axml">
-      <SubType>Designer</SubType>
-    </AndroidResource>
     <AndroidResource Include="Resources\layout\ConversationsListActivity.axml">
       <SubType>Designer</SubType>
     </AndroidResource>

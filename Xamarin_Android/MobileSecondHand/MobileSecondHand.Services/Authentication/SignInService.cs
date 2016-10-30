@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Net.Http;
+using System.Net.Http.Headers;
 using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Shared.Security;
@@ -92,6 +94,33 @@ namespace MobileSecondHand.Services.Authentication
 			var modelsString = await response.Content.ReadAsStringAsync();
 
 			return JsonConvert.DeserializeObject<IEnumerable<UserInfoModel>>(modelsString);
+		}
+
+		public async Task<bool> UploadUserProfilePhoto(string bearerToken, byte[] photoByteArray)
+		{
+			if (!client.DefaultRequestHeaders.Contains(WebApiConsts.AUTHORIZATION_HEADER_NAME))
+			{
+				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			}
+
+			MultipartFormDataContent form = new MultipartFormDataContent();
+			HttpContent content = new StringContent("uploadPhoto");
+			var stream = new MemoryStream(photoByteArray);
+			content = new StreamContent(stream);
+			content.Headers.ContentDisposition = new ContentDispositionHeaderValue("form-data")
+			{
+				Name = "profilePhoto",
+				FileName = "profilePhoto"
+			};
+			form.Add(content);
+
+			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "UploadUserProfilePhoto", form);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return false;
+			}
+
+			return true;
 		}
 
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)

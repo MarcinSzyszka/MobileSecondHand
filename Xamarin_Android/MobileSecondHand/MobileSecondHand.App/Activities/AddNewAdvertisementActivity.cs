@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity]
+	[Activity(Label ="Nowe og³oszenie")]
 	public class AddNewAdvertisementActivity : BaseActivity
 	{
 		BitmapOperationService bitmapOperationService;
@@ -92,6 +92,10 @@ namespace MobileSecondHand.App.Activities
 
 			if (resultCode == Result.Ok && (requestCode == REQUEST_TAKE_PHOTO_1 || requestCode == REQUEST_TAKE_PHOTO_2 || requestCode == REQUEST_TAKE_PHOTO_3))
 			{
+				if (this.photosPaths.Count >= requestCode && this.photosPaths[requestCode - 1] != null)
+				{
+					SetPhoto(requestCode);
+				}
 				if (data != null)
 				{
 					var file = CreateImageFile(requestCode);
@@ -355,7 +359,7 @@ namespace MobileSecondHand.App.Activities
 			}
 		}
 
-		private NewAdvertisementItem CreateNewAdvertisementItemModel(AdvertisementItemPhotosPaths photosListModel)
+		private NewAdvertisementItem CreateNewAdvertisementItemModel(AdvertisementItemPhotosNames photosListModel)
 		{
 			var location = this.gpsLocationService.GetLocation();
 			NewAdvertisementItem model = new NewAdvertisementItem();
@@ -367,7 +371,7 @@ namespace MobileSecondHand.App.Activities
 			model.IsOnlyForSell = rdBtnOnlyForSell.Checked;
 			model.AdvertisementPrice = Int32.Parse(advertisementPrice.Text);
 			model.Category = this.categoryInfoModel;
-			model.PhotosPaths = photosListModel.PhotosPaths;
+			model.PhotosNames = photosListModel.PhotosNames;
 
 			return model;
 		}
@@ -440,10 +444,12 @@ namespace MobileSecondHand.App.Activities
 
 		private void TakePhotoFromStorage(int photoNr)
 		{
+			SavePhotoPath(photoNr, null);
 			var selectExistingPhotoIntent = new Intent();
 			selectExistingPhotoIntent.SetType("image/*");
 			selectExistingPhotoIntent.SetAction(Intent.ActionGetContent);
 			StartActivityForResult(Intent.CreateChooser(selectExistingPhotoIntent, "Wybierz zdjêcie"), photoNr);
+
 		}
 
 		private void TakePhotoFromCamera(int photoNr)
@@ -458,7 +464,7 @@ namespace MobileSecondHand.App.Activities
 				}
 				catch (Java.IO.IOException ex)
 				{
-					Toast.MakeText(this, "Coœ sie zjeba³o ze zdjeciem", ToastLength.Long).Show();
+					Toast.MakeText(this, "Nie uda³o siê utworzyæ pliku dla zdjêcia.", ToastLength.Long).Show();
 				}
 				if (photoFile != null)
 				{
@@ -498,5 +504,7 @@ namespace MobileSecondHand.App.Activities
 				this.photosPaths.Add(path);
 			}
 		}
+
+
 	}
 }

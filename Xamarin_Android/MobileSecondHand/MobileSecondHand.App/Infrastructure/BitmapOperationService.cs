@@ -26,7 +26,6 @@ namespace MobileSecondHand.App.Infrastructure
 		{
 			try
 			{
-
 				var contentResolver = ctx.ContentResolver;
 				var stream = contentResolver.OpenInputStream(contentURI);
 				using (OutputStream output = new FileOutputStream(file))
@@ -34,7 +33,7 @@ namespace MobileSecondHand.App.Infrastructure
 					var memStream = new MemoryStream();
 					stream.CopyTo(memStream);
 					var buffer = memStream.ToArray();
-					
+
 					output.Write(buffer);
 				}
 
@@ -63,10 +62,14 @@ namespace MobileSecondHand.App.Infrastructure
 			return bitmap;
 		}
 
-		public byte[] ResizeImageAndGetByteArray(byte[] imageByteArray)
+		public byte[] ResizeImageAndGetByteArray(byte[] imageByteArray, bool isProfilePhoto = false)
 		{
 			int offset = 0;
 			var maxValue = 1500;
+			if (isProfilePhoto)
+			{
+				maxValue = 600;
+			}
 
 			var decodedBitmap = BitmapFactory.DecodeByteArray(imageByteArray, offset, imageByteArray.Length);
 
@@ -99,7 +102,7 @@ namespace MobileSecondHand.App.Infrastructure
 			return imageArrayBytes;
 		}
 
-		public Bitmap ResizeImageAndGetBitMap(string filePath)
+		public Bitmap ResizeImageAndGetBitMap(string filePath, bool isProfilePhoto = false)
 		{
 			var maxValue = 1500;
 

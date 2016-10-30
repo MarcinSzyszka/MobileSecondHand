@@ -29,6 +29,7 @@ namespace MobileSecondHand.App.Activities
 		protected SharedPreferencesHelper sharedPreferencesHelper;
 		protected string bearerToken;
 		protected Toolbar toolbar;
+		public string BearerToken { get { return bearerToken; } }
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -44,8 +45,9 @@ namespace MobileSecondHand.App.Activities
 			SupportActionBar.SetHomeButtonEnabled(true);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 			SupportActionBar.SetDisplayShowHomeEnabled(true);
-			toolbar.NavigationClick += Toolbar_NavigationClick;		
+			toolbar.NavigationClick += Toolbar_NavigationClick;
 		}
+
 
 		private void Toolbar_NavigationClick(object sender, Toolbar.NavigationClickEventArgs e)
 		{
@@ -64,6 +66,6 @@ namespace MobileSecondHand.App.Activities
 			StartActivity(intent);
 		}
 
-		
+
 	}
 }

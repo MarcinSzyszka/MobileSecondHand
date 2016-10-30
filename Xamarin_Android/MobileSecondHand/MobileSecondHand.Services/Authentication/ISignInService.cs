@@ -12,5 +12,6 @@ namespace MobileSecondHand.Services.Authentication
 		Task<TokenModel> RegisterUser(RegisterModel registerModel);
 		Task<bool> SetUserName(string nickName, TokenModel bearerToken);
 		Task<IEnumerable<UserInfoModel>> GetUserNamesModels(string bearerToken, string partName);
+		Task<bool> UploadUserProfilePhoto(string bearerToken, byte[] photoByteArray);
 	}
 }

@@ -26,10 +26,11 @@ using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.API.Models.Shared.Consts;
 using Android.Support.V4.Widget;
+using MobileSecondHand.App.SideMenu;
 
 namespace MobileSecondHand.App
 {
-	[Activity(Label = "", LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label = "Og³oszenia", LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class MainActivity : BaseActivityWithNavigationDrawer, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
@@ -84,6 +85,10 @@ namespace MobileSecondHand.App
 				var userInfoModel = JsonConvert.DeserializeObject<UserInfoModel>(userInfoModelString);
 				advertisementsSearchModel.UserInfo = userInfoModel;
 				SetupSortingViews();
+			}
+			else if (resultCode == Result.Ok && requestCode == NavigationViewMenu.PHOTO_REQUEST_KEY)
+			{
+				navigationViewMenu.OnAddPhotoTequestResult(data);
 			}
 		}
 
@@ -177,6 +182,7 @@ namespace MobileSecondHand.App
 		{
 			if (isOnOptionsLayout)
 			{
+				SupportActionBar.Title = "Filtry";
 				this.menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(true);
 				this.menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(true);
 				this.menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
@@ -185,6 +191,7 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
+				SupportActionBar.Title = "Og³oszenia";
 				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(true);
 				menu.FindItem(Resource.Id.chat).SetVisible(true);
 				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(true);

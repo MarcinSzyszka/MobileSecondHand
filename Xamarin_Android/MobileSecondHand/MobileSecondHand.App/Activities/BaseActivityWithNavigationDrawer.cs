@@ -19,7 +19,7 @@ using MobileSecondHand.App.SideMenu;
 using MobileSecondHand.Models.Settings;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
-
+using Android.Support.Design.Widget;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -27,7 +27,8 @@ namespace MobileSecondHand.App.Activities
 	public class BaseActivityWithNavigationDrawer : BaseActivity
 	{
 		private DrawerLayout drawerLayout;
-		NavigationViewMenu navigationViewMenu;
+		protected NavigationViewMenu navigationViewMenu;
+		private ScrollView navView;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -56,25 +57,30 @@ namespace MobileSecondHand.App.Activities
 
 		protected void SetupDrawer()
 		{
+			
 			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
 			var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
 			drawerLayout.SetDrawerListener(drawerToggle);
 			drawerToggle.SyncState();
 			drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
-			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
-			{
-				SetupSideMenu();
-			}
 		}
 
 		private void SetupSideMenu()
 		{
+			ScrollView navView = null;
+			var isFirstTimeOpened = false;
 			if (navigationViewMenu == null)
 			{
+				isFirstTimeOpened = true;
+				navView = FindViewById<ScrollView>(Resource.Id.navWievSvrollLayout);
 				navigationViewMenu = new NavigationViewMenu(this, this.sharedPreferencesHelper);
 			}
 
 			navigationViewMenu.SetupMenu();
+			if (isFirstTimeOpened)
+			{
+				navView.Visibility = ViewStates.Visible;
+			}
 		}
 
 		private void DrawerLayout_DrawerOpened(object sender, DrawerLayout.DrawerOpenedEventArgs e)

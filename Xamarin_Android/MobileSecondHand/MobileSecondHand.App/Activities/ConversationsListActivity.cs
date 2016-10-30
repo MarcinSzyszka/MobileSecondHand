@@ -16,7 +16,7 @@ using Android.Views;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity]
+	[Activity(Label ="Lista rozmów")]
 	public class ConversationsListActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
@@ -35,21 +35,21 @@ namespace MobileSecondHand.App.Activities
 			await SetupViews(savedInstanceState != null);
 		}
 
-		public override bool OnCreateOptionsMenu(IMenu menu)
-		{
-			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
-			if (menu != null)
-			{
-				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
-				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
-				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
-				menu.FindItem(Resource.Id.chat).SetVisible(false);
-				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
-				menu.FindItem(Resource.Id.home).SetVisible(true);
-			}
+		//public override bool OnCreateOptionsMenu(IMenu menu)
+		//{
+		//	MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
+		//	if (menu != null)
+		//	{
+		//		menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
+		//		menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
+		//		menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
+		//		menu.FindItem(Resource.Id.chat).SetVisible(false);
+		//		menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
+		//		menu.FindItem(Resource.Id.home).SetVisible(true);
+		//	}
 
-			return base.OnCreateOptionsMenu(menu);
-		}
+		//	return base.OnCreateOptionsMenu(menu);
+		//}
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
