@@ -23,7 +23,7 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label = "Szczegó³y", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class AdvertisementItemDetailsActivity : BaseActivity, IInfiniteScrollListener
 	{
 		RecyclerView advertisementsRecyclerView;
@@ -64,21 +64,21 @@ namespace MobileSecondHand.App.Activities
 			firstEntryOnUserAdvertisementsList = true;
 		}
 
-		public override bool OnCreateOptionsMenu(IMenu menu)
-		{
-			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
-			if (menu != null)
-			{
-				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
-				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
-				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
-				menu.FindItem(Resource.Id.chat).SetVisible(true);
-				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
-				menu.FindItem(Resource.Id.home).SetVisible(true);
-			}
+		//public override bool OnCreateOptionsMenu(IMenu menu)
+		//{
+		//	MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
+		//	if (menu != null)
+		//	{
+		//		menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
+		//		menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
+		//		menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
+		//		menu.FindItem(Resource.Id.chat).SetVisible(true);
+		//		menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
+		//		menu.FindItem(Resource.Id.home).SetVisible(true);
+		//	}
 
-			return base.OnCreateOptionsMenu(menu);
-		}
+		//	return base.OnCreateOptionsMenu(menu);
+		//}
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{

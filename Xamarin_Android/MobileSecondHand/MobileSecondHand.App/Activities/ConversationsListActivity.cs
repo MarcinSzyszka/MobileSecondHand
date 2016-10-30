@@ -13,10 +13,11 @@ using MobileSecondHand.Models.Chat;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using Newtonsoft.Json;
 using Android.Views;
+using Android.Widget;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label ="Lista rozmów")]
+	[Activity(Label = "Lista rozmów")]
 	public class ConversationsListActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
@@ -24,6 +25,7 @@ namespace MobileSecondHand.App.Activities
 		ConversationsListAdapter conversationsListAdapter;
 		private int conversationsPage;
 		ProgressDialogHelper progress;
+		private TextView textViewNoConversations;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -75,6 +77,7 @@ namespace MobileSecondHand.App.Activities
 		private async Task SetupViews(bool screenOrientationChaged)
 		{
 			progress = new ProgressDialogHelper(this);
+			this.textViewNoConversations = FindViewById<TextView>(Resource.Id.textViewNoConversations);
 			this.conversationsRecyclerView = FindViewById<RecyclerView>(Resource.Id.conversationsRecyclerView);
 			var mLayoutManager = new Android.Support.V7.Widget.LinearLayoutManager(this);
 			this.conversationsRecyclerView.SetLayoutManager(mLayoutManager);
@@ -111,6 +114,12 @@ namespace MobileSecondHand.App.Activities
 					conversationsListAdapter = new ConversationsListAdapter(new List<ConversationItemModel>(), this);
 				}
 				conversationsListAdapter.InfiniteScrollDisabled = true;
+				if (conversationsListAdapter.ItemCount == 0)
+				{
+
+					this.conversationsRecyclerView.Visibility = ViewStates.Gone;
+					this.textViewNoConversations.Visibility = ViewStates.Visible;
+				}
 			}
 			progress.CloseProgressDialog();
 		}
