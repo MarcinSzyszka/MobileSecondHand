@@ -37,7 +37,7 @@
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/photosRecyclerViewOnAdvertDetails"
+                    android:layout_below="@+id/photosRecyclerViewOnAdvertDetails"
                     android:id="@+id/btnAddToFavoriteAdvertisements"
                     android:src="@drawable/addtofavourites"
                     android:gravity="center"
@@ -188,21 +188,40 @@
                     android:src="@drawable/sendmessage"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@+id/textView11"
+                    android:layout_below="@+id/textViewUserNameAdvertDetails"
                     android:id="@+id/startConvesationBtn"
                     android:layout_alignParentRight="true"
                     android:layout_marginRight="50dp"
-                    android:layout_marginTop="12dp"
+                    android:layout_marginTop="52dp"
                     android:layout_marginBottom="2dp" />
                 <ImageView
                     android:src="@drawable/useronline"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_below="@id/textView11"
+                    android:layout_below="@+id/textViewUserNameAdvertDetails"
                     android:id="@+id/sellerNetworkState"
                     android:layout_alignParentLeft="true"
                     android:layout_marginLeft="50dp"
-                    android:layout_marginTop="5dp" />
+                    android:layout_marginTop="45dp" />
+                <TextView
+                    android:text="nazwa sprzedajacego"
+                    android:textAppearance="?android:attr/textAppearanceSmall"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView11"
+                    android:id="@+id/textViewUserNameAdvertDetails"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_marginTop="5dp"
+                    android:textColor="@color/colorPrimaryDark" />
+                <refractored.controls.CircleImageView
+                    android:id="@+id/profile_image_on_advert_det"
+                    android:layout_width="75dp"
+                    android:layout_height="75dp"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginBottom="5dp"
+                    android:layout_below="@+id/textViewUserNameAdvertDetails"
+                    android:src="@drawable/logo_user" />
             </RelativeLayout>
         </LinearLayout>
     </android.support.v4.widget.NestedScrollView>

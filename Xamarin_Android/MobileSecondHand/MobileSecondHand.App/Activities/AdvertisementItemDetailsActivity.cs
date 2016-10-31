@@ -20,6 +20,7 @@ using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
 using Newtonsoft.Json;
+using Refractored.Controls;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -37,9 +38,11 @@ namespace MobileSecondHand.App.Activities
 		private TextView price;
 		private TextView title;
 		private TextView description;
+		private TextView sellerName;
 		private ImageView startConversationBtn;
 		private ImageView addToFavouriteAdvertsBtn;
 		private TextView distanceTextView;
+		CircleImageView userPhoto;
 		private AdvertisementItemDetails advertisement;
 		private RelativeLayout advertisementDetailsWrapperLayout;
 		private int userAdvertsPageNumber;
@@ -109,6 +112,8 @@ namespace MobileSecondHand.App.Activities
 			this.price = FindViewById<TextView>(Resource.Id.advertisementDeatilsPrice);
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
+			this.sellerName = FindViewById<TextView>(Resource.Id.textViewUserNameAdvertDetails);
+			this.userPhoto = FindViewById<CircleImageView>(Resource.Id.profile_image_on_advert_det);
 			this.addToFavouriteAdvertsBtn = FindViewById<ImageView>(Resource.Id.btnAddToFavoriteAdvertisements);
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
@@ -128,6 +133,18 @@ namespace MobileSecondHand.App.Activities
 			photosRecyclerView.SetLayoutManager(photoRecyclerLayoutManager);
 
 			this.nestedScrollViewLayout.RequestLayout();
+		}
+
+		public override void OnBackPressed()
+		{
+			if (userAdvertsLayout.Visibility == ViewStates.Visible)
+			{
+				TogleLayouts(this, EventArgs.Empty);
+			}
+			else
+			{
+				base.OnBackPressed();
+			}
 		}
 
 		private async void TogleLayouts(object sender, EventArgs e)
@@ -175,6 +192,7 @@ namespace MobileSecondHand.App.Activities
 					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), AdvertisementsKind.AdvertisementsAroundUserCurrentLocation, this);
 				}
 				advertisementItemListAdapter.InfiniteScrollDisabled = true;
+				userAdvertsPageNumber = 0;
 			}
 			progress.CloseProgressDialog();
 		}
@@ -222,6 +240,11 @@ namespace MobileSecondHand.App.Activities
 			price.Text = String.Format("{0} z³", advertisement.Price);
 			title.Text = advertisement.Title;
 			description.Text = advertisement.Description;
+			sellerName.Text = advertisement.SellerName;
+			if (advertisement.SellerProfileImage != null)
+			{
+				userPhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(advertisement.SellerProfileImage));
+			}
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 			this.addToFavouriteAdvertsBtn.Click += AddToFavourites;
 		}
