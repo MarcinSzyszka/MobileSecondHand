@@ -98,6 +98,10 @@ namespace MobileSecondHand.App
 			{
 				base.OnBackPressed();
 			}
+			else
+			{
+				AlertsService.ShowToast(this, "Aby powróciæ do listy zatwierdŸ filtry przyciskiem w górnej belce");
+			}
 		}
 
 		private void SetupSortingViews()
