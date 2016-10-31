@@ -46,12 +46,12 @@ namespace MobileSecondHand.Controllers
 
 		[HttpGet]
 		[Route("GetConversationInfoModel/{addresseeId}")]
-		public IActionResult GetConversationInfoModel(string addresseeId)
+		public async Task<IActionResult> GetConversationInfoModel(string addresseeId)
 		{
 			try
 			{
 				var userId = this.identityService.GetUserId(User.Identity);
-				var conversationInfo = this.conversationService.GetConversationInfoModel(userId, addresseeId);
+				var conversationInfo = await this.conversationService.GetConversationInfoModel(userId, addresseeId);
 
 				return Json(conversationInfo);
 			}

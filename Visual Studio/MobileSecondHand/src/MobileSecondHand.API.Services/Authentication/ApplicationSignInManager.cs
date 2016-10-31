@@ -135,6 +135,17 @@ namespace MobileSecondHand.API.Services.Authentication
 			return true;
 		}
 
+		public async Task<byte[]> GetUserProfileImage(string requstedUserId)
+		{
+			var user = await this.applicationUserManager.GetUserById(requstedUserId);
+			if (user == null)
+			{
+				throw new Exception("User o podanym id nie istnieje");
+			}
+
+			return await this.advertisementItemPhotosUploader.GetUserProfilePhotoInBytes(user.UserProfilePhotoName);
+		}
+
 		private async Task<ApplicationUser> CreateUser(FacebookUserCredentialsResponse facebookResponse)
 		{
 			ApplicationUser user = new ApplicationUser { UserName = facebookResponse.email, Email = facebookResponse.email };

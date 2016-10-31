@@ -163,5 +163,28 @@ namespace MobileSecondHand.Controllers
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
 		}
+
+
+		[HttpGet]
+		[Authorize("Bearer")]
+		[Route("GetUserProfileImage/{requstedUserId}")]
+		public async Task<IActionResult> GetUserProfileImage(string requstedUserId)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				byte[] profileImageBytes = await this.applicationSignInManager.GetUserProfileImage(requstedUserId);
+
+				return Json(profileImageBytes);
+			}
+			catch (Exception exc)
+			{
+				this.logger.LogError("Wystąpił błąd podczas pobierania profilowego zdjęcia usera" + exc);
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return null;
+			}
+		}
+
+
 	}
 }

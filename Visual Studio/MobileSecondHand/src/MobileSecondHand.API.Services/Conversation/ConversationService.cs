@@ -42,7 +42,7 @@ namespace MobileSecondHand.API.Services.Conversation
 		/// <param name="userId">Id of user who is message sender</param>
 		/// <param name="addresseeId">Id of user who will be message addressee</param>
 		/// <returns>Id of conversation record in db</returns>
-		public ConversationInfoModel GetConversationInfoModel(string userId, string addresseeId)
+		public async Task<ConversationInfoModel> GetConversationInfoModel(string userId, string addresseeId)
 		{
 			var result = new ConversationInfoModel();
 			if (userId == addresseeId)
@@ -61,6 +61,7 @@ namespace MobileSecondHand.API.Services.Conversation
 			result.ConversationId = conversation.ConversationId;
 			result.InterlocutorId = addresseeId;
 			result.InterlocutorName = conversation.Users.First(u => u.UserId != userId).User.UserName;
+			result.InterlocutorPrifileImage = await this.photosService.GetUserProfilePhotoInBytes(conversation.Users.First(u => u.UserId != userId).User.UserProfilePhotoName); 
 
 			return result;
 		}

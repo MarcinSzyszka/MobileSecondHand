@@ -16,5 +16,6 @@ namespace MobileSecondHand.API.Services.Authentication
 		Task<bool> SetUserName(string userId, string nickName);
 		IEnumerable<UserInfoModel> GetUserNamesModels(string userId, string partName);
 		Task<bool> SaveUserProfilePhoto(string userId, IFormFileCollection files);
+		Task<byte[]> GetUserProfileImage(string requstedUserId);
 	}
 }

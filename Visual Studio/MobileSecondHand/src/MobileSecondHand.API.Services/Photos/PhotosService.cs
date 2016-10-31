@@ -81,6 +81,10 @@ namespace MobileSecondHand.API.Services.Photos
 
 		public async Task<byte[]> GetUserProfilePhotoInBytes(string photoName)
 		{
+			if (String.IsNullOrEmpty(photoName))
+			{
+				return null;
+			}
 			var path = Path.Combine(this.appFilesPathHelper.GetUsersProfilesPhotosMainPath(), photoName);
 			return await GetBytesArray(path);
 		}
