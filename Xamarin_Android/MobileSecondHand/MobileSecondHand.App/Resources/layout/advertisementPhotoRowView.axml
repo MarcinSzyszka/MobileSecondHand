@@ -11,5 +11,6 @@
         android:layout_height="wrap_content"
         android:id="@+id/advertPhotoView"
         android:adjustViewBounds="true"
-        android:maxHeight="400dp" />
+        android:maxHeight="350dp"
+        android:scaleType="centerCrop" />
 </RelativeLayout>

@@ -33,7 +33,7 @@
                     android:layout_height="wrap_content"
                     android:minHeight="25dp"
                     android:minWidth="25dp"
-                    android:maxHeight="400dp" />
+                    android:maxHeight="350dp" />
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

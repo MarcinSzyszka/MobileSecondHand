@@ -50,9 +50,9 @@
                 android:layout_width="wrap_content"
                 android:id="@+id/advertisementPhotoImageView"
                 android:layout_height="150dp"
-                android:maxHeight="200dp"
                 android:adjustViewBounds="true"
-                android:layout_centerInParent="true" />
+                android:layout_centerInParent="true" 
+				android:scaleType="centerCrop"/>
         </RelativeLayout>
         <TextView
             android:text="Tytuł ogłoszenia"
