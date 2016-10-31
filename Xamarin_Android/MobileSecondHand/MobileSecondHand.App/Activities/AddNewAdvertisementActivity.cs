@@ -328,13 +328,13 @@ namespace MobileSecondHand.App.Activities
 							{
 								System.IO.File.Delete(tempPath);
 							}
-							AlertsService.ShowToast(this, "Pomyœlnie utworzone nowe og³oszenie");
+							AlertsService.ShowLongToast(this, "Pomyœlnie utworzone nowe og³oszenie");
 
 							this.Finish();
 						}
 						else
 						{
-							AlertsService.ShowToast(this, "Nie uda³o siê utworzyæ nowego og³oszenia. Spróbuj ponownie");
+							AlertsService.ShowLongToast(this, "Nie uda³o siê utworzyæ nowego og³oszenia. Spróbuj ponownie");
 						}
 
 					}

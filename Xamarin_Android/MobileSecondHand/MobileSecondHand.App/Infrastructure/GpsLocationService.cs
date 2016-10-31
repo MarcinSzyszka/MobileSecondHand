@@ -108,7 +108,7 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 			catch (Exception e)
 			{
-				AlertsService.ShowToast(this.mContext, "Nie masz w³¹czonej lokalizacji!");
+				AlertsService.ShowLongToast(this.mContext, "Nie masz w³¹czonej lokalizacji!");
 			}
 
 			return location;
@@ -121,7 +121,7 @@ namespace MobileSecondHand.App.Infrastructure
 			var settingsMOdel = (AppSettingsModel)sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 			if (location == null || latitude == 0 || longitude == 0)
 			{
-				AlertsService.ShowToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji. SprawdŸ ustawienia GPS");
+				AlertsService.ShowLongToast(this.mContext, "Nie mogê ustaliæ aktualnej lokalizacji. SprawdŸ ustawienia GPS");
 				throw new Exception("Brak lokalizacji");
 			}
 			else

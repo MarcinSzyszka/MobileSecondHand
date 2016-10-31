@@ -41,7 +41,7 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 			catch (Exception exc)
 			{
-				AlertsService.ShowToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
+				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
 			}
 			finally
 			{
@@ -63,7 +63,7 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 			catch (Exception exc)
 			{
-				AlertsService.ShowToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
+				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
 			}
 			finally
 			{

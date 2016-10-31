@@ -14,7 +14,12 @@ namespace MobileSecondHand.App.Infrastructure
 {
 	public class AlertsService
 	{
-		public static void ShowToast(Context context, string message)
+		public static void ShowShortToast(Context context, string message)
+		{
+			Toast.MakeText(context, message, ToastLength.Short).Show();
+		}
+
+		public static void ShowLongToast(Context context, string message)
 		{
 			Toast.MakeText(context, message, ToastLength.Long).Show();
 		}

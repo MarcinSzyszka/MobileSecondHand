@@ -255,7 +255,7 @@ namespace MobileSecondHand.App.Activities
 			{
 				var idApiModel = new SingleIdModelForPostRequests { Id = this.advertisement.Id };
 				var responseMessage = await this.advertisementItemService.AddToUserFavouritesAdvertisements(idApiModel);
-				AlertsService.ShowToast(this, responseMessage);
+				AlertsService.ShowLongToast(this, responseMessage);
 			});
 		}
 
@@ -276,7 +276,7 @@ namespace MobileSecondHand.App.Activities
 			if (conversationInfoModel.ConversationId == 0)
 			{
 				//if 0 that means user is trying to send message to himself
-				AlertsService.ShowToast(this, "Nie mo¿esz wys³aæ wiadomoœci do samego siebie :)");
+				AlertsService.ShowLongToast(this, "Nie mo¿esz wys³aæ wiadomoœci do samego siebie :)");
 			}
 			else
 			{

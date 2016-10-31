@@ -100,7 +100,7 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
-				AlertsService.ShowToast(this, "Aby powróciæ do listy zatwierdŸ filtry przyciskiem w górnej belce");
+				AlertsService.ShowLongToast(this, "Aby powróciæ do listy zatwierdŸ filtry przyciskiem w górnej belce");
 			}
 		}
 
@@ -457,7 +457,7 @@ namespace MobileSecondHand.App
 					}
 					else
 					{
-						AlertsService.ShowToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
+						AlertsService.ShowLongToast(this, "Nie masz ustawionej lokalizacji domowej. Mo¿esz to zrobiæ w lewym panelu");
 						return new List<AdvertisementItemShort>();
 					}
 					break;
@@ -496,7 +496,7 @@ namespace MobileSecondHand.App
 		{
 			if (clickArgs.Id == 0)
 			{
-				AlertsService.ShowToast(this, "Wyst¹pi³ b³¹d");
+				AlertsService.ShowLongToast(this, "Wyst¹pi³ b³¹d");
 				return;
 			}
 
@@ -516,12 +516,12 @@ namespace MobileSecondHand.App
 
 				if (success)
 				{
-					AlertsService.ShowToast(this, "Pomyœlnie zakoñczono tê operacjê.");
+					AlertsService.ShowLongToast(this, "Pomyœlnie zakoñczono tê operacjê.");
 					RefreshAdvertisementList();
 				}
 				else
 				{
-					AlertsService.ShowToast(this, "Nie uda³o siê wykonaæ tej operacji.");
+					AlertsService.ShowLongToast(this, "Nie uda³o siê wykonaæ tej operacji.");
 				}
 			});
 

@@ -93,7 +93,7 @@ namespace MobileSecondHand.App.Activities
 			userNameEditText.Text = userNameEditText.Text.Replace(" ", "");
 			if (userNameEditText.Text.Length < 4)
 			{
-				AlertsService.ShowToast(this, "Nick musi składać się z conajmniej czterech znaków");
+				AlertsService.ShowLongToast(this, "Nick musi składać się z conajmniej czterech znaków");
 			}
 			else
 			{
@@ -109,12 +109,12 @@ namespace MobileSecondHand.App.Activities
 					}
 					else
 					{
-						AlertsService.ShowToast(this, "Podany nick jest już zajęty. Wpisz inny nick.");
+						AlertsService.ShowLongToast(this, "Podany nick jest już zajęty. Wpisz inny nick.");
 					}
 				}
 				catch (Exception exc)
 				{
-					AlertsService.ShowToast(this, "Wystąpił błąd połączenia z serwerem.");
+					AlertsService.ShowLongToast(this, "Wystąpił błąd połączenia z serwerem.");
 					this.progressHelper.CloseProgressDialog();
 				}
 			}

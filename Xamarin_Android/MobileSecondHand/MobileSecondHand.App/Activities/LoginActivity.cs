@@ -107,7 +107,7 @@ namespace MobileSecondHand.App.Activities
 			}
 			else {
 				progress.CloseProgressDialog();
-				AlertsService.ShowToast(this, "Coœ posz³o nie tak na serwerze!");
+				AlertsService.ShowLongToast(this, "Coœ posz³o nie tak na serwerze!");
 			}
 		}
 
@@ -139,16 +139,16 @@ namespace MobileSecondHand.App.Activities
 					}
 					else {
 						progress.CloseProgressDialog();
-						AlertsService.ShowToast(this, "Facebook zwróci³ token, ale coœ posz³o nie tak z logowaniem na serwerze");
+						AlertsService.ShowLongToast(this, "Facebook zwróci³ token, ale coœ posz³o nie tak z logowaniem na serwerze");
 					}
 				},
 				HandleCancel = () => {
 					progress.CloseProgressDialog();
-					AlertsService.ShowToast(this, "Przerwano logowanie z facebookiem");
+					AlertsService.ShowLongToast(this, "Przerwano logowanie z facebookiem");
 				},
 				HandleError = loginError => {
 					progress.CloseProgressDialog();
-					AlertsService.ShowToast(this, "Wyst¹pi³ b³¹ podczas logowanie z facebookiem");
+					AlertsService.ShowLongToast(this, "Wyst¹pi³ b³¹ podczas logowanie z facebookiem");
 				}
 			};
 			facebookLoginBtn.RegisterCallback(this.callbackManager, loginCallback);

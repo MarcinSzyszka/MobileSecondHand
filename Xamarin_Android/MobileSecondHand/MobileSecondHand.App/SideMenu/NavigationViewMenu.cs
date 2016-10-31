@@ -114,7 +114,7 @@ namespace MobileSecondHand.App.SideMenu
 					{
 						if (!this.gpsService.CanGetLocation)
 						{
-							AlertsService.ShowToast(activity, "W³¹cz gps w ustawieniach");
+							AlertsService.ShowLongToast(activity, "W³¹cz gps w ustawieniach");
 						}
 						else
 						{
@@ -135,7 +135,7 @@ namespace MobileSecondHand.App.SideMenu
 					}
 					catch (Exception)
 					{
-						AlertsService.ShowToast(activity, "Wyst¹pi³ problem z okreœleniem Twojej lokalizacji. Spróbuj ponownie póŸniej");
+						AlertsService.ShowLongToast(activity, "Wyst¹pi³ problem z okreœleniem Twojej lokalizacji. Spróbuj ponownie póŸniej");
 					}
 					finally
 					{
@@ -187,7 +187,7 @@ namespace MobileSecondHand.App.SideMenu
 			}
 			catch (Exception exc)
 			{
-				AlertsService.ShowToast(activity, "Wyst¹pi³ b³¹d.");
+				AlertsService.ShowLongToast(activity, "Wyst¹pi³ b³¹d.");
 			}
 			finally
 			{

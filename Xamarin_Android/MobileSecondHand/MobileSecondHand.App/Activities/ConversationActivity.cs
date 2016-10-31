@@ -229,7 +229,7 @@ namespace MobileSecondHand.App.Activities
 				}
 				else
 				{
-					AlertsService.ShowToast(this, "Nie mogê po³¹czyæ siê z serwerem. Upewnij siê czy masz dostêp do internetu;");
+					AlertsService.ShowLongToast(this, "Nie mogê po³¹czyæ siê z serwerem. Upewnij siê czy masz dostêp do internetu;");
 				}
 			}
 		}

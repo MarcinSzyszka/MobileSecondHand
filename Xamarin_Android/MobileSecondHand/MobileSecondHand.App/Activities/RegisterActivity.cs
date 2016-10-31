@@ -75,7 +75,7 @@ namespace MobileSecondHand.App.Activities
 			}
 			else {
 				progress.CloseProgressDialog();
-				AlertsService.ShowToast(this, "Coœ posz³o nie tak na serwerze!");
+				AlertsService.ShowLongToast(this, "Coœ posz³o nie tak na serwerze!");
 			}
 			
 		}
