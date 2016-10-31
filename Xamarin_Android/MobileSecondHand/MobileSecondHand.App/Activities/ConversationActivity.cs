@@ -15,13 +15,18 @@ using MobileSecondHand.Services.Chat;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using Newtonsoft.Json;
 using MobileSecondHand.API.Models.Shared.Extensions;
+using Refractored.Controls;
+using MobileSecondHand.API.Models.Shared.Chat;
+using MobileSecondHand.Services.Authentication;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label ="Rozmowa")]
+	[Activity(Label = "Rozmowa")]
 	public class ConversationActivity : BaseActivity, IInfiniteScrollListener
 	{
+		ISignInService signInService;
 		IMessagesService messagesService;
+		BitmapOperationService bitmapService;
 		ConversationMessagesListAdapter conversationMessagesListAdapter;
 		ChatHubClientService chatHubClientService;
 		RecyclerView conversationMessagesRecyclerView;
@@ -47,14 +52,44 @@ namespace MobileSecondHand.App.Activities
 		{
 			base.OnCreate(savedInstanceState);
 			ActivityInstance = this;
+			signInService = new SignInService();
+			bitmapService = new BitmapOperationService();
 			this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
 			this.messagesService = new MessagesService(bearerToken);
 			SetContentView(Resource.Layout.ConversationActivity);
 			GetExtras();
-			base.SetupToolbar();
-
+			await SetupToolbarWithProfileImage();
 			pageNumber = 0;
 			await SetupViews(savedInstanceState);
+		}
+
+		private async Task SetupToolbarWithProfileImage()
+		{
+			this.toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar_with_circle_image_view);
+			var profileImageView = toolbar.FindViewById<CircleImageView>(Resource.Id.profile_image_on_app_bar);
+			if (conversationInfoModel.InterlocutorPrifileImage != null)
+			{
+				if (conversationInfoModel.InterlocutorPrifileImage.Length > 0)
+				{
+					profileImageView.SetImageBitmap(this.bitmapService.GetBitmap(conversationInfoModel.InterlocutorPrifileImage));
+				}
+				else
+				{
+					var imageBytes = await signInService.GetUserProfileImage(bearerToken, conversationInfoModel.InterlocutorId);
+					if (imageBytes != null)
+					{
+						profileImageView.SetImageBitmap(this.bitmapService.GetBitmap(imageBytes));
+					}
+				}
+
+			}
+			var textViewUserName = toolbar.FindViewById<TextView>(Resource.Id.textViewUserNameAppBar);
+			textViewUserName.Text = conversationInfoModel.InterlocutorName;
+			SetSupportActionBar(toolbar);
+			SupportActionBar.SetHomeButtonEnabled(true);
+			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+			SupportActionBar.SetDisplayShowHomeEnabled(true);
+			toolbar.NavigationClick += (s, e) => this.Finish();
 		}
 
 		//public override bool OnCreateOptionsMenu(IMenu menu)

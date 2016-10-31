@@ -123,6 +123,33 @@ namespace MobileSecondHand.Services.Authentication
 			return true;
 		}
 
+		public async Task<byte[]> GetUserProfileImage(string bearerToken, string interlocutorId)
+		{
+			if (!client.DefaultRequestHeaders.Contains(WebApiConsts.AUTHORIZATION_HEADER_NAME))
+			{
+				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			}
+
+			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "GetUserProfileImage/" + interlocutorId);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return null;
+			}
+			byte[] imageBytes;
+			try
+			{
+				var arrayString = await response.Content.ReadAsStringAsync();
+				imageBytes = JsonConvert.DeserializeObject<byte[]>(arrayString);
+			}
+			catch (Exception)
+			{
+				imageBytes = null;
+			}
+
+
+			return imageBytes;
+		}
+
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(modelToSend), Encoding.UTF8, "application/json");
@@ -135,5 +162,7 @@ namespace MobileSecondHand.Services.Authentication
 			var tokenModel = JsonConvert.DeserializeObject<TokenModel>(responseContentString);
 			return tokenModel;
 		}
+
+
 	}
 }

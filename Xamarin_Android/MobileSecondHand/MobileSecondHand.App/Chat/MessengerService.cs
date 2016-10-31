@@ -12,6 +12,7 @@ using Android.Runtime;
 using Android.Support.V7.App;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Chat;
 using MobileSecondHand.App.Activities;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
@@ -102,7 +103,8 @@ namespace MobileSecondHand.App.Chat
 				{
 					ConversationId = message.ConversationId,
 					InterlocutorId = message.SenderId,
-					InterlocutorName = message.SenderName
+					InterlocutorName = message.SenderName,
+					InterlocutorPrifileImage = new byte[0]
 				};
 				intent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
 				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.CancelCurrent);

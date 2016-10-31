@@ -13,5 +13,6 @@ namespace MobileSecondHand.Services.Authentication
 		Task<bool> SetUserName(string nickName, TokenModel bearerToken);
 		Task<IEnumerable<UserInfoModel>> GetUserNamesModels(string bearerToken, string partName);
 		Task<bool> UploadUserProfilePhoto(string bearerToken, byte[] photoByteArray);
+		Task<byte[]> GetUserProfileImage(string bearerToken, string interlocutorId);
 	}
 }

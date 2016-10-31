@@ -18,7 +18,7 @@ using MobileSecondHand.API.Models.Shared.Chat;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Lista rozmów", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class ConversationsListActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
@@ -124,7 +124,8 @@ namespace MobileSecondHand.App.Activities
 			{
 				ConversationId = e.Id,
 				InterlocutorId = e.InterLocutorId,
-				InterlocutorName = e.InterlocutorName
+				InterlocutorName = e.InterlocutorName,
+				InterlocutorPrifileImage = e.InterLocutorProfileImage
 			};
 
 			intent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
