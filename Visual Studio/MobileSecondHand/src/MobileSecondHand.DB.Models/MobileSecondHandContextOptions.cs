@@ -1,13 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Microsoft.EntityFrameworkCore;
-using MobileSecondHand.COMMON;
-using MobileSecondHand.DB.Models;
+﻿using Microsoft.EntityFrameworkCore;
 
-namespace MobileSecondHand.DB.Services {
+namespace MobileSecondHand.DB.Models
+{
 	public class MobileSecondHandContextOptions : IMobileSecondHandContextOptions {
 		public DbContextOptions<MobileSecondHandContext> DbContextOptions { get; }
 

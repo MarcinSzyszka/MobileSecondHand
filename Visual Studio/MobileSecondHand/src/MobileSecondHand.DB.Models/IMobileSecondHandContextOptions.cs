@@ -6,7 +6,8 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using MobileSecondHand.DB.Models;
 
-namespace MobileSecondHand.DB.Services {
+namespace MobileSecondHand.DB.Models
+{
 	public interface IMobileSecondHandContextOptions {
 		DbContextOptions<MobileSecondHandContext> DbContextOptions { get; }
 	}

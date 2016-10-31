@@ -4,8 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MobileSecondHand.DB.Services {
-	public class ConnectionStringConfig {
+namespace MobileSecondHand.DB.Models
+{
+	public class ConnectionStringConfig
+	{
 		public string ConnectionString { get; set; }
 	}
 }

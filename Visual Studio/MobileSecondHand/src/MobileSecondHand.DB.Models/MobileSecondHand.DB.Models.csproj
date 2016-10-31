@@ -98,6 +98,10 @@
       <HintPath>..\..\packages\Microsoft.EntityFrameworkCore.Relational.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.Relational.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.EntityFrameworkCore.SqlServer, Version=1.0.1.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
+      <HintPath>..\..\packages\Microsoft.EntityFrameworkCore.SqlServer.1.0.1\lib\net451\Microsoft.EntityFrameworkCore.SqlServer.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Extensions.Caching.Abstractions, Version=1.0.0.0, Culture=neutral, PublicKeyToken=adb9793829ddae60, processorArchitecture=MSIL">
       <HintPath>..\..\packages\Microsoft.Extensions.Caching.Abstractions.1.0.0\lib\netstandard1.0\Microsoft.Extensions.Caching.Abstractions.dll</HintPath>
       <Private>True</Private>
@@ -195,6 +199,8 @@
     <Compile Include="Advertisement\ColorKeywordToAdvertisement.cs" />
     <Compile Include="Advertisement\UserToFavouriteAdvertisement.cs" />
     <Compile Include="Chat\ConversationReadModel.cs" />
+    <Compile Include="ConnectionStringConfig.cs" />
+    <Compile Include="IMobileSecondHandContextOptions.cs" />
     <Compile Include="Keywords\CategoryKeyword.cs" />
     <Compile Include="Keywords\ColorKeyword.cs" />
     <Compile Include="Keywords\IKeywordDbModel.cs" />
@@ -203,6 +209,7 @@
     <Compile Include="Chat\Conversation.cs" />
     <Compile Include="Chat\UserToConversation.cs" />
     <Compile Include="MobileSecondHandContext.cs" />
+    <Compile Include="MobileSecondHandContextOptions.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
