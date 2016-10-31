@@ -17,7 +17,7 @@ using Android.Widget;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Lista rozmów")]
+	[Activity(Label = "Lista rozmów", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class ConversationsListActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;
@@ -33,8 +33,8 @@ namespace MobileSecondHand.App.Activities
 			this.messagesService = new MessagesService(bearerToken);
 			SetContentView(Resource.Layout.ConversationsListActivity);
 			base.SetupToolbar();
-			conversationsPage = savedInstanceState == null ? 0 : savedInstanceState.GetInt(ExtrasKeys.CONVERSATIONS_LIST_PAGE);
-			await SetupViews(savedInstanceState != null);
+			conversationsPage = 0;
+			await SetupViews();
 		}
 
 		//public override bool OnCreateOptionsMenu(IMenu menu)
@@ -67,29 +67,22 @@ namespace MobileSecondHand.App.Activities
 			return handled;
 		}
 
-		protected override void OnSaveInstanceState(Bundle outState)
-		{
-			SharedObject.Data = this.conversationsListAdapter.ConversationItems;
-			outState.PutInt(ExtrasKeys.CONVERSATIONS_LIST_PAGE, conversationsPage);
-			base.OnSaveInstanceState(outState);
-		}
-
-		private async Task SetupViews(bool screenOrientationChaged)
+		private async Task SetupViews()
 		{
 			progress = new ProgressDialogHelper(this);
 			this.textViewNoConversations = FindViewById<TextView>(Resource.Id.textViewNoConversations);
 			this.conversationsRecyclerView = FindViewById<RecyclerView>(Resource.Id.conversationsRecyclerView);
 			var mLayoutManager = new Android.Support.V7.Widget.LinearLayoutManager(this);
 			this.conversationsRecyclerView.SetLayoutManager(mLayoutManager);
-			await DownloadAndShowConversations(screenOrientationChaged ? false : true, screenOrientationChaged);
+			await DownloadAndShowConversations(true);
 		}
 
 
-		private async Task DownloadAndShowConversations(bool resetList, bool screenOrientationChaged = false)
+		private async Task DownloadAndShowConversations(bool resetList)
 		{
 			progress.ShowProgressDialog("Pobieranie rozmów. Proszê czekaæ...");
-			SetConversationsListPageNumber(resetList, screenOrientationChaged);
-			List<ConversationItemModel> conversations = await GetStoredOrDownloadConversations(screenOrientationChaged);
+			SetConversationsListPageNumber(resetList);
+			List<ConversationItemModel> conversations = await GetConversations();
 
 			if (conversations != null && conversations.Count > 0)
 			{
@@ -116,7 +109,6 @@ namespace MobileSecondHand.App.Activities
 				conversationsListAdapter.InfiniteScrollDisabled = true;
 				if (conversationsListAdapter.ItemCount == 0)
 				{
-
 					this.conversationsRecyclerView.Visibility = ViewStates.Gone;
 					this.textViewNoConversations.Visibility = ViewStates.Visible;
 				}
@@ -139,21 +131,6 @@ namespace MobileSecondHand.App.Activities
 			StartActivity(intent);
 		}
 
-		private async Task<List<ConversationItemModel>> GetStoredOrDownloadConversations(bool screenOrientationChaged)
-		{
-			List<ConversationItemModel> conversations;
-			if (screenOrientationChaged)
-			{
-				conversations = (List<ConversationItemModel>)SharedObject.Data;
-			}
-			else
-			{
-				conversations = await GetConversations();
-			}
-
-			return conversations;
-		}
-
 		private async Task<List<ConversationItemModel>> GetConversations()
 		{
 			var list = await this.messagesService.GetConversations(conversationsPage);
@@ -166,13 +143,13 @@ namespace MobileSecondHand.App.Activities
 		}
 
 
-		private void SetConversationsListPageNumber(bool resetList, bool screenOrientationChaged)
+		private void SetConversationsListPageNumber(bool resetList)
 		{
 			if (resetList)
 			{
 				conversationsPage = 0;
 			}
-			else if (!screenOrientationChaged)
+			else
 			{
 				conversationsPage++;
 			}
