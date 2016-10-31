@@ -53,7 +53,10 @@ namespace MobileSecondHand.App.Adapters
 
 		public override void DestroyItem(View container, int position, Java.Lang.Object objectValue)
 		{
-			base.DestroyItem(container, position, objectValue);
+			var viewGroup = container as ViewGroup;
+			viewGroup.RemoveView((View)objectValue);
 		}
+
+	
 	}
 }
