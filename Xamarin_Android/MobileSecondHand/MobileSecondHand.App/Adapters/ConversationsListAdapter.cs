@@ -14,12 +14,14 @@ using Android.Support.V7.Widget;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.API.Models.Shared.Chat;
 
 namespace MobileSecondHand.App.Adapters
 {
 	public class ConversationsListAdapter : RecyclerView.Adapter
 	{
 		IInfiniteScrollListener infiniteScrollListener;
+		BitmapOperationService bitmapService;
 		public List<ConversationItemModel> ConversationItems { get; private set; }
 		public event EventHandler<ConversationItemModel> ConversationItemClick;
 		public bool InfiniteScrollDisabled { get; set; }
@@ -32,6 +34,7 @@ namespace MobileSecondHand.App.Adapters
 		{
 			this.ConversationItems = conversationsItems;
 			this.infiniteScrollListener = infiniteScrollListener;
+			this.bitmapService = new BitmapOperationService();
 		}
 
 		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
@@ -41,6 +44,11 @@ namespace MobileSecondHand.App.Adapters
 
 			vh.InterlocutorNameTextView.Text = currentItem.InterlocutorName;
 			vh.LastMessageTextView.Text = currentItem.LastMessage;
+			vh.LastMessageDateTextView.Text = currentItem.LastMessageDate;
+			if (currentItem.InterLocutorProfileImage != null)
+			{
+				vh.InterlocutorProfileImage.SetImageBitmap(this.bitmapService.GetBitmap(currentItem.InterLocutorProfileImage));
+			}
 			vh.LastMessageDateTextView.Text = currentItem.LastMessageDate;
 
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);

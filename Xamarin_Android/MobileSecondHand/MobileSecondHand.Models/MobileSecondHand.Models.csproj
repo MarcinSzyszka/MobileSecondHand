@@ -42,7 +42,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chat\ConversationInfoModel.cs" />
-    <Compile Include="Chat\ConversationItemModel.cs" />
     <Compile Include="Chat\ConversationMessage.cs" />
     <Compile Include="Consts\WebApiConsts.cs" />
     <Compile Include="Enums\ActionKindAfterClickFabOnAdvertisementItemRow.cs" />

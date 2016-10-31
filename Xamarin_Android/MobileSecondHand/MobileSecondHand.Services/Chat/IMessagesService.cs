@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared.Chat;
 using MobileSecondHand.Models.Chat;
 
 namespace MobileSecondHand.Services.Chat

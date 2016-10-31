@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared.Chat;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.Models.Consts;
 using Newtonsoft.Json;

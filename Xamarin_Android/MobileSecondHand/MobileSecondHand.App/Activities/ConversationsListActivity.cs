@@ -14,6 +14,7 @@ using MobileSecondHand.App.Infrastructure.ActivityState;
 using Newtonsoft.Json;
 using Android.Views;
 using Android.Widget;
+using MobileSecondHand.API.Models.Shared.Chat;
 
 namespace MobileSecondHand.App.Activities
 {
