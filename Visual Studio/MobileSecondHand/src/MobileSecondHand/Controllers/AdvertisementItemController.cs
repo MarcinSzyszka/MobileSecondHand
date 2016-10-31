@@ -144,12 +144,30 @@ namespace MobileSecondHand.Controllers
 
 		[HttpPost]
 		[Route("CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck")]
-		public IActionResult CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck([FromBody]CoordinatesForAdvertisementsModel coordinatesModel)
+		public IActionResult CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck([FromBody]AdvertisementsSearchModelForNotifications searchModel)
 		{
 			try
 			{
 				var userId = this.identityService.GetUserId(User.Identity);
-				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, coordinatesModel, true);
+				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, searchModel, true);
+				return Json(foundedNewAdvertisements);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc);
+				return null;
+			}
+		}
+
+		[HttpPost]
+		[Route("CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck")]
+		public IActionResult CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck([FromBody]AdvertisementsSearchModelForNotifications searchModel)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, searchModel, false);
 				return Json(foundedNewAdvertisements);
 			}
 			catch (Exception exc)
@@ -180,23 +198,7 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
-		[HttpPost]
-		[Route("CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck")]
-		public IActionResult CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck([FromBody]CoordinatesForAdvertisementsModel coordinatesModel)
-		{
-			try
-			{
-				var userId = this.identityService.GetUserId(User.Identity);
-				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, coordinatesModel, false);
-				return Json(foundedNewAdvertisements);
-			}
-			catch (Exception exc)
-			{
-				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc);
-				return null;
-			}
-		}
+
 
 		[HttpGet]
 		[Route("GetUserAdvertisements/{pageNumber}/{userId}")]

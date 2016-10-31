@@ -11,7 +11,7 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		IQueryable<AdvertisementItem> GetAdvertisements();
 		AdvertisementItem GetByIdWithDetails(int advertisementId);
 		IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber = -1);
-		IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
+		IQueryable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
 		AdvertisementItem GetById(int advertisementId);
 		void SaveAdvertisementItem(AdvertisementItem advertisement);
 		UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId);

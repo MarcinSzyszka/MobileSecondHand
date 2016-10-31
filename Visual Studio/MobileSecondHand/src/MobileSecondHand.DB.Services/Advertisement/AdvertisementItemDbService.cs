@@ -32,14 +32,13 @@ namespace MobileSecondHand.DB.Services.Advertisement
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos);
 		}
 
-		public IEnumerable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
+		public IQueryable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
 		{
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.CreationDate >= lastCheckDate && a.UserId != userId &&
 																				a.Latitude >= coordinatesForSearchModel.LatitudeStart
 																				&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
 																				&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
-																				&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd)
-																				.Take(1);
+																				&& a.Longitude <= coordinatesForSearchModel.LongitudeEnd);
 		}
 
 		public IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber = -1)

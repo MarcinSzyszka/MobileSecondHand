@@ -176,15 +176,24 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return advertisementsViewModels;
 		}
 
-		public bool CheckForNewAdvertisementsSinceLastCheck(string userId, CoordinatesForAdvertisementsModel coordinatesModel, bool currentLocation)
+		public bool CheckForNewAdvertisementsSinceLastCheck(string userId, AdvertisementsSearchModelForNotifications searchModel, bool currentLocation)
 		{
-			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(coordinatesModel.Latitude, coordinatesModel.Longitude, coordinatesModel.MaxDistance);
+			var coordinatesForSearchModel = coordinatesCalculator.GetCoordinatesForSearchingAdvertisements(searchModel.CoordinatesModels.Latitude, searchModel.CoordinatesModels.Longitude, searchModel.CoordinatesModels.MaxDistance);
 			var lastUserCheckModel = this.lastUsersChecksCacheService.GetLastTimeUserCheck(userId);
 			var dateToCompare = currentLocation ? lastUserCheckModel.LastAroundCurrentLocationCheckDate : lastUserCheckModel.LastAroundHomeLocationCheckDate;
-			var advertisementsFromDb = this.advertisementItemDbService.GetAdvertisementsFromDeclaredAreaSinceLastCheck(dateToCompare, userId, coordinatesForSearchModel).ToList();
+			var advertisementsFromDbQuery = this.advertisementItemDbService.GetAdvertisementsFromDeclaredAreaSinceLastCheck(dateToCompare, userId, coordinatesForSearchModel);
+			if (searchModel.CategoriesIds.Count > 0)
+			{
+				advertisementsFromDbQuery = advertisementsFromDbQuery.Where(a => searchModel.CategoriesIds.Contains(a.CategoryId));
+			}
+			if (searchModel.Sizes.Count > 0)
+			{
+				advertisementsFromDbQuery = advertisementsFromDbQuery.Where(a => searchModel.Sizes.Contains(a.Size));
+			}
+			var advertisements = advertisementsFromDbQuery.Take(1).ToList();
 			this.lastUsersChecksCacheService.UpdateLastTimeUserCheckDate(userId, currentLocation);
 
-			return advertisementsFromDb.Count > 0;
+			return advertisements.Count > 0;
 		}
 
 		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementId, string userId)

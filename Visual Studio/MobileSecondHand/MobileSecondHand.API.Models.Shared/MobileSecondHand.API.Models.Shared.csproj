@@ -38,6 +38,7 @@
     <Compile Include="Advertisements\AdvertisementItemPhotosPaths.cs" />
     <Compile Include="Advertisements\AdvertisementItemShort.cs" />
     <Compile Include="Advertisements\AdvertisementsSearchModel.cs" />
+    <Compile Include="Advertisements\AdvertisementsSearchModelForNotifications.cs" />
     <Compile Include="Advertisements\NewAdvertisementItem.cs" />
     <Compile Include="Categories\CategoryInfoModel.cs" />
     <Compile Include="Chat\ConversationInfoModel.cs" />
