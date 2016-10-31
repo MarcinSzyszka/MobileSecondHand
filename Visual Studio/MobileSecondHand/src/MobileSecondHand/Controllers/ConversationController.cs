@@ -4,6 +4,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.Conversation;
 
@@ -15,11 +16,13 @@ namespace MobileSecondHand.Controllers
 	{
 		IConversationService conversationService;
 		IIdentityService identityService;
+		private ILogger logger;
 
-		public ConversationController(IConversationService conversationService, IIdentityService identityService)
+		public ConversationController(IConversationService conversationService, IIdentityService identityService, ILoggerFactory loggerFactory)
 		{
 			this.conversationService = conversationService;
 			this.identityService = identityService;
+			this.logger = loggerFactory.CreateLogger<ConversationController>();
 		}
 
 		[HttpGet]
@@ -35,6 +38,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wyst¹pi³ b³¹d podczas pobierania wiadomosci z rozmowy: " + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(String.Format("Wyst¹pi³ b³¹d: {0}", exc.Message));
 			}
@@ -53,6 +57,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wyst¹pi³ b³¹d podczas pobierania informacji o rozmowie: " + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(String.Format("Wyst¹pi³ b³¹d: {0}", exc.Message));
 			}
@@ -71,6 +76,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wyst¹pi³ b³¹d podczas pobierania rozmów: " + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(String.Format("Wyst¹pi³ b³¹d: {0}", exc.Message));
 			}
