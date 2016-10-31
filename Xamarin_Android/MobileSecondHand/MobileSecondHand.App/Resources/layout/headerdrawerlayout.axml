@@ -152,7 +152,8 @@
             android:layout_marginLeft="@dimen/settingRowMargin"
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
-            android:padding="2dp">
+            android:padding="2dp"
+            android:paddingBottom="5dp">
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
@@ -203,7 +204,7 @@
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:text="Słowa kluczowe: "
+                android:text="Kategorie: "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
             <TextView
@@ -217,6 +218,47 @@
                 android:textAppearance="?android:attr/textAppearanceSmall" />
             <ImageButton
                 android:id="@+id/imgBtnKeywords"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_alignParentRight="true"
+                android:layout_alignParentTop="true"
+                android:background="#00ffffff"
+                android:src="@drawable/settings" />
+        </RelativeLayout>
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentLeft="true"
+            android:layout_alignParentStart="true"
+            android:layout_below="@+id/textView4"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="@dimen/settingRowMargin"
+            android:layout_marginRight="@dimen/settingRowMargin"
+            android:background="@drawable/setting_row"
+            android:padding="2dp">
+            <TextView
+                android:id="@+id/textView71"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_alignParentTop="true"
+                android:text="Rozmiary: "
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:textStyle="bold" />
+            <TextView
+                android:id="@+id/textViewNotificationsSize"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView71"
+                android:text="L\XL"
+                android:textAppearance="?android:attr/textAppearanceSmall" />
+            <ImageButton
+                android:id="@+id/imgBtnNotificationsSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -240,6 +282,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="10dp"
+            android:paddingBottom="10dp"
             android:layout_marginLeft="@dimen/settingRowMargin"
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"

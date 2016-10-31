@@ -13,7 +13,7 @@ namespace MobileSecondHand.Services.Advertisements
 		Task<AdvertisementItemPhotosNames> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList);
 		Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel);
 		Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId);
-		Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel);
+		Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(AdvertisementsSearchModelForNotifications coordinatesMOdel);
 		Task<bool> DeleteAdvertisement(int advertisementId, AdvertisementsKind advertisementsKind);
 		Task<string> AddToUserFavouritesAdvertisements(SingleIdModelForPostRequests advertisementId);
 		Task<bool> RestartAdvertisement(int id);

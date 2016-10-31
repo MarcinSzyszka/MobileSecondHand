@@ -270,7 +270,7 @@ namespace MobileSecondHand.App
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
 			mainListLayout = FindViewById<RelativeLayout>(Resource.Id.mainListLayout);
-			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
+			var mLayoutManager = new GridLayoutManager(this, 2);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 		}
 
@@ -410,7 +410,7 @@ namespace MobileSecondHand.App
 					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, this.advertisementsSearchModel.AdvertisementsKind, this);
 					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
 					advertisementItemListAdapter.DeleteAdvertisementItemClick += AdvertisementItemListAdapter_DeleteAdvertisementItemClick;
-					var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
+					var mLayoutManager = new GridLayoutManager(this, 2);
 					advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 					advertisementsRecyclerView.SetAdapter(advertisementItemListAdapter);
 					advertisementsRecyclerView.RequestLayout();

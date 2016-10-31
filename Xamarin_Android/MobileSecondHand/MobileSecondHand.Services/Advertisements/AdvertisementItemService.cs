@@ -49,9 +49,9 @@ namespace MobileSecondHand.Services.Advertisements
 			return advertisementList;
 		}
 
-		public async Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
+		public async Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(AdvertisementsSearchModelForNotifications searchModel)
 		{
-			var stringContent = new StringContent(JsonConvert.SerializeObject(coordinatesMOdel), Encoding.UTF8, "application/json");
+			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck", stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
@@ -62,9 +62,9 @@ namespace MobileSecondHand.Services.Advertisements
 			return areTherNewAdvertisements;
 		}
 
-		public async Task<bool> CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck(CoordinatesForAdvertisementsModel coordinatesMOdel)
+		public async Task<bool> CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck(AdvertisementsSearchModelForNotifications searchModel)
 		{
-			var stringContent = new StringContent(JsonConvert.SerializeObject(coordinatesMOdel), Encoding.UTF8, "application/json");
+			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
 			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck", stringContent);
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{

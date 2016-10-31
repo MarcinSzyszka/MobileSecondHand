@@ -2467,8 +2467,8 @@ namespace MobileSecondHand.App
 		public partial class Id
 		{
 			
-			// aapt resource value: 0x7f080122
-			public const int action0 = 2131231010;
+			// aapt resource value: 0x7f080126
+			public const int action0 = 2131231014;
 			
 			// aapt resource value: 0x7f080068
 			public const int action_bar = 2131230824;
@@ -2494,8 +2494,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080069
 			public const int action_context_bar = 2131230825;
 			
-			// aapt resource value: 0x7f080126
-			public const int action_divider = 2131231014;
+			// aapt resource value: 0x7f08012a
+			public const int action_divider = 2131231018;
 			
 			// aapt resource value: 0x7f080003
 			public const int action_menu_divider = 2131230723;
@@ -2524,8 +2524,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08000c
 			public const int adjust_width = 2131230732;
 			
-			// aapt resource value: 0x7f0800bc
-			public const int advertPhotoView = 2131230908;
+			// aapt resource value: 0x7f0800bd
+			public const int advertPhotoView = 2131230909;
 			
 			// aapt resource value: 0x7f0800a4
 			public const int advertisementDeatilsPrice = 2131230884;
@@ -2539,14 +2539,14 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08009b
 			public const int advertisementDetailsWrapperLayout = 2131230875;
 			
-			// aapt resource value: 0x7f0800b8
-			public const int advertisementKind = 2131230904;
-			
 			// aapt resource value: 0x7f0800b9
-			public const int advertisementOnListTitle = 2131230905;
+			public const int advertisementKind = 2131230905;
 			
-			// aapt resource value: 0x7f0800b7
-			public const int advertisementPhotoImageView = 2131230903;
+			// aapt resource value: 0x7f0800ba
+			public const int advertisementOnListTitle = 2131230906;
+			
+			// aapt resource value: 0x7f0800b8
+			public const int advertisementPhotoImageView = 2131230904;
 			
 			// aapt resource value: 0x7f0800b5
 			public const int advertisementPriceListTextView = 2131230901;
@@ -2554,11 +2554,11 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800b1
 			public const int advertisementRowLayout = 2131230897;
 			
-			// aapt resource value: 0x7f080104
-			public const int advertisementsKindList = 2131230980;
+			// aapt resource value: 0x7f080108
+			public const int advertisementsKindList = 2131230984;
 			
-			// aapt resource value: 0x7f080107
-			public const int advertisementsRecyclerView = 2131230983;
+			// aapt resource value: 0x7f08010b
+			public const int advertisementsRecyclerView = 2131230987;
 			
 			// aapt resource value: 0x7f0800b0
 			public const int advertisementsRecyclerViewOnAdvertDetails = 2131230896;
@@ -2572,11 +2572,11 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080078
 			public const int app_bar = 2131230840;
 			
-			// aapt resource value: 0x7f0800bd
-			public const int app_bar_with_circle_image_view = 2131230909;
+			// aapt resource value: 0x7f0800be
+			public const int app_bar_with_circle_image_view = 2131230910;
 			
-			// aapt resource value: 0x7f08013e
-			public const int applyFilterOptions = 2131231038;
+			// aapt resource value: 0x7f080142
+			public const int applyFilterOptions = 2131231042;
 			
 			// aapt resource value: 0x7f080043
 			public const int automatic = 2131230787;
@@ -2584,8 +2584,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08001d
 			public const int beginning = 2131230749;
 			
-			// aapt resource value: 0x7f080109
-			public const int blabkabka = 2131230985;
+			// aapt resource value: 0x7f08010d
+			public const int blabkabka = 2131230989;
 			
 			// aapt resource value: 0x7f08002c
 			public const int bottom = 2131230764;
@@ -2602,44 +2602,44 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08009d
 			public const int btnAddToFavoriteAdvertisements = 2131230877;
 			
-			// aapt resource value: 0x7f080118
-			public const int btnDistance = 2131231000;
+			// aapt resource value: 0x7f08011c
+			public const int btnDistance = 2131231004;
 			
-			// aapt resource value: 0x7f080138
-			public const int btnSaveNickName = 2131231032;
+			// aapt resource value: 0x7f08013c
+			public const int btnSaveNickName = 2131231036;
 			
-			// aapt resource value: 0x7f08010c
-			public const int btnSelectAdvertsStatus = 2131230988;
+			// aapt resource value: 0x7f080110
+			public const int btnSelectAdvertsStatus = 2131230992;
 			
-			// aapt resource value: 0x7f080112
-			public const int btnSelectCategoryForMainList = 2131230994;
+			// aapt resource value: 0x7f080116
+			public const int btnSelectCategoryForMainList = 2131230998;
 			
-			// aapt resource value: 0x7f08010f
-			public const int btnSelectTransactionKind = 2131230991;
+			// aapt resource value: 0x7f080113
+			public const int btnSelectTransactionKind = 2131230995;
 			
-			// aapt resource value: 0x7f08011b
-			public const int btnSelectUser = 2131231003;
+			// aapt resource value: 0x7f08011f
+			public const int btnSelectUser = 2131231007;
 			
-			// aapt resource value: 0x7f080115
-			public const int btnSize = 2131230997;
+			// aapt resource value: 0x7f080119
+			public const int btnSize = 2131231001;
 			
-			// aapt resource value: 0x7f08011e
-			public const int btnSorting = 2131231006;
+			// aapt resource value: 0x7f080122
+			public const int btnSorting = 2131231010;
 			
 			// aapt resource value: 0x7f080040
 			public const int button = 2131230784;
 			
-			// aapt resource value: 0x7f0800fd
-			public const int buttonLoginStandard = 2131230973;
+			// aapt resource value: 0x7f080101
+			public const int buttonLoginStandard = 2131230977;
 			
 			// aapt resource value: 0x7f080052
 			public const int buttonPanel = 2131230802;
 			
-			// aapt resource value: 0x7f0800d1
-			public const int buttonSendConversationMessage = 2131230929;
+			// aapt resource value: 0x7f0800d2
+			public const int buttonSendConversationMessage = 2131230930;
 			
-			// aapt resource value: 0x7f080134
-			public const int buttonSubmitRegistration = 2131231028;
+			// aapt resource value: 0x7f080138
+			public const int buttonSubmitRegistration = 2131231032;
 			
 			// aapt resource value: 0x7f08008e
 			public const int buttonTakePicture1 = 2131230862;
@@ -2650,11 +2650,11 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080094
 			public const int buttonTakePicture3 = 2131230868;
 			
-			// aapt resource value: 0x7f080123
-			public const int cancel_action = 2131231011;
+			// aapt resource value: 0x7f080127
+			public const int cancel_action = 2131231015;
 			
-			// aapt resource value: 0x7f0800c5
-			public const int cancel_button = 2131230917;
+			// aapt resource value: 0x7f0800c6
+			public const int cancel_button = 2131230918;
 			
 			// aapt resource value: 0x7f08002d
 			public const int center = 2131230765;
@@ -2665,20 +2665,20 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08002f
 			public const int center_vertical = 2131230767;
 			
-			// aapt resource value: 0x7f08013b
-			public const int chat = 2131231035;
+			// aapt resource value: 0x7f08013f
+			public const int chat = 2131231039;
 			
 			// aapt resource value: 0x7f080060
 			public const int checkbox = 2131230816;
 			
-			// aapt resource value: 0x7f08013a
-			public const int choosingAdvertisementsList = 2131231034;
+			// aapt resource value: 0x7f08013e
+			public const int choosingAdvertisementsList = 2131231038;
 			
-			// aapt resource value: 0x7f080129
-			public const int chronometer = 2131231017;
+			// aapt resource value: 0x7f08012d
+			public const int chronometer = 2131231021;
 			
-			// aapt resource value: 0x7f08013d
-			public const int clearFilterOptions = 2131231037;
+			// aapt resource value: 0x7f080141
+			public const int clearFilterOptions = 2131231041;
 			
 			// aapt resource value: 0x7f080035
 			public const int clip_horizontal = 2131230773;
@@ -2689,56 +2689,56 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080021
 			public const int collapseActionView = 2131230753;
 			
-			// aapt resource value: 0x7f0800c7
-			public const int com_facebook_body_frame = 2131230919;
-			
-			// aapt resource value: 0x7f0800c9
-			public const int com_facebook_button_xout = 2131230921;
-			
-			// aapt resource value: 0x7f0800c2
-			public const int com_facebook_device_auth_instructions = 2131230914;
-			
-			// aapt resource value: 0x7f0800c1
-			public const int com_facebook_device_dialog_title = 2131230913;
-			
-			// aapt resource value: 0x7f0800c0
-			public const int com_facebook_fragment_container = 2131230912;
-			
-			// aapt resource value: 0x7f0800c6
-			public const int com_facebook_login_activity_progress_bar = 2131230918;
-			
-			// aapt resource value: 0x7f0800cb
-			public const int com_facebook_tooltip_bubble_view_bottom_pointer = 2131230923;
+			// aapt resource value: 0x7f0800c8
+			public const int com_facebook_body_frame = 2131230920;
 			
 			// aapt resource value: 0x7f0800ca
-			public const int com_facebook_tooltip_bubble_view_text_body = 2131230922;
-			
-			// aapt resource value: 0x7f0800c8
-			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131230920;
+			public const int com_facebook_button_xout = 2131230922;
 			
 			// aapt resource value: 0x7f0800c3
-			public const int confirmation_code = 2131230915;
+			public const int com_facebook_device_auth_instructions = 2131230915;
+			
+			// aapt resource value: 0x7f0800c2
+			public const int com_facebook_device_dialog_title = 2131230914;
+			
+			// aapt resource value: 0x7f0800c1
+			public const int com_facebook_fragment_container = 2131230913;
+			
+			// aapt resource value: 0x7f0800c7
+			public const int com_facebook_login_activity_progress_bar = 2131230919;
+			
+			// aapt resource value: 0x7f0800cc
+			public const int com_facebook_tooltip_bubble_view_bottom_pointer = 2131230924;
+			
+			// aapt resource value: 0x7f0800cb
+			public const int com_facebook_tooltip_bubble_view_text_body = 2131230923;
+			
+			// aapt resource value: 0x7f0800c9
+			public const int com_facebook_tooltip_bubble_view_top_pointer = 2131230921;
+			
+			// aapt resource value: 0x7f0800c4
+			public const int confirmation_code = 2131230916;
 			
 			// aapt resource value: 0x7f080058
 			public const int contentPanel = 2131230808;
 			
-			// aapt resource value: 0x7f0800d3
-			public const int conversationInterlocutorNameTextView = 2131230931;
+			// aapt resource value: 0x7f0800d4
+			public const int conversationInterlocutorNameTextView = 2131230932;
+			
+			// aapt resource value: 0x7f0800d6
+			public const int conversationLastMessageDateTExtView = 2131230934;
 			
 			// aapt resource value: 0x7f0800d5
-			public const int conversationLastMessageDateTExtView = 2131230933;
+			public const int conversationLastMessageTextView = 2131230933;
 			
-			// aapt resource value: 0x7f0800d4
-			public const int conversationLastMessageTextView = 2131230932;
+			// aapt resource value: 0x7f0800d9
+			public const int conversationMessageContent = 2131230937;
 			
 			// aapt resource value: 0x7f0800d8
-			public const int conversationMessageContent = 2131230936;
+			public const int conversationMessageHeader = 2131230936;
 			
-			// aapt resource value: 0x7f0800d7
-			public const int conversationMessageHeader = 2131230935;
-			
-			// aapt resource value: 0x7f0800cc
-			public const int conversationsRecyclerView = 2131230924;
+			// aapt resource value: 0x7f0800cd
+			public const int conversationsRecyclerView = 2131230925;
 			
 			// aapt resource value: 0x7f08005e
 			public const int custom = 2131230814;
@@ -2752,20 +2752,20 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08004e
 			public const int default_activity_button = 2131230798;
 			
-			// aapt resource value: 0x7f0800db
-			public const int design_bottom_sheet = 2131230939;
+			// aapt resource value: 0x7f0800dc
+			public const int design_bottom_sheet = 2131230940;
+			
+			// aapt resource value: 0x7f0800e3
+			public const int design_menu_item_action_area = 2131230947;
 			
 			// aapt resource value: 0x7f0800e2
-			public const int design_menu_item_action_area = 2131230946;
+			public const int design_menu_item_action_area_stub = 2131230946;
 			
 			// aapt resource value: 0x7f0800e1
-			public const int design_menu_item_action_area_stub = 2131230945;
+			public const int design_menu_item_text = 2131230945;
 			
 			// aapt resource value: 0x7f0800e0
-			public const int design_menu_item_text = 2131230944;
-			
-			// aapt resource value: 0x7f0800df
-			public const int design_navigation_view = 2131230943;
+			public const int design_navigation_view = 2131230944;
 			
 			// aapt resource value: 0x7f080011
 			public const int disableHome = 2131230737;
@@ -2779,23 +2779,23 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800b6
 			public const int distanceTextView = 2131230902;
 			
-			// aapt resource value: 0x7f080101
-			public const int drawer_layout = 2131230977;
+			// aapt resource value: 0x7f080105
+			public const int drawer_layout = 2131230981;
 			
-			// aapt resource value: 0x7f0800cf
-			public const int editTextConversationMessage = 2131230927;
+			// aapt resource value: 0x7f0800d0
+			public const int editTextConversationMessage = 2131230928;
 			
 			// aapt resource value: 0x7f08007e
 			public const int editTextDescription = 2131230846;
 			
-			// aapt resource value: 0x7f080137
-			public const int editTextNickName = 2131231031;
+			// aapt resource value: 0x7f08013b
+			public const int editTextNickName = 2131231035;
 			
 			// aapt resource value: 0x7f080081
 			public const int editTextPrice = 2131230849;
 			
-			// aapt resource value: 0x7f0800ee
-			public const int editTextState = 2131230958;
+			// aapt resource value: 0x7f0800ef
+			public const int editTextState = 2131230959;
 			
 			// aapt resource value: 0x7f08007c
 			public const int editTextTitle = 2131230844;
@@ -2803,14 +2803,14 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08006a
 			public const int edit_query = 2131230826;
 			
-			// aapt resource value: 0x7f0800fb
-			public const int emailInputLogin = 2131230971;
+			// aapt resource value: 0x7f0800ff
+			public const int emailInputLogin = 2131230975;
 			
 			// aapt resource value: 0x7f08001e
 			public const int end = 2131230750;
 			
-			// aapt resource value: 0x7f08012e
-			public const int end_padder = 2131231022;
+			// aapt resource value: 0x7f080132
+			public const int end_padder = 2131231026;
 			
 			// aapt resource value: 0x7f080025
 			public const int enterAlways = 2131230757;
@@ -2827,17 +2827,17 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08005f
 			public const int expanded_menu = 2131230815;
 			
-			// aapt resource value: 0x7f080105
-			public const int fab = 2131230981;
+			// aapt resource value: 0x7f080109
+			public const int fab = 2131230985;
 			
-			// aapt resource value: 0x7f080106
-			public const int fabFilter = 2131230982;
+			// aapt resource value: 0x7f08010a
+			public const int fabFilter = 2131230986;
 			
 			// aapt resource value: 0x7f0800b3
 			public const int fab_remove_advertisement = 2131230899;
 			
-			// aapt resource value: 0x7f080100
-			public const int facebookLoginBtn = 2131230976;
+			// aapt resource value: 0x7f080104
+			public const int facebookLoginBtn = 2131230980;
 			
 			// aapt resource value: 0x7f080037
 			public const int fill = 2131230775;
@@ -2854,8 +2854,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800a6
 			public const int forSellOrChangeInfo = 2131230886;
 			
-			// aapt resource value: 0x7f0800fe
-			public const int goToRegistrationButton = 2131230974;
+			// aapt resource value: 0x7f080102
+			public const int goToRegistrationButton = 2131230978;
 			
 			// aapt resource value: 0x7f080005
 			public const int home = 2131230725;
@@ -2875,41 +2875,44 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800b4
 			public const int imageView1 = 2131230900;
 			
-			// aapt resource value: 0x7f0800ba
-			public const int imageView2 = 2131230906;
+			// aapt resource value: 0x7f0800bb
+			public const int imageView2 = 2131230907;
 			
 			// aapt resource value: 0x7f0800a9
 			public const int imageView3 = 2131230889;
 			
-			// aapt resource value: 0x7f0800f8
-			public const int imgBtnHomeLocalization = 2131230968;
+			// aapt resource value: 0x7f0800fc
+			public const int imgBtnHomeLocalization = 2131230972;
 			
-			// aapt resource value: 0x7f0800f5
-			public const int imgBtnKeywords = 2131230965;
+			// aapt resource value: 0x7f0800f6
+			public const int imgBtnKeywords = 2131230966;
 			
-			// aapt resource value: 0x7f0800f3
-			public const int imgBtnRadius = 2131230963;
+			// aapt resource value: 0x7f0800f9
+			public const int imgBtnNotificationsSize = 2131230969;
 			
-			// aapt resource value: 0x7f08012d
-			public const int info = 2131231021;
+			// aapt resource value: 0x7f0800f4
+			public const int imgBtnRadius = 2131230964;
+			
+			// aapt resource value: 0x7f080131
+			public const int info = 2131231025;
 			
 			// aapt resource value: 0x7f080042
 			public const int inline = 2131230786;
 			
-			// aapt resource value: 0x7f080133
-			public const int inputConfirmPasswordRegistration = 2131231027;
+			// aapt resource value: 0x7f080137
+			public const int inputConfirmPasswordRegistration = 2131231031;
 			
-			// aapt resource value: 0x7f080130
-			public const int inputEmailRegistration = 2131231024;
+			// aapt resource value: 0x7f080134
+			public const int inputEmailRegistration = 2131231028;
 			
-			// aapt resource value: 0x7f080131
-			public const int inputNickNameRegistration = 2131231025;
+			// aapt resource value: 0x7f080135
+			public const int inputNickNameRegistration = 2131231029;
 			
-			// aapt resource value: 0x7f0800fc
-			public const int inputPasswordLogin = 2131230972;
+			// aapt resource value: 0x7f080100
+			public const int inputPasswordLogin = 2131230976;
 			
-			// aapt resource value: 0x7f080132
-			public const int inputPasswordRegistration = 2131231026;
+			// aapt resource value: 0x7f080136
+			public const int inputPasswordRegistration = 2131231030;
 			
 			// aapt resource value: 0x7f080000
 			public const int item_touch_helper_previous_elevation = 2131230720;
@@ -2923,44 +2926,44 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08008c
 			public const int layoutPhotos = 2131230860;
 			
-			// aapt resource value: 0x7f080108
-			public const int layoutSortingOptions = 2131230984;
+			// aapt resource value: 0x7f08010c
+			public const int layoutSortingOptions = 2131230988;
 			
 			// aapt resource value: 0x7f080031
 			public const int left = 2131230769;
 			
-			// aapt resource value: 0x7f080127
-			public const int line1 = 2131231015;
-			
 			// aapt resource value: 0x7f08012b
-			public const int line3 = 2131231019;
+			public const int line1 = 2131231019;
 			
-			// aapt resource value: 0x7f0800cd
-			public const int linearLayout1 = 2131230925;
+			// aapt resource value: 0x7f08012f
+			public const int line3 = 2131231023;
+			
+			// aapt resource value: 0x7f0800ce
+			public const int linearLayout1 = 2131230926;
 			
 			// aapt resource value: 0x7f08000e
 			public const int listMode = 2131230734;
 			
-			// aapt resource value: 0x7f0800e5
-			public const int listViewMatchUserNames = 2131230949;
+			// aapt resource value: 0x7f0800e6
+			public const int listViewMatchUserNames = 2131230950;
 			
 			// aapt resource value: 0x7f08004f
 			public const int list_item = 2131230799;
 			
-			// aapt resource value: 0x7f080135
-			public const int logoLayout = 2131231029;
+			// aapt resource value: 0x7f080139
+			public const int logoLayout = 2131231033;
 			
-			// aapt resource value: 0x7f080103
-			public const int mainListLayout = 2131230979;
+			// aapt resource value: 0x7f080107
+			public const int mainListLayout = 2131230983;
 			
-			// aapt resource value: 0x7f080102
-			public const int mainListLayoutWrapper = 2131230978;
+			// aapt resource value: 0x7f080106
+			public const int mainListLayoutWrapper = 2131230982;
+			
+			// aapt resource value: 0x7f080129
+			public const int media_actions = 2131231017;
 			
 			// aapt resource value: 0x7f080125
-			public const int media_actions = 2131231013;
-			
-			// aapt resource value: 0x7f080121
-			public const int messenger_send_button = 2131231009;
+			public const int messenger_send_button = 2131231013;
 			
 			// aapt resource value: 0x7f08001f
 			public const int middle = 2131230751;
@@ -2971,14 +2974,14 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080018
 			public const int multiply = 2131230744;
 			
-			// aapt resource value: 0x7f0800e6
-			public const int navWievSvrollLayout = 2131230950;
+			// aapt resource value: 0x7f0800e7
+			public const int navWievSvrollLayout = 2131230951;
 			
-			// aapt resource value: 0x7f08011f
-			public const int nav_view = 2131231007;
+			// aapt resource value: 0x7f080123
+			public const int nav_view = 2131231011;
 			
-			// aapt resource value: 0x7f0800de
-			public const int navigation_header_container = 2131230942;
+			// aapt resource value: 0x7f0800df
+			public const int navigation_header_container = 2131230943;
 			
 			// aapt resource value: 0x7f08009a
 			public const int nestedScrollViewLayout = 2131230874;
@@ -3028,26 +3031,26 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08009c
 			public const int photosRecyclerViewOnAdvertDetails = 2131230876;
 			
-			// aapt resource value: 0x7f08012f
-			public const int photosRecyclerViewOnPhotosViewer = 2131231023;
+			// aapt resource value: 0x7f080133
+			public const int photosRecyclerViewOnPhotosViewer = 2131231027;
 			
 			// aapt resource value: 0x7f08002b
 			public const int pin = 2131230763;
 			
-			// aapt resource value: 0x7f0800e7
-			public const int profile_image = 2131230951;
+			// aapt resource value: 0x7f0800e8
+			public const int profile_image = 2131230952;
 			
 			// aapt resource value: 0x7f0800ad
 			public const int profile_image_on_advert_det = 2131230893;
 			
-			// aapt resource value: 0x7f0800be
-			public const int profile_image_on_app_bar = 2131230910;
+			// aapt resource value: 0x7f0800bf
+			public const int profile_image_on_app_bar = 2131230911;
 			
-			// aapt resource value: 0x7f0800d2
-			public const int profile_image_on_conversations_listt = 2131230930;
+			// aapt resource value: 0x7f0800d3
+			public const int profile_image_on_conversations_listt = 2131230931;
 			
-			// aapt resource value: 0x7f0800c4
-			public const int progress_bar = 2131230916;
+			// aapt resource value: 0x7f0800c5
+			public const int progress_bar = 2131230917;
 			
 			// aapt resource value: 0x7f080006
 			public const int progress_circular = 2131230726;
@@ -3070,17 +3073,17 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080086
 			public const int rdBtnOnlyForSell = 2131230854;
 			
-			// aapt resource value: 0x7f08013c
-			public const int refreshAdvertisementsOption = 2131231036;
+			// aapt resource value: 0x7f080140
+			public const int refreshAdvertisementsOption = 2131231040;
 			
 			// aapt resource value: 0x7f0800b2
 			public const int relativeLayout = 2131230898;
 			
-			// aapt resource value: 0x7f0800f9
-			public const int relativeLayout1 = 2131230969;
+			// aapt resource value: 0x7f0800fd
+			public const int relativeLayout1 = 2131230973;
 			
-			// aapt resource value: 0x7f0800ff
-			public const int relativeLayout2 = 2131230975;
+			// aapt resource value: 0x7f080103
+			public const int relativeLayout2 = 2131230979;
 			
 			// aapt resource value: 0x7f080085
 			public const int relativeLayout3 = 2131230853;
@@ -3088,17 +3091,20 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08007a
 			public const int relativeLayout4 = 2131230842;
 			
-			// aapt resource value: 0x7f0800d0
-			public const int relativeLayoutBtnSendMessage = 2131230928;
+			// aapt resource value: 0x7f0800d1
+			public const int relativeLayoutBtnSendMessage = 2131230929;
 			
-			// aapt resource value: 0x7f0800d6
-			public const int relativeLayoutConversation = 2131230934;
+			// aapt resource value: 0x7f0800d7
+			public const int relativeLayoutConversation = 2131230935;
 			
 			// aapt resource value: 0x7f080079
 			public const int relativeLayoutInNestedScroll = 2131230841;
 			
-			// aapt resource value: 0x7f0800ce
-			public const int relativeLayoutTextEdit = 2131230926;
+			// aapt resource value: 0x7f0800b7
+			public const int relativeLayoutPhotoAdvert = 2131230903;
+			
+			// aapt resource value: 0x7f0800cf
+			public const int relativeLayoutTextEdit = 2131230927;
 			
 			// aapt resource value: 0x7f080032
 			public const int right = 2131230770;
@@ -3121,8 +3127,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08003b
 			public const int scrollable = 2131230779;
 			
-			// aapt resource value: 0x7f0800e4
-			public const int searchUserAutocompleteTextView = 2131230948;
+			// aapt resource value: 0x7f0800e5
+			public const int searchUserAutocompleteTextView = 2131230949;
 			
 			// aapt resource value: 0x7f08006c
 			public const int search_badge = 2131230828;
@@ -3157,14 +3163,14 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080076
 			public const int select_dialog_listview = 2131230838;
 			
-			// aapt resource value: 0x7f0800bb
-			public const int sellerChatState = 2131230907;
+			// aapt resource value: 0x7f0800bc
+			public const int sellerChatState = 2131230908;
 			
 			// aapt resource value: 0x7f0800ac
 			public const int sellerNetworkState = 2131230892;
 			
-			// aapt resource value: 0x7f080136
-			public const int setUserNameLayout = 2131231030;
+			// aapt resource value: 0x7f08013a
+			public const int setUserNameLayout = 2131231034;
 			
 			// aapt resource value: 0x7f080061
 			public const int shortcut = 2131230817;
@@ -3181,11 +3187,11 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080047
 			public const int small = 2131230791;
 			
-			// aapt resource value: 0x7f0800dd
-			public const int snackbar_action = 2131230941;
+			// aapt resource value: 0x7f0800de
+			public const int snackbar_action = 2131230942;
 			
-			// aapt resource value: 0x7f0800dc
-			public const int snackbar_text = 2131230940;
+			// aapt resource value: 0x7f0800dd
+			public const int snackbar_text = 2131230941;
 			
 			// aapt resource value: 0x7f080029
 			public const int snap = 2131230761;
@@ -3214,38 +3220,38 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800a0
 			public const int startConvesationBtn = 2131230880;
 			
-			// aapt resource value: 0x7f080124
-			public const int status_bar_latest_event_content = 2131231012;
+			// aapt resource value: 0x7f080128
+			public const int status_bar_latest_event_content = 2131231016;
 			
 			// aapt resource value: 0x7f080073
 			public const int submit_area = 2131230835;
 			
-			// aapt resource value: 0x7f0800eb
-			public const int switchChatState = 2131230955;
+			// aapt resource value: 0x7f0800ec
+			public const int switchChatState = 2131230956;
 			
-			// aapt resource value: 0x7f0800f0
-			public const int switchNotificationsState = 2131230960;
+			// aapt resource value: 0x7f0800f1
+			public const int switchNotificationsState = 2131230961;
 			
 			// aapt resource value: 0x7f080010
 			public const int tabMode = 2131230736;
 			
-			// aapt resource value: 0x7f080120
-			public const int testViewMatchUserName = 2131231008;
+			// aapt resource value: 0x7f080124
+			public const int testViewMatchUserName = 2131231012;
 			
-			// aapt resource value: 0x7f08012c
-			public const int text = 2131231020;
+			// aapt resource value: 0x7f080130
+			public const int text = 2131231024;
 			
-			// aapt resource value: 0x7f08012a
-			public const int text2 = 2131231018;
+			// aapt resource value: 0x7f08012e
+			public const int text2 = 2131231022;
 			
 			// aapt resource value: 0x7f08005b
 			public const int textSpacerNoButtons = 2131230811;
 			
-			// aapt resource value: 0x7f0800ed
-			public const int textView = 2131230957;
+			// aapt resource value: 0x7f0800ee
+			public const int textView = 2131230958;
 			
-			// aapt resource value: 0x7f0800fa
-			public const int textView1 = 2131230970;
+			// aapt resource value: 0x7f0800fe
+			public const int textView1 = 2131230974;
 			
 			// aapt resource value: 0x7f08009e
 			public const int textView10 = 2131230878;
@@ -3253,17 +3259,17 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800a7
 			public const int textView11 = 2131230887;
 			
-			// aapt resource value: 0x7f080116
-			public const int textView117 = 2131230998;
+			// aapt resource value: 0x7f08011a
+			public const int textView117 = 2131231002;
 			
 			// aapt resource value: 0x7f08009f
 			public const int textView12 = 2131230879;
 			
-			// aapt resource value: 0x7f080113
-			public const int textView1223 = 2131230995;
+			// aapt resource value: 0x7f080117
+			public const int textView1223 = 2131230999;
 			
-			// aapt resource value: 0x7f080119
-			public const int textView127 = 2131231001;
+			// aapt resource value: 0x7f08011d
+			public const int textView127 = 2131231005;
 			
 			// aapt resource value: 0x7f0800a5
 			public const int textView13 = 2131230885;
@@ -3271,23 +3277,23 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800a2
 			public const int textView14 = 2131230882;
 			
-			// aapt resource value: 0x7f0800e3
-			public const int textView16 = 2131230947;
+			// aapt resource value: 0x7f0800e4
+			public const int textView16 = 2131230948;
 			
-			// aapt resource value: 0x7f08011c
-			public const int textView17 = 2131231004;
+			// aapt resource value: 0x7f080120
+			public const int textView17 = 2131231008;
 			
 			// aapt resource value: 0x7f080084
 			public const int textView2 = 2131230852;
 			
-			// aapt resource value: 0x7f0800f1
-			public const int textView3 = 2131230961;
+			// aapt resource value: 0x7f0800f2
+			public const int textView3 = 2131230962;
 			
 			// aapt resource value: 0x7f08007b
 			public const int textView4 = 2131230843;
 			
-			// aapt resource value: 0x7f0800f6
-			public const int textView5 = 2131230966;
+			// aapt resource value: 0x7f0800fa
+			public const int textView5 = 2131230970;
 			
 			// aapt resource value: 0x7f08007d
 			public const int textView6 = 2131230845;
@@ -3295,95 +3301,101 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08007f
 			public const int textView7 = 2131230847;
 			
+			// aapt resource value: 0x7f0800f7
+			public const int textView71 = 2131230967;
+			
 			// aapt resource value: 0x7f080088
 			public const int textView8 = 2131230856;
 			
 			// aapt resource value: 0x7f080096
 			public const int textView9 = 2131230870;
 			
-			// aapt resource value: 0x7f08010a
-			public const int textViewAdvertStatus = 2131230986;
+			// aapt resource value: 0x7f08010e
+			public const int textViewAdvertStatus = 2131230990;
 			
-			// aapt resource value: 0x7f080110
-			public const int textViewCategory = 2131230992;
+			// aapt resource value: 0x7f080114
+			public const int textViewCategory = 2131230996;
 			
 			// aapt resource value: 0x7f080082
 			public const int textViewCategoryChosing = 2131230850;
 			
-			// aapt resource value: 0x7f0800ea
-			public const int textViewChat = 2131230954;
+			// aapt resource value: 0x7f0800eb
+			public const int textViewChat = 2131230955;
 			
-			// aapt resource value: 0x7f0800ec
-			public const int textViewChatState = 2131230956;
+			// aapt resource value: 0x7f0800ed
+			public const int textViewChatState = 2131230957;
 			
 			// aapt resource value: 0x7f080083
 			public const int textViewChosedCategory = 2131230851;
 			
-			// aapt resource value: 0x7f0800e9
-			public const int textViewConversations = 2131230953;
+			// aapt resource value: 0x7f0800ea
+			public const int textViewConversations = 2131230954;
 			
 			// aapt resource value: 0x7f0800af
 			public const int textViewHideUserAdvertisements = 2131230895;
 			
-			// aapt resource value: 0x7f0800f7
-			public const int textViewHomeLocalization = 2131230967;
+			// aapt resource value: 0x7f0800fb
+			public const int textViewHomeLocalization = 2131230971;
 			
-			// aapt resource value: 0x7f0800f4
-			public const int textViewKeywords = 2131230964;
+			// aapt resource value: 0x7f0800f5
+			public const int textViewKeywords = 2131230965;
 			
-			// aapt resource value: 0x7f0800d9
-			public const int textViewNoConversations = 2131230937;
+			// aapt resource value: 0x7f0800da
+			public const int textViewNoConversations = 2131230938;
 			
-			// aapt resource value: 0x7f0800f2
-			public const int textViewNotificationsRadius = 2131230962;
+			// aapt resource value: 0x7f0800f3
+			public const int textViewNotificationsRadius = 2131230963;
 			
-			// aapt resource value: 0x7f0800ef
-			public const int textViewNotificationsState = 2131230959;
+			// aapt resource value: 0x7f0800f8
+			public const int textViewNotificationsSize = 2131230968;
 			
-			// aapt resource value: 0x7f08010b
-			public const int textViewSelectedAdvertsStatus = 2131230987;
+			// aapt resource value: 0x7f0800f0
+			public const int textViewNotificationsState = 2131230960;
 			
-			// aapt resource value: 0x7f080111
-			public const int textViewSelectedCategoryForMainList = 2131230993;
+			// aapt resource value: 0x7f08010f
+			public const int textViewSelectedAdvertsStatus = 2131230991;
 			
-			// aapt resource value: 0x7f080117
-			public const int textViewSelectedDistance = 2131230999;
+			// aapt resource value: 0x7f080115
+			public const int textViewSelectedCategoryForMainList = 2131230997;
+			
+			// aapt resource value: 0x7f08011b
+			public const int textViewSelectedDistance = 2131231003;
 			
 			// aapt resource value: 0x7f080080
 			public const int textViewSelectedSize = 2131230848;
 			
-			// aapt resource value: 0x7f080114
-			public const int textViewSelectedSizes = 2131230996;
+			// aapt resource value: 0x7f080118
+			public const int textViewSelectedSizes = 2131231000;
 			
-			// aapt resource value: 0x7f08011d
-			public const int textViewSelectedSorting = 2131231005;
+			// aapt resource value: 0x7f080121
+			public const int textViewSelectedSorting = 2131231009;
 			
-			// aapt resource value: 0x7f08010e
-			public const int textViewSelectedTransactionKind = 2131230990;
+			// aapt resource value: 0x7f080112
+			public const int textViewSelectedTransactionKind = 2131230994;
 			
-			// aapt resource value: 0x7f08011a
-			public const int textViewSelectedUser = 2131231002;
+			// aapt resource value: 0x7f08011e
+			public const int textViewSelectedUser = 2131231006;
 			
 			// aapt resource value: 0x7f08008a
 			public const int textViewSize = 2131230858;
 			
-			// aapt resource value: 0x7f08010d
-			public const int textViewTransaction = 2131230989;
+			// aapt resource value: 0x7f080111
+			public const int textViewTransaction = 2131230993;
 			
-			// aapt resource value: 0x7f0800e8
-			public const int textViewUserName = 2131230952;
+			// aapt resource value: 0x7f0800e9
+			public const int textViewUserName = 2131230953;
 			
 			// aapt resource value: 0x7f0800ab
 			public const int textViewUserNameAdvertDetails = 2131230891;
 			
-			// aapt resource value: 0x7f0800bf
-			public const int textViewUserNameAppBar = 2131230911;
+			// aapt resource value: 0x7f0800c0
+			public const int textViewUserNameAppBar = 2131230912;
 			
 			// aapt resource value: 0x7f0800aa
 			public const int textViewUserOtherAdverts = 2131230890;
 			
-			// aapt resource value: 0x7f080128
-			public const int time = 2131231016;
+			// aapt resource value: 0x7f08012c
+			public const int time = 2131231020;
 			
 			// aapt resource value: 0x7f080051
 			public const int title = 2131230801;
@@ -3391,8 +3403,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080056
 			public const int title_template = 2131230806;
 			
-			// aapt resource value: 0x7f080139
-			public const int toolbar = 2131231033;
+			// aapt resource value: 0x7f08013d
+			public const int toolbar = 2131231037;
 			
 			// aapt resource value: 0x7f080034
 			public const int top = 2131230772;
@@ -3400,8 +3412,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080055
 			public const int topPanel = 2131230805;
 			
-			// aapt resource value: 0x7f0800da
-			public const int touch_outside = 2131230938;
+			// aapt resource value: 0x7f0800db
+			public const int touch_outside = 2131230939;
 			
 			// aapt resource value: 0x7f08003e
 			public const int unknown = 2131230782;

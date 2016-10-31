@@ -27,6 +27,7 @@ using Android.Runtime;
 using Android.Graphics;
 using MobileSecondHand.Services.Authentication;
 using System.Threading.Tasks;
+using System.Collections.Generic;
 
 namespace MobileSecondHand.App.SideMenu
 {
@@ -51,11 +52,14 @@ namespace MobileSecondHand.App.SideMenu
 		private TextView textViewNotificationsRadius;
 		private TextView textViewNotificationsState;
 		private TextView textViewUserName;
+		private TextView textViewNotificationsSizes;
+		private ImageButton imgBtnSizes;
 		private BaseActivityWithNavigationDrawer activity;
 		CircleImageView userProfilePhoto;
 		public const int PHOTO_REQUEST_KEY = 111;
 		private string profilePhotoPath;
 		private string profileTempPhotoPath;
+		private SizeSelectingHelper sizeSelectingHelper;
 
 		public NavigationViewMenu(BaseActivityWithNavigationDrawer activity, SharedPreferencesHelper sharedPreferencesHelper)
 		{
@@ -67,6 +71,7 @@ namespace MobileSecondHand.App.SideMenu
 			this.gpsService = GpsLocationService.GetServiceInstance(activity);
 			this.googleMapsAPIService = new GoogleMapsAPIService();
 			this.categoriesHelper = new CategoriesSelectingHelper(activity, (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN));
+			this.sizeSelectingHelper = new SizeSelectingHelper(activity);
 			this.appSettings = SharedPreferencesHelper.GetAppSettings(activity);
 			SetupViews(activity);
 		}
@@ -84,6 +89,7 @@ namespace MobileSecondHand.App.SideMenu
 			this.textViewChatState = activity.FindViewById<TextView>(Resource.Id.textViewChatState);
 			this.textViewNotificationsRadius = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsRadius);
 			this.textViewKeywords = activity.FindViewById<TextView>(Resource.Id.textViewKeywords);
+			this.textViewNotificationsSizes = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsSize);
 			this.textViewHomeLocalization = activity.FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
 
 			//conversations
@@ -98,6 +104,24 @@ namespace MobileSecondHand.App.SideMenu
 			{
 				var userSelectesKeywordsNames = appSettings.Keywords.Select(k => k.Value).ToList();
 				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
+			};
+
+			this.imgBtnSizes = activity.FindViewById<ImageButton>(Resource.Id.imgBtnNotificationsSize);
+			this.imgBtnSizes.Click += (sender, args) =>
+			{
+				var selectedSizesNames = new List<String>();
+				foreach (var size in appSettings.Sizes)
+				{
+					selectedSizesNames.Add(size.GetDisplayName());
+				}
+				Action<List<ClothSize>> actionAfterSelect = (selectedSizes) =>
+				{
+					this.appSettings.Sizes = selectedSizes;
+					SetAppSettings(appSettings);
+					SetSizesSettings(appSettings);
+				};
+
+				this.sizeSelectingHelper.ShowSizesListAndMakeAction(selectedSizesNames, actionAfterSelect);
 			};
 
 
@@ -146,6 +170,24 @@ namespace MobileSecondHand.App.SideMenu
 			};
 		}
 
+		private void SetSizesSettings(AppSettingsModel appSettings)
+		{
+			if (appSettings.Sizes.Count > 0)
+			{
+				var sb = new StringBuilder("");
+				foreach (var size in appSettings.Sizes)
+				{
+					sb.Append(size.GetDisplayName());
+					sb.Append("\r\n");
+				}
+				this.textViewNotificationsSizes.Text = sb.ToString();
+			}
+			else
+			{
+				this.textViewNotificationsSizes.Text = "Wszystkie";
+			}
+		}
+
 		internal void OnAddPhotoTequestResult(Intent data)
 		{
 
@@ -178,7 +220,7 @@ namespace MobileSecondHand.App.SideMenu
 			try
 			{
 				this.progressDialogHelper.ShowProgressDialog("Zapisywanie zdjêcia profilowego");
-				var photoResized= this.bitmapOperationService.ResizeImageAndGetByteArray(System.IO.File.ReadAllBytes(profilePhotoPath), true);
+				var photoResized = this.bitmapOperationService.ResizeImageAndGetByteArray(System.IO.File.ReadAllBytes(profilePhotoPath), true);
 				var profileImagePath = System.IO.Path.Combine(Application.Context.FilesDir.AbsolutePath, "profilePicture.jpg");
 				System.IO.File.WriteAllBytes(profileImagePath, photoResized);
 				appSettings.ProfileImagePath = profileImagePath;
@@ -193,7 +235,7 @@ namespace MobileSecondHand.App.SideMenu
 			{
 				this.progressDialogHelper.CloseProgressDialog();
 			}
-		
+
 		}
 
 		private void UserProfilePhoto_Click(object sender, EventArgs e)
@@ -376,6 +418,7 @@ namespace MobileSecondHand.App.SideMenu
 			SetChatSettings();
 			SetNotificationsSettings();
 			SetKeywordsSettings(appSettings);
+			SetSizesSettings(appSettings);
 			SetHomeLocationSettings(appSettings);
 		}
 
