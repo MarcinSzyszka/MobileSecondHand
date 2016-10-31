@@ -37,6 +37,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podczas logowania z facebookiem:" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
@@ -53,6 +54,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podczas logowania standardowego" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
@@ -69,6 +71,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podczas standradowej rejestracji" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
@@ -91,6 +94,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podczas ustawaiania nick'u prezez usera" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
@@ -110,6 +114,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podczas pobierania nazw i idików userów" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
@@ -153,6 +158,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podczas sprawdzania waznosci tokena bearer" + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}

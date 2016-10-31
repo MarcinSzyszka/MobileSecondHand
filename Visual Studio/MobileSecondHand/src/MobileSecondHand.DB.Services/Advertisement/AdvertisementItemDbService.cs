@@ -17,6 +17,7 @@ namespace MobileSecondHand.DB.Services.Advertisement
 		public AdvertisementItemDbService(MobileSecondHandContext context)
 		{
 			this.dbContext = context;
+			var a = dbContext.GetHashCode();
 		}
 
 		public AdvertisementItem GetByIdWithDetails(int advertisementId)

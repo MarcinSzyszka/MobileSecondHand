@@ -41,6 +41,7 @@ namespace MobileSecondHand.Controllers
 			}
 			catch (Exception exc)
 			{
+				this.logger.LogError("Wystąpił błąd podcza uploadu zdjęć ogłoszenia: " + exc);
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
@@ -52,7 +53,6 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Tworzenia nowego ogłoszenia");
 				var userId = this.identityService.GetUserId(User.Identity);
 				this.advertisementItemService.CreateNewAdvertisementItem(newAdvertisementModel, userId);
 				return Json("Ok");
@@ -60,7 +60,7 @@ namespace MobileSecondHand.Controllers
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie tworzenia nowego ogłoszenia: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie tworzenia nowego ogłoszenia: " + exc);
 				return Json(new ErrorResponse { ErrorMessage = exc.Message });
 			}
 		}
@@ -71,16 +71,14 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Pobieranie ogłoszeń");
 				var userId = this.identityService.GetUserId(User.Identity);
 				var advertisements = await this.advertisementItemService.GetAdvertisements(searchModel, userId);
-				logger.LogInformation("Zakonczono pobieranie ogłoszeń");
 				return Json(advertisements);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc);
 				return null;
 			}
 		}
@@ -91,16 +89,14 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Usuwanie ogłoszenia");
 				var userId = this.identityService.GetUserId(User.Identity);
 				bool success = this.advertisementItemService.DeleteAdvertisement(advertisementId, userId);
-				logger.LogInformation("Zakonczono usuwanie ogłoszenia");
 				return Json(success);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie usuwania ogłoszenia: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie usuwania ogłoszenia: " + exc);
 				return Json(false);
 			}
 		}
@@ -131,16 +127,14 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Usuwanie ogłoszenia z ulubionych");
 				var userId = this.identityService.GetUserId(User.Identity);
 				bool success = this.advertisementItemService.DeleteAdvertisementFromFavourites(advertisementId, userId);
-				logger.LogInformation("Zakonczono usuwanie ogłoszenia z ulubionych");
 				return Json(success);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie usuwania ogłoszenia z ulubionych: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie usuwania ogłoszenia z ulubionych: " + exc);
 				return Json(false);
 			}
 		}
@@ -154,16 +148,14 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Sprawdzanie czy są nowe ogłoszenia wokół obecnej lokalizacji");
 				var userId = this.identityService.GetUserId(User.Identity);
 				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, coordinatesModel, true);
-				logger.LogInformation("Zakonczono sprawdzanie nowych ogłoszeń");
 				return Json(foundedNewAdvertisements);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc);
 				return null;
 			}
 		}
@@ -175,17 +167,15 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Dodawanie ogłoszenia do ulubionych");
 				var userId = this.identityService.GetUserId(User.Identity);
 				var success = this.advertisementItemService.AddToUserFavourites(userId, advertisementId.Id);
-				logger.LogInformation("Zakonczono dodawanie ogłoszenia do ulubionych");
 				var messeage = success ? "Ogłoszenie zostało dodane do schowka." : "Ogłoszenie jest już w Twoim schowku";
 				return Json(messeage);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie dodawania ogłoszenia do ulubionych: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie dodawania ogłoszenia do ulubionych: " + exc);
 				return Json("Wystąpił błąd na serwerze. Spróbuj ponownie później");
 			}
 		}
@@ -196,16 +186,14 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Sprawdzanie czy są nowe ogłoszenia wokół domowej lokalizacji");
 				var userId = this.identityService.GetUserId(User.Identity);
 				var foundedNewAdvertisements = this.advertisementItemService.CheckForNewAdvertisementsSinceLastCheck(userId, coordinatesModel, false);
-				logger.LogInformation("Zakonczono sprawdzanie nowych ogłoszeń");
 				return Json(foundedNewAdvertisements);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie sprawdzania nowych ogłoszeń: " + exc);
 				return null;
 			}
 		}
@@ -216,15 +204,13 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Pobieranie ogłoszeń utworzonych przez użytkownika");
 				var advertisements = await this.advertisementItemService.GetUserAdvertisements(userId, pageNumber);
-				logger.LogInformation("Zakonczono pobieranie ogłoszeń");
 				return Json(advertisements);
 			}
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc);
 				return null;
 			}
 		}
@@ -235,7 +221,6 @@ namespace MobileSecondHand.Controllers
 		{
 			try
 			{
-				logger.LogInformation("Pobieranie szczegółu ogłoszenia");
 				var userId = this.identityService.GetUserId(User.Identity);
 				var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertisementId, userId);
 
@@ -244,7 +229,7 @@ namespace MobileSecondHand.Controllers
 			catch (Exception exc)
 			{
 				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
-				logger.LogError("Wystąpił wyjątek w trakcie pobierania szczegółów ofłoszenia: " + exc.Message);
+				logger.LogError("Wystąpił wyjątek w trakcie pobierania szczegółów ofłoszenia: " + exc);
 				return Json("Wystąpił błąd! - " + exc.Message);
 			}
 		}
