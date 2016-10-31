@@ -544,6 +544,7 @@ namespace MobileSecondHand.App
 
 		private void SetDefaultSearchOptions()
 		{
+			this.advertisementsSearchModel.TransactionKind = TransactionKind.All;
 			this.advertisementsSearchModel.CategoriesModel.Clear();
 			this.advertisementsSearchModel.Sizes.Clear();
 			this.advertisementsSearchModel.UserInfo = null;
