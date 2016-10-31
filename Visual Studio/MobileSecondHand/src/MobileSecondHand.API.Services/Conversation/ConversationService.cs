@@ -3,7 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Chat;
-using MobileSecondHand.API.Services.Authentication;
+using MobileSecondHand.API.Models.Shared.Chat;
+using MobileSecondHand.API.Services.Photos;
 using MobileSecondHand.COMMON.Extensions;
 using MobileSecondHand.DB.Models.Chat;
 using MobileSecondHand.DB.Services.Chat;
@@ -13,10 +14,12 @@ namespace MobileSecondHand.API.Services.Conversation
 	public class ConversationService : IConversationService
 	{
 		IConversationDbService conversationDbService;
+		IPhotosService photosService;
 
-		public ConversationService(IConversationDbService conversationDbService)
+		public ConversationService(IConversationDbService conversationDbService, IPhotosService photosService)
 		{
 			this.conversationDbService = conversationDbService;
+			this.photosService = photosService;
 		}
 
 		public List<ChatMessageReadModel> GetMessages(string userId, int conversationId, int pageNumber)
@@ -107,15 +110,15 @@ namespace MobileSecondHand.API.Services.Conversation
 			return result;
 		}
 
-		public List<ConversationItemModel> GetConversations(string userId, int pageNumber)
+		public async Task<List<ConversationItemModel>> GetConversations(string userId, int pageNumber)
 		{
 			var conversations = this.conversationDbService.GetConversationsWithLastMessage(userId, pageNumber);
-			List<ConversationItemModel> coversationViewModelList = MapToViewModels(userId, conversations);
+			List<ConversationItemModel> coversationViewModelList = await MapToViewModels(userId, conversations);
 
 			return coversationViewModelList;
 		}
 
-		private List<ConversationItemModel> MapToViewModels(string userId, List<DB.Models.Chat.ConversationReadModel> conversations)
+		private async Task<List<ConversationItemModel>> MapToViewModels(string userId, List<DB.Models.Chat.ConversationReadModel> conversations)
 		{
 			var list = new List<ConversationItemModel>();
 
@@ -127,6 +130,7 @@ namespace MobileSecondHand.API.Services.Conversation
 				model.InterlocutorName = conversation.Users.First(u => u.Id != userId).UserName;
 				model.LastMessage = conversation.Messages[0].Content;
 				model.LastMessageDate = GetDateString(conversation.Messages[0].Date);
+				model.InterLocutorProfileImage = await this.photosService.GetUserProfilePhotoInBytes(conversation.Users.First(u => u.Id != userId).UserProfilePhotoName);
 
 				list.Add(model);
 			}

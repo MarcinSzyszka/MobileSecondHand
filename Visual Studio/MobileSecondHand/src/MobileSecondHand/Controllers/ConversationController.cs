@@ -60,12 +60,12 @@ namespace MobileSecondHand.Controllers
 
 		[HttpGet]
 		[Route("GetConversations/{pageNumber}")]
-		public IActionResult GetConversations(int pageNumber)
+		public async Task<IActionResult> GetConversations(int pageNumber)
 		{
 			try
 			{
 				var userId = this.identityService.GetUserId(User.Identity);
-				var conversations = this.conversationService.GetConversations(userId, pageNumber);
+				var conversations = await this.conversationService.GetConversations(userId, pageNumber);
 
 				return Json(conversations);
 			}
@@ -76,6 +76,6 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
-		
+
 	}
 }

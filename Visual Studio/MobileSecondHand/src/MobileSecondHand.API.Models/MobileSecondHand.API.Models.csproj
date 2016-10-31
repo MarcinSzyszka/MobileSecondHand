@@ -55,7 +55,6 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Chat\ConversationInfoModel.cs" />
-    <Compile Include="Chat\ConversationItemModel.cs" />
     <Compile Include="CheckingNewAdvertisements\LastTimeUserCheckModel.cs" />
     <Compile Include="Config\AppConfiguration.cs" />
     <Compile Include="Keywords\CategoryKeywordApiModel.cs" />

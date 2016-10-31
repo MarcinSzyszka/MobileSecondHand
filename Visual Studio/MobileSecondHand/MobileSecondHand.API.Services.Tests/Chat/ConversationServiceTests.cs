@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using MobileSecondHand.API.Models.Chat;
 using MobileSecondHand.API.Services.Conversation;
+using MobileSecondHand.API.Services.Photos;
 using MobileSecondHand.DB.Models.Authentication;
 using MobileSecondHand.DB.Models.Chat;
 using MobileSecondHand.DB.Services.Chat;
@@ -109,11 +110,13 @@ namespace MobileSecondHand.API.Services.Tests.Chat
 		}
 		#region CONFIGURATION
 		Mock<IConversationDbService> conversationDbService;
+		Mock<IPhotosService> photosService;
 		IConversationService serviceUnderTest;
 		public ConversationServiceTests()
 		{
 			this.conversationDbService = new Mock<IConversationDbService>();
-			this.serviceUnderTest = new ConversationService(conversationDbService.Object);
+			this.photosService = new Mock<IPhotosService>();
+			this.serviceUnderTest = new ConversationService(conversationDbService.Object, this.photosService.Object);
 
 		}
 		#endregion

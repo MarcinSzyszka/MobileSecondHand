@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MobileSecondHand.API.Models.Chat
+namespace MobileSecondHand.API.Models.Shared.Chat
 {
 	public class ConversationItemModel
 	{
@@ -13,5 +13,6 @@ namespace MobileSecondHand.API.Models.Chat
 		public string InterlocutorName { get; set; }
 		public string LastMessage { get; set; }
 		public string LastMessageDate { get; set; }
+		public byte[] InterLocutorProfileImage { get; set; }
 	}
 }

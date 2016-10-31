@@ -22,7 +22,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 	{
 		IAdvertisementItemDbService advertisementItemDbService;
 		ICoordinatesCalculator coordinatesCalculator;
-		IPhotosService advertisementItemPhotosService;
+		IPhotosService photosService;
 		IAppFilesPathHelper appFilesPathHelper;
 		IKeywordsService keywordsService;
 		IChatHubCacheService chatHubCacheService;
@@ -33,7 +33,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 		{
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
-			this.advertisementItemPhotosService = advertisementItemPhotosService;
+			this.photosService = advertisementItemPhotosService;
 			this.appFilesPathHelper = appFilesPathHelper;
 			this.keywordsService = keywordsService;
 			this.chatHubCacheService = chatHubCacheService;
@@ -306,7 +306,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(advertisementFromDb.UserId);
 			if (!String.IsNullOrEmpty(advertisementFromDb.User.UserProfilePhotoName))
 			{
-				viewModel.SellerProfileImage = await advertisementItemPhotosService.GetUserProfilePhotoInBytes(advertisementFromDb.User.UserProfilePhotoName);
+				viewModel.SellerProfileImage = await photosService.GetUserProfilePhotoInBytes(advertisementFromDb.User.UserProfilePhotoName);
 			}
 			return viewModel;
 		}
@@ -316,7 +316,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			var photosList = new List<byte[]>();
 			foreach (var photo in photos)
 			{
-				photosList.Add(await this.advertisementItemPhotosService.GetAdvertisementMainPhotoInBytes(photo.PhotoName));
+				photosList.Add(await this.photosService.GetAdvertisementMainPhotoInBytes(photo.PhotoName));
 			}
 
 			return photosList;
@@ -332,7 +332,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 				viewModel.Size = dbModel.Size;
 				viewModel.AdvertisementTitle = dbModel.Title;
 				viewModel.AdvertisementPrice = dbModel.Price;
-				viewModel.MainPhoto = await this.advertisementItemPhotosService.GetAdvertisementMinPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoName);
+				viewModel.MainPhoto = await this.photosService.GetAdvertisementMinPhotoInBytes(dbModel.AdvertisementPhotos.FirstOrDefault(p => p.IsMainPhoto).PhotoName);
 				if (coordinatesModel != null)
 				{
 					viewModel.Distance = this.coordinatesCalculator.GetDistanceBetweenTwoLocalizations(coordinatesModel.Latitude, coordinatesModel.Longitude, dbModel.Latitude, dbModel.Longitude);
