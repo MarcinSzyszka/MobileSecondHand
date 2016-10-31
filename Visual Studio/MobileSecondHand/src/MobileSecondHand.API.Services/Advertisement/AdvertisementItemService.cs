@@ -304,6 +304,10 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.SellerName = advertisementFromDb.User.UserName;
 			viewModel.Photos = await GetPhotosList(advertisementFromDb.AdvertisementPhotos.Where(p => !p.IsMainPhoto).ToList());
 			viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(advertisementFromDb.UserId);
+			if (!String.IsNullOrEmpty(advertisementFromDb.User.UserProfilePhotoName))
+			{
+				viewModel.SellerProfileImage = await advertisementItemPhotosService.GetUserProfilePhotoInBytes(advertisementFromDb.User.UserProfilePhotoName);
+			}
 			return viewModel;
 		}
 
