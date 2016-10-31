@@ -23,7 +23,7 @@
                 android:id="@+id/relativeLayoutInNestedScroll"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-				android:paddingBottom="10dp">
+                android:paddingBottom="10dp">
                 <RelativeLayout
                     android:id="@+id/relativeLayout4"
                     android:layout_width="match_parent"
@@ -358,7 +358,7 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:layout_below="@+id/photoView3Divider"
-                        android:enabled="false"
+                        android:enabled="true"
                         android:visibility="gone" />
                     <ImageView
                         android:layout_width="wrap_content"
