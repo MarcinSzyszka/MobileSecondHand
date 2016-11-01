@@ -19,6 +19,7 @@ using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.Models.EventArgs;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
+using MobileSecondHand.Services.Feedback;
 using Newtonsoft.Json;
 using Refractored.Controls;
 
@@ -31,6 +32,7 @@ namespace MobileSecondHand.App.Activities
 		AdvertisementItemListAdapter advertisementItemListAdapter;
 		private ProgressDialogHelper progress;
 		IAdvertisementItemService advertisementItemService;
+		IFeedbackService feedbackService;
 		IMessagesService messagesService;
 		BitmapOperationService bitmapOperationService;
 		private ImageView sellerNetworkStateInfoImageView;
@@ -55,6 +57,7 @@ namespace MobileSecondHand.App.Activities
 		{
 			base.OnCreate(savedInstanceState);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
+			feedbackService = new FeedbackService(bearerToken);
 			messagesService = new MessagesService(bearerToken);
 			this.bitmapOperationService = new BitmapOperationService();
 
@@ -87,7 +90,7 @@ namespace MobileSecondHand.App.Activities
 					handled = true;
 					break;
 				case Resource.Id.report:
-					//zg³oœ
+					ReportWrongAdvert();
 					handled = true;
 					break;
 				case Resource.Id.moreUserAdverts:
@@ -100,6 +103,8 @@ namespace MobileSecondHand.App.Activities
 
 			return handled;
 		}
+
+
 
 		protected override void Toolbar_NavigationClick(object sender, Android.Support.V7.Widget.Toolbar.NavigationClickEventArgs e)
 		{
@@ -144,6 +149,23 @@ namespace MobileSecondHand.App.Activities
 			{
 				base.OnBackPressed();
 			}
+		}
+
+		private void ReportWrongAdvert()
+		{
+			Action reportActionConfirmed = () =>
+			{
+				Action<string> actionOnReasonSelected = async (reason) =>
+				{
+					this.progress.ShowProgressDialog("Zg³aszanie og³oszenia naruszaj¹cego regulamin");
+					await this.feedbackService.ReportWrongAdvertisement(this.advertisement.Id, reason);
+					this.progress.CloseProgressDialog();
+					AlertsService.ShowShortToast(this, "Og³oszenie zosta³o zg³oszone adminom");
+				};
+				string[] itemList = Resources.GetStringArray(Resource.Array.report_wrong_advert_reasons);
+				AlertsService.ShowSingleSelectListString(this, itemList, actionOnReasonSelected);
+			};
+			AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz zg³osiæ to og³oszenie jako naruszenie regulaminu?", reportActionConfirmed);
 		}
 
 		private async void TogleLayouts()

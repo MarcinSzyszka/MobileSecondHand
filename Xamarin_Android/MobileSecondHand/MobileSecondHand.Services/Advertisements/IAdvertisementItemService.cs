@@ -7,7 +7,8 @@ using MobileSecondHand.API.Models.Shared.Location;
 
 namespace MobileSecondHand.Services.Advertisements
 {
-	public interface IAdvertisementItemService {
+	public interface IAdvertisementItemService
+	{
 		Task<List<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel);
 		Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber, string userId);
 		Task<AdvertisementItemPhotosNames> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList);

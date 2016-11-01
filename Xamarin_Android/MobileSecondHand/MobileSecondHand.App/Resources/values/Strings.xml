@@ -27,4 +27,10 @@
 		<item>100 km</item>
 		<item>bez ograniczeń</item>
 	</string-array>
+
+	<string-array name="report_wrong_advert_reasons">
+		<item>Ogłoszenie nie dotyczy ubrań.</item>
+		<item>Ogłoszenia zawiera obraźliwe/wulgarne słowa i/lub zdjęcia.</item>
+		<item>Inny powód</item>
+	</string-array>
 </resources>

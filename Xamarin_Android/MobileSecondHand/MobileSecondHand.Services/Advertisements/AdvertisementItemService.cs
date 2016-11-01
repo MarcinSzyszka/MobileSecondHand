@@ -170,7 +170,5 @@ namespace MobileSecondHand.Services.Advertisements
 
 			return success;
 		}
-
-
 	}
 }

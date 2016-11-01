@@ -130,6 +130,9 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0c0000
 			public const int notifications_radius = 2131492864;
 			
+			// aapt resource value: 0x7f0c0001
+			public const int report_wrong_advert_reasons = 2131492865;
+			
 			static Array()
 			{
 				global::Android.Runtime.ResourceIdManager.UpdateIdValues();

@@ -54,6 +54,8 @@
     <Compile Include="Chat\ChatHubClientService.cs" />
     <Compile Include="Chat\IMessagesService.cs" />
     <Compile Include="Chat\MessagesService.cs" />
+    <Compile Include="Feedback\FeedbackService.cs" />
+    <Compile Include="Feedback\IFeedbackService.cs" />
     <Compile Include="Google Api\GoogleMapsAPIService.cs" />
     <Compile Include="Google Api\IGoogleMapsAPIService.cs" />
     <Compile Include="Keywords\IKeyworsService.cs" />
