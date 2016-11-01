@@ -16,6 +16,7 @@ using Microsoft.Extensions.Logging;
 using MobileSecondHand.API.Models.Config;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.Configuration;
+using MobileSecondHand.API.Services.Mailing.Config;
 using MobileSecondHand.COMMON;
 using MobileSecondHand.COMMON.Configuration;
 using MobileSecondHand.DB.Models;
@@ -77,6 +78,9 @@ namespace MobileSecondHand
 			});
 			var appConfig = new AppConfiguration();
 			appConfig.FileRepositoryPath = Configuration.GetSection("FileRepository")["Path"];
+			var mailSection = Configuration.GetSection("EmailSettings");
+			EmailSenderSettings mailSetting = new EmailSenderSettings(mailSection["SmtpUserName"], mailSection["SmtpUserPassword"], mailSection["SmtpServerAddress"], Int32.Parse(mailSection["SmtpServerPortNumber"]));
+			services.AddSingleton<EmailSenderSettings>(mailSetting);
 			services.AddSingleton<AppConfiguration>(appConfig);
 			DbServicesBootstrapper.RegisterServices(services);
 			ApiServicesBootstrapper.RegisterServices(services);

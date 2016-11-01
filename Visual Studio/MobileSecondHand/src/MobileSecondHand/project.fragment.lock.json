@@ -82,6 +82,7 @@
         "../../packages/Microsoft.Net.Http.Headers.1.0.0/lib/netstandard1.1/Microsoft.Net.Http.Headers.dll": {},
         "../../packages/Newtonsoft.Json.9.0.1/lib/net45/Newtonsoft.Json.dll": {},
         "../../packages/Remotion.Linq.2.1.1/lib/net45/Remotion.Linq.dll": {},
+        "../../packages/Simplify.Mail.1.3.0.0/lib/net45/Simplify.Mail.dll": {},
         "../../packages/System.Buffers.4.0.0/lib/netstandard1.1/System.Buffers.dll": {},
         "../../packages/System.Collections.Immutable.1.2.0/lib/portable-net45+win8+wp8+wpa81/System.Collections.Immutable.dll": {},
         "../../packages/System.Diagnostics.DiagnosticSource.4.0.0/lib/net46/System.Diagnostics.DiagnosticSource.dll": {},

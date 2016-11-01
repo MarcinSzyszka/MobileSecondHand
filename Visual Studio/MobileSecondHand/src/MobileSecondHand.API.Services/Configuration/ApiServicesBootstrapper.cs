@@ -14,6 +14,7 @@ using MobileSecondHand.API.Services.Properties;
 using MobileSecondHand.API.Services.Categories;
 using MobileSecondHand.API.Services.Photos;
 using MobileSecondHand.API.Services.Feedback;
+using MobileSecondHand.API.Services.Mailing;
 
 namespace MobileSecondHand.API.Services.Configuration
 {
@@ -23,6 +24,7 @@ namespace MobileSecondHand.API.Services.Configuration
 		{
 			RegisterTokenAuthorizationOptions(services);
 
+			services.AddTransient<IEmailService, EmailService>();
 			services.AddTransient<IFeedbackService, FeedbackService>();
 			services.AddTransient<IApplicationUserManager, ApplicationUserManager>();
 			services.AddTransient<IApplicationSignInManager, ApplicationSignInManager>();
