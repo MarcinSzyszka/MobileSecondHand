@@ -13,11 +13,17 @@ using MobileSecondHand.API.Services.OutsideApisManagers;
 using MobileSecondHand.API.Services.Properties;
 using MobileSecondHand.API.Services.Categories;
 using MobileSecondHand.API.Services.Photos;
+using MobileSecondHand.API.Services.Feedback;
 
-namespace MobileSecondHand.API.Services.Configuration {
-	public class ApiServicesBootstrapper {
-		public static void RegisterServices(IServiceCollection services) {
+namespace MobileSecondHand.API.Services.Configuration
+{
+	public class ApiServicesBootstrapper
+	{
+		public static void RegisterServices(IServiceCollection services)
+		{
 			RegisterTokenAuthorizationOptions(services);
+
+			services.AddTransient<IFeedbackService, FeedbackService>();
 			services.AddTransient<IApplicationUserManager, ApplicationUserManager>();
 			services.AddTransient<IApplicationSignInManager, ApplicationSignInManager>();
 			services.AddTransient<IFacebookApiManager, FacebookApiManager>();
@@ -29,17 +35,19 @@ namespace MobileSecondHand.API.Services.Configuration {
 			services.AddTransient<IConversationService, ConversationService>();
 			services.AddTransient<ILastUsersChecksCacheService, LastUsersChecksCacheService>();
 			services.AddTransient<ICategoryService, CategoryService>();
-			
+
 
 
 		}
 
-		private static void RegisterTokenAuthorizationOptions(IServiceCollection services) {
+		private static void RegisterTokenAuthorizationOptions(IServiceCollection services)
+		{
 			RSACryptoServiceProvider keyService = new RSACryptoServiceProvider(2048);
 			keyService.FromXmlString(Resources.RsaProvider);
 			RsaSecurityKey key = new RsaSecurityKey(keyService.ExportParameters(true));
 
-			var tokenOptions = new TokenAuthorizationOptions {
+			var tokenOptions = new TokenAuthorizationOptions
+			{
 				Audience = "MobileSecondHandApp",
 				Issuer = "MarcinSzyszka",
 				SigningCredentials = new SigningCredentials(key, SecurityAlgorithms.RsaSha256Signature)

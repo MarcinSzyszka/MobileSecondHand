@@ -201,6 +201,7 @@
     <Compile Include="Chat\ConversationReadModel.cs" />
     <Compile Include="ConnectionStringConfig.cs" />
     <Compile Include="IMobileSecondHandContextOptions.cs" />
+    <Compile Include="Feedback\WrongAdvertisementIssue.cs" />
     <Compile Include="Keywords\CategoryKeyword.cs" />
     <Compile Include="Keywords\ColorKeyword.cs" />
     <Compile Include="Keywords\IKeywordDbModel.cs" />
@@ -222,9 +223,7 @@
       <Name>MobileSecondHand.API.Models.Shared</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Migrations\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -15,6 +15,7 @@ using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Consts;
 using MobileSecondHand.API.Services.Photos;
+using MobileSecondHand.DB.Models.Feedback;
 
 namespace MobileSecondHand.API.Services.Advertisement
 {
@@ -53,7 +54,6 @@ namespace MobileSecondHand.API.Services.Advertisement
 				Description = newAdvertisementModel.AdvertisementDescription,
 				Size = newAdvertisementModel.Size,
 				Price = newAdvertisementModel.AdvertisementPrice,
-				IsActive = true,
 				CreationDate = DateTime.Now,
 				ExpirationDate = GetExpirationDate(),
 				Latitude = newAdvertisementModel.Latitude,
@@ -281,6 +281,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return true;
 		}
 
+
 		private IQueryable<AdvertisementItem> SortQuery(IQueryable<AdvertisementItem> queryAdvertisements, AdvertisementsSearchModel searchModel)
 		{
 			switch (searchModel.SortingBy)
@@ -378,5 +379,6 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return DateTime.Now.AddDays(14);
 		}
 
+	
 	}
 }

@@ -5,6 +5,7 @@ using MobileSecondHand.DB.Models.Advertisement;
 using MobileSecondHand.DB.Models.Keywords;
 using MobileSecondHand.DB.Models.Authentication;
 using MobileSecondHand.DB.Models.Chat;
+using MobileSecondHand.DB.Models.Feedback;
 
 namespace MobileSecondHand.DB.Models
 {
@@ -20,8 +21,6 @@ namespace MobileSecondHand.DB.Models
 		protected override void OnModelCreating(ModelBuilder builder)
 		{
 			base.OnModelCreating(builder);
-
-
 
 			builder.Entity<UserToFavouriteAdvertisement>().HasKey(x => new { x.ApplicationUserId, x.AdvertisementItemId });
 			builder.Entity<UserToFavouriteAdvertisement>()
@@ -84,5 +83,7 @@ namespace MobileSecondHand.DB.Models
 		public DbSet<ChatMessage> ChatMessage { get; set; }
 		public DbSet<UserToFavouriteAdvertisement> UserToFavouriteAdvertisement { get; set; }
 		public DbSet<Category> Category { get; set; }
+		public DbSet<WrongAdvertisementIssue> WrongAdvertisementIssue { get; set; }
+
 	}
 }

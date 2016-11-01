@@ -235,6 +235,5 @@ namespace MobileSecondHand.Controllers
 				return Json("Wystąpił błąd! - " + exc.Message);
 			}
 		}
-
 	}
 }

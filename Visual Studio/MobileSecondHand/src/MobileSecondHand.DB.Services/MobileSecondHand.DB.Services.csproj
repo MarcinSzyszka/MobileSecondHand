@@ -205,6 +205,8 @@
     <Compile Include="Configuration\DbServicesBootstrapper.cs" />
     <Compile Include="Chat\ConversationDbService.cs" />
     <Compile Include="Chat\IConversationDbService.cs" />
+    <Compile Include="Feedback\FeedbackDbService.cs" />
+    <Compile Include="Feedback\IFeedbackDbService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

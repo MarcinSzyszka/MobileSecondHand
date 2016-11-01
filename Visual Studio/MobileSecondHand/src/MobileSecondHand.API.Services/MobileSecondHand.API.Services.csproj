@@ -224,6 +224,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Feedback\FeedbackService.cs" />
+    <Compile Include="Feedback\IFeedbackService.cs" />
     <Compile Include="Photos\PhotosService.cs" />
     <Compile Include="Advertisement\AdvertisementItemService.cs" />
     <Compile Include="Photos\IPhotosService.cs" />
