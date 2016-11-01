@@ -40,7 +40,6 @@ namespace MobileSecondHand.App.Activities
 		private TextView description;
 		private TextView sellerName;
 		private ImageView startConversationBtn;
-		private ImageView addToFavouriteAdvertsBtn;
 		private TextView distanceTextView;
 		CircleImageView userPhoto;
 		private AdvertisementItemDetails advertisement;
@@ -48,10 +47,9 @@ namespace MobileSecondHand.App.Activities
 		private int userAdvertsPageNumber;
 		private NestedScrollView nestedScrollViewLayout;
 		private RelativeLayout userAdvertsLayout;
-		private TextView showUserAdvertisement;
-		private TextView hideUserAdvertisement;
 		private bool firstEntryOnUserAdvertisementsList;
 		private RecyclerView photosRecyclerView;
+		private IMenu menu;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -67,38 +65,45 @@ namespace MobileSecondHand.App.Activities
 			firstEntryOnUserAdvertisementsList = true;
 		}
 
-		//public override bool OnCreateOptionsMenu(IMenu menu)
-		//{
-		//	MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
-		//	if (menu != null)
-		//	{
-		//		menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
-		//		menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
-		//		menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
-		//		menu.FindItem(Resource.Id.chat).SetVisible(true);
-		//		menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
-		//		menu.FindItem(Resource.Id.home).SetVisible(true);
-		//	}
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.advertisementDeatilsMenu, menu);
+			if (menu != null)
+			{
+				this.menu = menu;
+				SetAppBarMenuVisibility(true);
+			}
 
-		//	return base.OnCreateOptionsMenu(menu);
-		//}
+			return base.OnCreateOptionsMenu(menu);
+		}
 
 		public override bool OnOptionsItemSelected(IMenuItem item)
 		{
 			var handled = false;
 			switch (item.ItemId)
 			{
-				case Resource.Id.home:
-					GoToMainPage();
+				case Resource.Id.addToFavourites:
+					AddToFavourites();
 					handled = true;
 					break;
-				case Resource.Id.chat:
-					GoToChat();
+				case Resource.Id.report:
+					//zg³oœ
 					handled = true;
 					break;
+				case Resource.Id.moreUserAdverts:
+					TogleLayouts();
+					handled = true;
+					break;
+
+
 			}
 
 			return handled;
+		}
+
+		protected override void Toolbar_NavigationClick(object sender, Android.Support.V7.Widget.Toolbar.NavigationClickEventArgs e)
+		{
+			OnBackPressed();
 		}
 
 		private void SetupViews()
@@ -114,14 +119,8 @@ namespace MobileSecondHand.App.Activities
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.sellerName = FindViewById<TextView>(Resource.Id.textViewUserNameAdvertDetails);
 			this.userPhoto = FindViewById<CircleImageView>(Resource.Id.profile_image_on_advert_det);
-			this.addToFavouriteAdvertsBtn = FindViewById<ImageView>(Resource.Id.btnAddToFavoriteAdvertisements);
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
-			this.showUserAdvertisement = FindViewById<TextView>(Resource.Id.textViewUserOtherAdverts);
-			this.hideUserAdvertisement = FindViewById<TextView>(Resource.Id.textViewHideUserAdvertisements);
-
-			this.showUserAdvertisement.Click += TogleLayouts;
-			this.hideUserAdvertisement.Click += TogleLayouts;
 
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerViewOnAdvertDetails);
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
@@ -139,7 +138,7 @@ namespace MobileSecondHand.App.Activities
 		{
 			if (userAdvertsLayout.Visibility == ViewStates.Visible)
 			{
-				TogleLayouts(this, EventArgs.Empty);
+				TogleLayouts();
 			}
 			else
 			{
@@ -147,12 +146,13 @@ namespace MobileSecondHand.App.Activities
 			}
 		}
 
-		private async void TogleLayouts(object sender, EventArgs e)
+		private async void TogleLayouts()
 		{
 			if (nestedScrollViewLayout.Visibility == ViewStates.Visible)
 			{
 				nestedScrollViewLayout.Visibility = ViewStates.Gone;
-				this.hideUserAdvertisement.Text = String.Format("Og³oszenia u¿ytkowniczki: {0}\nKliknij aby powróciæ do szczegó³ów og³oszenia", advertisement.SellerName);
+				SetAppBarMenuVisibility(false);
+				this.toolbar.Title = String.Format("Og³oszenia: {0}", advertisement.SellerName);
 				userAdvertsLayout.Visibility = ViewStates.Visible;
 				if (firstEntryOnUserAdvertisementsList)
 				{
@@ -162,9 +162,18 @@ namespace MobileSecondHand.App.Activities
 			}
 			else
 			{
+				this.toolbar.Title = "Szczegó³y";
+				SetAppBarMenuVisibility(true);
 				nestedScrollViewLayout.Visibility = ViewStates.Visible;
 				userAdvertsLayout.Visibility = ViewStates.Gone;
 			}
+		}
+
+		private void SetAppBarMenuVisibility(bool isVisible)
+		{
+			menu.FindItem(Resource.Id.addToFavourites).SetVisible(isVisible);
+			menu.FindItem(Resource.Id.report).SetVisible(isVisible);
+			menu.FindItem(Resource.Id.moreUserAdverts).SetVisible(isVisible);
 		}
 
 		private async Task DownloadAndShowAdvertisements()
@@ -246,10 +255,9 @@ namespace MobileSecondHand.App.Activities
 				userPhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(advertisement.SellerProfileImage));
 			}
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
-			this.addToFavouriteAdvertsBtn.Click += AddToFavourites;
 		}
 
-		private void AddToFavourites(object s, EventArgs e)
+		private void AddToFavourites()
 		{
 			AlertsService.ShowConfirmDialog(this, "Czy na pewno dodaæ to og³oszenie do schowka?", async () =>
 			{

@@ -49,7 +49,7 @@ namespace MobileSecondHand.App.Activities
 		}
 
 
-		private void Toolbar_NavigationClick(object sender, Toolbar.NavigationClickEventArgs e)
+		protected virtual void Toolbar_NavigationClick(object sender, Toolbar.NavigationClickEventArgs e)
 		{
 			Finish();
 		}

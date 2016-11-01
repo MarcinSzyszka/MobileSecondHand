@@ -39,7 +39,6 @@ namespace MobileSecondHand.App.Infrastructure
 			};
 			string[] allSizesNames = GetClothSizeNames();
 			AlertsService.ShowMultiSelectListString(ctx, "Wybierz rozmiary", allSizesNames, userSelectesKeywordsNames, action);
-			this.progressDialogHelper.CloseProgressDialog();
 		}
 
 
@@ -47,8 +46,6 @@ namespace MobileSecondHand.App.Infrastructure
 		{
 			var allSizesNames = GetClothSizeNames();
 			AlertsService.ShowSingleSelectListString(ctx, allSizesNames, (s) => actionOnSelect(s.GetEnumValueByDisplayName<ClothSize>()), selectedItemName);
-			this.progressDialogHelper.CloseProgressDialog();
-
 		}
 
 		private string[] GetClothSizeNames()

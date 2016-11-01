@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+	  xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools">
+
+	<item
+	android:id="@+id/moreUserAdverts"
+	app:showAsAction="always"
+	android:title="Inne ogłoszenia użytkownika"
+	android:icon="@drawable/more_adverts" />
+	<item
+        android:id="@+id/addToFavourites"
+        app:showAsAction="always"
+        android:title="Dodaj do ulubionych"
+        android:icon="@drawable/addToFavourites" />
+	<item
+		android:id="@+id/report"
+		app:showAsAction="always"
+		android:title="Zgłoś"
+		android:icon="@drawable/report" />
+</menu>
