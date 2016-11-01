@@ -10,11 +10,14 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 
-namespace MobileSecondHand.App.Infrastructure {
-	public class ProgressDialogHelper {
+namespace MobileSecondHand.App.Infrastructure
+{
+	public class ProgressDialogHelper
+	{
 		private ProgressDialog progress;
 		public event EventHandler progresShow;
-		public ProgressDialogHelper(Context context) {
+		public ProgressDialogHelper(Context context)
+		{
 			this.progress = new ProgressDialog(context);
 			progress.ShowEvent += Progress_ShowEvent;
 			progress.SetProgressStyle(ProgressDialogStyle.Spinner);
@@ -31,13 +34,19 @@ namespace MobileSecondHand.App.Infrastructure {
 			}
 		}
 
-		public void ShowProgressDialog(string message) {
+		public void ShowProgressDialog(string message)
+		{
 			progress.SetMessage(message);
 			progress.Show();
 		}
 
-		public void CloseProgressDialog() {
-			progress.Hide(); ;
+		public void CloseProgressDialog()
+		{
+			if (progress.IsShowing)
+			{
+				progress.Hide();
+			}
+
 		}
 	}
 }

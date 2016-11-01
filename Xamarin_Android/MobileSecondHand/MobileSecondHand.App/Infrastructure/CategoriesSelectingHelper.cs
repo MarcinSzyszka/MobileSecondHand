@@ -30,14 +30,13 @@ namespace MobileSecondHand.App.Infrastructure
 
 		public async Task ShowCategoriesListAndMakeAction(List<string> userSelectesKeywordsNames, Func<IDictionary<int, string>, Action<List<string>>> methodToExecuteAfterCategoriesSelect)
 		{
-			this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 			try
 			{
+				this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 				var allKeywords = await this.categoryService.GetCategories();
 				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
 
 				AlertsService.ShowMultiSelectListString(ctx, "Wybierz kategorie", allKeywordsNames, userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect(allKeywords));
-
 			}
 			catch (Exception exc)
 			{
@@ -58,7 +57,7 @@ namespace MobileSecondHand.App.Infrastructure
 				var allKeywords = await this.categoryService.GetCategories();
 				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
 
-				AlertsService.ShowSingleSelectListString(ctx, allKeywordsNames, s => actionOnSelect(allKeywords.First(v => v.Value == s).Key, s) , selectedItemName);
+				AlertsService.ShowSingleSelectListString(ctx, allKeywordsNames, s => actionOnSelect(allKeywords.First(v => v.Value == s).Key, s), selectedItemName);
 
 			}
 			catch (Exception exc)

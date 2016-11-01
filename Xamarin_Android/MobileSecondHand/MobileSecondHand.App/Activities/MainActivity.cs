@@ -327,9 +327,15 @@ namespace MobileSecondHand.App
 					};
 				};
 
+				try
+				{
+					var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
+					await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect);
+				}
+				catch
+				{
+				}
 
-				var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
-				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect);
 			};
 
 
@@ -374,25 +380,25 @@ namespace MobileSecondHand.App
 
 			var btnSelectUser = FindViewById<ImageView>(Resource.Id.btnSelectUser);
 			btnSelectUser.Click += (s, e) =>
-			{
-				var intent = new Intent(this, typeof(FindUserActivity));
-				intent.PutExtra(ActivityStateConsts.CALLING_ACTIVITY_NAME, ActivityStateConsts.MAIN_ACTIVITY_NAME);
-				StartActivityForResult(intent, FindUserActivity.FIND_USER_REQUEST_CODE);
-			};
+					{
+						var intent = new Intent(this, typeof(FindUserActivity));
+						intent.PutExtra(ActivityStateConsts.CALLING_ACTIVITY_NAME, ActivityStateConsts.MAIN_ACTIVITY_NAME);
+						StartActivityForResult(intent, FindUserActivity.FIND_USER_REQUEST_CODE);
+					};
 			this.textViewSelectedUser = FindViewById<TextView>(Resource.Id.textViewSelectedUser);
 
 			var btnSorting = FindViewById<ImageView>(Resource.Id.btnSorting);
 			this.textViewSelectedSorting = FindViewById<TextView>(Resource.Id.textViewSelectedSorting);
 			btnSorting.Click += (s, e) =>
-			{
-				Action<string> actionAfterSelect = (selctedSortingByName) =>
+					{
+						Action<string> actionAfterSelect = (selctedSortingByName) =>
 				{
 					this.advertisementsSearchModel.SortingBy = selctedSortingByName.GetEnumValueByDisplayName<SortingBy>();
 					SetupSelectedSortingByView();
 				};
-				var sortingByNames = Enum.GetValues(typeof(SortingBy)).GetAllItemsDisplayNames();
-				AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName());
-			};
+						var sortingByNames = Enum.GetValues(typeof(SortingBy)).GetAllItemsDisplayNames();
+						AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName());
+					};
 
 		}
 

@@ -27,17 +27,20 @@ namespace MobileSecondHand.App.Infrastructure
 
 		public void ShowSizesListAndMakeAction(List<string> userSelectesKeywordsNames, Action<List<ClothSize>> methodToExecuteAfterCategoriesSelect)
 		{
+			string[] allSizesNames = GetClothSizeNames();
 			Action<List<string>> action = (listString) =>
 			{
 				var resultList = new List<ClothSize>();
-				foreach (var enumValueName in listString)
+				if (listString.Count != allSizesNames.Length)
 				{
-					resultList.Add(enumValueName.GetEnumValueByDisplayName<ClothSize>());
+					foreach (var enumValueName in listString)
+					{
+						resultList.Add(enumValueName.GetEnumValueByDisplayName<ClothSize>());
+					}
 				}
-
+				
 				methodToExecuteAfterCategoriesSelect(resultList);
 			};
-			string[] allSizesNames = GetClothSizeNames();
 			AlertsService.ShowMultiSelectListString(ctx, "Wybierz rozmiary", allSizesNames, userSelectesKeywordsNames, action);
 		}
 
