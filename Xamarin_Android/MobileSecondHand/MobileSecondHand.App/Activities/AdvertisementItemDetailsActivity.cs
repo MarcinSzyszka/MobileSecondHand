@@ -41,6 +41,7 @@ namespace MobileSecondHand.App.Activities
 		private TextView title;
 		private TextView description;
 		private TextView sellerName;
+		TextView textViewAdvertStatus;
 		private ImageView startConversationBtn;
 		private TextView distanceTextView;
 		CircleImageView userPhoto;
@@ -123,6 +124,7 @@ namespace MobileSecondHand.App.Activities
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.sellerName = FindViewById<TextView>(Resource.Id.textViewUserNameAdvertDetails);
+			this.textViewAdvertStatus = FindViewById<TextView>(Resource.Id.textViewAdvertStatus);
 			this.userPhoto = FindViewById<CircleImageView>(Resource.Id.profile_image_on_advert_det);
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
@@ -276,6 +278,7 @@ namespace MobileSecondHand.App.Activities
 			{
 				userPhoto.SetImageBitmap(await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(advertisement.SellerProfileImage));
 			}
+			textViewAdvertStatus.Text = String.Format("Og³oszenie {0} {1}", advertisement.IsActive ? "aktywne do" : "zakoñczone ", advertisement.ExpirationDate.ToShortDateString());
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 		}
 
@@ -300,19 +303,26 @@ namespace MobileSecondHand.App.Activities
 
 		private async Task StartConversationBtn_Click(object sender, EventArgs e)
 		{
-			progress.ShowProgressDialog("Proszê czekaæ. Trwa przetwarzanie informacji..");
-			var conversationInfoModel = await messagesService.GetConversationInfoModel(this.advertisement.SellerId);
-			progress.CloseProgressDialog();
-			if (conversationInfoModel.ConversationId == 0)
+			if (!advertisement.IsActive)
 			{
-				//if 0 that means user is trying to send message to himself
-				AlertsService.ShowLongToast(this, "Nie mo¿esz wys³aæ wiadomoœci do samego siebie :)");
+				AlertsService.ShowShortToast(this, "Og³oszenie jest nieaktualne dlatego nie mo¿esz wys³aæ wiadomoœci autorowi og³oszenia");
 			}
 			else
 			{
-				var conversationIntent = new Intent(this, typeof(ConversationActivity));
-				conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
-				StartActivity(conversationIntent);
+				progress.ShowProgressDialog("Proszê czekaæ. Trwa przetwarzanie informacji..");
+				var conversationInfoModel = await messagesService.GetConversationInfoModel(this.advertisement.SellerId);
+				progress.CloseProgressDialog();
+				if (conversationInfoModel.ConversationId == 0)
+				{
+					//if 0 that means user is trying to send message to himself
+					AlertsService.ShowLongToast(this, "Nie mo¿esz wys³aæ wiadomoœci do samego siebie :)");
+				}
+				else
+				{
+					var conversationIntent = new Intent(this, typeof(ConversationActivity));
+					conversationIntent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
+					StartActivity(conversationIntent);
+				}
 			}
 		}
 
