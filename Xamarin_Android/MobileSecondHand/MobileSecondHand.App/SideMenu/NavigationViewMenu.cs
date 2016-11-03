@@ -76,13 +76,10 @@ namespace MobileSecondHand.App.SideMenu
 			SetupViews(activity);
 		}
 
-		private void SetupViews(BaseActivity activity)
+		private async void SetupViews(BaseActivity activity)
 		{
 			this.userProfilePhoto = activity.FindViewById<CircleImageView>(Resource.Id.profile_image);
-			if (!String.IsNullOrEmpty(appSettings.ProfileImagePath))
-			{
-				this.userProfilePhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(appSettings.ProfileImagePath));
-			}
+			await DisplayProfilePhoto();
 			userProfilePhoto.Click += UserProfilePhoto_Click;
 			this.textViewUserName = activity.FindViewById<TextView>(Resource.Id.textViewUserName);
 			this.textViewNotificationsState = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsState);
@@ -188,29 +185,34 @@ namespace MobileSecondHand.App.SideMenu
 			}
 		}
 
-		internal void OnAddPhotoTequestResult(Intent data)
+		internal async Task OnAddPhotoTequestResult(Intent data)
 		{
 
 			if (profilePhotoPath != null)
 			{
-				SetPhoto(profilePhotoPath);
+				await SetPhoto(profilePhotoPath);
 			}
 			else if (data != null)
 			{
 				var file = CreateImageFile();
 				profileTempPhotoPath = this.bitmapOperationService.SavePhotoFromUriAndReturnPhysicalPath(data.Data, file, activity);
-				SetPhoto(profileTempPhotoPath);
+				await SetPhoto(profileTempPhotoPath);
 				System.IO.File.Delete(profileTempPhotoPath);
 			}
 
 		}
 
-		private async void SetPhoto(string photoPath)
+		private async Task SetPhoto(string photoPath)
 		{
 			await SaveProfilePhoto(photoPath);
+			await DisplayProfilePhoto();
+		}
+
+		private async Task DisplayProfilePhoto()
+		{
 			if (!String.IsNullOrEmpty(appSettings.ProfileImagePath))
 			{
-				this.userProfilePhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(appSettings.ProfileImagePath));
+				this.userProfilePhoto.SetImageBitmap(await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(appSettings.ProfileImagePath));
 			}
 		}
 
@@ -220,7 +222,7 @@ namespace MobileSecondHand.App.SideMenu
 			try
 			{
 				this.progressDialogHelper.ShowProgressDialog("Zapisywanie zdjêcia profilowego");
-				var photoResized = this.bitmapOperationService.ResizeImageAndGetByteArray(System.IO.File.ReadAllBytes(profilePhotoPath), true);
+				var photoResized = await this.bitmapOperationService.GetScaledDownPhotoByteArray(profilePhotoPath, true);
 				var profileImagePath = System.IO.Path.Combine(Application.Context.FilesDir.AbsolutePath, "profilePicture.jpg");
 				System.IO.File.WriteAllBytes(profileImagePath, photoResized);
 				appSettings.ProfileImagePath = profileImagePath;

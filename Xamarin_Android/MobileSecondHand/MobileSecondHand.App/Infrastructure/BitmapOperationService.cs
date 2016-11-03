@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-
+using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
 using Android.Content.Res;
@@ -21,7 +21,12 @@ namespace MobileSecondHand.App.Infrastructure
 {
 	public class BitmapOperationService
 	{
+		private int maxPhotoValue;
 
+		public BitmapOperationService()
+		{
+			this.maxPhotoValue = 1000;
+		}
 		public string SavePhotoFromUriAndReturnPhysicalPath(Android.Net.Uri contentURI, Java.IO.File file, Context ctx)
 		{
 			try
@@ -46,90 +51,147 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 		}
 
-		public Bitmap GetBitmap(string imagePath)
+		public async Task<byte[]> GetScaledDownPhotoByteArray(string path, bool isProfilePhoto = false)
 		{
-			Bitmap bitmap = BitmapFactory.DecodeFile(imagePath);
-
-			return bitmap;
-		}
-
-		public Bitmap GetBitmap(byte[] imageByteArray)
-		{
-			int offset = 0;
-
-			Bitmap bitmap = BitmapFactory.DecodeByteArray(imageByteArray, offset, imageByteArray.Length);
-
-			return bitmap;
-		}
-
-		public byte[] ResizeImageAndGetByteArray(byte[] imageByteArray, bool isProfilePhoto = false)
-		{
-			int offset = 0;
-			var maxValue = 1500;
+			var maxValue = maxPhotoValue;
 			if (isProfilePhoto)
 			{
 				maxValue = 600;
 			}
-
-			var decodedBitmap = BitmapFactory.DecodeByteArray(imageByteArray, offset, imageByteArray.Length);
-
-			var width = 0;
-			var height = 0;
-
-			if (decodedBitmap.Height > decodedBitmap.Width)
+			var options = await GetBitmapOptionsOfImageAsync(path);
+			float height = options.OutHeight;
+			float width = options.OutWidth;
+			if (height > width)
 			{
-				double divider = (double)decodedBitmap.Height / (double)maxValue;
+				float divider = height / (float)maxValue;
 				height = maxValue;
-				width = (int)((double)decodedBitmap.Width / divider);
+				width = (int)(width / divider);
 			}
 			else
 			{
-				double divider = (double)decodedBitmap.Width / (double)maxValue;
+				float divider = width / (float)maxValue;
 				width = maxValue;
-				height = (int)((double)decodedBitmap.Height / divider);
+				height = (int)(height / divider);
 			}
 
-			var bitmapScalled = Bitmap.CreateScaledBitmap(decodedBitmap, width, height, true);
-			decodedBitmap.Recycle();
+			options.InSampleSize = CalculateInSampleSize(options, width, height);
+			options.InJustDecodeBounds = false;
+			var scaledBitmap = await BitmapFactory.DecodeFileAsync(path, options);
 
 			byte[] imageArrayBytes;
 			using (var stream = new MemoryStream())
 			{
-				bitmapScalled.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
+				scaledBitmap.Compress(Bitmap.CompressFormat.Jpeg, 100, stream);
 				imageArrayBytes = stream.ToArray();
 			}
 
 			return imageArrayBytes;
 		}
-
-		public Bitmap ResizeImageAndGetBitMap(string filePath, bool isProfilePhoto = false)
+		public async Task<Bitmap> GetScaledDownBitmapForDisplayAsync(byte[] imageByteArray)
 		{
-			var maxValue = 1500;
-
-			var decodedBitmap = BitmapFactory.DecodeFile(filePath);
-
-			var width = 0;
-			var height = 0;
-
-			if (decodedBitmap.Height > decodedBitmap.Width)
+			var maxValue = maxPhotoValue;
+			var options = await GetBitmapOptionsOfImageAsync(imageByteArray);
+			float height = options.OutHeight;
+			float width = options.OutWidth;
+			if (height > width)
 			{
-				double divider = (double)decodedBitmap.Height / (double)maxValue;
+				float divider = height / (float)maxValue;
 				height = maxValue;
-				width = (int)((double)decodedBitmap.Width / divider);
+				width = (int)(width / divider);
 			}
 			else
 			{
-				double divider = (double)decodedBitmap.Width / (double)maxValue;
+				float divider = width / (float)maxValue;
 				width = maxValue;
-				height = (int)((double)decodedBitmap.Height / divider);
+				height = (int)(height / divider);
 			}
+			// Calculate inSampleSize
+			options.InSampleSize = CalculateInSampleSize(options, width, height);
 
-			var bitmapScalled = Bitmap.CreateScaledBitmap(decodedBitmap, width, height, true);
-			decodedBitmap.Recycle();
+			// Decode bitmap with inSampleSize set
+			options.InJustDecodeBounds = false;
 
-			return bitmapScalled;
+			return await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length, options);
 		}
 
+		public async Task<Bitmap> GetScaledDownBitmapForDisplayAsync(string path)
+		{
+			var maxValue = maxPhotoValue;
+			var options = await GetBitmapOptionsOfImageAsync(path);
+			float height = options.OutHeight;
+			float width = options.OutWidth;
+			if (height > width)
+			{
+				float divider = height / (float)maxValue;
+				height = maxValue;
+				width = (int)(width / divider);
+			}
+			else
+			{
+				float divider = width / (float)maxValue;
+				width = maxValue;
+				height = (int)(height / divider);
+			}
+			// Calculate inSampleSize
+			options.InSampleSize = CalculateInSampleSize(options, width, height);
+
+			// Decode bitmap with inSampleSize set
+			options.InJustDecodeBounds = false;
+
+			return await BitmapFactory.DecodeFileAsync(path, options);
+		}
+
+
+		private int CalculateInSampleSize(BitmapFactory.Options options, float reqWidth, float reqHeight)
+		{
+			// Raw height and width of image
+			float height = options.OutHeight;
+			float width = options.OutWidth;
+			double inSampleSize = 1D;
+
+			if (height > reqHeight || width > reqWidth)
+			{
+				int halfHeight = (int)(height / 2);
+				int halfWidth = (int)(width / 2);
+
+				// Calculate a inSampleSize that is a power of 2 - the decoder will use a value that is a power of two anyway.
+				while ((halfHeight / inSampleSize) > reqHeight && (halfWidth / inSampleSize) > reqWidth)
+				{
+					inSampleSize *= 2;
+				}
+			}
+
+			return (int)inSampleSize;
+		}
+
+		private async Task<BitmapFactory.Options> GetBitmapOptionsOfImageAsync(byte[] imageByteArray)
+		{
+			BitmapFactory.Options options = GetBitmapOptions();
+
+			// The result will be null because InJustDecodeBounds == true.
+			Bitmap result = await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length, options);
+
+			return options;
+		}
+
+
+		private async Task<BitmapFactory.Options> GetBitmapOptionsOfImageAsync(string path)
+		{
+			BitmapFactory.Options options = GetBitmapOptions();
+
+			// The result will be null because InJustDecodeBounds == true.
+			Bitmap result = await BitmapFactory.DecodeFileAsync(path, options);
+
+			return options;
+		}
+
+		private static BitmapFactory.Options GetBitmapOptions()
+		{
+			return new BitmapFactory.Options
+			{
+				InJustDecodeBounds = true
+			};
+		}
 
 	}
 }

@@ -148,7 +148,7 @@ namespace MobileSecondHand.App.Activities
 				},
 				HandleError = loginError => {
 					progress.CloseProgressDialog();
-					AlertsService.ShowLongToast(this, "Wyst¹pi³ b³¹ podczas logowanie z facebookiem");
+					AlertsService.ShowLongToast(this, "Wyst¹pi³ b³¹d podczas logowania z facebookiem");
 				}
 			};
 			facebookLoginBtn.RegisterCallback(this.callbackManager, loginCallback);

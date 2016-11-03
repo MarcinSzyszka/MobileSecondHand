@@ -36,8 +36,11 @@ namespace MobileSecondHand.App.Infrastructure
 
 		public void ShowProgressDialog(string message)
 		{
-			progress.SetMessage(message);
-			progress.Show();
+			if (!progress.IsShowing)
+			{
+				progress.SetMessage(message);
+				progress.Show();
+			}
 		}
 
 		public void CloseProgressDialog()

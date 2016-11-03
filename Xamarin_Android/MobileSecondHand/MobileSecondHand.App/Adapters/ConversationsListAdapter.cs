@@ -37,7 +37,7 @@ namespace MobileSecondHand.App.Adapters
 			this.bitmapService = new BitmapOperationService();
 		}
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		public override async void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			var currentItem = this.ConversationItems[position];
 			ConversationViewHolder vh = holder as ConversationViewHolder;
@@ -47,7 +47,7 @@ namespace MobileSecondHand.App.Adapters
 			vh.LastMessageDateTextView.Text = currentItem.LastMessageDate;
 			if (currentItem.InterLocutorProfileImage != null)
 			{
-				vh.InterlocutorProfileImage.SetImageBitmap(this.bitmapService.GetBitmap(currentItem.InterLocutorProfileImage));
+				vh.InterlocutorProfileImage.SetImageBitmap(await this.bitmapService.GetScaledDownBitmapForDisplayAsync(currentItem.InterLocutorProfileImage));
 			}
 			vh.LastMessageDateTextView.Text = currentItem.LastMessageDate;
 

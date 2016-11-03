@@ -69,7 +69,7 @@ namespace MobileSecondHand.App.Chat
 				this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
 
 				timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 10000);
+				timer.Change(0, 1000 * 60 * 2);
 			}
 		);
 			signalRThread.Start();
@@ -95,7 +95,7 @@ namespace MobileSecondHand.App.Chat
 			if (!ConversationActivity.ConversationActivityStateModel.IsInForeground || ConversationActivity.ConversationActivityStateModel.ConversationId != message.ConversationId)
 			{
 				var nMgr = (NotificationManager)GetSystemService(NotificationService);
-				var notification = new Notification(Resource.Drawable.Icon, message.MessageContent);
+				var notification = new Notification(Resource.Drawable.logo_icon, message.MessageContent);
 				notification.Flags = NotificationFlags.AutoCancel;
 				notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 				var intent = new Intent(this, typeof(ConversationActivity));

@@ -71,14 +71,14 @@ namespace MobileSecondHand.App.Activities
 			{
 				if (conversationInfoModel.InterlocutorPrifileImage.Length > 0)
 				{
-					profileImageView.SetImageBitmap(this.bitmapService.GetBitmap(conversationInfoModel.InterlocutorPrifileImage));
+					profileImageView.SetImageBitmap(await this.bitmapService.GetScaledDownBitmapForDisplayAsync(conversationInfoModel.InterlocutorPrifileImage));
 				}
 				else
 				{
 					var imageBytes = await signInService.GetUserProfileImage(bearerToken, conversationInfoModel.InterlocutorId);
 					if (imageBytes != null)
 					{
-						profileImageView.SetImageBitmap(this.bitmapService.GetBitmap(imageBytes));
+						profileImageView.SetImageBitmap(await this.bitmapService.GetScaledDownBitmapForDisplayAsync(imageBytes));
 					}
 				}
 

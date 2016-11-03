@@ -51,9 +51,9 @@ namespace MobileSecondHand.App.Infrastructure
 
 		public async Task ShowCategoriesSingleSelectAndMakeAction(Action<int, string> actionOnSelect, string selectedItemName = null)
 		{
-			this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 			try
 			{
+				this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 				var allKeywords = await this.categoryService.GetCategories();
 				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
 

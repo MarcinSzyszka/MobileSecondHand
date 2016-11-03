@@ -43,8 +43,13 @@ namespace MobileSecondHand.App.Adapters
 		public override Java.Lang.Object InstantiateItem(ViewGroup container, int position)
 		{
 			PhotoView photoView = new PhotoView(container.Context);
-			photoView.SetImageBitmap(bitmapOperationService.GetBitmap(photos[position]));
+			Action<PhotoView, byte[]> action = async (pV, photo) =>
+			{
+				pV.SetImageBitmap(await bitmapOperationService.GetScaledDownBitmapForDisplayAsync(photo));
+			};
 
+
+			action(photoView, this.photos[position]);
 			// Now just add PhotoView to ViewPager and return it
 			container.AddView(photoView, ViewPager.LayoutParams.MatchParent, ViewPager.LayoutParams.MatchParent);
 
@@ -57,6 +62,6 @@ namespace MobileSecondHand.App.Adapters
 			viewGroup.RemoveView((View)objectValue);
 		}
 
-	
+
 	}
 }

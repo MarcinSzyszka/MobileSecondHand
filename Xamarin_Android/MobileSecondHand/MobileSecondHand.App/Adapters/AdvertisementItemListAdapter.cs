@@ -45,7 +45,7 @@ namespace MobileSecondHand.App.Adapters
 			this.NotifyDataSetChanged();
 		}
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		public override async void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
@@ -77,7 +77,7 @@ namespace MobileSecondHand.App.Adapters
 			vh.DistanceTextView.Text = String.Format("{0} km", currentItem.Distance);
 			vh.TitleTextView.Text = currentItem.AdvertisementTitle;
 			vh.PriceTextView.Text = String.Format("{0} z³", currentItem.AdvertisementPrice);
-			vh.PhotoImageView.SetImageBitmap(bitmapOperationService.GetBitmap(currentItem.MainPhoto));
+			vh.PhotoImageView.SetImageBitmap(await bitmapOperationService.GetScaledDownBitmapForDisplayAsync(currentItem.MainPhoto));
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
 		}
 

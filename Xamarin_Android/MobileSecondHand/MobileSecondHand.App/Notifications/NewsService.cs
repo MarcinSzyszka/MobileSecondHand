@@ -60,12 +60,22 @@ namespace MobileSecondHand.App.Notifications
 
 		private void DoWork()
 		{
+#if DEBUG
+			this.newsThread = new Thread(() =>
+		{
+			timer = new Timer(new TimerCallback(TimerCallBackMethod));
+			timer.Change(0, 1000 * 60 * 1);
+		}
+		);
+#else
 			this.newsThread = new Thread(() =>
 			{
 				timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 1000 * 60 * 1);
+				timer.Change(0, 1000 * 60 * 30);
 			}
 		);
+#endif
+
 			newsThread.Start();
 		}
 
@@ -92,7 +102,7 @@ namespace MobileSecondHand.App.Notifications
 			}
 		}
 
-	
+
 		private async Task CheckNewAdvertisementsAroundUserCurrentLocation()
 		{
 			var appsettings = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
@@ -126,7 +136,7 @@ namespace MobileSecondHand.App.Notifications
 		{
 			var message = GetMessage(advertisementsKind);
 			var nMgr = (NotificationManager)GetSystemService(NotificationService);
-			var notification = new Notification(Resource.Drawable.Icon,  "Mobile Second Hand");
+			var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand");
 			notification.Flags = NotificationFlags.AutoCancel;
 			notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 			var intent = new Intent(this, typeof(MainActivity));

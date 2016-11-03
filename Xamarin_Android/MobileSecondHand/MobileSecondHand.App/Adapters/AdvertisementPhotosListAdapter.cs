@@ -36,7 +36,7 @@ namespace MobileSecondHand.App.Adapters
 			}
 		}
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		public override async void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
 			var photo = this.photos[position];
 			AdvertisementPhotoViewHolder vh = holder as AdvertisementPhotoViewHolder;
@@ -47,7 +47,7 @@ namespace MobileSecondHand.App.Adapters
 					PhotoClicked(this, position);
 				}
 			});
-			vh.PhotoImageView.SetImageBitmap(bitmapOperationService.GetBitmap(photo));
+			vh.PhotoImageView.SetImageBitmap(await bitmapOperationService.GetScaledDownBitmapForDisplayAsync(photo));
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)

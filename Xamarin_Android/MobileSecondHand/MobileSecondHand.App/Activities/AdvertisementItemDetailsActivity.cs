@@ -249,7 +249,7 @@ namespace MobileSecondHand.App.Activities
 			progress.CloseProgressDialog();
 		}
 
-		private void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance)
+		private async void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance)
 		{
 			distanceTextView.Text = String.Format("{0} km", distance);
 			if (advertisement.IsSellerOnline)
@@ -274,7 +274,7 @@ namespace MobileSecondHand.App.Activities
 			sellerName.Text = advertisement.SellerName;
 			if (advertisement.SellerProfileImage != null)
 			{
-				userPhoto.SetImageBitmap(this.bitmapOperationService.GetBitmap(advertisement.SellerProfileImage));
+				userPhoto.SetImageBitmap(await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(advertisement.SellerProfileImage));
 			}
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 		}

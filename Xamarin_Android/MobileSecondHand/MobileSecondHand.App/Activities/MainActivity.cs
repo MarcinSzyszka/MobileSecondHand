@@ -76,7 +76,7 @@ namespace MobileSecondHand.App
 			await DownloadAndShowAdvertisements(true);
 		}
 
-		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+		protected override async void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
 			if (resultCode == Result.Ok && requestCode == FindUserActivity.FIND_USER_REQUEST_CODE && data != null)
@@ -88,7 +88,7 @@ namespace MobileSecondHand.App
 			}
 			else if (resultCode == Result.Ok && requestCode == NavigationViewMenu.PHOTO_REQUEST_KEY)
 			{
-				navigationViewMenu.OnAddPhotoTequestResult(data);
+				await navigationViewMenu.OnAddPhotoTequestResult(data);
 			}
 		}
 

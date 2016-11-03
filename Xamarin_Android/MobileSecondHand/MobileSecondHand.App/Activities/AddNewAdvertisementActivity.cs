@@ -20,7 +20,7 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label ="Nowe og³oszenie")]
+	[Activity(Label = "Nowe og³oszenie", ConfigurationChanges = Android.Content.PM.ConfigChanges.KeyboardHidden | Android.Content.PM.ConfigChanges.Orientation | Android.Content.PM.ConfigChanges.ScreenSize)]
 	public class AddNewAdvertisementActivity : BaseActivity
 	{
 		BitmapOperationService bitmapOperationService;
@@ -33,18 +33,9 @@ namespace MobileSecondHand.App.Activities
 		private ProgressDialogHelper progress;
 		private RadioButton rdBtnOnlyForSell;
 		private List<string> photosPaths;
-		private bool photoIsTaking;
 		private int REQUEST_TAKE_PHOTO_1 = 1;
 		private int REQUEST_TAKE_PHOTO_2 = 2;
 		private int REQUEST_TAKE_PHOTO_3 = 3;
-		private string keyAdvertisementTitleText = "advertisementTitleText";
-		private string keyRdBtnOnlyForSellValue = "rdBtnOnlyForSellValue";
-		private string keyAdvertisementDescriptionText = "advertisementDescriptionText";
-		private string keyAdvertisementPriceValue = "advertisementPriceValue";
-		private string keyPhotosPaths = "mPhotoView1Path";
-		private string keyPhotoIsTakingValue = "keyPhotoIsTakingValue";
-		private string keySelectedCategory = "keySelectedCategory";
-		private string keySelectedSize = "keySelectedSize";
 		private View focusView;
 		IAdvertisementItemService advertisementItemService;
 		private ImageView mPhotoView1;
@@ -79,14 +70,9 @@ namespace MobileSecondHand.App.Activities
 			SetupViews();
 			photosPaths = new List<string>();
 			tempPhotosPaths = new List<string>();
-
-			if (savedInstanceState != null)
-			{
-				RestoreViewFieldsValues(savedInstanceState);
-			}
 		}
 
-		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+		protected override async void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
 		{
 			base.OnActivityResult(requestCode, resultCode, data);
 
@@ -94,18 +80,14 @@ namespace MobileSecondHand.App.Activities
 			{
 				if (this.photosPaths.Count >= requestCode && this.photosPaths[requestCode - 1] != null)
 				{
-					SetPhoto(requestCode);
+					await SetPhoto(requestCode);
 				}
 				if (data != null)
 				{
 					var file = CreateImageFile(requestCode);
 					tempPhotosPaths.Add(this.bitmapOperationService.SavePhotoFromUriAndReturnPhysicalPath(data.Data, file, this));
-					SetPhoto(requestCode);
+					await SetPhoto(requestCode);
 				}
-			}
-			else
-			{
-				photoIsTaking = false;
 			}
 		}
 
@@ -131,7 +113,9 @@ namespace MobileSecondHand.App.Activities
 			switch (item.ItemId)
 			{
 				case Resource.Id.applyFilterOptions:
+					progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 					CreateAdvertMenuItemClicked();
+					progress.CloseProgressDialog();
 					handled = true;
 					break;
 			}
@@ -139,69 +123,9 @@ namespace MobileSecondHand.App.Activities
 			return handled;
 		}
 
-		protected override void OnSaveInstanceState(Bundle outState)
+		private async Task SetPhoto(int photoNr)
 		{
-			base.OnSaveInstanceState(outState);
-			SaveViewFieldsValues(outState);
-		}
-
-		private void SaveViewFieldsValues(Bundle outState)
-		{
-			outState.PutAll(outState);
-			outState.PutString(keyAdvertisementTitleText, advertisementTitle.Text);
-			outState.PutString(keyAdvertisementDescriptionText, advertisementDescription.Text);
-			outState.PutBoolean(keyRdBtnOnlyForSellValue, rdBtnOnlyForSell.Checked);
-			outState.PutString(keyAdvertisementPriceValue, advertisementPrice.Text);
-			outState.PutStringArray(keyPhotosPaths, this.photosPaths.ToArray());
-			outState.PutBoolean(keyPhotoIsTakingValue, photoIsTaking);
-			outState.PutInt(keySelectedSize, (int)this.size);
-			outState.PutString(keySelectedCategory, JsonConvert.SerializeObject(categoryInfoModel));
-
-			if (!photoIsTaking)
-			{
-				this.mPhotoView1.Dispose();
-				this.mPhotoView2.Dispose();
-				this.mPhotoView3.Dispose();
-			}
-
-		}
-
-		private void RestoreViewFieldsValues(Bundle savedInstanceState)
-		{
-			RestorePhotos(savedInstanceState);
-			advertisementTitle.Text = savedInstanceState.GetString(keyAdvertisementTitleText, String.Empty);
-			advertisementDescription.Text = savedInstanceState.GetString(keyAdvertisementDescriptionText, String.Empty);
-			advertisementPrice.Text = savedInstanceState.GetString(keyAdvertisementPriceValue, String.Empty);
-			rdBtnOnlyForSell.Checked = savedInstanceState.GetBoolean(keyRdBtnOnlyForSellValue, false);
-
-			photoIsTaking = savedInstanceState.GetBoolean(keyPhotoIsTakingValue, true);
-			var selectedSizeEnumValue = savedInstanceState.GetInt(keySelectedSize);
-			if (selectedSizeEnumValue > 0)
-			{
-				this.size = (ClothSize)selectedSizeEnumValue;
-				this.textViewChodesdSize.Text = this.size.GetDisplayName();
-			}
-			categoryInfoModel = JsonConvert.DeserializeObject<CategoryInfoModel>(savedInstanceState.GetString(keySelectedCategory, String.Empty));
-			this.textViewChodesdCategory.Text = categoryInfoModel.Name;
-		}
-
-		private void RestorePhotos(Bundle savedInstanceState)
-		{
-			this.photosPaths = savedInstanceState.GetStringArray(keyPhotosPaths).ToList();
-			var i = 0;
-			if (this.photosPaths.Count > 0 && !photoIsTaking)
-			{
-				do
-				{
-					i++;
-					SetPhoto(i);
-				} while (i < this.photosPaths.Count);
-			}
-		}
-
-		private void SetPhoto(int photoNr)
-		{
-			Bitmap resizedImage = this.bitmapOperationService.ResizeImageAndGetBitMap(this.photosPaths[photoNr - 1]);
+			Bitmap resizedImage = await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(this.photosPaths[photoNr - 1]);
 			switch (photoNr)
 			{
 				case 1:
@@ -231,8 +155,6 @@ namespace MobileSecondHand.App.Activities
 				default:
 					break;
 			}
-
-			photoIsTaking = false;
 		}
 
 		private void SetupViews()
@@ -291,6 +213,7 @@ namespace MobileSecondHand.App.Activities
 			}
 			catch (Exception exc)
 			{
+				AlertsService.ShowShortToast(this, "Wsytapil wyjatek: " + exc);
 				//dziwne wyjatki wystepuj¹ gdy nie zlapie tego w try catch
 			}
 
@@ -314,7 +237,7 @@ namespace MobileSecondHand.App.Activities
 				var location = gpsLocationService.GetLocation();
 				if (location.Longitude != 0.0 && location.Latitude != 0.0)
 				{
-					var photosBytesArraysList = GetPhotosByteArray(this.photosPaths);
+					var photosBytesArraysList = await GetPhotosByteArray(this.photosPaths);
 
 					var photosListModel = await this.advertisementItemService.UploadNewAdvertisementPhotos(photosBytesArraysList);
 					if (photosListModel != null)
@@ -348,15 +271,16 @@ namespace MobileSecondHand.App.Activities
 			progress.CloseProgressDialog();
 		}
 
-		private IEnumerable<byte[]> GetPhotosByteArray(List<string> photosPaths)
+		private async Task<IEnumerable<byte[]>> GetPhotosByteArray(List<string> photosPaths)
 		{
+			var byteArrayList = new List<byte[]>();
 			foreach (var photoPath in photosPaths)
 			{
-				var bytesArray = System.IO.File.ReadAllBytes(photoPath);
-				var resized = this.bitmapOperationService.ResizeImageAndGetByteArray(bytesArray);
-
-				yield return resized;
+				var byteArrayPhoto = await this.bitmapOperationService.GetScaledDownPhotoByteArray(photoPath);
+				byteArrayList.Add(byteArrayPhoto);
 			}
+
+			return byteArrayList;
 		}
 
 		private NewAdvertisementItem CreateNewAdvertisementItemModel(AdvertisementItemPhotosNames photosListModel)
@@ -427,7 +351,6 @@ namespace MobileSecondHand.App.Activities
 			AlertsService.ShowSingleSelectListString(this, takingPhotoKindNames.ToArray(), s =>
 			{
 				var selectedTakingPhotoKind = s.GetEnumValueByDisplayName<GetPhotoKind>();
-				photoIsTaking = true;
 				switch (selectedTakingPhotoKind)
 				{
 					case GetPhotoKind.TakeNewPhotoFromCamera:
