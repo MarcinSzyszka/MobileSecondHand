@@ -18,7 +18,7 @@ using MobileSecondHand.API.Models.Shared.Chat;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
+	[Activity(Label = "Rozmowy", ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class ConversationsListActivity : BaseActivity, IInfiniteScrollListener
 	{
 		IMessagesService messagesService;

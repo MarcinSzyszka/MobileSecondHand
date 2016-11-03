@@ -22,7 +22,7 @@ using Toolbar = Android.Support.V7.Widget.Toolbar;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Znajdø uøytkownika")]
+	[Activity(Label = "Znajdü uøytkownika")]
 	public class FindUserActivity : AppCompatActivity
 	{
 		public const int FIND_USER_REQUEST_CODE = 10;
