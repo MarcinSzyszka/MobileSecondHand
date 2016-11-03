@@ -105,7 +105,17 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(queryAdvertisements.ToList(), searchModel.CoordinatesModel);
 
+			UpdateUserCheckingList(searchModel, userId);
+
 			return advertisementsViewModels;
+		}
+
+		private void UpdateUserCheckingList(AdvertisementsSearchModel searchModel, string userId)
+		{
+			if (searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation && searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsArounUserHomeLocation)
+			{
+				this.lastUsersChecksCacheService.UpdateLastTimeUserCheckDate(userId, searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation);
+			}
 		}
 
 		private IQueryable<AdvertisementItem> FilterResultBySearchModelOptions(AdvertisementsSearchModel searchModel, IQueryable<AdvertisementItem> queryAdvertisements)
@@ -379,6 +389,6 @@ namespace MobileSecondHand.API.Services.Advertisement
 			return DateTime.Now.AddDays(14);
 		}
 
-	
+
 	}
 }

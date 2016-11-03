@@ -29,12 +29,12 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public IQueryable<AdvertisementItem> GetAdvertisements()
 		{
-			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos);
+			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => !a.IsBlockedByAdmin);
 		}
 
 		public IQueryable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel)
 		{
-			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.CreationDate >= lastCheckDate && a.UserId != userId &&
+			return GetAdvertisements().Where(a => a.CreationDate >= lastCheckDate && a.UserId != userId &&
 																				a.Latitude >= coordinatesForSearchModel.LatitudeStart
 																				&& a.Latitude <= coordinatesForSearchModel.LatitudeEnd
 																				&& a.Longitude >= coordinatesForSearchModel.LongitudeStart
@@ -47,13 +47,13 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 			if (pageNumber > -1)
 			{
-				queryAdvertisements = dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId && a.ExpirationDate >= DateTime.Now).OrderBy(a => a.ExpirationDate);
+				queryAdvertisements = GetAdvertisements().Where(a => a.UserId == userId && a.ExpirationDate >= DateTime.Now).OrderBy(a => a.ExpirationDate);
 				queryAdvertisements = queryAdvertisements.Skip(20 * pageNumber).Take(20);
 			}
 			else
 			{
 				//advertisement createdByUser - expired adverts should be returned because maybe user might want to restart them
-				queryAdvertisements = dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).Where(a => a.UserId == userId);
+				queryAdvertisements = GetAdvertisements().Where(a => a.UserId == userId);
 			}
 
 
