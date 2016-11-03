@@ -76,10 +76,10 @@ namespace MobileSecondHand.App.SideMenu
 			SetupViews(activity);
 		}
 
-		private async void SetupViews(BaseActivity activity)
+		private void SetupViews(BaseActivity activity)
 		{
 			this.userProfilePhoto = activity.FindViewById<CircleImageView>(Resource.Id.profile_image);
-			await DisplayProfilePhoto();
+			DisplayProfilePhoto();
 			userProfilePhoto.Click += UserProfilePhoto_Click;
 			this.textViewUserName = activity.FindViewById<TextView>(Resource.Id.textViewUserName);
 			this.textViewNotificationsState = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsState);
@@ -205,10 +205,10 @@ namespace MobileSecondHand.App.SideMenu
 		private async Task SetPhoto(string photoPath)
 		{
 			await SaveProfilePhoto(photoPath);
-			await DisplayProfilePhoto();
+			DisplayProfilePhoto();
 		}
 
-		private async Task DisplayProfilePhoto()
+		private async void DisplayProfilePhoto()
 		{
 			if (!String.IsNullOrEmpty(appSettings.ProfileImagePath))
 			{

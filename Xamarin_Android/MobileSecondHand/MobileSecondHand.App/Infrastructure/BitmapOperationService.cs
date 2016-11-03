@@ -141,6 +141,21 @@ namespace MobileSecondHand.App.Infrastructure
 			return await BitmapFactory.DecodeFileAsync(path, options);
 		}
 
+		public async Task<Bitmap> GetNotScaledDownBitmapForDisplayAsync(string path)
+		{
+			var options = await GetBitmapOptionsOfImageAsync(path);
+			float height = options.OutHeight;
+			float width = options.OutWidth;
+
+			// Calculate inSampleSize
+			options.InSampleSize = CalculateInSampleSize(options, width, height);
+
+			// Decode bitmap with inSampleSize set
+			options.InJustDecodeBounds = false;
+
+			return await BitmapFactory.DecodeFileAsync(path, options);
+		}
+
 
 		private int CalculateInSampleSize(BitmapFactory.Options options, float reqWidth, float reqHeight)
 		{
