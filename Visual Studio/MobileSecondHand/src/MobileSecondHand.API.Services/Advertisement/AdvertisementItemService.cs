@@ -322,6 +322,8 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
 			viewModel.SellerId = advertisementFromDb.UserId;
 			viewModel.SellerName = advertisementFromDb.User.UserName;
+			viewModel.IsActive = advertisementFromDb.ExpirationDate > DateTime.Now;
+			viewModel.ExpirationDate = advertisementFromDb.ExpirationDate.Value;
 			viewModel.Photos = await GetPhotosList(advertisementFromDb.AdvertisementPhotos.Where(p => !p.IsMainPhoto).ToList());
 			viewModel.IsSellerOnline = this.chatHubCacheService.IsUserConnected(advertisementFromDb.UserId);
 			if (!String.IsNullOrEmpty(advertisementFromDb.User.UserProfilePhotoName))
