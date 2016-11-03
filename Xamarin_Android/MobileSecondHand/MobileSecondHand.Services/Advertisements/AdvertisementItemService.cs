@@ -10,6 +10,7 @@ using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Location;
 using MobileSecondHand.Models.Consts;
+using MobileSecondHand.Services.Factories;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Advertisements
@@ -20,9 +21,7 @@ namespace MobileSecondHand.Services.Advertisements
 
 		public AdvertisementItemService(string bearerToken)
 		{
-			this.client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			this.client = HttpClientFactory.GetHttpClient(bearerToken);
 		}
 		public async Task<List<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel)
 		{
@@ -78,7 +77,7 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<AdvertisementItemPhotosNames> UploadNewAdvertisementPhotos(IEnumerable<byte[]> bytesArrayList)
 		{
 			MultipartFormDataContent form = new MultipartFormDataContent();
-			
+
 			var sb = new StringBuilder();
 			var i = 0;
 			foreach (var byteArrayPhoto in bytesArrayList)

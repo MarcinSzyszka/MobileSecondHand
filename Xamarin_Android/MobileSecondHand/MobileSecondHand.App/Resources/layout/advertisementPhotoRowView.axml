@@ -4,11 +4,12 @@
     android:layout_height="match_parent"
     android:minWidth="25px"
     android:minHeight="25px">
-	<ImageView
+    <ImageView
         android:layout_centerInParent="true"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/advertPhotoView"
         android:adjustViewBounds="true"
-        android:maxHeight="350dp" />
+        android:maxHeight="350dp"
+        android:scaleType="centerCrop" />
 </RelativeLayout>

@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Shared.Feedback;
 using MobileSecondHand.Models.Consts;
+using MobileSecondHand.Services.Factories;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Feedback
@@ -16,9 +17,7 @@ namespace MobileSecondHand.Services.Feedback
 
 		public FeedbackService(string bearerToken)
 		{
-			this.client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			this.client = HttpClientFactory.GetHttpClient(bearerToken);
 		}
 
 		public async Task<bool> ReportWrongAdvertisement(int advertId, string reason)

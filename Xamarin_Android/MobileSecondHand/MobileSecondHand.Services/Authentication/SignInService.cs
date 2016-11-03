@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Models.Exceptions;
+using MobileSecondHand.Services.Factories;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Authentication
@@ -18,13 +19,17 @@ namespace MobileSecondHand.Services.Authentication
 
 		public SignInService()
 		{
-			client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
+			client = HttpClientFactory.GetHttpClient();
 		}
 
 		public async Task<bool> SignInUserWithBearerToken(TokenModel bearerToken)
 		{
+			if (client.DefaultRequestHeaders.Contains(WebApiConsts.AUTHORIZATION_HEADER_NAME))
+			{
+				client.DefaultRequestHeaders.Remove(WebApiConsts.AUTHORIZATION_HEADER_NAME);
+			}
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken.Token);
+
 			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "TokenIsActual");
 
 			if (response.StatusCode == System.Net.HttpStatusCode.NotModified)

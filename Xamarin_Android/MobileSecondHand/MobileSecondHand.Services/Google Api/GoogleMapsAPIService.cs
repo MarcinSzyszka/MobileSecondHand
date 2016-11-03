@@ -10,17 +10,21 @@ namespace MobileSecondHand.Services.Google_Api
 {
 	public class GoogleMapsAPIService : IGoogleMapsAPIService
 	{
+		private HttpClient client;
+
+		public GoogleMapsAPIService()
+		{
+			this.client = new HttpClient();
+			this.client.BaseAddress = new Uri("https://maps.googleapis.com/");
+		}
 		private string GetUrl(double lat, double lon)
 		{
-			return String.Format("https://maps.googleapis.com/maps/api/geocode/json?latlng={0},{1}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyAw_LnL53KSsaUC1DZSUK9wgO72PBuXQQ4", lat.ToString().Replace(',', '.'), lon.ToString().Replace(',', '.'));
+			return String.Format("maps/api/geocode/json?latlng={0},{1}&location_type=ROOFTOP&result_type=street_address&key=AIzaSyAw_LnL53KSsaUC1DZSUK9wgO72PBuXQQ4", lat.ToString().Replace(',', '.'), lon.ToString().Replace(',', '.'));
 
 		}
 		public async Task<string> GetAddress(double lat, double lon)
 		{
 			var resultAddress = String.Empty;
-			var client = new HttpClient();
-			//client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			//client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 			var response = await client.GetAsync(GetUrl(lat, lon));
 			var contentString = await response.Content.ReadAsStringAsync();
 

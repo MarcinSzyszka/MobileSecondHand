@@ -5,6 +5,7 @@ using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 using MobileSecondHand.Models.Consts;
+using MobileSecondHand.Services.Factories;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Categories
@@ -16,9 +17,7 @@ namespace MobileSecondHand.Services.Categories
 
 		public CategoryService(string bearerToken)
 		{
-			this.client = new HttpClient();
-			client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
-			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			this.client = HttpClientFactory.GetHttpClient(bearerToken);
 		}
 
 		public async Task<IDictionary<int, string>> GetCategories()
