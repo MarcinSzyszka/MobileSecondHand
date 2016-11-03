@@ -113,9 +113,7 @@ namespace MobileSecondHand.App.Activities
 			switch (item.ItemId)
 			{
 				case Resource.Id.applyFilterOptions:
-					progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 					CreateAdvertMenuItemClicked();
-					progress.CloseProgressDialog();
 					handled = true;
 					break;
 			}
@@ -161,7 +159,17 @@ namespace MobileSecondHand.App.Activities
 		{
 			this.CreateAdvertMenuItemClicked = async () =>
 			{
-				await CreateAdvertisement();
+				progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
+				try
+				{
+					await CreateAdvertisement();
+				}
+				catch { AlertsService.ShowShortToast(this, "Wyst¹pi³ nieoczekiwany b³¹d..."); }
+				finally
+				{
+					progress.CloseProgressDialog();
+				}
+
 			};
 			rdBtnOnlyForSell = (RadioButton)FindViewById(Resource.Id.rdBtnOnlyForSell);
 			progress = new ProgressDialogHelper(this);
@@ -231,7 +239,6 @@ namespace MobileSecondHand.App.Activities
 
 		private async Task CreateAdvertisement()
 		{
-			progress.ShowProgressDialog("Wysy³anie ogloszenia. Proszê czekaæ...");
 			if (AdvertisementItemDataIsValidate())
 			{
 				var location = gpsLocationService.GetLocation();
@@ -259,16 +266,13 @@ namespace MobileSecondHand.App.Activities
 						{
 							AlertsService.ShowLongToast(this, "Nie uda³o siê utworzyæ nowego og³oszenia. Spróbuj ponownie");
 						}
-
 					}
 				}
 				else
 				{
-					//lokalizacja jest chujowa
 					Toast.MakeText(this, "Wspólrzêdne lokalizacji s¹ zerowe", ToastLength.Long).Show();
 				}
 			}
-			progress.CloseProgressDialog();
 		}
 
 		private async Task<IEnumerable<byte[]>> GetPhotosByteArray(List<string> photosPaths)

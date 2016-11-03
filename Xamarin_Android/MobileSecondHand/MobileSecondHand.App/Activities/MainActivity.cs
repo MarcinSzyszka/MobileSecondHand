@@ -57,6 +57,7 @@ namespace MobileSecondHand.App
 		private ImageView btnSize;
 		string activeStatus = "Trwaj¹ce";
 		string expiredStatus = "Zakoñczone";
+		Action RefreshAdvertisementList;
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -65,6 +66,22 @@ namespace MobileSecondHand.App
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.categoriesHelper = new CategoriesSelectingHelper(this, bearerToken);
 			this.sizeSelectingHelper = new SizeSelectingHelper(this);
+			RefreshAdvertisementList = async () =>
+			{
+				progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
+				try
+				{
+					advertisementItemListAdapter.InfiniteScrollDisabled = false;
+					await DownloadAndShowAdvertisements(true);
+				}
+				catch (Exception)
+				{
+				}
+				finally
+				{
+					progress.CloseProgressDialog();
+				}
+			};
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
 			SetupDrawer();
@@ -212,7 +229,7 @@ namespace MobileSecondHand.App
 			switch (item.ItemId)
 			{
 				case Resource.Id.refreshAdvertisementsOption:
-					this.RefreshAdvertisementList();
+					RefreshAdvertisementList();
 					handled = true;
 					break;
 				case Resource.Id.chat:
@@ -253,13 +270,9 @@ namespace MobileSecondHand.App
 
 		public async void OnInfiniteScroll()
 		{
+			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
 			await DownloadAndShowAdvertisements(false);
-		}
-
-		private async void RefreshAdvertisementList()
-		{
-			advertisementItemListAdapter.InfiniteScrollDisabled = false;
-			await DownloadAndShowAdvertisements(true);
+			progress.CloseProgressDialog();
 		}
 
 		private void SetupViews()
@@ -405,7 +418,6 @@ namespace MobileSecondHand.App
 
 		private async Task DownloadAndShowAdvertisements(bool resetList)
 		{
-			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
 			SetAdvertisementListPageNumber(resetList);
 			List<AdvertisementItemShort> advertisements = await GetAdvertisements();
 
@@ -434,7 +446,6 @@ namespace MobileSecondHand.App
 				}
 				advertisementItemListAdapter.InfiniteScrollDisabled = true;
 			}
-			progress.CloseProgressDialog();
 		}
 
 		private async Task<List<AdvertisementItemShort>> GetAdvertisements()
