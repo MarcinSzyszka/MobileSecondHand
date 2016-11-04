@@ -284,7 +284,7 @@ namespace MobileSecondHand.App.Activities
 
 		private void AddToFavourites()
 		{
-			AlertsService.ShowConfirmDialog(this, "Czy na pewno dodaæ to og³oszenie do schowka?", async () =>
+			AlertsService.ShowConfirmDialog(this, "Czy na pewno dodaæ to og³oszenie do ulubionych?", async () =>
 			{
 				var idApiModel = new SingleIdModelForPostRequests { Id = this.advertisement.Id };
 				var responseMessage = await this.advertisementItemService.AddToUserFavouritesAdvertisements(idApiModel);

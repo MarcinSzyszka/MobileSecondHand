@@ -11,7 +11,7 @@ namespace MobileSecondHand.Models.Enums
 	{
 		[DisplayName("Czy na pewno chcesz zakończyć to ogłoszenie?")]
 		MarkAsExpired = 1,
-		[DisplayName("Czy na pewno chcesz wyrzucić ze schowka to ogłoszenie?")]
+		[DisplayName("Czy na pewno chcesz usunąć z ulubionych to ogłoszenie?")]
 		DeleteFromFavourites = 2,
 		[DisplayName("Czy na pewno chcesz aktywować to ogłoszenie?")]
 		Restart = 3

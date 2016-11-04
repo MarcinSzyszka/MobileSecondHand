@@ -15,7 +15,7 @@ namespace MobileSecondHand.API.Models.Shared.Enumerations
 		AdvertisementsArounUserHomeLocation = 2,
 		[DisplayName("Twoje ogłoszenia")]
 		AdvertisementsCreatedByUser = 3,
-		[DisplayName("Schowek (zapamiętane)")]
+		[DisplayName("Ulubione")]
 		FavouritesAdvertisements = 4
 	}
 }
