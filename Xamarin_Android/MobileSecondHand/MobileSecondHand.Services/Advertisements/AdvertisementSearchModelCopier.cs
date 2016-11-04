@@ -12,6 +12,8 @@ namespace MobileSecondHand.Services.Advertisements
 {
 	public class AdvertisementSearchModelCopier
 	{
+		private AdvertisementsSearchModel originalSearchModel;
+
 		TransactionKind TransactionKind { get; set; } = TransactionKind.All;
 		bool ExpiredAdvertisements { get; set; }
 		SortingBy SortingBy { get; set; } = SortingBy.sortByNearest;
@@ -24,6 +26,7 @@ namespace MobileSecondHand.Services.Advertisements
 
 		public AdvertisementSearchModelCopier(AdvertisementsSearchModel searchModel)
 		{
+			this.originalSearchModel = searchModel;
 			TransactionKind = searchModel.TransactionKind;
 			ExpiredAdvertisements = searchModel.ExpiredAdvertisements;
 			SortingBy = searchModel.SortingBy;
@@ -65,11 +68,65 @@ namespace MobileSecondHand.Services.Advertisements
 			if (UserInfo != null)
 			{
 				searchModel.UserInfo = new UserInfoModel();
-				searchModel.UserInfo.Id = searchModel.UserInfo.Id;
-				searchModel.UserInfo.UserName = searchModel.UserInfo.UserName;
+				searchModel.UserInfo.Id = UserInfo.Id;
+				searchModel.UserInfo.UserName = UserInfo.UserName;
 			}
 
 			return searchModel;
+		}
+
+		public bool IsSearchModelChanged()
+		{
+			if (originalSearchModel.TransactionKind != TransactionKind)
+			{
+				return true;
+			}
+			if (originalSearchModel.ExpiredAdvertisements != ExpiredAdvertisements)
+			{
+				return true;
+			}
+			if (originalSearchModel.SortingBy != SortingBy)
+			{
+				return true;
+			}
+			if (originalSearchModel.Sizes.Count != Sizes.Count)
+			{
+				return true;
+			}
+			if (originalSearchModel.CategoriesModel.Count != CategoriesModel.Count)
+			{
+				return true;
+			}
+			if (originalSearchModel.AdvertisementsKind != AdvertisementsKind)
+			{
+				return true;
+			}
+			if (originalSearchModel.TransactionKind != TransactionKind)
+			{
+				return true;
+			}
+			if (originalSearchModel.Page != Page)
+			{
+				return true;
+			}
+			if (originalSearchModel.UserInfo == null && UserInfo != null)
+			{
+				return true;
+			}
+
+			if (originalSearchModel.UserInfo != null && UserInfo == null)
+			{
+				return true;
+			}
+			if (originalSearchModel.UserInfo != null && UserInfo != null)
+			{
+				if (originalSearchModel.UserInfo.Id != UserInfo.Id)
+				{
+					return true;
+				}
+			}
+
+			return false;
 		}
 	}
 

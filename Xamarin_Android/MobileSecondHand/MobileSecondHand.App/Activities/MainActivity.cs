@@ -62,43 +62,11 @@ namespace MobileSecondHand.App
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
-
 			this.gpsLocationService = new GpsLocationService(this, null);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.categoriesHelper = new CategoriesSelectingHelper(this, bearerToken);
 			this.sizeSelectingHelper = new SizeSelectingHelper(this);
-			RefreshAdvertisementList = async (withDisplayedProgress) =>
-			{
-				if (withDisplayedProgress)
-				{
-					progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
-				}
-				else
-				{
-					mainListSwipeLayout.Refreshing = true;
-				}
-
-				try
-				{
-					advertisementItemListAdapter.InfiniteScrollDisabled = false;
-					await DownloadAndShowAdvertisements(true);
-				}
-				catch (Exception)
-				{
-				}
-				finally
-				{
-					if (withDisplayedProgress)
-					{
-						progress.CloseProgressDialog();
-					}
-					else
-					{
-						mainListSwipeLayout.Refreshing = false;
-					}
-
-				}
-			};
+			SetRefreshAdvertisementAction();
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
 			SetupDrawer();
@@ -108,7 +76,9 @@ namespace MobileSecondHand.App
 			SetAdvertisementsListKind();
 			SetupViews();
 			SetupSortingViews();
+			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
 			await DownloadAndShowAdvertisements(true);
+			progress.CloseProgressDialog();
 		}
 
 		protected override void OnNewIntent(Intent intent)
@@ -142,11 +112,61 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
-				this.advertisementsSearchModel = searchModelCopier.RestorePreviousValues();
-				SetupSortingViews();
-				ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
-				TogleLayouts();
+				Action actionOnConfirm = () =>
+				{
+					ApplyFilterOptions();
+				};
+				Action actionOnDismiss = () =>
+				{
+					this.advertisementsSearchModel = searchModelCopier.RestorePreviousValues();
+					SetupSortingViews();
+					ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
+					TogleLayouts();
+				};
+				if (searchModelCopier.IsSearchModelChanged())
+				{
+					AlertsService.ShowConfirmDialog(this, "Czy uwzglêdniæ dokonane zmiany w filtrach?", actionOnConfirm, actionOnDismiss);
+				}
+				else
+				{
+					TogleLayouts();
+				}
 			}
+		}
+
+		private void SetRefreshAdvertisementAction()
+		{
+			RefreshAdvertisementList = async (withDisplayedProgress) =>
+			{
+				if (withDisplayedProgress)
+				{
+					progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
+				}
+				else
+				{
+					mainListSwipeLayout.Refreshing = true;
+				}
+
+				try
+				{
+					advertisementItemListAdapter.InfiniteScrollDisabled = false;
+					await DownloadAndShowAdvertisements(true);
+				}
+				catch (Exception)
+				{
+				}
+				finally
+				{
+					if (withDisplayedProgress)
+					{
+						progress.CloseProgressDialog();
+					}
+					else
+					{
+						mainListSwipeLayout.Refreshing = false;
+					}
+				}
+			};
 		}
 
 		private void SetupSortingViews()

@@ -293,14 +293,15 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/photoView1"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"
                         android:adjustViewBounds="true"
-                        android:layout_below="@+id/buttonTakePicture1" />
+                        android:layout_below="@+id/buttonTakePicture1"
+						 android:maxHeight="300dp"/>
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -326,15 +327,16 @@
                         android:layout_below="@+id/photoView2Divider"
                         android:visibility="gone" />
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/photoView2"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="50dp"
                         android:layout_marginRight="50dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/buttonTakePicture2"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+						 android:maxHeight="300dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -361,15 +363,16 @@
                         android:enabled="true"
                         android:visibility="gone" />
                     <ImageView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
                         android:id="@+id/photoView3"
                         android:layout_below="@+id/buttonTakePicture3"
                         android:layout_centerHorizontal="true"
                         android:layout_marginLeft="60dp"
                         android:layout_marginRight="60dp"
                         android:adjustViewBounds="true"
-                        android:visibility="gone" />
+                        android:visibility="gone"
+                        android:maxHeight="300dp" />
                 </RelativeLayout>
                 <TextView
                     android:layout_width="match_parent"
