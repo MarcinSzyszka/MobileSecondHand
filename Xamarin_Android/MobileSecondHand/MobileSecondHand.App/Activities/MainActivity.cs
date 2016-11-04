@@ -58,7 +58,7 @@ namespace MobileSecondHand.App
 		private ImageView btnSize;
 		string activeStatus = "Trwaj¹ce";
 		string expiredStatus = "Zakoñczone";
-		Action RefreshAdvertisementList;
+		Action<bool> RefreshAdvertisementList;
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -67,9 +67,17 @@ namespace MobileSecondHand.App
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.categoriesHelper = new CategoriesSelectingHelper(this, bearerToken);
 			this.sizeSelectingHelper = new SizeSelectingHelper(this);
-			RefreshAdvertisementList = async () =>
+			RefreshAdvertisementList = async (withDisplayedProgress) =>
 			{
-				progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
+				if (withDisplayedProgress)
+				{
+					progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
+				}
+				else
+				{
+					mainListSwipeLayout.Refreshing = true;
+				}
+
 				try
 				{
 					advertisementItemListAdapter.InfiniteScrollDisabled = false;
@@ -80,18 +88,34 @@ namespace MobileSecondHand.App
 				}
 				finally
 				{
-					progress.CloseProgressDialog();
+					if (withDisplayedProgress)
+					{
+						progress.CloseProgressDialog();
+					}
+					else
+					{
+						mainListSwipeLayout.Refreshing = false;
+					}
+
 				}
 			};
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
 			SetupDrawer();
 			advertisementsPage = 0;
-			SetAdvertisementsListKind();
 			SetSortingOptionsLayout();
+			SetupFab();
+			SetAdvertisementsListKind();
 			SetupViews();
 			SetupSortingViews();
 			await DownloadAndShowAdvertisements(true);
+		}
+
+		protected override void OnNewIntent(Intent intent)
+		{
+			base.OnNewIntent(intent);
+			SetAdvertisementsListKind(intent);
+			RefreshAdvertisementList(true);
 		}
 
 		protected override async void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -171,20 +195,35 @@ namespace MobileSecondHand.App
 			this.textViewSelectCategories.Text = text;
 		}
 
-		private void SetAdvertisementsListKind()
+		private void SetAdvertisementsListKind(Intent intent = null)
 		{
 			//sytuacja gdy activity jest wywo³ywane z serwisu sprawdzaj¹cego nowosci
-			this.advertisementsSearchModel = new AdvertisementsSearchModel();
-			var kindExtra = Intent.GetStringExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND);
-			if (kindExtra != null)
+			if (this.advertisementsSearchModel == null)
 			{
-				this.advertisementsSearchModel.AdvertisementsKind = JsonConvert.DeserializeObject<AdvertisementsKind>(kindExtra);
+				this.advertisementsSearchModel = new AdvertisementsSearchModel();
+			}
+
+			string kindExtra;
+			if (intent != null)
+			{
+				kindExtra = intent.GetStringExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND);
 			}
 			else
 			{
-				this.advertisementsSearchModel.AdvertisementsKind = AdvertisementsKind.AdvertisementsAroundUserCurrentLocation;
+				kindExtra = Intent.GetStringExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND);
 			}
 
+			if (kindExtra != null)
+			{
+				this.advertisementsSearchModel.AdvertisementsKind = JsonConvert.DeserializeObject<AdvertisementsKind>(kindExtra);
+				this.advertisementsSearchModel.SortingBy = SortingBy.sortByNewest;
+				ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
+			}
+
+			if (this.advertisementsSearchModel.AdvertisementsKind == default(AdvertisementsKind))
+			{
+				this.advertisementsSearchModel.AdvertisementsKind = AdvertisementsKind.AdvertisementsAroundUserCurrentLocation;
+			}
 		}
 
 		public override bool OnCreateOptionsMenu(IMenu menu)
@@ -230,7 +269,7 @@ namespace MobileSecondHand.App
 			switch (item.ItemId)
 			{
 				case Resource.Id.refreshAdvertisementsOption:
-					RefreshAdvertisementList();
+					RefreshAdvertisementList(true);
 					handled = true;
 					break;
 				case Resource.Id.chat:
@@ -279,7 +318,6 @@ namespace MobileSecondHand.App
 		private void SetupViews()
 		{
 			progress = new ProgressDialogHelper(this);
-			SetupFab();
 			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
@@ -287,8 +325,7 @@ namespace MobileSecondHand.App
 			mainListSwipeLayout = FindViewById<SwipeRefreshLayout>(Resource.Id.mainListSwipeLayout);
 			mainListSwipeLayout.Refresh += (s, e) =>
 			{
-				RefreshAdvertisementList();
-				mainListSwipeLayout.Refreshing = false;
+				RefreshAdvertisementList(false);
 			};
 			var mLayoutManager = new GridLayoutManager(this, 2);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
@@ -542,7 +579,7 @@ namespace MobileSecondHand.App
 				if (success)
 				{
 					AlertsService.ShowLongToast(this, "Pomyœlnie zakoñczono tê operacjê.");
-					RefreshAdvertisementList();
+					RefreshAdvertisementList(true);
 				}
 				else
 				{

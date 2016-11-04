@@ -71,7 +71,7 @@ namespace MobileSecondHand.App.Notifications
 			this.newsThread = new Thread(() =>
 			{
 				timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 1000 * 60 * 30);
+				timer.Change(0, 1000 * 60 * 60);
 			}
 		);
 #endif
@@ -81,11 +81,11 @@ namespace MobileSecondHand.App.Notifications
 
 		private async void TimerCallBackMethod(object state)
 		{
-			await CheckNewAdvertisementsAroundUserCurrentLocation();
-			await CheckNewAdvertisementsAroundUserHomeLocation();
+			var coordinates = await CheckNewAdvertisementsAroundUserCurrentLocation();
+			await CheckNewAdvertisementsAroundUserHomeLocation(coordinates);
 		}
 
-		private async Task CheckNewAdvertisementsAroundUserHomeLocation()
+		private async Task CheckNewAdvertisementsAroundUserHomeLocation(CoordinatesForAdvertisementsModel currentLocationCoordinates)
 		{
 			var appsettings = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 
@@ -98,12 +98,33 @@ namespace MobileSecondHand.App.Notifications
 			var areThereNewAdvertisements = await this.advertisementItemService.CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(searchModelForNotifications);
 			if (areThereNewAdvertisements)
 			{
-				NotifyUserAboutNewAdvertisements(AdvertisementsKind.AdvertisementsArounUserHomeLocation);
+				if (!LocationsAreSimiliar(currentLocationCoordinates, appsettings.LocationSettings))
+				{
+					NotifyUserAboutNewAdvertisements(AdvertisementsKind.AdvertisementsArounUserHomeLocation);
+				}
 			}
 		}
 
+		private bool LocationsAreSimiliar(CoordinatesForAdvertisementsModel currentLocationCoordinates, CoordinatesForAdvertisementsModel homeLocationCoordinates)
+		{
+			double positiveDifferenceKilometers = 0.0111 * 2;
+			double negativeDifferenceKilometers = positiveDifferenceKilometers - (positiveDifferenceKilometers * 2);
+			var latDifference = currentLocationCoordinates.Latitude - homeLocationCoordinates.Latitude;
+			var lonDifference = currentLocationCoordinates.Longitude - homeLocationCoordinates.Longitude;
+			if ((latDifference > 0 && (latDifference > positiveDifferenceKilometers)) ||
+				(latDifference < 0 && (latDifference < negativeDifferenceKilometers)) ||
+				(lonDifference > 0 && (lonDifference > positiveDifferenceKilometers)) ||
+				(lonDifference < 0 && (lonDifference < negativeDifferenceKilometers)))
+			{
+				return false;
+			}
+			else
+			{
+				return true;
+			}
+		}
 
-		private async Task CheckNewAdvertisementsAroundUserCurrentLocation()
+		private async Task<CoordinatesForAdvertisementsModel> CheckNewAdvertisementsAroundUserCurrentLocation()
 		{
 			var appsettings = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 			SetSearchModel(appsettings);
@@ -113,7 +134,7 @@ namespace MobileSecondHand.App.Notifications
 			}
 			catch (Exception)
 			{
-				return;
+				return new CoordinatesForAdvertisementsModel();
 				//nic nie robiê
 			}
 
@@ -122,6 +143,8 @@ namespace MobileSecondHand.App.Notifications
 			{
 				NotifyUserAboutNewAdvertisements(AdvertisementsKind.AdvertisementsAroundUserCurrentLocation);
 			}
+
+			return searchModelForNotifications.CoordinatesModels;
 		}
 
 		private void SetSearchModel(AppSettingsModel appsettings)
@@ -136,12 +159,12 @@ namespace MobileSecondHand.App.Notifications
 		{
 			var message = GetMessage(advertisementsKind);
 			var nMgr = (NotificationManager)GetSystemService(NotificationService);
-			var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand");
+			var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand - nowoœci");
 			notification.Flags = NotificationFlags.AutoCancel;
 			notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 			var intent = new Intent(this, typeof(MainActivity));
 			intent.PutExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND, JsonConvert.SerializeObject(advertisementsKind));
-			var pendingIntent = PendingIntent.GetActivity(Application.ApplicationContext, 0, intent, 0);
+			var pendingIntent = PendingIntent.GetActivity(Application.ApplicationContext, 0, intent, PendingIntentFlags.CancelCurrent);
 			notification.SetLatestEventInfo(Application.ApplicationContext, "Nowe og³oszenia", message, pendingIntent);
 			nMgr.Notify(0, notification);
 		}
@@ -150,11 +173,11 @@ namespace MobileSecondHand.App.Notifications
 		{
 			if (advertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation)
 			{
-				return "Dodano nowe og³oszenia w obrêbie Twojej aktualnej lokalizacji";
+				return "w obrêbie Twojej aktualnej lokalizacji";
 			}
 			else
 			{
-				return "Dodano nowe og³oszenia w obrêbie Twojej domowej lokalizacji";
+				return "w obrêbie Twojej domowej lokalizacji";
 			}
 		}
 	}

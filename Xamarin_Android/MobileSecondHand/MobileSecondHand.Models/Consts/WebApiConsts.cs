@@ -10,8 +10,8 @@ namespace MobileSecondHand.Models.Consts {
 		public const string SERWER_URL = "http://192.168.8.101:81/";
 		public const string WEB_API_URL = "http://192.168.8.101:81/api/";
 #else
-		public const string SERWER_URL = "http://www.mobilesecondhand.pl/";
-		public const string WEB_API_URL = "http://www.mobilesecondhand.pl/api/";
+		public const string SERWER_URL = "https://www.mobilesecondhand.pl/";
+		public const string WEB_API_URL = "https://www.mobilesecondhand.pl/api/";
 #endif
 
 		public const string WEB_API_ACCOUNT_CONTROLLER = "WebApiAccount/";
