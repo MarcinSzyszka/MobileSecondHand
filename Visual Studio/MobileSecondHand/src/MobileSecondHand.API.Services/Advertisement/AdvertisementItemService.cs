@@ -112,7 +112,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 		private void UpdateUserCheckingList(AdvertisementsSearchModel searchModel, string userId)
 		{
-			if (searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation && searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsArounUserHomeLocation)
+			if (searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation || searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsArounUserHomeLocation)
 			{
 				this.lastUsersChecksCacheService.UpdateLastTimeUserCheckDate(userId, searchModel.AdvertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation);
 			}
