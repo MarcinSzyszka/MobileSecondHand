@@ -42,6 +42,7 @@ namespace MobileSecondHand.App
 		private TextView advertisementsListKindTextView;
 		private NestedScrollView sortingOptionsLayout;
 		private RelativeLayout mainListLayout;
+		SwipeRefreshLayout mainListSwipeLayout;
 		private CategoriesSelectingHelper categoriesHelper;
 		AdvertisementsSearchModel advertisementsSearchModel;
 		private TextView textViewSelectCategories;
@@ -283,9 +284,16 @@ namespace MobileSecondHand.App
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
 			mainListLayout = FindViewById<RelativeLayout>(Resource.Id.mainListLayout);
+			mainListSwipeLayout = FindViewById<SwipeRefreshLayout>(Resource.Id.mainListSwipeLayout);
+			mainListSwipeLayout.Refresh += (s, e) =>
+			{
+				RefreshAdvertisementList();
+				mainListSwipeLayout.Refreshing = false;
+			};
 			var mLayoutManager = new GridLayoutManager(this, 2);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 		}
+
 
 		private void SetSortingOptionsLayout()
 		{
