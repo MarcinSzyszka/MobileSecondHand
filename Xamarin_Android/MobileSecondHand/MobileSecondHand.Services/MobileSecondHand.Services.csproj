@@ -46,6 +46,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Advertisements\AdvertisementItemService.cs" />
+    <Compile Include="Advertisements\AdvertisementSearchModelCopier.cs" />
     <Compile Include="Advertisements\IAdvertisementItemService.cs" />
     <Compile Include="Authentication\ISignInService.cs" />
     <Compile Include="Authentication\SignInService.cs" />

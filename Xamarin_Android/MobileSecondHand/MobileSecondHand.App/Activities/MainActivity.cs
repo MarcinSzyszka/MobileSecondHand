@@ -14,7 +14,6 @@ using MobileSecondHand.App.Adapters;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.EventArgs;
-using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Advertisements;
 using Newtonsoft.Json;
 using MobileSecondHand.API.Models.Shared.Advertisements;
@@ -23,7 +22,6 @@ using MobileSecondHand.API.Models.Shared.Extensions;
 using MobileSecondHand.App.Infrastructure.ActivityState;
 using Android.Runtime;
 using MobileSecondHand.API.Models.Shared.Security;
-using MobileSecondHand.Models.Consts;
 using MobileSecondHand.API.Models.Shared.Consts;
 using Android.Support.V4.Widget;
 using MobileSecondHand.App.SideMenu;
@@ -59,6 +57,8 @@ namespace MobileSecondHand.App
 		string activeStatus = "Trwaj¹ce";
 		string expiredStatus = "Zakoñczone";
 		Action<bool> RefreshAdvertisementList;
+		private AdvertisementSearchModelCopier searchModelCopier;
+
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -142,7 +142,10 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
-				AlertsService.ShowLongToast(this, "Aby powróciæ do listy zatwierdŸ filtry przyciskiem w górnej belce");
+				this.advertisementsSearchModel = searchModelCopier.RestorePreviousValues();
+				SetupSortingViews();
+				ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
+				TogleLayouts();
 			}
 		}
 
@@ -708,6 +711,7 @@ namespace MobileSecondHand.App
 		{
 			if (mainListLayout.Visibility == ViewStates.Visible)
 			{
+				searchModelCopier = new AdvertisementSearchModelCopier(this.advertisementsSearchModel);
 				SetAppBarOptions(true);
 				mainListLayout.Visibility = ViewStates.Gone;
 				sortingOptionsLayout.Visibility = ViewStates.Visible;
