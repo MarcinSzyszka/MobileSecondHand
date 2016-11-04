@@ -35,16 +35,13 @@ namespace MobileSecondHand.App.Infrastructure
 				this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 				var allKeywords = await this.categoryService.GetCategories();
 				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
-
+				this.progressDialogHelper.CloseProgressDialog();
 				AlertsService.ShowMultiSelectListString(ctx, "Wybierz kategorie", allKeywordsNames, userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect(allKeywords));
 			}
 			catch (Exception exc)
 			{
-				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
-			}
-			finally
-			{
 				this.progressDialogHelper.CloseProgressDialog();
+				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
 			}
 		}
 
@@ -56,16 +53,13 @@ namespace MobileSecondHand.App.Infrastructure
 				this.progressDialogHelper.ShowProgressDialog("Trwa pobieranie danych");
 				var allKeywords = await this.categoryService.GetCategories();
 				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
-
+				this.progressDialogHelper.CloseProgressDialog();
 				AlertsService.ShowSingleSelectListString(ctx, allKeywordsNames, s => actionOnSelect(allKeywords.First(v => v.Value == s).Key, s), selectedItemName);
 
 			}
 			catch (Exception exc)
 			{
-				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu");
-			}
-			finally
-			{
+				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ problem z pobraniem danych. Upewnij siê, ¿e masz dostêp do internetu: " + exc);
 				this.progressDialogHelper.CloseProgressDialog();
 			}
 		}
