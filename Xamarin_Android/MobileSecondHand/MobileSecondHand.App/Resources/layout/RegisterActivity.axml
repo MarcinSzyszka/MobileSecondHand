@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/advertisementRowBackground">
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
@@ -46,7 +47,8 @@
                 android:hint="email"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorHint="@color/colorPrimaryDark"
-                android:layout_below="@+id/inputNickNameRegistration" />
+                android:layout_below="@+id/inputNickNameRegistration"
+                android:singleLine="true" />
             <EditText
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
@@ -57,7 +59,8 @@
                 android:hint="hasło (min 6 znaków)"
                 android:gravity="center"
                 android:textColorHint="@color/colorPrimaryDark"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/colorPrimaryDark"
+                android:singleLine="true" />
             <EditText
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
@@ -68,15 +71,21 @@
                 android:hint="potwierdź hasło"
                 android:gravity="center"
                 android:textColor="@color/colorPrimaryDark"
-                android:textColorHint="@color/colorPrimaryDark" />
+                android:textColorHint="@color/colorPrimaryDark"
+                android:singleLine="true" />
             <Button
                 android:text="@string/registrationButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_below="@+id/inputConfirmPasswordRegistration"
                 android:id="@+id/buttonSubmitRegistration"
                 android:layout_centerHorizontal="true"
-                android:textColor="@color/colorPrimaryDark" />
+                android:textColor="@color/advertisementRowBackground"
+                android:background="@color/colorPrimaryDark"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:layout_marginTop="10dp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
 </LinearLayout>

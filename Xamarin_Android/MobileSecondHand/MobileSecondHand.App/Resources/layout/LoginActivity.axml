@@ -3,7 +3,8 @@
     xmlns:facebook="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/advertisementRowBackground">
     <RelativeLayout
         android:minWidth="25px"
         android:minHeight="25px"
@@ -26,7 +27,8 @@
                 android:id="@+id/textView1"
                 android:textSize="30dp"
                 android:layout_centerHorizontal="true"
-                android:textStyle="bold" />
+                android:textStyle="bold"
+                android:textColor="@color/colorPrimaryDark" />
             <EditText
                 android:inputType="textEmailAddress"
                 android:layout_height="wrap_content"
@@ -34,7 +36,11 @@
                 android:layout_width="match_parent"
                 android:hint="email"
                 android:layout_below="@+id/textView1"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
             <EditText
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
@@ -42,22 +48,34 @@
                 android:layout_below="@+id/emailInputLogin"
                 android:id="@+id/inputPasswordLogin"
                 android:hint="hasło"
-                android:textAlignment="inherit"
-                android:gravity="center" />
+                android:gravity="center"
+                android:textColorHint="@color/colorPrimaryDark"
+                android:textColor="@color/colorPrimaryDark"
+                android:singleLine="true" />
             <Button
                 android:text="@string/standarLoginButtonText"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_below="@+id/inputPasswordLogin"
                 android:id="@+id/buttonLoginStandard"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimaryDark"
+                android:layout_marginBottom="5dp"
+                android:textColor="@color/advertisementRowBackground"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp" />
             <Button
                 android:text="@string/goTeRegistrationButton"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_below="@+id/buttonLoginStandard"
                 android:id="@+id/goToRegistrationButton"
-                android:layout_centerHorizontal="true" />
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimaryDark"
+                android:textColor="@color/advertisementRowBackground"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp"
+                android:textStyle="bold" />
         </RelativeLayout>
     </RelativeLayout>
     <RelativeLayout

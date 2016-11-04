@@ -19,7 +19,7 @@ using Xamarin.Facebook.Login.Widget;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity]
+	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class LoginActivity : AppCompatActivity
 	{
 		private ICallbackManager callbackManager;

@@ -12,7 +12,7 @@
         android:layout_height="match_parent"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:visibility="visible">
+        android:visibility="gone">
         <ImageView
             android:layout_width="200dp"
             android:layout_height="200dp"
@@ -37,7 +37,8 @@
         android:layout_height="match_parent"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:visibility="gone">
+        android:visibility="visible"
+        android:background="@color/advertisementRowBackground">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -67,20 +68,34 @@
             <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/textView4"
+                android:layout_below="@+id/textView5"
                 android:id="@+id/editTextNickName"
                 android:textColor="@color/colorPrimaryDark"
                 android:textColorHint="@color/colorPrimary"
                 android:hint="nick"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
-                android:padding="10dp" />
+                android:padding="10dp"
+                android:singleLine="true"
+                android:layout_marginTop="10dp" />
             <Button
                 android:text="Zapisz"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_height="40dp"
                 android:layout_below="@+id/editTextNickName"
                 android:id="@+id/btnSaveNickName"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/advertisementRowBackground"
+                android:background="@color/colorPrimaryDark"
+                android:textStyle="bold"
+                android:layout_marginTop="10dp" />
+            <TextView
+                android:text="(bez polskich liter)"
+                android:textAppearance="?android:attr/textAppearanceSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/textView4"
+                android:id="@+id/textView5"
                 android:layout_centerHorizontal="true"
                 android:textColor="@color/colorPrimaryDark" />
         </RelativeLayout>

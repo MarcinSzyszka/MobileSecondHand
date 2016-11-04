@@ -13,7 +13,7 @@ using MobileSecondHand.Services.Authentication;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity]
+	[Activity(ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
 	public class RegisterActivity : AppCompatActivity {
 		private EditText confirmPasswordInput;
 		private EditText emailInput;
