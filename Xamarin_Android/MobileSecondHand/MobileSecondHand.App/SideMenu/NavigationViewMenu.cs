@@ -350,8 +350,8 @@ namespace MobileSecondHand.App.SideMenu
 					else
 					{
 						appSettings.NotificationsDisabled = false;
-						activity.StartService(new Intent(activity.BaseContext, typeof(NewsService)));
-						ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = activity.BaseContext;
+						activity.StartService(new Intent(activity, typeof(NewsService)));
+						ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = activity;
 					}
 
 					SetAppSettings(appSettings);
@@ -400,8 +400,8 @@ namespace MobileSecondHand.App.SideMenu
 					else
 					{
 						appSettings.ChatDisabled = false;
-						activity.StartService(new Intent(activity.BaseContext, typeof(MessengerService)));
-						ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = activity.BaseContext;
+						activity.StartService(new Intent(activity, typeof(MessengerService)));
+						ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = activity;
 					}
 
 					SetAppSettings(appSettings);

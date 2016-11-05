@@ -28,7 +28,6 @@ namespace MobileSecondHand.App.Activities
 	{
 		private DrawerLayout drawerLayout;
 		protected NavigationViewMenu navigationViewMenu;
-		private ScrollView navView;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -43,13 +42,13 @@ namespace MobileSecondHand.App.Activities
 			{
 				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 				{
-					StartService(new Intent(this.BaseContext, typeof(MessengerService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this.BaseContext;
+					StartService(new Intent(this, typeof(MessengerService)));
+					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this;
 				}
 				if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
 				{
-					StartService(new Intent(this.BaseContext, typeof(NewsService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this.BaseContext;
+					StartService(new Intent(this, typeof(NewsService)));
+					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this;
 				}
 			}
 
