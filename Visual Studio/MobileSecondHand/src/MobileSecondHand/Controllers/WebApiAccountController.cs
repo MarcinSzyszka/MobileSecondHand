@@ -22,7 +22,7 @@ namespace MobileSecondHand.Controllers
 		{
 			this.applicationSignInManager = applicationSignInManager;
 			this.identityService = identityService;
-			this.logger = loggerFactory.CreateLogger<AdvertisementItemController>(); ;
+			this.logger = loggerFactory.CreateLogger<WebApiAccountController>(); ;
 		}
 
 		[HttpPost]
