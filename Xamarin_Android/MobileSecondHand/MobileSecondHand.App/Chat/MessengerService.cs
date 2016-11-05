@@ -53,7 +53,7 @@ namespace MobileSecondHand.App.Chat
 		public override StartCommandResult OnStartCommand(Intent intent, [GeneratedEnum] StartCommandFlags flags, int startId)
 		{
 			ServiceIsRunning = true;
-			
+
 			DoWork();
 
 			return StartCommandResult.Sticky;
@@ -69,7 +69,7 @@ namespace MobileSecondHand.App.Chat
 				this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
 
 				timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 1000 * 60 * 2);
+				timer.Change(0, 1000 * 60 * 10);
 			}
 		);
 			signalRThread.Start();
@@ -80,7 +80,6 @@ namespace MobileSecondHand.App.Chat
 			if (!this.chatHubClientService.IsConnected())
 			{
 				this.chatHubClientService.Reconnect();
-
 			}
 		}
 
@@ -95,7 +94,7 @@ namespace MobileSecondHand.App.Chat
 			if (!ConversationActivity.ConversationActivityStateModel.IsInForeground || ConversationActivity.ConversationActivityStateModel.ConversationId != message.ConversationId)
 			{
 				var nMgr = (NotificationManager)GetSystemService(NotificationService);
-				var notification = new Notification(Resource.Drawable.logo_icon, message.MessageContent);
+				var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand - nowa wiadomoœæ");
 				notification.Flags = NotificationFlags.AutoCancel;
 				notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 				var intent = new Intent(this, typeof(ConversationActivity));

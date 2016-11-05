@@ -25,12 +25,26 @@ namespace MobileSecondHand.App.Infrastructure
 		private Context mContext;
 		SharedPreferencesHelper sharedPreferencesHelper;
 		ISettingWindowCloseListener settingWindowListener;
-		private long MIN_DISTANCE_CHANGE_FOR_UPDATES = 500;//500m
+		private long MIN_DISTANCE_CHANGE_FOR_UPDATES = 2000;//500m
 		static GpsLocationService serviceInstance;
 
-		private long MIN_TIME_BW_UPDATES = 1000 * 60 * 1; // 1 minute
+		private long MIN_TIME_BW_UPDATES = 1000 * 60 * 1 * 60; // 1 hour
 
-		public bool CanGetLocation { get; private set; }
+		public bool CanGetLocation
+		{
+			get
+			{
+				// Getting GPS status
+				if (!locationManager.IsProviderEnabled(LocationManager.GpsProvider) && !locationManager.IsProviderEnabled(LocationManager.NetworkProvider))
+				{
+					return false;
+				}
+				else
+				{
+					return true;
+				}
+			}
+		}
 
 		public static GpsLocationService GetServiceInstance(Context context, ISettingWindowCloseListener listener = null)
 		{
@@ -68,15 +82,15 @@ namespace MobileSecondHand.App.Infrastructure
 				}
 				else
 				{
-					this.CanGetLocation = true;
 					if (isNetworkEnabled)
 					{
-						locationManager.RequestLocationUpdates(
-								LocationManager.NetworkProvider,
-								MIN_TIME_BW_UPDATES,
-								MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
 						if (locationManager != null)
 						{
+							locationManager.RequestLocationUpdates(
+									LocationManager.NetworkProvider,
+									MIN_TIME_BW_UPDATES,
+									MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+							//locationManager.RequestSingleUpdate(LocationManager.NetworkProvider, this, null);
 							location = locationManager.GetLastKnownLocation(LocationManager.NetworkProvider);
 							if (location != null)
 							{
@@ -93,6 +107,7 @@ namespace MobileSecondHand.App.Infrastructure
 									LocationManager.GpsProvider,
 									MIN_TIME_BW_UPDATES,
 									MIN_DISTANCE_CHANGE_FOR_UPDATES, this);
+							//locationManager.RequestSingleUpdate(LocationManager.GpsProvider, this, null);
 							if (locationManager != null)
 							{
 								location = locationManager.GetLastKnownLocation(LocationManager.GpsProvider);
