@@ -69,7 +69,6 @@ namespace MobileSecondHand.App
 			SetRefreshAdvertisementAction();
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
-		
 			SetupDrawer();
 			drawerToggle.ToolbarNavigationClickListener = this;
 			advertisementsPage = 0;

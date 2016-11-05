@@ -2,9 +2,13 @@ using System;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Runtime;
 using Android.Support.V7.App;
+using Android.Text;
+using Android.Text.Method;
+using Android.Text.Util;
 using Android.Views;
 using Android.Widget;
 using MobileSecondHand.API.Models.Shared.Security;
@@ -31,12 +35,16 @@ namespace MobileSecondHand.App.Activities
 		private Button buttonRegistration;
 		private View focusView;
 		private ProgressDialogHelper progress;
+		CheckBox acceptCheckboxLogin;
+		private LoginButton facebookLoginBtn;
 
-		public LoginActivity() {
+		public LoginActivity()
+		{
 			this.signInService = new SignInService();
 			this.preferenceHelper = new SharedPreferencesHelper(this);
 		}
-		protected override void OnCreate(Bundle savedInstanceState) {
+		protected override void OnCreate(Bundle savedInstanceState)
+		{
 			base.OnCreate(savedInstanceState);
 			SetContentView(Resource.Layout.LoginActivity);
 
@@ -44,30 +52,49 @@ namespace MobileSecondHand.App.Activities
 			// Create your application here
 		}
 
-		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data) {
+		protected override void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
+		{
 			base.OnActivityResult(requestCode, resultCode, data);
 
 			callbackManager.OnActivityResult(requestCode, (int)resultCode, data);
 		}
 
-		private void SetupViews() {
+		private void SetupViews()
+		{
 			progress = new ProgressDialogHelper(this);
 			SetupFacebookLogin();
+			SetupAcceptCheckbox();
 			SetupStandardLogin();
 			SetupGoToRegistration();
 		}
 
-		private void SetupGoToRegistration() {
+		private void SetupAcceptCheckbox()
+		{
+			acceptCheckboxLogin = FindViewById<CheckBox>(Resource.Id.acceptCheckboxLogin);
+			acceptCheckboxLogin.TextFormatted = Html.FromHtml("Akceptujê <a href='https://www.mobilesecondhand.pl/api/file/reg'>Regulamin</a> oraz <a href='https://www.mobilesecondhand.pl/api/file/privpolicy'>Politykê Prywatnoœci</a>.");
+			acceptCheckboxLogin.MovementMethod = LinkMovementMethod.Instance;
+			acceptCheckboxLogin.CheckedChange += AcceptCheckboxLogin_CheckedChange;
+		}
+
+		private void AcceptCheckboxLogin_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
+		{
+			facebookLoginBtn.Enabled = e.IsChecked;
+		}
+
+		private void SetupGoToRegistration()
+		{
 			buttonRegistration = FindViewById<Button>(Resource.Id.goToRegistrationButton);
 			buttonRegistration.Click += ButtonRegistration_Click;
 		}
 
-		private void ButtonRegistration_Click(object sender, EventArgs e) {
+		private void ButtonRegistration_Click(object sender, EventArgs e)
+		{
 			var registerIntent = new Intent(this, typeof(RegisterActivity));
 			StartActivity(registerIntent);
 		}
 
-		private void SetupStandardLogin() {
+		private void SetupStandardLogin()
+		{
 			emailInput = FindViewById<EditText>(Resource.Id.emailInputLogin);
 			passwordInput = FindViewById<EditText>(Resource.Id.inputPasswordLogin);
 			buttonLogin = FindViewById<Button>(Resource.Id.buttonLoginStandard);
@@ -75,23 +102,29 @@ namespace MobileSecondHand.App.Activities
 			buttonLogin.Click += async (s, e) => await ButtonLogin_Click(s, e);
 		}
 
-		private async Task ButtonLogin_Click(object sender, EventArgs e) {
-			if (loginFormIsValid()) {
+		private async Task ButtonLogin_Click(object sender, EventArgs e)
+		{
+			if (loginFormIsValid())
+			{
 				await LoginUser();
 			}
-			else {
+			else
+			{
 				focusView.RequestFocus();
 			}
 		}
 
-		private async Task LoginUser() {
+		private async Task LoginUser()
+		{
 			progress.ShowProgressDialog("Trwa logowanie... Proszê czekaæ");
-			var loginModel = new LoginModel {
+			var loginModel = new LoginModel
+			{
 				Email = emailInput.Text,
 				Password = passwordInput.Text
 			};
 			var tokenModel = await this.signInService.SignInUserStandard(loginModel);
-			if (tokenModel != null) {
+			if (tokenModel != null)
+			{
 				progress.CloseProgressDialog();
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
 				if (tokenModel.UserHasToSetNickName)
@@ -105,26 +138,34 @@ namespace MobileSecondHand.App.Activities
 				}
 
 			}
-			else {
+			else
+			{
 				progress.CloseProgressDialog();
 				AlertsService.ShowLongToast(this, "Coœ posz³o nie tak na serwerze!");
 			}
 		}
 
-		private bool loginFormIsValid() {
+		private bool loginFormIsValid()
+		{
 			var formValidator = new FormValidator();
 			return formValidator.IsLoginFormValidate(emailInput, passwordInput, ref focusView);
 		}
 
-		private void SetupFacebookLogin() {
+		private void SetupFacebookLogin()
+		{
 			callbackManager = CallbackManagerFactory.Create();
-			LoginButton facebookLoginBtn = FindViewById<LoginButton>(Resource.Id.facebookLoginBtn);
+			facebookLoginBtn = FindViewById<LoginButton>(Resource.Id.facebookLoginBtn);
+			facebookLoginBtn.Enabled = false;
+			facebookLoginBtn.Click += FacebookLoginBtn_Click;
 			facebookLoginBtn.SetReadPermissions("public_profile", "email");
-			var loginCallback = new FacebookCallback<LoginResult> {
-				HandleSuccess = async loginResult => {
+			var loginCallback = new FacebookCallback<LoginResult>
+			{
+				HandleSuccess = async loginResult =>
+				{
 					progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
 					var token = await LoginWithFacebook();
-					if (token != null) {
+					if (token != null)
+					{
 						progress.CloseProgressDialog();
 						if (token.UserHasToSetNickName)
 						{
@@ -135,18 +176,21 @@ namespace MobileSecondHand.App.Activities
 							SetUserNameInAppSettings(token.UserName);
 							GoToActivity(new Intent(this, typeof(MainActivity)));
 						}
-						
+
 					}
-					else {
+					else
+					{
 						progress.CloseProgressDialog();
 						AlertsService.ShowLongToast(this, "Facebook zwróci³ token, ale coœ posz³o nie tak z logowaniem na serwerze");
 					}
 				},
-				HandleCancel = () => {
+				HandleCancel = () =>
+				{
 					progress.CloseProgressDialog();
 					AlertsService.ShowLongToast(this, "Przerwano logowanie z facebookiem");
 				},
-				HandleError = loginError => {
+				HandleError = loginError =>
+				{
 					progress.CloseProgressDialog();
 					AlertsService.ShowLongToast(this, "Wyst¹pi³ b³¹d podczas logowania z facebookiem");
 				}
@@ -154,24 +198,34 @@ namespace MobileSecondHand.App.Activities
 			facebookLoginBtn.RegisterCallback(this.callbackManager, loginCallback);
 		}
 
+		private void FacebookLoginBtn_Click(object sender, EventArgs e)
+		{
+			if (!acceptCheckboxLogin.Checked)
+			{
+				AlertsService.ShowShortToast(this, "Musisz zaakceptowaæ regulamin oraz politykê prywatnoœci.");
+			}
+		}
+
 		private void SetUserNameInAppSettings(string userName)
 		{
 			SharedPreferencesHelper.SetUserNameInAppSettings(this, userName);
 		}
 
-		private void GoToActivity(Intent intentToStart) {
+		private void GoToActivity(Intent intentToStart)
+		{
 			this.Finish();
 			StartActivity(intentToStart);
 		}
 
-		private async Task<TokenModel> LoginWithFacebook() {
+		private async Task<TokenModel> LoginWithFacebook()
+		{
 			var fbTokenViewModel = new FacebookTokenViewModel { FacebookToken = AccessToken.CurrentAccessToken.Token };
 			var bearerToken = await this.signInService.SignInUserWithFacebookToken(fbTokenViewModel);
 			if (bearerToken != null)
 			{
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, bearerToken.Token);
 			}
-			
+
 			return bearerToken;
 		}
 	}
