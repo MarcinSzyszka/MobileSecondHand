@@ -37,7 +37,7 @@ namespace MobileSecondHand.App.Infrastructure {
 				return false;
 			}
 			Regex passwordRegex = new Regex(@"\d+");
-			if (passwordText.Length < 6 || (passwordText.Length > 6 && !passwordRegex.IsMatch(passwordText))) {
+			if (passwordText.Length < 6 || (passwordText.Length >= 6 && !passwordRegex.IsMatch(passwordText))) {
 				password.SetError(incorrectPasswordErrorMessage, icon);
 				focus = password;
 				return false;
