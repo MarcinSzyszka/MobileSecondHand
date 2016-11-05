@@ -22,5 +22,12 @@ namespace MobileSecondHand.API.Services.Mailing
 			var mesageContent = String.Format("Ogłoszenie o id: {0} narusza regulamin. Powód: {1}", issueModel.AdvertisementId, issueModel.Reason);
 			mailSender.Send("usersfeedback@mobilesecondhand.pl", "wrongadverts@mobilesecondhand.pl", "Ogłoszenie naruszające regulamin", mesageContent);
 		}
+
+		public void SendNotificationFromUser(NotificationFromUser model)
+		{
+			var subject = String.Format("Nowa wiadomość od użytkownika: {0}", model.Title);
+			var mesageContent = String.Format("{0} <br/> Id użytkownika: {1} <br/> Email użytkownika: {2}", model.MessageContent, model.UserId, model.UserEmail);
+			mailSender.Send(model.UserEmail, "admin@mobilesecondhand.pl", subject, mesageContent);
+		}
 	}
 }

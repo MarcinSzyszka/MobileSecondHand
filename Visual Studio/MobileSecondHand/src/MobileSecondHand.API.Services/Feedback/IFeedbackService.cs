@@ -10,5 +10,6 @@ namespace MobileSecondHand.API.Services.Feedback
 	public interface IFeedbackService
 	{
 		bool ReportWrongAdvertisement(string userId, WrongAdvertisementIssueModel model);
+		bool SendNotificationFromUser(string userId, string userEmail, NotificationFromUser model);
 	}
 }

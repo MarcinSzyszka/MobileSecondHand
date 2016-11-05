@@ -53,6 +53,7 @@
     <Compile Include="Extensions\DateTimeExtensions.cs" />
     <Compile Include="Extensions\EnumExtensions.cs" />
     <Compile Include="Extensions\StringExtensions.cs" />
+    <Compile Include="Feedback\NotificationFromUser.cs" />
     <Compile Include="Feedback\WrongAdvertisementIssueModel.cs" />
     <Compile Include="Location\Coordinates.cs" />
     <Compile Include="Location\CoordinatesForAdvertisementsModel.cs" />

@@ -47,5 +47,26 @@ namespace MobileSecondHand.Controllers
 				return Json("Wyst¹pi³ b³¹d! - " + exc.Message);
 			}
 		}
+
+		[HttpPost]
+		[Route("SendNotificationFromUser")]
+		public IActionResult SendNotificationFromUser([FromBody] NotificationFromUser model)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				bool result = this.feedbackService.SendNotificationFromUser(userId, User.Identity.Name, model);
+
+				return Json("ok");
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wyst¹pi³ wyj¹tek w trakcie wysy³ania zg³oszenia od usera z formularza kontaktu: " + exc);
+				return Json("Wyst¹pi³ b³¹d! - " + exc.Message);
+			}
+		}
+
+		
 	}
 }

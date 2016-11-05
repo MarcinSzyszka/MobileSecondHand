@@ -10,5 +10,6 @@ namespace MobileSecondHand.API.Services.Mailing
 	public interface IEmailService
 	{
 		void ReportWrongAdvertisementIssue(WrongAdvertisementIssueModel issueModel);
+		void SendNotificationFromUser(NotificationFromUser model);
 	}
 }

@@ -32,5 +32,13 @@ namespace MobileSecondHand.API.Services.Feedback
 			this.emailService.ReportWrongAdvertisementIssue(model);
 			return true;
 		}
+
+		public bool SendNotificationFromUser(string userId, string userEmail, NotificationFromUser model)
+		{
+			model.UserId = userId;
+			model.UserEmail = userEmail;
+			this.emailService.SendNotificationFromUser(model);
+			return true;
+		}
 	}
 }
