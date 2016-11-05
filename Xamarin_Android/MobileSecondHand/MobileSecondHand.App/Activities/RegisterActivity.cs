@@ -11,6 +11,7 @@ using Android.Widget;
 using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
+using MobileSecondHand.Models.Consts;
 using MobileSecondHand.Services.Authentication;
 
 namespace MobileSecondHand.App.Activities
@@ -54,7 +55,7 @@ namespace MobileSecondHand.App.Activities
 		private void SetupAcceptCheckbox()
 		{
 			acceptCheckboxLogin = FindViewById<CheckBox>(Resource.Id.acceptCheckboxRegister);
-			acceptCheckboxLogin.TextFormatted = Html.FromHtml("Akceptujê <a href='https://www.mobilesecondhand.pl/api/file/reg'>Regulamin</a> oraz <a href='https://www.mobilesecondhand.pl/api/file/privpolicy'>Politykê Prywatnoœci</a>.");
+			acceptCheckboxLogin.TextFormatted = Html.FromHtml("Akceptujê <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
 			acceptCheckboxLogin.MovementMethod = LinkMovementMethod.Instance;
 		}
 
