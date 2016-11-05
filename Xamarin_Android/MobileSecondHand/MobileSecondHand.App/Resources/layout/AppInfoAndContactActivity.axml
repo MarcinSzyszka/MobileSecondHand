@@ -7,27 +7,28 @@
     android:minHeight="25px"
     android:minWidth="25px"
     android:orientation="vertical">
-	<RelativeLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-		<include
+        <include
             layout="@layout/appbar"
             android:layout_alignParentTop="true"
             android:layout_gravity="top" />
-		<RelativeLayout
+        <RelativeLayout
             android:id="@+id/appInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
             android:layout_below="@+id/app_bar">
-			<TextView
-				android:text="Versja apki:"
-				android:textAppearance="?android:attr/textAppearanceMedium"
-				android:layout_width="wrap_content"
-				android:layout_height="wrap_content"
-				android:id="@+id/textViewAppVersion"
-				android:layout_margin="10dp"/>
-			<TextView
+            <TextView
+                android:text="Wersja apki:"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/textViewAppVersion"
+				android:textColor="@color/colorPrimaryDark"
+                android:layout_margin="10dp" />
+            <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -36,7 +37,7 @@
                 android:layout_margin="10dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_below="@+id/textViewAppVersion" />
-			<Button
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Napisz do nas"
@@ -49,15 +50,15 @@
                 android:textStyle="bold"
                 android:paddingLeft="5dp"
                 android:paddingRight="5dp" />
-		</RelativeLayout>
-		<RelativeLayout
+        </RelativeLayout>
+        <RelativeLayout
             android:id="@+id/contactLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             android:layout_below="@+id/app_bar"
             android:padding="20dp">
-			<TextView
+            <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:textAppearance="?android:attr/textAppearanceMedium"
@@ -66,7 +67,7 @@
                 android:layout_margin="10dp"
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="center" />
-			<Spinner
+            <Spinner
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/messageType"
@@ -76,7 +77,7 @@
                 android:spinnerMode="dropdown"
                 android:layout_below="@+id/textView221"
                 android:layout_marginTop="10dp" />
-			<EditText
+            <EditText
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:id="@+id/telModel"
@@ -87,7 +88,7 @@
                 android:hint="Model telefonu"
                 android:gravity="center"
                 android:layout_marginTop="10dp" />
-			<EditText
+            <EditText
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textMultiLine"
@@ -100,7 +101,7 @@
                 android:textColor="@color/colorPrimaryDark"
                 android:gravity="center"
                 android:hint="Treść wiadomości" />
-			<Button
+            <Button
                 android:layout_width="wrap_content"
                 android:layout_height="30dp"
                 android:text="Wyślij"
@@ -111,6 +112,6 @@
                 android:textStyle="bold"
                 android:layout_below="@+id/messageINfoContet"
                 android:layout_marginTop="10dp" />
-		</RelativeLayout>
-	</RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>
