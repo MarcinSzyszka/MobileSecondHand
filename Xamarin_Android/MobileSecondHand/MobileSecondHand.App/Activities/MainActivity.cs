@@ -29,7 +29,7 @@ using MobileSecondHand.App.SideMenu;
 namespace MobileSecondHand.App
 {
 	[Activity(Label = "Og³oszenia", LaunchMode = Android.Content.PM.LaunchMode.SingleTask, ScreenOrientation = Android.Content.PM.ScreenOrientation.Portrait)]
-	public class MainActivity : BaseActivityWithNavigationDrawer, IInfiniteScrollListener
+	public class MainActivity : BaseActivityWithNavigationDrawer, IInfiniteScrollListener, View.IOnClickListener
 	{
 		RecyclerView advertisementsRecyclerView;
 		AdvertisementItemListAdapter advertisementItemListAdapter;
@@ -69,7 +69,9 @@ namespace MobileSecondHand.App
 			SetRefreshAdvertisementAction();
 			SetContentView(Resource.Layout.MainActivity);
 			SetupToolbar();
+		
 			SetupDrawer();
+			drawerToggle.ToolbarNavigationClickListener = this;
 			advertisementsPage = 0;
 			SetSortingOptionsLayout();
 			SetupFab();
@@ -722,6 +724,11 @@ namespace MobileSecondHand.App
 			}
 		}
 
+		protected override void Toolbar_NavigationClick(object sender, Android.Support.V7.Widget.Toolbar.NavigationClickEventArgs e)
+		{
+			OnBackPressed();
+		}
+
 		private void FabFilter_Click(object sender, EventArgs e)
 		{
 			TogleLayouts();
@@ -733,12 +740,17 @@ namespace MobileSecondHand.App
 			{
 				searchModelCopier = new AdvertisementSearchModelCopier(this.advertisementsSearchModel);
 				SetAppBarOptions(true);
+				SupportActionBar.SetDisplayHomeAsUpEnabled(false);
+				SupportActionBar.SetDisplayHomeAsUpEnabled(true);
+				drawerToggle.DrawerIndicatorEnabled = false;
 				mainListLayout.Visibility = ViewStates.Gone;
 				sortingOptionsLayout.Visibility = ViewStates.Visible;
 			}
 			else
 			{
 				SetAppBarOptions(false);
+				drawerToggle.DrawerIndicatorEnabled = true;
+				SetupDrawer();
 				sortingOptionsLayout.Visibility = ViewStates.Gone;
 				mainListLayout.Visibility = ViewStates.Visible;
 			}
@@ -750,5 +762,9 @@ namespace MobileSecondHand.App
 			StartActivity(addAdvertisementIntent);
 		}
 
+		public void OnClick(View v)
+		{
+			OnBackPressed();
+		}
 	}
 }

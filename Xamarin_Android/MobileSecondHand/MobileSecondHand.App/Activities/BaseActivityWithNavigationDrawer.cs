@@ -28,6 +28,7 @@ namespace MobileSecondHand.App.Activities
 	{
 		private DrawerLayout drawerLayout;
 		protected NavigationViewMenu navigationViewMenu;
+		protected ActionBarDrawerToggle drawerToggle;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -56,12 +57,19 @@ namespace MobileSecondHand.App.Activities
 
 		protected void SetupDrawer()
 		{
-			
-			drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
-			var drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
-			drawerLayout.SetDrawerListener(drawerToggle);
-			drawerToggle.SyncState();
-			drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
+			if (drawerToggle == null)
+			{
+				drawerLayout = FindViewById<DrawerLayout>(Resource.Id.drawer_layout);
+				drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, Resource.String.open_drawer, Resource.String.close_drawer);
+				drawerLayout.SetDrawerListener(drawerToggle);
+				drawerToggle.SyncState();
+				drawerLayout.DrawerOpened += DrawerLayout_DrawerOpened;
+			}
+			else
+			{
+				drawerToggle.SyncState();
+			}
+
 		}
 
 		private void SetupSideMenu()
