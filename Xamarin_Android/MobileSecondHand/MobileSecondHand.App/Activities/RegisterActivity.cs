@@ -47,7 +47,6 @@ namespace MobileSecondHand.App.Activities
 			passwordInput = FindViewById<EditText>(Resource.Id.inputPasswordRegistration);
 			confirmPasswordInput = FindViewById<EditText>(Resource.Id.inputConfirmPasswordRegistration);
 			submitRegistrationBtn = FindViewById<Button>(Resource.Id.buttonSubmitRegistration);
-			submitRegistrationBtn.Enabled = false;
 			submitRegistrationBtn.Click += async (s, e) => await SubmitRegistrationBtn_Click(s, e);
 			SetupAcceptCheckbox();
 		}
