@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    android:minHeight="25px"
+    android:minWidth="25px"
+    android:orientation="vertical">
+	<RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+		<include
+            layout="@layout/appbar"
+            android:layout_alignParentTop="true"
+            android:layout_gravity="top" />
+		<RelativeLayout
+            android:id="@+id/appInfoLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="visible"
+            android:layout_below="@+id/app_bar">
+			<TextView
+				android:text="Versja apki:"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				android:id="@+id/textViewAppVersion"
+				android:layout_margin="10dp"/>
+			<TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="@string/about_app"
+                android:id="@+id/textView2"
+                android:layout_margin="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:layout_below="@+id/textViewAppVersion" />
+			<Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Napisz do nas"
+                android:id="@+id/btnSendFeedback"
+                android:layout_below="@+id/textView2"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/advertisementRowBackground"
+                android:background="@color/colorPrimary"
+                android:textStyle="bold"
+                android:paddingLeft="5dp"
+                android:paddingRight="5dp" />
+		</RelativeLayout>
+		<RelativeLayout
+            android:id="@+id/contactLayout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:visibility="gone"
+            android:layout_below="@+id/app_bar"
+            android:padding="20dp">
+			<TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAppearance="?android:attr/textAppearanceMedium"
+                android:text="Temat zgłoszenia:"
+                android:id="@+id/textView221"
+                android:layout_margin="10dp"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center" />
+			<Spinner
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/messageType"
+                android:layout_alignParentTop="false"
+                android:layout_centerHorizontal="true"
+                android:gravity="center"
+                android:spinnerMode="dropdown"
+                android:layout_below="@+id/textView221"
+                android:layout_marginTop="10dp" />
+			<EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/telModel"
+                android:layout_below="@+id/messageType"
+                android:layout_centerHorizontal="true"
+                android:textColor="@color/colorPrimaryDark"
+                android:textColorHint="@color/colorPrimary"
+                android:hint="Model telefonu"
+                android:gravity="center"
+                android:layout_marginTop="10dp" />
+			<EditText
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textMultiLine"
+                android:ems="10"
+                android:id="@+id/messageINfoContet"
+                android:layout_below="@+id/telModel"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="10dp"
+                android:textColorHint="@color/colorPrimary"
+                android:textColor="@color/colorPrimaryDark"
+                android:gravity="center"
+                android:hint="Treść wiadomości" />
+			<Button
+                android:layout_width="wrap_content"
+                android:layout_height="30dp"
+                android:text="Wyślij"
+                android:id="@+id/btnSubmitSenInfo"
+                android:layout_centerHorizontal="true"
+                android:background="@color/colorPrimary"
+                android:textColor="@color/advertisementRowBackground"
+                android:textStyle="bold"
+                android:layout_below="@+id/messageINfoContet"
+                android:layout_marginTop="10dp" />
+		</RelativeLayout>
+	</RelativeLayout>
+</FrameLayout>

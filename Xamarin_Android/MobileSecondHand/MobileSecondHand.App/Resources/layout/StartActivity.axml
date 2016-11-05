@@ -37,8 +37,7 @@
         android:layout_height="match_parent"
         android:minWidth="25px"
         android:minHeight="25px"
-        android:visibility="gone"
-        android:background="@color/advertisementRowBackground">
+        android:visibility="gone">
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="Hello">Hello World, Click Me!</string>
-    <string name="ApplicationName">MobileSecondHand</string>
+	<string name="Hello">Hello World, Click Me!</string>
+	<string name="ApplicationName">MobileSecondHand</string>
 	<string name="app_id">1772882172935332</string>
 	<string name="infoLogin">Zaloguj się</string>
 	<string name="standarLoginButtonText">Zaloguj</string>
@@ -15,7 +15,11 @@
 	<string name="distanceDetailsInfo">Odległość: </string>
 	<string name="open_drawer">bbb </string>
 	<string name="close_drawer">aaa</string>
-
+	<string name="about_app">
+		Pomysł na aplikację pojawił się w odpowiedzi na konkurs "Daj się poznać 2016" polegający na równoczesnym tworzeniu projektu IT oraz jego opisywaniu na blogu.
+		Pomysłodawcą i twórcą jest Marcin Szyszka - chcący być programistą nie tylko jednej technologii. Z racji tego, że Marcin zawodowo zajmuje się aplikacjami internetowymi,
+		pierwsza wersja tej aplikacji powstawała "po godzinach" przez blisko 9 miesięcy.\nDalszy los aplikacji zależy od Ciebie, od Was - użytkowników. Jeśli masz jakieś uwagi, pomysły, propozycje lub problemy - napisz do nas. Każda uwaga jest dla nas cenna.
+	</string>
 	<string-array name="notifications_radius">
 		<item>1 km</item>
 		<item>2 km</item>
@@ -32,5 +36,11 @@
 		<item>Ogłoszenie nie dotyczy ubrań.</item>
 		<item>Ogłoszenia zawiera obraźliwe/wulgarne słowa i/lub zdjęcia.</item>
 		<item>Inny powód</item>
+	</string-array>
+	<string-array name="message_info_from_user">
+		<item>Zgłoszenie błędu</item>
+		<item>Pomysł na ulepszenie funkcjonalności</item>
+		<item>Pomysł na nową funkcjonalność</item>
+		<item>Współpraca</item>
 	</string-array>
 </resources>

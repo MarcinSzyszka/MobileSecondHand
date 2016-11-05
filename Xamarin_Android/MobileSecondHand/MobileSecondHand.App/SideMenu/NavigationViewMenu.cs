@@ -60,6 +60,7 @@ namespace MobileSecondHand.App.SideMenu
 		private string profilePhotoPath;
 		private string profileTempPhotoPath;
 		private SizeSelectingHelper sizeSelectingHelper;
+		private ImageButton imgAppInfo;
 
 		public NavigationViewMenu(BaseActivityWithNavigationDrawer activity, SharedPreferencesHelper sharedPreferencesHelper)
 		{
@@ -88,6 +89,12 @@ namespace MobileSecondHand.App.SideMenu
 			this.textViewKeywords = activity.FindViewById<TextView>(Resource.Id.textViewKeywords);
 			this.textViewNotificationsSizes = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsSize);
 			this.textViewHomeLocalization = activity.FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
+			this.imgAppInfo = activity.FindViewById<ImageButton>(Resource.Id.imgAppInfo);
+			this.imgAppInfo.Click += (s, e) =>
+			{
+				var intent = new Intent(activity, typeof(AppInfoAndContactActivity));
+				activity.StartActivity(intent);
+			};
 
 			//conversations
 			SetupChatStateView(activity);

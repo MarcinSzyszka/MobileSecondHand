@@ -35,5 +35,18 @@ namespace MobileSecondHand.Services.Feedback
 
 			return true;
 		}
+
+		public async Task<bool> SendNotificationFromUser(NotificationFromUser model)
+		{
+			var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+			var response = await client.PostAsync(WebApiConsts.FEEDBACK_CONTROLLER + "SendNotificationFromUser/", stringContent);
+			if (response.StatusCode != System.Net.HttpStatusCode.OK)
+			{
+				return false;
+			}
+
+			return true;
+		}
 	}
 }

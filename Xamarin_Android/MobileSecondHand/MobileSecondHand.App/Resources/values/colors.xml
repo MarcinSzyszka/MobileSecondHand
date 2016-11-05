@@ -4,7 +4,7 @@
 	<color name="colorPrimaryDark">#3E2723</color>
 	<color name="primary_light">#B3E5FC</color>
 	<color name="colorAccent">#E6EE9C</color>
-	<color name="textColorPrimary">#BCAAA4</color>
+	<color name="textColorPrimary">#3E2723</color>
 	<color name="textColorSecondary">#BCAAA4</color>
 	<color name="windowBackground">#D7CCC8</color>
 	<color name="headerBackground">#BCAAA4</color>
