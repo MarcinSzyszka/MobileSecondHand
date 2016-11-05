@@ -74,7 +74,7 @@
                     android:id="@+id/buttonSendConversationMessage"
                     android:layout_centerHorizontal="true"
                     android:layout_centerVertical="true"
-                    android:background="@color/colorPrimaryDark" />
+                    android:background="@color/colorPrimary" />
             </RelativeLayout>
         </LinearLayout>
     </LinearLayout>
