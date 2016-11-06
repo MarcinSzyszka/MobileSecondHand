@@ -62,6 +62,8 @@ namespace MobileSecondHand.App
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+			AppDomain currentDomain = AppDomain.CurrentDomain;
+			currentDomain.UnhandledException += new UnhandledExceptionEventHandler(HandleExceptions);
 			this.gpsLocationService = new GpsLocationService(this, null);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			this.categoriesHelper = new CategoriesSelectingHelper(this, bearerToken);
@@ -80,6 +82,11 @@ namespace MobileSecondHand.App
 			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
 			await DownloadAndShowAdvertisements(true);
 			progress.CloseProgressDialog();
+		}
+
+		private void HandleExceptions(object sender, UnhandledExceptionEventArgs e)
+		{
+			AlertsService.ShowLongToast(this, "Wyst¹pi³ nieobs³u¿ony wyj¹tek");
 		}
 
 		protected override void OnNewIntent(Intent intent)

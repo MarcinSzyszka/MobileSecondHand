@@ -25,7 +25,7 @@ namespace MobileSecondHand.App.Infrastructure
 
 		public BitmapOperationService()
 		{
-			this.maxPhotoValue = 1000;
+			this.maxPhotoValue = 900;
 		}
 		public string SavePhotoFromUriAndReturnPhysicalPath(Android.Net.Uri contentURI, Java.IO.File file, Context ctx)
 		{

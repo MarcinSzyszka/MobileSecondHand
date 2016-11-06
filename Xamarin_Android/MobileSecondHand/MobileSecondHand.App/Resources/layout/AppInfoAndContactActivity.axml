@@ -14,43 +14,47 @@
             layout="@layout/appbar"
             android:layout_alignParentTop="true"
             android:layout_gravity="top" />
-        <RelativeLayout
+        <android.support.v4.widget.NestedScrollView
             android:id="@+id/appInfoLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="visible"
             android:layout_below="@+id/app_bar">
-            <TextView
-                android:text="Wersja apki:"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/textViewAppVersion"
-				android:textColor="@color/colorPrimaryDark"
-                android:layout_margin="10dp" />
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?android:attr/textAppearanceMedium"
-                android:text="@string/about_app"
-                android:id="@+id/textView2"
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:layout_margin="10dp"
-                android:textColor="@color/colorPrimaryDark"
-                android:layout_below="@+id/textViewAppVersion" />
-            <Button
-                android:layout_width="wrap_content"
-                android:layout_height="30dp"
-                android:text="Napisz do nas"
-                android:id="@+id/btnSendFeedback"
-                android:layout_below="@+id/textView2"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:textColor="@color/advertisementRowBackground"
-                android:background="@color/colorPrimary"
-                android:textStyle="bold"
-                android:paddingLeft="5dp"
-                android:paddingRight="5dp" />
-        </RelativeLayout>
+                android:paddingBottom="40dp">
+                <TextView
+                    android:text="Wersja apki:"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/textViewAppVersion"
+                    android:textColor="@color/colorPrimaryDark" />
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textAppearance="?android:attr/textAppearanceMedium"
+                    android:text="@string/about_app"
+                    android:id="@+id/textView2"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:layout_below="@+id/textViewAppVersion" />
+                <Button
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:text="Napisz do nas"
+                    android:id="@+id/btnSendFeedback"
+                    android:layout_below="@+id/textView2"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="10dp"
+                    android:textColor="@color/advertisementRowBackground"
+                    android:background="@color/colorPrimary"
+                    android:textStyle="bold"
+                    android:paddingLeft="5dp"
+                    android:paddingRight="5dp" />
+            </RelativeLayout>
+        </android.support.v4.widget.NestedScrollView>
         <RelativeLayout
             android:id="@+id/contactLayout"
             android:layout_width="match_parent"

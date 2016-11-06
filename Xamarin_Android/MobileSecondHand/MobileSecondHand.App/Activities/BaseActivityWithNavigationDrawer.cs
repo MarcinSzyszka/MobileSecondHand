@@ -43,17 +43,16 @@ namespace MobileSecondHand.App.Activities
 			{
 				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 				{
-					StartService(new Intent(this, typeof(MessengerService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = this;
+					StartService(new Intent(this.ApplicationContext, typeof(MessengerService)));
 				}
 				if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
 				{
-					StartService(new Intent(this, typeof(NewsService)));
-					ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = this;
+					StartService(new Intent(this.ApplicationContext, typeof(NewsService)));
 				}
 			}
 
 		}
+
 
 		protected void SetupDrawer()
 		{
