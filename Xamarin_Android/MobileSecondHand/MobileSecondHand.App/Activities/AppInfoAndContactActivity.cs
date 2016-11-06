@@ -7,6 +7,7 @@ using Android.App;
 using Android.Content;
 using Android.OS;
 using Android.Runtime;
+using Android.Support.V4.Widget;
 using Android.Support.V7.Widget;
 using Android.Views;
 using Android.Widget;
@@ -21,7 +22,7 @@ namespace MobileSecondHand.App.Activities
 	{
 		ProgressDialogHelper progress;
 		private FeedbackService feedbackService;
-		RelativeLayout infoLayout;
+		NestedScrollView infoLayout;
 		RelativeLayout contactLayout;
 		Button btnSendFeedback;
 		Spinner messageType;
@@ -47,7 +48,7 @@ namespace MobileSecondHand.App.Activities
 			this.textViewAppVersion = FindViewById<TextView>(Resource.Id.textViewAppVersion);
 			var version = this.ApplicationContext.PackageManager.GetPackageInfo(this.ApplicationContext.PackageName, 0).VersionName;
 			this.textViewAppVersion.Text = String.Format("Wersja aplikacji: {0}", version);
-			this.infoLayout = FindViewById<RelativeLayout>(Resource.Id.appInfoLayout);
+			this.infoLayout = FindViewById<NestedScrollView>(Resource.Id.appInfoLayout);
 			this.contactLayout = FindViewById<RelativeLayout>(Resource.Id.contactLayout);
 			this.btnSendFeedback = FindViewById<Button>(Resource.Id.btnSendFeedback);
 			this.btnSendFeedback.Click += (s, e) =>

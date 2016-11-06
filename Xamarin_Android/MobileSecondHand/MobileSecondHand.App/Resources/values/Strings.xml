@@ -16,9 +16,10 @@
 	<string name="open_drawer">bbb </string>
 	<string name="close_drawer">aaa</string>
 	<string name="about_app">
-		Pomysł na aplikację pojawił się w odpowiedzi na konkurs "Daj się poznać 2016" polegający na równoczesnym tworzeniu projektu IT oraz jego opisywaniu na blogu.
-		Pomysłodawcą i twórcą jest Marcin Szyszka - chcący być programistą nie tylko jednej technologii. Z racji tego, że Marcin zawodowo zajmuje się aplikacjami internetowymi,
-		pierwsza wersja tej aplikacji powstawała "po godzinach" przez blisko 9 miesięcy.\nDalszy los aplikacji zależy od Ciebie, od Was - użytkowników. Jeśli masz jakieś uwagi, pomysły, propozycje lub problemy - napisz do nas. Każda uwaga jest dla nas cenna.
+		Pomysł na aplikację pojawił się w odpowiedzi na ogłoszenie konkursu \"Daj się poznać 2016\" organizowanego przez Maćka Aniserowicza, polegającego na równoczesnym tworzeniu projektu IT oraz jego opisywaniu na blogu.
+		Pomysłodawcą i twórcą aplikacji jest Marcin Szyszka - chcący być programistą nie tylko jednej technologii. Początkowo projekt miał charakter czysto hobbystyczny bez planów na finał w sklepie z aplikacjami, 
+		jednak po motywującej rozmowie z Jarkiem Miernickim oraz jego ofercie pomocy przy reklamie i pozyskiwaniu użytkowników plany się sprecyzowały. Z racji tego, że Marcin zawodowo zajmuje się aplikacjami internetowymi,
+		pierwsza wersja tej aplikacji powstawała \"po godzinach\" przez blisko 9 miesięcy.\nDalszy los aplikacji zależy od Ciebie, od Was - użytkowników. Jeśli masz jakieś uwagi, pomysły, propozycje lub problemy - napisz do nas. Każda uwaga jest dla nas cenna.
 	</string>
 	<string-array name="notifications_radius">
 		<item>1 km</item>
@@ -42,5 +43,6 @@
 		<item>Pomysł na ulepszenie funkcjonalności</item>
 		<item>Pomysł na nową funkcjonalność</item>
 		<item>Współpraca</item>
+		<item>Inny temat</item>
 	</string-array>
 </resources>
