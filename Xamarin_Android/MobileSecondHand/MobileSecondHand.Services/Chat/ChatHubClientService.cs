@@ -7,17 +7,21 @@ using System.Threading.Tasks;
 using Microsoft.AspNet.SignalR.Client;
 using MobileSecondHand.Models.Consts;
 
-namespace MobileSecondHand.Services.Chat {
-	public class ChatHubClientService : IDisposable {
+namespace MobileSecondHand.Services.Chat
+{
+	public class ChatHubClientService : IDisposable
+	{
 		IHubProxy chatHubProxy;
 		HubConnection hubConnection;
 		static ChatHubClientService serviceInstance;
 
-		public ChatHubClientService(string bearerToken) {
+		public ChatHubClientService(string bearerToken)
+		{
 			hubConnection = new HubConnection(WebApiConsts.SERWER_URL);
 			chatHubProxy = hubConnection.CreateHubProxy("MobileSecondHandChatHub");
 			hubConnection.Headers.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, bearerToken);
-			Connect(hubConnection, async h => {
+			Connect(hubConnection, async h =>
+			{
 				await h.Start();
 			});
 		}
@@ -37,7 +41,8 @@ namespace MobileSecondHand.Services.Chat {
 			return hubConnection.State == ConnectionState.Connected;
 		}
 
-		public void SendMessage(string messageContent, string addresseeId, int conversationId) {
+		public void SendMessage(string messageContent, string addresseeId, int conversationId)
+		{
 			SendMessage(chatHubProxy, proxy => proxy.Invoke("SendMessage", messageContent, addresseeId, conversationId.ToString()));
 		}
 
@@ -51,15 +56,18 @@ namespace MobileSecondHand.Services.Chat {
 			chatHubProxy.Invoke("GetNotReceivedMessages");
 		}
 
-		public void RegisterReceiveMessages(Action<string> updateChatMessage) {
+		public void RegisterReceiveMessages(Action<string> updateChatMessage)
+		{
 			chatHubProxy.On<string>("ReceiveMessage", (messageObject) => updateChatMessage(messageObject));
 		}
 
-		private void Connect(HubConnection hubObject, Action<HubConnection> hubConnection) {
+		private void Connect(HubConnection hubObject, Action<HubConnection> hubConnection)
+		{
 			hubConnection(hubObject);
 		}
 
-		private void SendMessage(IHubProxy hubProxy, Action<IHubProxy> invoke) {
+		private void SendMessage(IHubProxy hubProxy, Action<IHubProxy> invoke)
+		{
 			invoke(hubProxy);
 		}
 		private void MessageReceived(IHubProxy hubProxy, Action<IHubProxy> invoke)
@@ -70,7 +78,7 @@ namespace MobileSecondHand.Services.Chat {
 
 		public static ChatHubClientService RecreateServiceInstance(string bearerToken)
 		{
-			
+
 			serviceInstance = new ChatHubClientService(bearerToken);
 
 			return serviceInstance;
@@ -78,7 +86,8 @@ namespace MobileSecondHand.Services.Chat {
 
 		public void Reconnect()
 		{
-				Connect(hubConnection, async h => {
+			Connect(hubConnection, async h =>
+			{
 				await h.Start();
 			});
 		}
@@ -89,6 +98,6 @@ namespace MobileSecondHand.Services.Chat {
 			serviceInstance = null;
 		}
 
-		
+
 	}
 }

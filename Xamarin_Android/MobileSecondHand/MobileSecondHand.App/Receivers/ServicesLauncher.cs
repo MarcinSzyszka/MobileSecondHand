@@ -29,13 +29,11 @@ namespace MobileSecondHand.App.Receivers
 			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 			if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 			{
-				context.StartService(new Intent(context, typeof(MessengerService)));
-				ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = context;
+				context.StartService(new Intent(context.ApplicationContext, typeof(MessengerService)));
 			}
 			if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
 			{
-				context.StartService(new Intent(context, typeof(NewsService)));
-				ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = context;
+				context.StartService(new Intent(context.ApplicationContext, typeof(NewsService)));
 			}
 		}
 	}

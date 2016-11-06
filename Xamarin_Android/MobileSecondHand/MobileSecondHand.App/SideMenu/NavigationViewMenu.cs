@@ -352,13 +352,12 @@ namespace MobileSecondHand.App.SideMenu
 					if (!notificationsStateSwitch.Checked)
 					{
 						appSettings.NotificationsDisabled = true;
-						activity.StopService(new Intent(ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService, typeof(NewsService)));
+						activity.StopService(new Intent(activity.ApplicationContext, typeof(NewsService)));
 					}
 					else
 					{
 						appSettings.NotificationsDisabled = false;
-						activity.StartService(new Intent(activity, typeof(NewsService)));
-						ActivityInstancesWhichStartedServices.ActivityWhichStartedNotificationsService = activity;
+						activity.StartService(new Intent(activity.ApplicationContext, typeof(NewsService)));
 					}
 
 					SetAppSettings(appSettings);
@@ -402,13 +401,12 @@ namespace MobileSecondHand.App.SideMenu
 					if (!chatStateSwitch.Checked)
 					{
 						appSettings.ChatDisabled = true;
-						activity.StopService(new Intent(ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService, typeof(MessengerService)));
+						activity.StopService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
 					}
 					else
 					{
 						appSettings.ChatDisabled = false;
-						activity.StartService(new Intent(activity, typeof(MessengerService)));
-						ActivityInstancesWhichStartedServices.ActivityWhichStartedMessengerService = activity;
+						activity.StartService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
 					}
 
 					SetAppSettings(appSettings);
@@ -483,7 +481,7 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void SetNotificationsSettings()
 		{
-			if (!appSettings.NotificationsDisabled)
+			if (!appSettings.NotificationsDisabled && NewsService.ServiceIsRunning)
 			{
 				this.textViewNotificationsState.Text = "w³¹czone";
 
@@ -498,7 +496,7 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void SetChatSettings()
 		{
-			if (appSettings.ChatDisabled)
+			if (appSettings.ChatDisabled && !MessengerService.ServiceIsRunning)
 			{
 				this.textViewChatState.Text = "wy³¹czony";
 				this.chatStateSwitch.Checked = false;
