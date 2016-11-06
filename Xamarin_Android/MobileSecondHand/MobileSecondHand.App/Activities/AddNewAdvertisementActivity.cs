@@ -307,16 +307,16 @@ namespace MobileSecondHand.App.Activities
 		private bool AdvertisementItemDataIsValidate()
 		{
 			bool isValidate = true;
-			if (advertisementTitle.Text.Length < 5)
+			if (advertisementTitle.Text.Length < 10)
 			{
 				isValidate = false;
-				advertisementTitle.Error = "Tytu³ musi zawieraæ min. 15 znaków";
+				advertisementTitle.Error = "Tytu³ musi zawieraæ min. 10 znaków";
 				focusView = advertisementTitle;
 			}
-			else if (advertisementDescription.Text.Length < 5)
+			else if (advertisementDescription.Text.Length < 10)
 			{
 				isValidate = false;
-				advertisementDescription.Error = "Opis musi zawieraæ min 20 znaków";
+				advertisementDescription.Error = "Opis musi zawieraæ min 10 znaków";
 				focusView = advertisementDescription;
 			}
 			else if (advertisementPrice.Text.Length == 0)
