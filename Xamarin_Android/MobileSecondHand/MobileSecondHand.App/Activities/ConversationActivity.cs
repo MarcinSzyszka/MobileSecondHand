@@ -32,15 +32,19 @@ namespace MobileSecondHand.App.Activities
 		RecyclerView conversationMessagesRecyclerView;
 		ImageButton btnSendMessage;
 		EditText editTextMessage;
+		LinearLayout coversationsLayoutWrapper;
 		ConversationInfoModel conversationInfoModel;
 		int pageNumber;
+		private ProgressDialogHelper progress;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
 
 		public async void OnInfiniteScroll()
 		{
+			progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
 			await GetAndSetMessages();
+			progress.CloseProgressDialog();
 		}
 
 		public void AddMessage(ConversationMessage message)
@@ -52,15 +56,20 @@ namespace MobileSecondHand.App.Activities
 		{
 			base.OnCreate(savedInstanceState);
 			ActivityInstance = this;
+			progress = new ProgressDialogHelper(this);
 			signInService = new SignInService();
 			bitmapService = new BitmapOperationService();
 			this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
 			this.messagesService = new MessagesService(bearerToken);
 			SetContentView(Resource.Layout.ConversationActivity);
+			SetupViews(savedInstanceState);
 			GetExtras();
+			progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
 			await SetupToolbarWithProfileImage();
 			pageNumber = 0;
-			await SetupViews(savedInstanceState);
+			await GetAndDisplayMesages(savedInstanceState);
+			coversationsLayoutWrapper.Visibility = ViewStates.Visible;
+			progress.CloseProgressDialog();
 		}
 
 		private async Task SetupToolbarWithProfileImage()
@@ -168,8 +177,10 @@ namespace MobileSecondHand.App.Activities
 			this.conversationInfoModel = JsonConvert.DeserializeObject<ConversationInfoModel>(conversationInfoModelString);
 		}
 
-		private async Task SetupViews(Bundle savedInstanceState)
+		private void SetupViews(Bundle savedInstanceState)
 		{
+			coversationsLayoutWrapper = FindViewById<LinearLayout>(Resource.Id.coversationsLayoutWrapper);
+			coversationsLayoutWrapper.Visibility = ViewStates.Invisible;
 			conversationMessagesRecyclerView = FindViewById<RecyclerView>(Resource.Id.conversationsRecyclerView);
 			btnSendMessage = FindViewById<ImageButton>(Resource.Id.buttonSendConversationMessage);
 			btnSendMessage.Click += BtnSendMessage_Click;
@@ -179,7 +190,10 @@ namespace MobileSecondHand.App.Activities
 			mLayoutManager.ReverseLayout = true;
 			mLayoutManager.SmoothScrollbarEnabled = true;
 			conversationMessagesRecyclerView.SetLayoutManager(mLayoutManager);
+		}
 
+		private async Task GetAndDisplayMesages(Bundle savedInstanceState)
+		{
 			this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(this);
 			this.conversationMessagesListAdapter.NewMessageAdded += ConversationMessagesListAdapter_NewMessageAdded;
 			await GetAndSetMessages(savedInstanceState);
