@@ -1,4 +1,4 @@
-@charset "UTF-8";
+﻿@charset "UTF-8";
 @import url(animate.css);
 @import url(material-icons.css);
 @import url(//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css);
@@ -137,7 +137,7 @@ img {
   margin-top: 50px; }
 
 .page .inset-1 {
-  padding-top: 14%; }
+  padding-top: 10%; }
 
 * + h6 {
   margin-top: 30px; }
@@ -224,7 +224,7 @@ img {
 
 /*==================    Colors    ======================*/
 .bg-primary {
-  background: #00bdff; }
+  background: #8D6E63; }
   .bg-primary .icon-primary {
     background: #fff;
     color: #00bdff; }
@@ -313,7 +313,7 @@ img {
   font-weight: 700;
   font-size: 20px;
   line-height: 32px;
-  color: #fff; }
+  color: #EFEBE9; }
   .brand:before {
     display: inline-block;
     position: absolute;
@@ -349,16 +349,16 @@ img {
     background: #0097cc; }
 
 .btn-primary {
-  background: #00bdff; }
+  background: #B21917; }
   .btn-primary:hover {
-    background: #f96332; }
+    background: #BCAAA4; }
   .btn-primary:active {
     background: #bf3306; }
 
 .btn-secondary {
-  background: #f96332; }
+  background: #CE1619; }
   .btn-secondary:hover {
-    background: #00bdff; }
+    background: #BCAAA4; }
   .btn-secondary:active {
     background: #007199; }
 
@@ -383,11 +383,11 @@ img {
 
 .icon-primary {
   color: #fff;
-  background: #00bdff; }
+  background: #BCAAA4; }
 
 .icon-secondary {
   color: #fff;
-  background: #f96332; }
+  background: #8D6E63; }
 
 .icon-xs {
   width: 22px;
@@ -494,7 +494,7 @@ img {
   height: 32px;
   font-size: 32px;
   line-height: 32px;
-  color: #f96332;
+  color: #CE1619;
   position: fixed;
   right: 66px;
   bottom: 180px;
@@ -1360,7 +1360,7 @@ header {
   min-height: 70px;
   text-align: center;
   z-index: 120;
-  background: #191919; }
+  background: #211412; }
   @media (min-width: 768px) {
     header {
       padding-left: 22px; } }
@@ -1396,7 +1396,7 @@ header {
     header .nav li + li {
       margin-top: 20px; }
     header .nav li.active a {
-      background: #00bdff; }
+      background: #3E2723; }
   @media (min-width: 768px) {
     header .brand {
       float: left; }
