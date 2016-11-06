@@ -313,15 +313,16 @@ img {
   font-weight: 700;
   font-size: 20px;
   line-height: 32px;
+  background-image: url(../images/logo.png);
+   background-repeat: no-repeat;
   color: #EFEBE9; }
   .brand:before {
     display: inline-block;
     position: absolute;
     left: 0;
     top: 0;
-    content: "\e3a5";
-    font-family: "Material Icons";
     font-weight: 400;
+	
     font-size: 40px;
     line-height: 32px;
     color: #f96332; }

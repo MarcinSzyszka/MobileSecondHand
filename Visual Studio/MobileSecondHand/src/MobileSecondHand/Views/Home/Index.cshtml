@@ -49,7 +49,7 @@
                         <p>Próbowałaś sprzedać je na portalach ogłoszeniowych, ale odzew był zerowy?</p>
                         <p>A może uwielbiasz polować na okazje w second hand'ach, ale nie zawsze masz na to czas?</p>
                         <h6>Z aplikacją Mobile Second Hand będzie to proste i przyjemne!</h6>
-                        <a href="#" class="btn btn-secondary btn-with-icon material-icons-local_grocery_store">Wejdź do sklepu!</a>
+                        <a href="" class="btn btn-secondary btn-with-icon material-icons-local_grocery_store go-to-shop">Wejdź do sklepu!</a>
                     </div>
                 </div>
             </div>
@@ -62,7 +62,7 @@
                         <h1>Ogłoszenia z Twojej okolicy w Twoim smartfonie!</h1>
 
                         @*<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam in ullamcorper est, eu commodo est. Nunc aliquam congue leo vitae iaculis. Mauris ac arcu elit. Suspendisse sapien lacus, aliquet ac rhoncus id, ornare in lorem. Phasellus elit lectus, hendrerit vitae velit eu, fermentum tincidunt ante. Nam vel malesuada mi.</p>*@
-                        <a href="#" class="btn btn-primary btn-with-icon material-icons-local_grocery_store">Pobierz!</a>
+                        <a href="#" class="btn btn-primary btn-with-icon material-icons-local_grocery_store go-to-shop">Pobierz!</a>
                     </div>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                                 <p>Nie musisz biegać po second hand'ach. Możesz mieć jeden czynny przez całą dobę w swoim telefonie.</p>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-secondary btn-with-icon material-icons-local_grocery_store">Zainstaluj!</a>
+                        <a href="#" class="btn btn-secondary btn-with-icon material-icons-local_grocery_store go-to-shop">Zainstaluj!</a>
                     </div>
                     <div class="col-lg-4"></div>
                 </div>
@@ -141,10 +141,10 @@
                                 <div class="icon icon-secondary icon-sm material-icons-invert_colors"></div>
                             </div>
                             <div class="box-body">
-                                <p>Komunikacja real-time między użytkownikami.</p>
+                                <p>Prywatna korespondencja "real time" między użytkownikami.</p>
                             </div>
                         </div>
-                        <a href="#" class="btn btn-primary btn-with-icon material-icons-local_grocery_store">Przetestuj!</a>
+                        <a href="#" class="btn btn-primary btn-with-icon material-icons-local_grocery_store go-to-shop">Przetestuj!</a>
                     </div>
                 </div>
             </div>
@@ -219,3 +219,17 @@
         </section>
     </main>
 </div>
+
+<script>
+    window.onload = function () {
+        debugger;
+        var links = document.querySelectorAll('.go-to-shop');
+        for (var i = 0; i < links.length; i++) {
+            links[i].addEventListener('click', function (evt) {
+                evt.preventDefault();
+                evt.stopPropagation();
+                alert('Wkrótce!');
+            })
+        }
+    }
+</script>
