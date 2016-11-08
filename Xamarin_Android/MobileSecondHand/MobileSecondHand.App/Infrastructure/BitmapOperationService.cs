@@ -25,7 +25,7 @@ namespace MobileSecondHand.App.Infrastructure
 
 		public BitmapOperationService()
 		{
-			this.maxPhotoValue = 900;
+			this.maxPhotoValue = 800;
 		}
 		public string SavePhotoFromUriAndReturnPhysicalPath(Android.Net.Uri contentURI, Java.IO.File file, Context ctx)
 		{
@@ -56,7 +56,7 @@ namespace MobileSecondHand.App.Infrastructure
 			var maxValue = maxPhotoValue;
 			if (isProfilePhoto)
 			{
-				maxValue = 600;
+				maxValue = 500;
 			}
 			var options = await GetBitmapOptionsOfImageAsync(path);
 			float height = options.OutHeight;
