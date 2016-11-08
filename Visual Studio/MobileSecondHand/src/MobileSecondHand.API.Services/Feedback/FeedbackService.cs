@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Feedback;
 using MobileSecondHand.API.Models.Shared.Feedback;
 using MobileSecondHand.API.Services.Mailing;
 using MobileSecondHand.DB.Models.Feedback;
@@ -30,6 +31,12 @@ namespace MobileSecondHand.API.Services.Feedback
 
 			feedbackDbService.SaveWrongAdvertisementIssue(issue);
 			this.emailService.ReportWrongAdvertisementIssue(model);
+			return true;
+		}
+
+		public bool SendNotificationFromSite(EmailFromSiteModel model)
+		{
+			this.emailService.SendNotificationFromSite(model);
 			return true;
 		}
 

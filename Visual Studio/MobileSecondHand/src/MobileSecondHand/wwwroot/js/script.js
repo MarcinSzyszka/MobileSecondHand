@@ -19,10 +19,10 @@ include('js/jquery.easing.1.3.js');
  ========================================================*/
 ;
 (function ($) {
-    if(isIE() && isIE() < 11){
+    if (isIE() && isIE() < 11) {
         include('js/pointer-events.js');
         $('html').addClass('lt-ie11');
-        $(document).ready(function(){
+        $(document).ready(function () {
             PointerEventsPolyfill.initialize({});
         });
     }
@@ -30,7 +30,7 @@ include('js/jquery.easing.1.3.js');
 
 /* Scroll To
  =============================================*/
-;(function ($) {
+; (function ($) {
     include('js/scrollTo.js');
 })(jQuery);
 
@@ -59,7 +59,7 @@ include('js/jquery.easing.1.3.js');
     if (o.length > 0) {
         include('js/jquery.equalheights.js');
     }
-})(jQuery); 
+})(jQuery);
 
 /* Copyright Year
  ========================================================*/
@@ -77,7 +77,7 @@ include('js/jquery.easing.1.3.js');
 (function ($) {
     var o = $('html');
 
-    if ((navigator.userAgent.toLowerCase().indexOf('msie') == -1 ) || (isIE() && isIE() > 9)) {
+    if ((navigator.userAgent.toLowerCase().indexOf('msie') == -1) || (isIE() && isIE() > 9)) {
         if (o.hasClass('desktop')) {
             include('js/wow.js');
 
@@ -222,58 +222,140 @@ $(document).ready(function(){
  * @description  Enables RD Mailform Plugin
  */
 ;
-(function ($) {
-    var o = $('.rd-mailform');
-    if (o.length > 0) {
-        include('js/mailform/jquery.rd-mailform.min.js');
-        $(document).ready(function () {
-            var o = $('.rd-mailform');
 
-            if (o.length) {
-                o.rdMailForm({
-                    validator: {
-                        'constraints': {
-                            '@LettersOnly': {
-                                message: 'Please use letters only!'
-                            },
-                            '@NumbersOnly': {
-                                message: 'Please use numbers only!'
-                            },
-                            '@NotEmpty': {
-                                message: 'Field should not be empty!'
-                            },
-                            '@Email': {
-                                message: 'Enter valid e-mail address!'
-                            },
-                            '@Phone': {
-                                message: 'Enter valid phone number!'
-                            },
-                            '@Date': {
-                                message: 'Use MM/DD/YYYY format!'
-                            },
-                            '@SelectRequired': {
-                                message: 'Please choose an option!'
-                            }
+
+
+(function ($) {
+    $(document).ready(function () {
+        $('.go-to-shop').bind("click", function (evt) {
+            evt.preventDefault();
+            evt.stopPropagation();
+            var infoContainer = $(".mfInfo");
+            infoContainer.addClass('success');
+            infoContainer.first().text('Juz niedlugo do pobrania!');
+            setTimeout(function () {
+                infoContainer.removeClass('success');
+            }, 2000);
+        });
+
+
+        function emailIsMatch(email) {
+            if (email.length === 0) {
+                return false;
+            }
+            var pattern = new RegExp("^[_A-Za-z0-9-]+(\\.[_A-Za-z0-9-]+)*@[A-Za-z0-9]+(\\.[A-Za-z0-9]+)*(\\.[A-Za-z]{2,})$");
+            return pattern.test(email);
+        }
+
+
+
+        $("#contactForm").submit(function (e) {
+            var infoContainer = $(".mfInfo");
+            infoContainer.addClass('sending');
+            infoContainer.first().text('Wysylanie');
+            var url = "api/Feedback/MailFromSite";
+            var model = {
+                Name: $("#name").val(),
+                Email: $("#email").val(),
+                Message: $("#message").val()
+            }
+
+            if (model.Name.length === 0 || !emailIsMatch(model.Email) || model.Message.length === 0) {
+                infoContainer.removeClass('sending');
+                infoContainer.addClass('fail');
+                infoContainer.first().text('Formularz nie zostal wypelniony poprawnie');
+                setTimeout(function () {
+                    infoContainer.removeClass('fail');
+                }, 2000);
+            }
+            else {
+                $.ajax({
+                    type: "POST",
+                    url: url,
+                    data: JSON.stringify(model),
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    success: function (data, statusName, responseObject) {
+                        infoContainer.removeClass('sending');
+                        infoContainer.removeClass('fail');
+                        if (responseObject.status === 200) {
+                            infoContainer.addClass('success');
+                            infoContainer.first().text('Email zostal wyslany! Dziekujemy.');
+                            $("#name").val(''),
+                            $("#email").val(''),
+                            $("#message").val('')
+                            setTimeout(function () {
+                                infoContainer.removeClass('success');
+                            }, 3000);
+                        }
+                        else {
+                            infoContainer.addClass('fail');
+                            infoContainer.first().text('Wysylanie sie nie powiodlo...');
+                            setTimeout(function () {
+                                infoContainer.removeClass('success');
+                            }, 2500);
                         }
                     }
-                }, {
-                    'MF000': 'Sent',
-                    'MF001': 'Recipients are not set!',
-                    'MF002': 'Form will not work locally!',
-                    'MF003': 'Please, define email field in your form!',
-                    'MF004': 'Please, define type of your form!',
-                    'MF254': 'Something went wrong with PHPMailer!',
-                    'MF255': 'There was an error submitting the form!'
                 });
             }
+            e.preventDefault();
         });
-    }
+    });
 })(jQuery);
+
+
+//(function ($) {
+//    var o = $('.rd-mailform');
+//    if (o.length > 0) {
+//        include('js/mailform/jquery.rd-mailform.min.js');
+//        $(document).ready(function () {
+//            var o = $('.rd-mailform');
+
+//            if (o.length) {
+//                o.rdMailForm({
+//                    validator: {
+//                        'constraints': {
+//                            '@LettersOnly': {
+//                                message: 'Please use letters only!'
+//                            },
+//                            '@NumbersOnly': {
+//                                message: 'Please use numbers only!'
+//                            },
+//                            '@NotEmpty': {
+//                                message: 'Field should not be empty!'
+//                            },
+//                            '@Email': {
+//                                message: 'Enter valid e-mail address!'
+//                            },
+//                            '@Phone': {
+//                                message: 'Enter valid phone number!'
+//                            },
+//                            '@Date': {
+//                                message: 'Use MM/DD/YYYY format!'
+//                            },
+//                            '@SelectRequired': {
+//                                message: 'Please choose an option!'
+//                            }
+//                        }
+//                    }
+//                }, {
+//                    'MF000': 'Sent',
+//                    'MF001': 'Recipients are not set!',
+//                    'MF002': 'Form will not work locally!',
+//                    'MF003': 'Please, define email field in your form!',
+//                    'MF004': 'Please, define type of your form!',
+//                    'MF254': 'Something went wrong with PHPMailer!',
+//                    'MF255': 'There was an error submitting the form!'
+//                });
+//            }
+//        });
+//    }
+//})(jQuery);
 
 
 /* Owl Carousel
 ========================================================*/
-;(function ($) {
+; (function ($) {
     var o = $('.owl-carousel');
     if (o.length > 0) {
         include('js/owl.carousel.min.js');
@@ -288,8 +370,8 @@ $(document).ready(function(){
                 navClass: ['owl-prev fa fa-angle-left', 'owl-next fa fa-angle-right'],
                 responsive: {
                     0: { items: 1 },
-                    768: { items: 1},
-                    980: { items: 1}
+                    768: { items: 1 },
+                    980: { items: 1 }
                 }
             });
         });

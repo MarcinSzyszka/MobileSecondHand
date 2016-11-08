@@ -11,7 +11,6 @@
 /// <reference path="js/jquery.ui.totop.js" />
 /// <reference path="js/jquery.vide.js" />
 /// <reference path="js/jquery-migrate-1.2.1.js" />
-/// <reference path="js/mailform/jquery.rd-mailform.min.js" />
 /// <reference path="js/owl.carousel.min.js" />
 /// <reference path="js/pointer-events.js" />
 /// <reference path="js/script.js" />

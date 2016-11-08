@@ -3,9 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MobileSecondHand.API.Models.Feedback;
 using MobileSecondHand.API.Models.Shared.Feedback;
 using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.Feedback;
@@ -67,6 +69,27 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
-		
+		[HttpPost]
+		[AllowAnonymous]
+		[Route("MailFromSite")]
+		public IActionResult MailFromSite([FromBody] EmailFromSiteModel model)
+		{
+			try
+			{
+				bool result = this.feedbackService.SendNotificationFromSite(model);
+
+				return Json("ok");
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wyst¹pi³ wyj¹tek w trakcie wysy³ania maila od usera z formularza na stronie internetowej: " + exc);
+				return Json("Wyst¹pi³ b³¹d! - " + exc.Message);
+			}
+		}
+
+
+
+
 	}
 }
