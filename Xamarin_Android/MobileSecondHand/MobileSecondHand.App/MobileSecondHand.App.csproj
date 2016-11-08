@@ -189,6 +189,7 @@
     <Compile Include="Infrastructure\SizeSelectingHelper.cs" />
     <Compile Include="Notifications\NewsService.cs" />
     <Compile Include="Activities\RegisterActivity.cs" />
+    <Compile Include="Receivers\ChatAlarmReceiver.cs" />
     <Compile Include="Receivers\ServicesLauncher.cs" />
     <Compile Include="SideMenu\NavigationViewMenu.cs" />
     <Compile Include="Activities\StartActivity.cs" />

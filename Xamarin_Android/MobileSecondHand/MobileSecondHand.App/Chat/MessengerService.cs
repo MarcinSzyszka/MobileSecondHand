@@ -69,7 +69,7 @@ namespace MobileSecondHand.App.Chat
 				this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
 
 				timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 1000 * 60 * 10);
+				timer.Change(0, 1000 * 60 * 1);
 			}
 		);
 			signalRThread.Start();

@@ -29,12 +29,13 @@ namespace MobileSecondHand.App.Receivers
 			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
 			if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 			{
+				WakeUpAlarmReceiver.SetWakeUpAlarmRepeating(context);
 				context.StartService(new Intent(context.ApplicationContext, typeof(MessengerService)));
 			}
-			if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
-			{
-				context.StartService(new Intent(context.ApplicationContext, typeof(NewsService)));
-			}
+			//if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
+			//{
+			//	context.StartService(new Intent(context.ApplicationContext, typeof(NewsService)));
+			//}
 		}
 	}
 }

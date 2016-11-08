@@ -28,6 +28,7 @@ using Android.Graphics;
 using MobileSecondHand.Services.Authentication;
 using System.Threading.Tasks;
 using System.Collections.Generic;
+using MobileSecondHand.App.Receivers;
 
 namespace MobileSecondHand.App.SideMenu
 {
@@ -352,12 +353,12 @@ namespace MobileSecondHand.App.SideMenu
 					if (!notificationsStateSwitch.Checked)
 					{
 						appSettings.NotificationsDisabled = true;
-						activity.StopService(new Intent(activity.ApplicationContext, typeof(NewsService)));
+						//activity.StopService(new Intent(activity.ApplicationContext, typeof(NewsService)));
 					}
 					else
 					{
 						appSettings.NotificationsDisabled = false;
-						activity.StartService(new Intent(activity.ApplicationContext, typeof(NewsService)));
+						//activity.StartService(new Intent(activity.ApplicationContext, typeof(NewsService)));
 					}
 
 					SetAppSettings(appSettings);
@@ -407,6 +408,7 @@ namespace MobileSecondHand.App.SideMenu
 					{
 						appSettings.ChatDisabled = false;
 						activity.StartService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
+						WakeUpAlarmReceiver.SetWakeUpAlarmRepeating(activity.ApplicationContext);
 					}
 
 					SetAppSettings(appSettings);
@@ -481,7 +483,7 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void SetNotificationsSettings()
 		{
-			if (!appSettings.NotificationsDisabled && NewsService.ServiceIsRunning)
+			if (!appSettings.NotificationsDisabled)
 			{
 				this.textViewNotificationsState.Text = "w³¹czone";
 

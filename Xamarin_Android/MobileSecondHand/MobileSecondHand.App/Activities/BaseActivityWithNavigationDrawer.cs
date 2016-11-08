@@ -20,6 +20,7 @@ using MobileSecondHand.Models.Settings;
 using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using Android.Support.Design.Widget;
+using MobileSecondHand.App.Receivers;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -38,19 +39,15 @@ namespace MobileSecondHand.App.Activities
 		protected override void OnStart()
 		{
 			base.OnStart();
-			var settingsModel = (AppSettingsModel)this.sharedPreferencesHelper.GetSharedPreference<AppSettingsModel>(SharedPreferencesKeys.APP_SETTINGS);
+			var settingsModel = SharedPreferencesHelper.GetAppSettings(this);
 			if (settingsModel != null)
 			{
 				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 				{
 					StartService(new Intent(this.ApplicationContext, typeof(MessengerService)));
-				}
-				if (!settingsModel.NotificationsDisabled && !NewsService.ServiceIsRunning)
-				{
-					StartService(new Intent(this.ApplicationContext, typeof(NewsService)));
+					WakeUpAlarmReceiver.SetWakeUpAlarmRepeating(this.ApplicationContext);
 				}
 			}
-
 		}
 
 
