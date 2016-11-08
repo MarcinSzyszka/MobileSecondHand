@@ -32,11 +32,11 @@ namespace MobileSecondHand.Controllers
 
 		[HttpPost]
 		[Route("UploadFiles")]
-		public async Task<IActionResult> UploadAdvertisementItemPhotos()
+		public IActionResult UploadAdvertisementItemPhotos()
 		{
 			try
 			{
-				AdvertisementItemPhotosNames photosPaths = await this.advertisementItemPhotosUploader.SaveAdvertisementPhotos(Request.Form.Files);
+				AdvertisementItemPhotosNames photosPaths = this.advertisementItemPhotosUploader.SaveAdvertisementPhotos(Request.Form.Files);
 				return Json(photosPaths);
 			}
 			catch (Exception exc)
@@ -119,7 +119,7 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
-		
+
 
 		[HttpPost]
 		[Route("DeleteAdvertisementFromFavourites")]
@@ -140,7 +140,7 @@ namespace MobileSecondHand.Controllers
 		}
 
 
-		
+
 
 		[HttpPost]
 		[Route("CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck")]

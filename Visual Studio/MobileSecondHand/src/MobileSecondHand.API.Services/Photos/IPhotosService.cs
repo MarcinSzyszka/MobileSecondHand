@@ -6,7 +6,7 @@ namespace MobileSecondHand.API.Services.Photos
 {
 	public interface IPhotosService
 	{
-		Task<AdvertisementItemPhotosNames> SaveAdvertisementPhotos(IFormFileCollection files);
+		AdvertisementItemPhotosNames SaveAdvertisementPhotos(IFormFileCollection files);
 		string SaveUserProfilePhoto(IFormFileCollection files);
 		Task<byte[]> GetAdvertisementMinPhotoInBytes(string photoName);
 		Task<byte[]> GetAdvertisementMainPhotoInBytes(string photoName);

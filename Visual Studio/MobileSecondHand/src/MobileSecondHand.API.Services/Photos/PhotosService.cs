@@ -11,7 +11,9 @@ namespace MobileSecondHand.API.Services.Photos
 {
 	public class PhotosService : IPhotosService
 	{
-		int minPhotoMaxWidth = 350;
+		double minPhotoMaxWidth = 250.0;
+		double resizedPhotoMaxSizeValue = 700.0;
+		double profilePhotoMaxSize = 150;
 		IAppFilesPathHelper appFilesPathHelper;
 		IAppFilesNamesHelper appFilesNamesHelper;
 
@@ -21,7 +23,7 @@ namespace MobileSecondHand.API.Services.Photos
 			this.appFilesNamesHelper = appFilesNamesHelper;
 		}
 
-		public async Task<AdvertisementItemPhotosNames> SaveAdvertisementPhotos(IFormFileCollection files)
+		public AdvertisementItemPhotosNames SaveAdvertisementPhotos(IFormFileCollection files)
 		{
 			var photosPathsModel = new AdvertisementItemPhotosNames();
 			var filesCount = files.Count;
@@ -31,11 +33,9 @@ namespace MobileSecondHand.API.Services.Photos
 				{
 					var newFileName = this.appFilesNamesHelper.GetPhotoRandomUniqueName("jpg");
 					var newFilePath = String.Concat(this.appFilesPathHelper.GetAdvertisementMainPhotosPath(), "/", newFileName);
-					using (FileStream fileStream = System.IO.File.Create(newFilePath))
-					{
-						await readStream.CopyToAsync(fileStream);
-						photosPathsModel.PhotosNames.Add(newFileName);
-					}
+					var resizedPhoto = ResizePhoto(readStream);
+					resizedPhoto.Save(newFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
+					photosPathsModel.PhotosNames.Add(newFileName);
 					//first file (name ends with "0") will be main photo
 					if (i == 0)
 					{
@@ -51,11 +51,12 @@ namespace MobileSecondHand.API.Services.Photos
 		}
 
 
+
 		public string SaveUserProfilePhoto(IFormFileCollection files)
 		{
 			using (Stream readStream = files.GetFile("profilePhoto").OpenReadStream())
 			{
-				var minImage = CreateMinPhoto(readStream);
+				var minImage = ResizePhoto(readStream, true);
 				var newFileName = this.appFilesNamesHelper.GetPhotoRandomUniqueName("jpg");
 				var newFilePath = Path.Combine(this.appFilesPathHelper.GetUsersProfilesPhotosMainPath(), newFileName);
 				minImage.Save(newFilePath, System.Drawing.Imaging.ImageFormat.Jpeg);
@@ -101,15 +102,37 @@ namespace MobileSecondHand.API.Services.Photos
 			return photo;
 		}
 
+
+		private Bitmap ResizePhoto(Stream readStream, bool isUserProfile = false)
+		{
+			var maxValue = isUserProfile ? profilePhotoMaxSize : resizedPhotoMaxSizeValue;
+			var image = Image.FromStream(readStream);
+			double divider = 1.0;
+			var imageWidth = (double)image.Width;
+			var imageHeight = (double)image.Height;
+			if (imageHeight > imageWidth)
+			{
+				divider = imageHeight / maxValue;
+			}
+			else
+			{
+				divider = imageWidth / maxValue;
+			}
+
+			Bitmap bmpOriginal = new Bitmap(image, new Size((int)(imageWidth / divider), (int)(imageHeight / divider)));
+			return bmpOriginal;
+		}
 		private Bitmap CreateMinPhoto(Stream readStream)
 		{
 			var image = Image.FromStream(readStream);
-			var divider = 1;
+			double divider = 1.0;
+			var imageWidth = (double)image.Width;
+			var imageHeight = (double)image.Height;
 			if (image.Width > minPhotoMaxWidth)
 			{
-				divider = image.Width / minPhotoMaxWidth;
+				divider = imageWidth / minPhotoMaxWidth;
 			}
-			Bitmap bmpOriginal = new Bitmap(image, new Size(image.Width / divider, image.Height / divider));
+			Bitmap bmpOriginal = new Bitmap(image, new Size((int)(imageWidth / divider), (int)(imageHeight / divider)));
 			return bmpOriginal;
 		}
 
