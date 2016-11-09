@@ -42,6 +42,7 @@ namespace MobileSecondHand.App.Receivers
 		string bearerToken;
 		ChatHubClientService chatHubServiceInstance;
 		bool checkingNewAdvertsFinished;
+		private int timerInterval;
 
 		public override void OnReceive(Context context, Intent intent)
 		{
@@ -60,8 +61,9 @@ namespace MobileSecondHand.App.Receivers
 			{
 				chatHubServiceInstance = ChatHubClientService.GetServiceInstance(bearerToken);
 				timerTick = 1;
+				timerInterval = 1000 * 10;
 				timer = new System.Threading.Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 1000 * 10);
+				timer.Change(timerInterval, timerInterval);
 			}
 			if (!appsettings.NotificationsDisabled)
 			{
@@ -76,13 +78,10 @@ namespace MobileSecondHand.App.Receivers
 
 		private void TimerCallBackMethod(object state)
 		{
-			if (timerTick > 1)
+			if ((chatHubServiceInstance.IsConnected() && checkingNewAdvertsFinished) || timerTick == 12)//timerTick == 12 == 2 min
 			{
-				if ((chatHubServiceInstance.IsConnected() && checkingNewAdvertsFinished) || timerTick == 13)//timerTick == 13 == 2 min
-				{
-					timer.Dispose();
-					_wakeLock.Release();
-				}
+				timer.Dispose();
+				_wakeLock.Release();
 			}
 			timerTick++;
 		}
