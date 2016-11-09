@@ -103,6 +103,11 @@ namespace MobileSecondHand.App.Infrastructure
 			return settingsModel;
 		}
 
+		public static string GetBearerToken(Context context)
+		{
+			return PreferenceManager.GetDefaultSharedPreferences(context).GetString(SharedPreferencesKeys.BEARER_TOKEN, null);
+		}
+
 
 		public static void SetAppSettings(Context context, AppSettingsModel appSettingsModel)
 		{
