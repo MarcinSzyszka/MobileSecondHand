@@ -18,10 +18,11 @@ using MobileSecondHand.API.Models.Shared.Extensions;
 using Refractored.Controls;
 using MobileSecondHand.API.Models.Shared.Chat;
 using MobileSecondHand.Services.Authentication;
+using Android.Support.V4.Content;
 
 namespace MobileSecondHand.App.Activities
 {
-	[Activity(Label = "Rozmowa")]
+	[Activity(Label = "Rozmowa", LaunchMode = Android.Content.PM.LaunchMode.SingleTop)]
 	public class ConversationActivity : BaseActivity, IInfiniteScrollListener
 	{
 		ISignInService signInService;
@@ -36,6 +37,8 @@ namespace MobileSecondHand.App.Activities
 		ConversationInfoModel conversationInfoModel;
 		int pageNumber;
 		private ProgressDialogHelper progress;
+		private TextView textViewUserName;
+		private CircleImageView profileImageView;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
@@ -63,19 +66,39 @@ namespace MobileSecondHand.App.Activities
 			this.messagesService = new MessagesService(bearerToken);
 			SetContentView(Resource.Layout.ConversationActivity);
 			SetupViews(savedInstanceState);
+			SetupConversationToolbar();
+			pageNumber = 0;
 			GetExtras();
 			progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
-			await SetupToolbarWithProfileImage();
-			pageNumber = 0;
+			await SetupIntelocutorInfo();
 			await GetAndDisplayMesages(savedInstanceState);
 			coversationsLayoutWrapper.Visibility = ViewStates.Visible;
 			progress.CloseProgressDialog();
 		}
 
-		private async Task SetupToolbarWithProfileImage()
+		protected override async void OnNewIntent(Intent intent)
 		{
-			this.toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar_with_circle_image_view);
-			var profileImageView = toolbar.FindViewById<CircleImageView>(Resource.Id.profile_image_on_app_bar);
+			try
+			{
+				coversationsLayoutWrapper.Visibility = ViewStates.Gone;
+				pageNumber = 0;
+				GetExtras(intent);
+				progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
+				await SetupIntelocutorInfo();
+				await GetAndDisplayMesages(null);
+				coversationsLayoutWrapper.Visibility = ViewStates.Visible;
+				progress.CloseProgressDialog();
+			}
+			catch (Exception exc)
+			{
+				var a = exc;
+			}
+		
+		}
+
+		private async Task SetupIntelocutorInfo()
+		{
+			textViewUserName.Text = conversationInfoModel.InterlocutorName;
 			if (conversationInfoModel.InterlocutorPrifileImage != null)
 			{
 				if (conversationInfoModel.InterlocutorPrifileImage.Length > 0)
@@ -89,11 +112,19 @@ namespace MobileSecondHand.App.Activities
 					{
 						profileImageView.SetImageBitmap(await this.bitmapService.GetScaledDownBitmapForDisplayAsync(imageBytes));
 					}
+					else
+					{
+						profileImageView.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.logo_user));
+					}
 				}
-
 			}
-			var textViewUserName = toolbar.FindViewById<TextView>(Resource.Id.textViewUserNameAppBar);
-			textViewUserName.Text = conversationInfoModel.InterlocutorName;
+		}
+
+		private void SetupConversationToolbar()
+		{
+			this.toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar_with_circle_image_view);
+			this.profileImageView = toolbar.FindViewById<CircleImageView>(Resource.Id.profile_image_on_app_bar);
+			this.textViewUserName = toolbar.FindViewById<TextView>(Resource.Id.textViewUserNameAppBar);
 			SetSupportActionBar(toolbar);
 			SupportActionBar.SetHomeButtonEnabled(true);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
@@ -171,9 +202,18 @@ namespace MobileSecondHand.App.Activities
 			return new ConversationActivityStateModel(isInForeground, this.conversationInfoModel.ConversationId);
 		}
 
-		private void GetExtras()
+		private void GetExtras(Intent intent = null)
 		{
-			var conversationInfoModelString = Intent.GetStringExtra(ExtrasKeys.CONVERSATION_INFO_MODEL);
+			var conversationInfoModelString = String.Empty;
+			if (intent != null)
+			{
+				conversationInfoModelString = intent.GetStringExtra(ExtrasKeys.CONVERSATION_INFO_MODEL);
+			}
+			else
+			{
+				conversationInfoModelString = Intent.GetStringExtra(ExtrasKeys.CONVERSATION_INFO_MODEL);
+			}
+
 			this.conversationInfoModel = JsonConvert.DeserializeObject<ConversationInfoModel>(conversationInfoModelString);
 		}
 

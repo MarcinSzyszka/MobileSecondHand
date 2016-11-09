@@ -38,34 +38,10 @@ namespace MobileSecondHand.App.Activities
 			await SetupViews();
 		}
 
-		//public override bool OnCreateOptionsMenu(IMenu menu)
-		//{
-		//	MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
-		//	if (menu != null)
-		//	{
-		//		menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
-		//		menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
-		//		menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
-		//		menu.FindItem(Resource.Id.chat).SetVisible(false);
-		//		menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
-		//		menu.FindItem(Resource.Id.home).SetVisible(true);
-		//	}
-
-		//	return base.OnCreateOptionsMenu(menu);
-		//}
-
-		public override bool OnOptionsItemSelected(IMenuItem item)
+		protected override async void OnRestart()
 		{
-			var handled = false;
-			switch (item.ItemId)
-			{
-				case Resource.Id.home:
-					GoToMainPage();
-					handled = true;
-					break;
-			}
-
-			return handled;
+			base.OnRestart();
+			await SetupViews();
 		}
 
 		private async Task SetupViews()
@@ -95,6 +71,11 @@ namespace MobileSecondHand.App.Activities
 					conversationsRecyclerView.SetLayoutManager(mLayoutManager);
 					conversationsRecyclerView.SetAdapter(conversationsListAdapter);
 					conversationsRecyclerView.RequestLayout();
+					if (conversations.Count < 10)
+					{
+						//przy pierwszym pociagnieciu jak sciagnie malo to niech nie mryga drugi raz po infinite scrolu tylko od razu wylacze
+						conversationsListAdapter.InfiniteScrollDisabled = true;
+					}
 				}
 				else
 				{
