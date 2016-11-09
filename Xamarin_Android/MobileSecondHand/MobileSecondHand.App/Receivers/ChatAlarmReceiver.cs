@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
@@ -15,10 +16,12 @@ using Java.Util;
 using MobileSecondHand.API.Models.Shared.Advertisements;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Location;
+using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Settings;
 using MobileSecondHand.Services.Advertisements;
+using MobileSecondHand.Services.Chat;
 using Newtonsoft.Json;
 
 namespace MobileSecondHand.App.Receivers
@@ -26,33 +29,83 @@ namespace MobileSecondHand.App.Receivers
 	[BroadcastReceiver]
 	public class WakeUpAlarmReceiver : BroadcastReceiver
 	{
-		private static PendingIntent pendingIntent;
-		bool repeatAlarmIsWorking;
-		private Context context;
-		private AdvertisementsSearchModelForNotifications searchModelForNotifications;
-		private AppSettingsModel appsettings;
-		private AdvertisementItemService advertisementItemService;
-		private GpsLocationService gpsLocationService;
+		static PendingIntent pendingIntent;
+		Context context;
+		AdvertisementsSearchModelForNotifications searchModelForNotifications;
+		AppSettingsModel appsettings;
+		AdvertisementItemService advertisementItemService;
+		GpsLocationService gpsLocationService;
+		PowerManager.WakeLock _wakeLock;
+		Action checkingNewAdvertsAction;
+		System.Threading.Timer timer;
+		int timerTick;
+		string bearerToken;
+		ChatHubClientService chatHubServiceInstance;
+		bool checkingNewAdvertsFinished;
 
-		public override async void OnReceive(Context context, Intent intent)
+		public override void OnReceive(Context context, Intent intent)
 		{
-			this.context = context.ApplicationContext;
-			UpdateAlarm(context);
-			this.appsettings = SharedPreferencesHelper.GetAppSettings(this.context);
-			if (appsettings.NotificationsDisabled)
+			bearerToken = SharedPreferencesHelper.GetBearerToken(context);
+			if (bearerToken == null)
 			{
 				return;
 			}
-			searchModelForNotifications = new AdvertisementsSearchModelForNotifications();
-			var sharedPreferencesHelper = new SharedPreferencesHelper(context.ApplicationContext);
-			var bearerToken = (string)sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+			this.context = context.ApplicationContext;
+			var powerManager = (PowerManager)context.GetSystemService(Context.PowerService);
+			_wakeLock = powerManager.NewWakeLock(WakeLockFlags.Partial, "MSH");
+			_wakeLock.Acquire();
+
 			this.appsettings = SharedPreferencesHelper.GetAppSettings(this.context);
-			this.advertisementItemService = new AdvertisementItemService(bearerToken);
-			this.gpsLocationService = new GpsLocationService(context.ApplicationContext, null);
-			var coordinates = await CheckNewAdvertisementsAroundUserCurrentLocation();
-			await CheckNewAdvertisementsAroundUserHomeLocation(coordinates);
+			if (!appsettings.ChatDisabled)
+			{
+				chatHubServiceInstance = ChatHubClientService.GetServiceInstance(bearerToken);
+				timerTick = 1;
+				timer = new System.Threading.Timer(new TimerCallback(TimerCallBackMethod));
+				timer.Change(0, 1000 * 10);
+			}
+			if (!appsettings.NotificationsDisabled)
+			{
+				SetCheckingNewAdvertisementsAction(context);
+				checkingNewAdvertsAction();
+			}
+			else
+			{
+				checkingNewAdvertsFinished = true;
+			}
 		}
 
+		private void TimerCallBackMethod(object state)
+		{
+			if (timerTick > 1)
+			{
+				if ((chatHubServiceInstance.IsConnected() && checkingNewAdvertsFinished) || timerTick == 13)//timerTick == 13 == 2 min
+				{
+					timer.Dispose();
+					_wakeLock.Release();
+				}
+			}
+			timerTick++;
+		}
+
+		private void SetCheckingNewAdvertisementsAction(Context context)
+		{
+			checkingNewAdvertsAction = async () =>
+			{
+				try
+				{
+					searchModelForNotifications = new AdvertisementsSearchModelForNotifications();
+					this.appsettings = SharedPreferencesHelper.GetAppSettings(this.context);
+					this.advertisementItemService = new AdvertisementItemService(bearerToken);
+					this.gpsLocationService = new GpsLocationService(context.ApplicationContext, null);
+					var coordinates = await CheckNewAdvertisementsAroundUserCurrentLocation();
+					await CheckNewAdvertisementsAroundUserHomeLocation(coordinates);
+				}
+				finally
+				{
+					checkingNewAdvertsFinished = true;
+				}
+			};
+		}
 
 		public static void SetWakeUpAlarmRepeating(Context context)
 		{
@@ -64,37 +117,37 @@ namespace MobileSecondHand.App.Receivers
 			}
 			Intent intent = new Intent(context, typeof(WakeUpAlarmReceiver));
 			pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, 0);
-			am.SetInexactRepeating(AlarmType.ElapsedRealtimeWakeup, 1000 * 60 * 2, AlarmManager.IntervalHour, pendingIntent);
+			am.SetInexactRepeating(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + AlarmManager.IntervalHour, AlarmManager.IntervalHour, pendingIntent);
 		}
 
-		public static void SetWakeUpAlarmOnce(Context context, DateTime date)
-		{
-			AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
-			Intent intent = new Intent(context, typeof(WakeUpAlarmReceiver));
-			pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, 0);
-			Calendar calendar = Calendar.Instance;
-			calendar.Set(date.Year, date.Month, date.Day, date.Hour, date.Minute);
-			am.Set(AlarmType.RtcWakeup, calendar.TimeInMillis, pendingIntent);
-		}
+		//public static void SetWakeUpAlarmOnce(Context context, DateTime date)
+		//{
+		//	AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+		//	Intent intent = new Intent(context, typeof(WakeUpAlarmReceiver));
+		//	pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, 0);
+		//	Calendar calendar = Calendar.Instance;
+		//	calendar.Set(date.Year, date.Month, date.Day, date.Hour, date.Minute);
+		//	am.Set(AlarmType.RtcWakeup, calendar.TimeInMillis, pendingIntent);
+		//}
 
 
-		private void UpdateAlarm(Context context)
-		{
-			if (DateTime.Now.Hour >= 22 || DateTime.Now.Hour <= 5)
-			{
-				repeatAlarmIsWorking = false;
-				var dateTimeTomorrow = DateTime.Now.AddDays(1);
-				AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
-				am.Cancel(pendingIntent);
-				pendingIntent.Cancel();
-				WakeUpAlarmReceiver.SetWakeUpAlarmOnce(context, new DateTime(dateTimeTomorrow.Year, dateTimeTomorrow.Month, dateTimeTomorrow.Day, 6, 0, 0));
-			}
-			else if (repeatAlarmIsWorking == false)
-			{
-				repeatAlarmIsWorking = true;
-				SetWakeUpAlarmRepeating(context);
-			}
-		}
+		//private void UpdateAlarm(Context context)
+		//{
+		//	if (DateTime.Now.Hour >= 22 || DateTime.Now.Hour <= 5)
+		//	{
+		//		repeatAlarmIsWorking = false;
+		//		var dateTimeTomorrow = DateTime.Now.AddDays(1);
+		//		AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+		//		am.Cancel(pendingIntent);
+		//		pendingIntent.Cancel();
+		//		WakeUpAlarmReceiver.SetWakeUpAlarmOnce(context, new DateTime(dateTimeTomorrow.Year, dateTimeTomorrow.Month, dateTimeTomorrow.Day, 6, 0, 0));
+		//	}
+		//	else if (repeatAlarmIsWorking == false)
+		//	{
+		//		repeatAlarmIsWorking = true;
+		//		SetWakeUpAlarmRepeating(context);
+		//	}
+		//}
 
 		private bool LocationsAreSimiliar(CoordinatesForAdvertisementsModel currentLocationCoordinates, CoordinatesForAdvertisementsModel homeLocationCoordinates)
 		{
