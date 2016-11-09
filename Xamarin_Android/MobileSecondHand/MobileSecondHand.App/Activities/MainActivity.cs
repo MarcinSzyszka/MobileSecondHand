@@ -59,7 +59,7 @@ namespace MobileSecondHand.App
 		Action<bool> RefreshAdvertisementList;
 		private AdvertisementSearchModelCopier searchModelCopier;
 
-		protected override async void OnCreate(Bundle savedInstanceState)
+		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			this.gpsLocationService = new GpsLocationService(this, null);
@@ -77,9 +77,7 @@ namespace MobileSecondHand.App
 			SetAdvertisementsListKind();
 			SetupViews();
 			SetupSortingViews();
-			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
-			await DownloadAndShowAdvertisements(true);
-			progress.CloseProgressDialog();
+			RefreshAdvertisementList(true);
 		}
 
 		protected override void OnNewIntent(Intent intent)
@@ -150,7 +148,6 @@ namespace MobileSecondHand.App
 
 				try
 				{
-					advertisementItemListAdapter.InfiniteScrollDisabled = false;
 					await DownloadAndShowAdvertisements(true);
 				}
 				catch (Exception)
