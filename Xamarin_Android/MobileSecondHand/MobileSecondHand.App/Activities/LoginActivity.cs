@@ -107,7 +107,9 @@ namespace MobileSecondHand.App.Activities
 		{
 			if (loginFormIsValid())
 			{
+				progress.ShowProgressDialog("Trwa logowanie... Proszê czekaæ");
 				await LoginUser();
+				progress.CloseProgressDialog();
 			}
 			else
 			{
@@ -117,7 +119,6 @@ namespace MobileSecondHand.App.Activities
 
 		private async Task LoginUser()
 		{
-			progress.ShowProgressDialog("Trwa logowanie... Proszê czekaæ");
 			var loginModel = new LoginModel
 			{
 				Email = emailInput.Text,
@@ -126,7 +127,6 @@ namespace MobileSecondHand.App.Activities
 			var tokenModel = await this.signInService.SignInUserStandard(loginModel);
 			if (tokenModel != null)
 			{
-				progress.CloseProgressDialog();
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
 				if (tokenModel.UserHasToSetNickName)
 				{
@@ -141,8 +141,7 @@ namespace MobileSecondHand.App.Activities
 			}
 			else
 			{
-				progress.CloseProgressDialog();
-				AlertsService.ShowLongToast(this, "Coœ posz³o nie tak na serwerze!");
+				AlertsService.ShowLongToast(this, "Podany email lub has³o s¹ b³êdne");
 			}
 		}
 
@@ -163,7 +162,7 @@ namespace MobileSecondHand.App.Activities
 			{
 				HandleSuccess = async loginResult =>
 				{
-					progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
+					progress.ShowProgressDialog("Trwa logowanie w aplikacji... Proszê czekaæ");
 					var token = await LoginWithFacebook();
 					if (token != null)
 					{

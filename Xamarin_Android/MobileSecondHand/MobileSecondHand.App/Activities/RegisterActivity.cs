@@ -69,7 +69,9 @@ namespace MobileSecondHand.App.Activities
 				}
 				else
 				{
+					progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
 					await RegisterUser();
+					progress.CloseProgressDialog();
 				}
 			}
 			else
@@ -86,7 +88,6 @@ namespace MobileSecondHand.App.Activities
 
 		private async Task RegisterUser()
 		{
-			progress.ShowProgressDialog("Trwa tworzenie konta u¿ytkownika... Proszê czekaæ");
 			var registerModel = new RegisterModel
 			{
 				Email = emailInput.Text,
@@ -99,12 +100,10 @@ namespace MobileSecondHand.App.Activities
 			{
 				var preferenceHelper = new SharedPreferencesHelper(this);
 				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
-				progress.CloseProgressDialog();
 				GoToStartActivity();
 			}
 			else
 			{
-				progress.CloseProgressDialog();
 				AlertsService.ShowLongToast(this, "Coœ posz³o nie tak na serwerze!");
 			}
 
