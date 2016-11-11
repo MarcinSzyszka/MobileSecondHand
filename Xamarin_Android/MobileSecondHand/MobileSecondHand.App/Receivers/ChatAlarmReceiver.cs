@@ -220,13 +220,14 @@ namespace MobileSecondHand.App.Receivers
 			var message = GetMessage(advertisementsKind);
 			var nMgr = (NotificationManager)context.GetSystemService(Context.NotificationService);
 			var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand - nowoœci");
+			var notificationId = new System.Random().Next(1000);
 			notification.Flags = NotificationFlags.AutoCancel;
 			notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 			var intent = new Intent(context, typeof(MainActivity));
 			intent.PutExtra(ExtrasKeys.NEW_ADVERTISEMENT_KIND, JsonConvert.SerializeObject(advertisementsKind));
 			var pendingIntent = PendingIntent.GetActivity(context, 0, intent, PendingIntentFlags.CancelCurrent);
 			notification.SetLatestEventInfo(context, "Nowe og³oszenia", message, pendingIntent);
-			nMgr.Notify(0, notification);
+			nMgr.Notify(notificationId, notification);
 		}
 
 		private string GetMessage(AdvertisementsKind advertisementsKind)

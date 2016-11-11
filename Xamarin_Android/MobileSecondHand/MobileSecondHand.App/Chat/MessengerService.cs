@@ -95,6 +95,7 @@ namespace MobileSecondHand.App.Chat
 			{
 				var nMgr = (NotificationManager)GetSystemService(NotificationService);
 				var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand - nowa wiadomoœæ");
+				var notificationId = new System.Random().Next(1000);
 				notification.Flags = NotificationFlags.AutoCancel;
 				notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 				var intent = new Intent(this, typeof(ConversationActivity));
@@ -108,7 +109,7 @@ namespace MobileSecondHand.App.Chat
 				intent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
 				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.CancelCurrent);
 				notification.SetLatestEventInfo(this, String.Format("Wiadomoœæ od {0}", message.SenderName), message.MessageContent, pendingIntent);
-				nMgr.Notify(0, notification);
+				nMgr.Notify(notificationId, notification);
 			}
 			else
 			{
