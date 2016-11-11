@@ -22,7 +22,15 @@ namespace MobileSecondHand.Services.Categories
 
 		public async Task<IDictionary<int, string>> GetCategories()
 		{
-			var response = await client.GetAsync(WebApiConsts.CATEGORY_CONTROLLER + "GetCategoriesForSettings");
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(WebApiConsts.CATEGORY_CONTROLLER + "GetCategoriesForSettings");
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			var contentString = await response.Content.ReadAsStringAsync();
 
 			var keywords = JsonConvert.DeserializeObject<IDictionary<int, string>>(contentString);

@@ -25,7 +25,15 @@ namespace MobileSecondHand.Services.Google_Api
 		public async Task<string> GetAddress(double lat, double lon)
 		{
 			var resultAddress = String.Empty;
-			var response = await client.GetAsync(GetUrl(lat, lon));
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(GetUrl(lat, lon));
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			var contentString = await response.Content.ReadAsStringAsync();
 
 			var apiResults = JsonConvert.DeserializeObject<dynamic>(contentString);

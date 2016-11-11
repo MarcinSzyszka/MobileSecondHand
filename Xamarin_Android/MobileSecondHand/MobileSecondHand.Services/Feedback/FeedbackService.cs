@@ -27,7 +27,15 @@ namespace MobileSecondHand.Services.Feedback
 			model.AdvertisementId = advertId;
 			var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-			var response = await client.PostAsync(WebApiConsts.FEEDBACK_CONTROLLER + "ReportWrongAdvertisement/", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.FEEDBACK_CONTROLLER + "ReportWrongAdvertisement/", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -40,7 +48,15 @@ namespace MobileSecondHand.Services.Feedback
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
 
-			var response = await client.PostAsync(WebApiConsts.FEEDBACK_CONTROLLER + "SendNotificationFromUser/", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.FEEDBACK_CONTROLLER + "SendNotificationFromUser/", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;

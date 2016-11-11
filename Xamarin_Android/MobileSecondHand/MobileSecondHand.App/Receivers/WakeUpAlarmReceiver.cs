@@ -102,6 +102,7 @@ namespace MobileSecondHand.App.Receivers
 					var coordinates = await CheckNewAdvertisementsAroundUserCurrentLocation();
 					await CheckNewAdvertisementsAroundUserHomeLocation(coordinates);
 				}
+				catch { }
 				finally
 				{
 					checkingNewAdvertsFinished = true;

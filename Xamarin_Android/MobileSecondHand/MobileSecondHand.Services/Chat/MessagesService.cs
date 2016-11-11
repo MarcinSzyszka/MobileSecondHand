@@ -21,7 +21,15 @@ namespace MobileSecondHand.Services.Chat
 		public async Task<List<ConversationMessage>> GetMessages(int conversationId, int pageNumber) {
 			List<ConversationMessage> messagesList = new List<ConversationMessage>();
 
-			var response = await client.GetAsync(String.Format("{0}/{1}/{2}/{3}", WebApiConsts.CONVERSATION_CONTROLLER, "GetMessages", conversationId, pageNumber));
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(String.Format("{0}/{1}/{2}/{3}", WebApiConsts.CONVERSATION_CONTROLLER, "GetMessages", conversationId, pageNumber));
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			
 			if (response.IsSuccessStatusCode) {
 				var responseString = await response.Content.ReadAsStringAsync();
@@ -34,7 +42,15 @@ namespace MobileSecondHand.Services.Chat
 		public async Task<ConversationInfoModel> GetConversationInfoModel(string addresseeId)
 		{
 			var conversationInfoModel = default(ConversationInfoModel);
-			var response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationInfoModel", addresseeId));
+			HttpResponseMessage response;
+			try
+			{
+				 response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationInfoModel", addresseeId));
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 
 			if (response.IsSuccessStatusCode)
 			{
@@ -48,8 +64,15 @@ namespace MobileSecondHand.Services.Chat
 		public async Task<List<ConversationItemModel>> GetConversations(int pageNumber)
 		{
 			var conversations = new List<ConversationItemModel>();
-
-			var response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversations", pageNumber));
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversations", pageNumber));
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 
 			if (response.IsSuccessStatusCode)
 			{

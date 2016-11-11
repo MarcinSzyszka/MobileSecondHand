@@ -26,7 +26,16 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<List<AdvertisementItemShort>> GetAdvertisements(AdvertisementsSearchModel searchModel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisements", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisements", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
+			
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return new List<AdvertisementItemShort>();
@@ -38,7 +47,15 @@ namespace MobileSecondHand.Services.Advertisements
 
 		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber, string userId)
 		{
-			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber + "/" + userId);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber + "/" + userId);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return new List<AdvertisementItemShort>();
@@ -51,7 +68,15 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<bool> CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck(AdvertisementsSearchModelForNotifications searchModel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundCurrentLocationSinceLastCheck", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -64,7 +89,15 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<bool> CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck(AdvertisementsSearchModelForNotifications searchModel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(searchModel), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CheckForNewAdvertisementsAroundHomeLocationSinceLastCheck", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -96,8 +129,15 @@ namespace MobileSecondHand.Services.Advertisements
 				i++;
 				sb.Clear();
 			}
-
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "UploadFiles", form);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "UploadFiles", form);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return null;
@@ -111,7 +151,15 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<bool> CreateNewAdvertisement(NewAdvertisementItem newAdvertisementModel)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(newAdvertisementModel), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CreateAdvertisementItem", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "CreateAdvertisementItem", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -122,7 +170,15 @@ namespace MobileSecondHand.Services.Advertisements
 
 		public async Task<string> AddToUserFavouritesAdvertisements(SingleIdModelForPostRequests advertisementId)
 		{
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "AddToUserFavourites", new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json"));
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "AddToUserFavourites", new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json"));
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
 
 			return responseContentString.Replace("\"", "");
@@ -130,7 +186,15 @@ namespace MobileSecondHand.Services.Advertisements
 
 		public async Task<AdvertisementItemDetails> GetAdvertisementDetails(int advertisementItemId)
 		{
-			var response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisementDetail/" + advertisementItemId);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetAdvertisementDetail/" + advertisementItemId);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return null;
@@ -144,7 +208,15 @@ namespace MobileSecondHand.Services.Advertisements
 		public async Task<bool> RestartAdvertisement(int advertisementId)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "RestartAdvertisement", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "RestartAdvertisement", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -159,7 +231,16 @@ namespace MobileSecondHand.Services.Advertisements
 			var actionaname = advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser ? "DeleteAdvertisement/" : "DeleteAdvertisementFromFavourites/";
 
 			var stringContent = new StringContent(JsonConvert.SerializeObject(advertisementId), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + actionaname, stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + actionaname, stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
+
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;

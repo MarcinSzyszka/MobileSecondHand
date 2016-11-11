@@ -30,7 +30,15 @@ namespace MobileSecondHand.Services.Authentication
 			}
 			client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken.Token);
 
-			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "TokenIsActual");
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "TokenIsActual");
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 
 			if (response.StatusCode == System.Net.HttpStatusCode.NotModified)
 			{
@@ -63,8 +71,15 @@ namespace MobileSecondHand.Services.Authentication
 
 			var stringContent = new StringContent(JsonConvert.SerializeObject(nickName), Encoding.UTF8, "application/json");
 
-
-			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "SetUserName", stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "SetUserName", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 
 			if (response.StatusCode == System.Net.HttpStatusCode.Conflict)
 			{
@@ -89,7 +104,15 @@ namespace MobileSecondHand.Services.Authentication
 				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 			}
 
-			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "GetUserInfoModels/" + partName);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "GetUserInfoModels/" + partName);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
@@ -119,7 +142,15 @@ namespace MobileSecondHand.Services.Authentication
 			};
 			form.Add(content);
 
-			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "UploadUserProfilePhoto", form);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "UploadUserProfilePhoto", form);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return false;
@@ -135,7 +166,16 @@ namespace MobileSecondHand.Services.Authentication
 				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 			}
 
-			var response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "GetUserProfileImage/" + interlocutorId);
+
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.GetAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + "GetUserProfileImage/" + interlocutorId);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return null;
@@ -158,7 +198,15 @@ namespace MobileSecondHand.Services.Authentication
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(modelToSend), Encoding.UTF8, "application/json");
-			var response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + action, stringContent);
+			HttpResponseMessage response;
+			try
+			{
+				response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + action, stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
 				return null;
