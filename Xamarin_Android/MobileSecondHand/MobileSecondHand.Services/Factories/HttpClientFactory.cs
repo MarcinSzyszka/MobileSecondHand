@@ -1,11 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Net.Http;
-using System.Text;
-using System.Threading.Tasks;
 using MobileSecondHand.Models.Consts;
-using ModernHttpClient;
 
 namespace MobileSecondHand.Services.Factories
 {
@@ -16,7 +11,7 @@ namespace MobileSecondHand.Services.Factories
 		{
 			if (client == null)
 			{
-				client = new HttpClient(new NativeMessageHandler());
+				client = new HttpClient();
 				client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 			}
@@ -31,7 +26,7 @@ namespace MobileSecondHand.Services.Factories
 		{
 			if (client == null)
 			{
-				client = new HttpClient(new NativeMessageHandler());
+				client = new HttpClient();
 				client.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
 			}
 			return client;
