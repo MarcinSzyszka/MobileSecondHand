@@ -408,7 +408,6 @@ namespace MobileSecondHand.App.SideMenu
 					{
 						appSettings.ChatDisabled = false;
 						activity.StartService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
-						WakeUpAlarmReceiver.SetWakeUpAlarmRepeating(activity.ApplicationContext);
 					}
 
 					SetAppSettings(appSettings);

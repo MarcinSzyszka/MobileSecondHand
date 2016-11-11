@@ -42,10 +42,10 @@ namespace MobileSecondHand.App.Activities
 			var settingsModel = SharedPreferencesHelper.GetAppSettings(this);
 			if (settingsModel != null)
 			{
+				WakeUpAlarmReceiver.SetWakeUpAlarmRepeating(this.ApplicationContext, AlarmManager.IntervalHour);
 				if (!settingsModel.ChatDisabled && !MessengerService.ServiceIsRunning)
 				{
 					StartService(new Intent(this.ApplicationContext, typeof(MessengerService)));
-					WakeUpAlarmReceiver.SetWakeUpAlarmRepeating(this.ApplicationContext);
 				}
 			}
 		}

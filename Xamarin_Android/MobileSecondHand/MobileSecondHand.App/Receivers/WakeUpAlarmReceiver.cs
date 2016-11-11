@@ -55,15 +55,15 @@ namespace MobileSecondHand.App.Receivers
 			var powerManager = (PowerManager)context.GetSystemService(Context.PowerService);
 			_wakeLock = powerManager.NewWakeLock(WakeLockFlags.Partial, "MSH");
 			_wakeLock.Acquire();
+			timerTick = 1;
+			timerInterval = 1000 * 10;
+			timer = new System.Threading.Timer(new TimerCallback(TimerCallBackMethod));
+			timer.Change(timerInterval, timerInterval);
 
 			this.appsettings = SharedPreferencesHelper.GetAppSettings(this.context);
 			if (!appsettings.ChatDisabled)
 			{
 				chatHubServiceInstance = ChatHubClientService.GetServiceInstance(bearerToken);
-				timerTick = 1;
-				timerInterval = 1000 * 10;
-				timer = new System.Threading.Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(timerInterval, timerInterval);
 			}
 			if (!appsettings.NotificationsDisabled)
 			{
@@ -78,10 +78,13 @@ namespace MobileSecondHand.App.Receivers
 
 		private void TimerCallBackMethod(object state)
 		{
-			if ((chatHubServiceInstance.IsConnected() && checkingNewAdvertsFinished) || timerTick == 12)//timerTick == 12 == 2 min
+			if (checkingNewAdvertsFinished || timerTick == 12)//timerTick == 12 == 2 min
 			{
-				timer.Dispose();
-				_wakeLock.Release();
+				if (appsettings.ChatDisabled || chatHubServiceInstance.IsConnected())
+				{
+					timer.Dispose();
+					_wakeLock.Release();
+				}
 			}
 			timerTick++;
 		}
@@ -106,7 +109,7 @@ namespace MobileSecondHand.App.Receivers
 			};
 		}
 
-		public static void SetWakeUpAlarmRepeating(Context context)
+		public static void CancelWakeUpAlarmRepeating(Context context)
 		{
 			AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
 			if (pendingIntent != null)
@@ -114,39 +117,16 @@ namespace MobileSecondHand.App.Receivers
 				am.Cancel(pendingIntent);
 				pendingIntent.Cancel();
 			}
-			Intent intent = new Intent(context, typeof(WakeUpAlarmReceiver));
-			pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, 0);
-			am.SetInexactRepeating(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + AlarmManager.IntervalHour, AlarmManager.IntervalHour, pendingIntent);
 		}
 
-		//public static void SetWakeUpAlarmOnce(Context context, DateTime date)
-		//{
-		//	AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
-		//	Intent intent = new Intent(context, typeof(WakeUpAlarmReceiver));
-		//	pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, 0);
-		//	Calendar calendar = Calendar.Instance;
-		//	calendar.Set(date.Year, date.Month, date.Day, date.Hour, date.Minute);
-		//	am.Set(AlarmType.RtcWakeup, calendar.TimeInMillis, pendingIntent);
-		//}
-
-
-		//private void UpdateAlarm(Context context)
-		//{
-		//	if (DateTime.Now.Hour >= 22 || DateTime.Now.Hour <= 5)
-		//	{
-		//		repeatAlarmIsWorking = false;
-		//		var dateTimeTomorrow = DateTime.Now.AddDays(1);
-		//		AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
-		//		am.Cancel(pendingIntent);
-		//		pendingIntent.Cancel();
-		//		WakeUpAlarmReceiver.SetWakeUpAlarmOnce(context, new DateTime(dateTimeTomorrow.Year, dateTimeTomorrow.Month, dateTimeTomorrow.Day, 6, 0, 0));
-		//	}
-		//	else if (repeatAlarmIsWorking == false)
-		//	{
-		//		repeatAlarmIsWorking = true;
-		//		SetWakeUpAlarmRepeating(context);
-		//	}
-		//}
+		public static void SetWakeUpAlarmRepeating(Context context, long firstFireAfterMIliseconds)
+		{
+			WakeUpAlarmReceiver.CancelWakeUpAlarmRepeating(context);
+			AlarmManager am = (AlarmManager)context.GetSystemService(Context.AlarmService);
+			Intent intent = new Intent(context, typeof(WakeUpAlarmReceiver));
+			pendingIntent = PendingIntent.GetBroadcast(context, 0, intent, 0);
+			am.SetInexactRepeating(AlarmType.ElapsedRealtimeWakeup, SystemClock.ElapsedRealtime() + firstFireAfterMIliseconds, AlarmManager.IntervalHour, pendingIntent);
+		}
 
 		private bool LocationsAreSimiliar(CoordinatesForAdvertisementsModel currentLocationCoordinates, CoordinatesForAdvertisementsModel homeLocationCoordinates)
 		{
