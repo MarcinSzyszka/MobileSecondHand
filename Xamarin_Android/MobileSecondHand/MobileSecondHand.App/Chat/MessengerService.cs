@@ -40,6 +40,15 @@ namespace MobileSecondHand.App.Chat
 			return null;
 		}
 
+		public override bool OnUnbind(Intent intent)
+		{
+			this.chatHubClientService.Dispose();
+			timer.Dispose();
+			ServiceIsRunning = false;
+			this.signalRThread.Abort();
+			return base.OnUnbind(intent);
+		}
+
 		public override void OnDestroy()
 		{
 			this.chatHubClientService.Dispose();
@@ -109,7 +118,7 @@ namespace MobileSecondHand.App.Chat
 				intent.PutExtra(ExtrasKeys.CONVERSATION_INFO_MODEL, JsonConvert.SerializeObject(conversationInfoModel));
 				var pendingIntent = PendingIntent.GetActivity(this, 0, intent, PendingIntentFlags.CancelCurrent);
 				notification.SetLatestEventInfo(this, String.Format("Wiadomoœæ od {0}", message.SenderName), message.MessageContent, pendingIntent);
-				nMgr.Notify(notificationId, notification);
+				nMgr.Notify(conversationInfoModel.ConversationId, notification);
 			}
 			else
 			{

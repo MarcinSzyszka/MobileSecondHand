@@ -19,6 +19,8 @@ using Refractored.Controls;
 using MobileSecondHand.API.Models.Shared.Chat;
 using MobileSecondHand.Services.Authentication;
 using Android.Support.V4.Content;
+using MobileSecondHand.Models.Settings;
+using MobileSecondHand.App.Chat;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -39,6 +41,8 @@ namespace MobileSecondHand.App.Activities
 		private ProgressDialogHelper progress;
 		private TextView textViewUserName;
 		private CircleImageView profileImageView;
+		RelativeLayout relativeLayoutSendMessage;
+		private AppSettingsModel appSettings;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
@@ -62,7 +66,11 @@ namespace MobileSecondHand.App.Activities
 			progress = new ProgressDialogHelper(this);
 			signInService = new SignInService();
 			bitmapService = new BitmapOperationService();
-			this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+			appSettings = SharedPreferencesHelper.GetAppSettings(this);
+			if (!appSettings.ChatDisabled)
+			{
+				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+			}
 			this.messagesService = new MessagesService(bearerToken);
 			SetContentView(Resource.Layout.ConversationActivity);
 			SetupViews(savedInstanceState);
@@ -93,7 +101,7 @@ namespace MobileSecondHand.App.Activities
 			{
 				var a = exc;
 			}
-		
+
 		}
 
 		private async Task SetupIntelocutorInfo()
@@ -222,6 +230,8 @@ namespace MobileSecondHand.App.Activities
 			coversationsLayoutWrapper = FindViewById<LinearLayout>(Resource.Id.coversationsLayoutWrapper);
 			coversationsLayoutWrapper.Visibility = ViewStates.Invisible;
 			conversationMessagesRecyclerView = FindViewById<RecyclerView>(Resource.Id.conversationsRecyclerView);
+			relativeLayoutSendMessage = FindViewById<RelativeLayout>(Resource.Id.relativeLayoutBtnSendMessage);
+			relativeLayoutSendMessage.Click += BtnSendMessage_Click;
 			btnSendMessage = FindViewById<ImageButton>(Resource.Id.buttonSendConversationMessage);
 			btnSendMessage.Click += BtnSendMessage_Click;
 			editTextMessage = FindViewById<EditText>(Resource.Id.editTextConversationMessage);
@@ -267,7 +277,7 @@ namespace MobileSecondHand.App.Activities
 		{
 			if (editTextMessage.Text != null & editTextMessage.Text != string.Empty)
 			{
-				if (chatHubClientService.IsConnected())
+				if (chatHubClientService != null && chatHubClientService.IsConnected())
 				{
 					var date = DateTime.Now;
 					var message = new ConversationMessage();
@@ -283,7 +293,23 @@ namespace MobileSecondHand.App.Activities
 				}
 				else
 				{
-					AlertsService.ShowLongToast(this, "Nie mogê po³¹czyæ siê z serwerem. Upewnij siê czy masz dostêp do internetu;");
+					if (appSettings.ChatDisabled)
+					{
+						Action actionOnConfirm = () =>
+						{
+							appSettings.ChatDisabled = false;
+							SharedPreferencesHelper.SetAppSettings(this, appSettings);
+							StartService(new Intent(this.ApplicationContext, typeof(MessengerService)));
+							this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+						};
+
+						AlertsService.ShowConfirmDialog(this, "Masz wy³¹czon¹ us³ugê czatu. Czy chcesz j¹ teraz w³¹czyæ?", actionOnConfirm);
+					}
+					else
+					{
+						AlertsService.ShowLongToast(this, "Nie mogê po³¹czyæ siê z serwerem. Upewnij siê czy masz dostêp do internetu.");
+
+					}
 				}
 			}
 		}

@@ -117,7 +117,6 @@ namespace MobileSecondHand.App.Receivers
 				}
 				catch
 				{
-					internetSpeedIsToLow = true;
 				}
 				finally
 				{
