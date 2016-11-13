@@ -83,6 +83,8 @@ namespace MobileSecondHand.App.SideMenu
 			this.userProfilePhoto = activity.FindViewById<CircleImageView>(Resource.Id.profile_image);
 			DisplayProfilePhoto();
 			userProfilePhoto.Click += UserProfilePhoto_Click;
+			var imgBtnProfileImage = activity.FindViewById<ImageButton>(Resource.Id.imgBtnProfileImage);
+			imgBtnProfileImage.Click += UserProfilePhoto_Click;
 			this.textViewUserName = activity.FindViewById<TextView>(Resource.Id.textViewUserName);
 			this.textViewNotificationsState = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsState);
 			this.textViewChatState = activity.FindViewById<TextView>(Resource.Id.textViewChatState);
@@ -90,88 +92,117 @@ namespace MobileSecondHand.App.SideMenu
 			this.textViewKeywords = activity.FindViewById<TextView>(Resource.Id.textViewKeywords);
 			this.textViewNotificationsSizes = activity.FindViewById<TextView>(Resource.Id.textViewNotificationsSize);
 			this.textViewHomeLocalization = activity.FindViewById<TextView>(Resource.Id.textViewHomeLocalization);
-			this.imgAppInfo = activity.FindViewById<ImageButton>(Resource.Id.imgAppInfo);
-			this.imgAppInfo.Click += (s, e) =>
+			SetupChatStateView(activity);
+			SetupNotificationsStateView(activity);
+			SetNotificationsCategoriesViews(activity);
+			SetNotificationsSizesViews(activity);
+			SetHomeLocationViews(activity);
+			SetAppInfoViews(activity);
+		}
+
+		private void SetHomeLocationViews(BaseActivity activity)
+		{
+			this.imgBtnHomeLocalization = activity.FindViewById<ImageButton>(Resource.Id.imgBtnHomeLocalization);
+			this.imgBtnHomeLocalization.Click += ImgBtnHomeLocalization_Click;
+			var homeLocLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutHomeLocation);
+			homeLocLayout.Click += ImgBtnHomeLocalization_Click;
+		}
+
+		private void ImgBtnHomeLocalization_Click(object sender, EventArgs e)
+		{
+			var confirmMessage = "Czy na pewno chcesz ustaliæ aktualn¹ lokalizacjê i ustawiæ j¹ jako domow¹?";
+			AlertsService.ShowConfirmDialog(activity, confirmMessage, async () =>
 			{
-				var intent = new Intent(activity, typeof(AppInfoAndContactActivity));
-				activity.StartActivity(intent);
+				this.progressDialogHelper.ShowProgressDialog("Trwa ustalanie Twojej aktualnej lokalizacji");
+				try
+				{
+					if (!this.gpsService.CanGetLocation)
+					{
+						AlertsService.ShowLongToast(activity, "W³¹cz gps w ustawieniach");
+					}
+					else
+					{
+						var location = this.gpsService.GetLocation();
+						var address = await this.googleMapsAPIService.GetAddress(location.Latitude, location.Longitude);
+						appSettings.LocationSettings.Latitude = location.Latitude;
+						appSettings.LocationSettings.Longitude = location.Longitude;
+						appSettings.LocationSettings.LocationAddress = address;
+						SetAppSettings(appSettings);
+						SetHomeLocationSettings(appSettings);
+						if (address != string.Empty)
+						{
+							var infoMessage = String.Format("Adres lokalizacji to w przybli¿eniu: {0}. Na odczyt lokalizacji wp³ywa wiele czynników dlatego wiemy, ¿e adres mo¿e nie byæ w 100% idealny. Twoja lokalizacja wraz z adresem nie bêdzie nikomu udostêpniona.", address);
+							AlertsService.ShowAlertDialog(activity, infoMessage);
+						}
+					}
+
+				}
+				catch (Exception)
+				{
+					AlertsService.ShowLongToast(activity, "Wyst¹pi³ problem z okreœleniem Twojej lokalizacji. Spróbuj ponownie póŸniej");
+				}
+				finally
+				{
+					this.progressDialogHelper.CloseProgressDialog();
+				}
+
+			});
+		}
+
+		private void SetNotificationsSizesViews(BaseActivity activity)
+		{
+			this.imgBtnSizes = activity.FindViewById<ImageButton>(Resource.Id.imgBtnNotificationsSize);
+			this.imgBtnSizes.Click += ImgBtnSizes_Click;
+			var newsSizesLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutNewsSizes);
+			newsSizesLayout.Click += ImgBtnSizes_Click;
+		}
+
+		private void ImgBtnSizes_Click(object sender, EventArgs e)
+		{
+			var selectedSizesNames = new List<String>();
+			foreach (var size in appSettings.Sizes)
+			{
+				selectedSizesNames.Add(size.GetDisplayName());
+			}
+			Action<List<ClothSize>> actionAfterSelect = (selectedSizes) =>
+			{
+				this.appSettings.Sizes = selectedSizes;
+				SetAppSettings(appSettings);
+				SetSizesSettings(appSettings);
 			};
 
-			//conversations
-			SetupChatStateView(activity);
+			this.sizeSelectingHelper.ShowSizesListAndMakeAction(selectedSizesNames, actionAfterSelect);
+		}
 
-			//notifications
-			SetupNotificationsStateView(activity);
-
-
+		private void SetNotificationsCategoriesViews(BaseActivity activity)
+		{
 			this.imgBtnKeywords = activity.FindViewById<ImageButton>(Resource.Id.imgBtnKeywords);
 			this.imgBtnKeywords.Click += async (sender, args) =>
 			{
 				var userSelectesKeywordsNames = appSettings.Keywords.Select(k => k.Value).ToList();
 				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
 			};
-
-			this.imgBtnSizes = activity.FindViewById<ImageButton>(Resource.Id.imgBtnNotificationsSize);
-			this.imgBtnSizes.Click += (sender, args) =>
+			var newsCatLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutNewsCategories);
+			newsCatLayout.Click += async (sender, args) =>
 			{
-				var selectedSizesNames = new List<String>();
-				foreach (var size in appSettings.Sizes)
-				{
-					selectedSizesNames.Add(size.GetDisplayName());
-				}
-				Action<List<ClothSize>> actionAfterSelect = (selectedSizes) =>
-				{
-					this.appSettings.Sizes = selectedSizes;
-					SetAppSettings(appSettings);
-					SetSizesSettings(appSettings);
-				};
-
-				this.sizeSelectingHelper.ShowSizesListAndMakeAction(selectedSizesNames, actionAfterSelect);
+				var userSelectesKeywordsNames = appSettings.Keywords.Select(k => k.Value).ToList();
+				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, MethodToExecuteAfterCategoriesSelect);
 			};
+		}
 
-
-
-			this.imgBtnHomeLocalization = activity.FindViewById<ImageButton>(Resource.Id.imgBtnHomeLocalization);
-			this.imgBtnHomeLocalization.Click += (sender, args) =>
+		private void SetAppInfoViews(BaseActivity activity)
+		{
+			this.imgAppInfo = activity.FindViewById<ImageButton>(Resource.Id.imgAppInfo);
+			this.imgAppInfo.Click += (s, e) =>
 			{
-				//gpsService
-				var confirmMessage = "Czy na pewno chcesz ustaliæ aktualn¹ lokalizacjê i ustawiæ j¹ jako domow¹?";
-				AlertsService.ShowConfirmDialog(activity, confirmMessage, async () =>
-				{
-					this.progressDialogHelper.ShowProgressDialog("Trwa ustalanie Twojej aktualnej lokalizacji");
-					try
-					{
-						if (!this.gpsService.CanGetLocation)
-						{
-							AlertsService.ShowLongToast(activity, "W³¹cz gps w ustawieniach");
-						}
-						else
-						{
-							var location = this.gpsService.GetLocation();
-							var address = await this.googleMapsAPIService.GetAddress(location.Latitude, location.Longitude);
-							appSettings.LocationSettings.Latitude = location.Latitude;
-							appSettings.LocationSettings.Longitude = location.Longitude;
-							appSettings.LocationSettings.LocationAddress = address;
-							SetAppSettings(appSettings);
-							SetHomeLocationSettings(appSettings);
-							if (address != string.Empty)
-							{
-								var infoMessage = String.Format("Adres lokalizacji to w przybli¿eniu: {0}. Na odczyt lokalizacji wp³ywa wiele czynników dlatego wiemy, ¿e adres mo¿e nie byæ w 100% idealny. Twoja lokalizacja wraz z adresem nie bêdzie nikomu udostêpniona.", address);
-								AlertsService.ShowAlertDialog(activity, infoMessage);
-							}
-						}
-
-					}
-					catch (Exception)
-					{
-						AlertsService.ShowLongToast(activity, "Wyst¹pi³ problem z okreœleniem Twojej lokalizacji. Spróbuj ponownie póŸniej");
-					}
-					finally
-					{
-						this.progressDialogHelper.CloseProgressDialog();
-					}
-
-				});
+				var intent = new Intent(activity, typeof(AppInfoAndContactActivity));
+				activity.StartActivity(intent);
+			};
+			var appInfoLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutAppInfos);
+			appInfoLayout.Click += (s, e) =>
+			{
+				var intent = new Intent(activity, typeof(AppInfoAndContactActivity));
+				activity.StartActivity(intent);
 			};
 		}
 
@@ -345,79 +376,136 @@ namespace MobileSecondHand.App.SideMenu
 		private void SetupNotificationsStateView(BaseActivity activity)
 		{
 			this.notificationsStateSwitch = activity.FindViewById<SwitchCompat>(Resource.Id.switchNotificationsState);
-			this.notificationsStateSwitch.Click += (sender, args) =>
-			{
-				var confirmMessage = String.Format("Czy na pewno chcesz {0} powiadomienia o nowoœciach?", !notificationsStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
-				AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
-				{
-					if (!notificationsStateSwitch.Checked)
-					{
-						appSettings.NotificationsDisabled = true;
-						//activity.StopService(new Intent(activity.ApplicationContext, typeof(NewsService)));
-					}
-					else
-					{
-						appSettings.NotificationsDisabled = false;
-						//activity.StartService(new Intent(activity.ApplicationContext, typeof(NewsService)));
-					}
-
-					SetAppSettings(appSettings);
-					this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "w³¹czone" : "wy³¹czone";
-				},
-				() =>
-				{
-					this.notificationsStateSwitch.Checked = !notificationsStateSwitch.Checked;
-				});
-			};
+			this.notificationsStateSwitch.Click += NotificationsStateSwitch_Click;
+			var newsNotificationsLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutNewsNotifications);
+			newsNotificationsLayout.Click += NewsNotificationsLayout_Click;
 
 			this.imgBtnRadius = activity.FindViewById<ImageButton>(Resource.Id.imgBtnRadius);
-			imgBtnRadius.Click += (sender, args) =>
-			{
-				string[] itemList = activity.Resources.GetStringArray(Resource.Array.notifications_radius);
-				AlertsService.ShowSingleSelectListString(activity, itemList, selectedText =>
-				{
-					var resultRadius = 0;
-					var selectedRadius = selectedText.Split(new char[] { ' ' })[0];
-					int.TryParse(selectedRadius, out resultRadius);
-					if (resultRadius == 0)
-					{
-						resultRadius = ValueConsts.MAX_DISTANCE_VALUE;
-					}
-					appSettings.LocationSettings.MaxDistance = resultRadius;
-					SetAppSettings(appSettings);
+			imgBtnRadius.Click += ImgBtnRadius_Click;
+			var newsRadiusLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutNewsRadius);
+			newsRadiusLayout.Click += ImgBtnRadius_Click;
 
-					this.textViewNotificationsRadius.Text = selectedText;
-				});
-			};
+		}
+
+		private void ImgBtnRadius_Click(object sender, EventArgs e)
+		{
+			string[] itemList = activity.Resources.GetStringArray(Resource.Array.notifications_radius);
+			AlertsService.ShowSingleSelectListString(activity, itemList, selectedText =>
+			{
+				var resultRadius = 0;
+				var selectedRadius = selectedText.Split(new char[] { ' ' })[0];
+				int.TryParse(selectedRadius, out resultRadius);
+				if (resultRadius == 0)
+				{
+					resultRadius = ValueConsts.MAX_DISTANCE_VALUE;
+				}
+				appSettings.LocationSettings.MaxDistance = resultRadius;
+				SetAppSettings(appSettings);
+
+				this.textViewNotificationsRadius.Text = selectedText;
+			});
+		}
+
+		private void NewsNotificationsLayout_Click(object sender, EventArgs e)
+		{
+			var confirmMessage = String.Format("Czy na pewno chcesz {0} powiadomienia o nowoœciach?", notificationsStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
+			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			{
+				notificationsStateSwitch.Checked = !notificationsStateSwitch.Checked;
+				if (!notificationsStateSwitch.Checked)
+				{
+					appSettings.NotificationsDisabled = true;
+				}
+				else
+				{
+					appSettings.NotificationsDisabled = false;
+				}
+
+				SetAppSettings(appSettings);
+				this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "w³¹czone" : "wy³¹czone";
+			});
+		}
+
+
+		private void NotificationsStateSwitch_Click(object sender, EventArgs e)
+		{
+			var confirmMessage = String.Format("Czy na pewno chcesz {0} powiadomienia o nowoœciach?", !notificationsStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
+			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			{
+				if (!notificationsStateSwitch.Checked)
+				{
+					appSettings.NotificationsDisabled = true;
+					//activity.StopService(new Intent(activity.ApplicationContext, typeof(NewsService)));
+				}
+				else
+				{
+					appSettings.NotificationsDisabled = false;
+					//activity.StartService(new Intent(activity.ApplicationContext, typeof(NewsService)));
+				}
+
+				SetAppSettings(appSettings);
+				this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "w³¹czone" : "wy³¹czone";
+			},
+			() =>
+			{
+				this.notificationsStateSwitch.Checked = !notificationsStateSwitch.Checked;
+			});
 		}
 
 		private void SetupChatStateView(BaseActivity activity)
 		{
 			this.chatStateSwitch = activity.FindViewById<SwitchCompat>(Resource.Id.switchChatState);
-			this.chatStateSwitch.Click += (sender, args) =>
-			{
-				var confirmMessage = String.Format("Czy na pewno chcesz {0} czat?", !chatStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
-				AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
-				{
-					if (!chatStateSwitch.Checked)
-					{
-						appSettings.ChatDisabled = true;
-						activity.StopService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
-					}
-					else
-					{
-						appSettings.ChatDisabled = false;
-						activity.StartService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
-					}
+			this.chatStateSwitch.Click += ChatStateSwitch_Click;
+			var chatStateLayout = activity.FindViewById<RelativeLayout>(Resource.Id.relLayoutChat);
+			chatStateLayout.Click += ChatStateLayout_Click;
 
-					SetAppSettings(appSettings);
-					this.textViewChatState.Text = chatStateSwitch.Checked ? "w³¹czony" : "wy³¹czony";
-				},
-				() =>
+		}
+
+		private void ChatStateLayout_Click(object sender, EventArgs e)
+		{
+			var confirmMessage = String.Format("Czy na pewno chcesz {0} czat?", chatStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
+			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			{
+				chatStateSwitch.Checked = !chatStateSwitch.Checked;
+				if (!chatStateSwitch.Checked)
 				{
-					this.chatStateSwitch.Checked = !chatStateSwitch.Checked;
-				});
-			};
+					appSettings.ChatDisabled = true;
+					activity.StopService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
+				}
+				else
+				{
+					appSettings.ChatDisabled = false;
+					activity.StartService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
+				}
+
+				SetAppSettings(appSettings);
+				this.textViewChatState.Text = chatStateSwitch.Checked ? "w³¹czony" : "wy³¹czony";
+			});
+		}
+
+		private void ChatStateSwitch_Click(object sender, EventArgs e)
+		{
+			var confirmMessage = String.Format("Czy na pewno chcesz {0} czat?", !chatStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
+			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			{
+				if (!chatStateSwitch.Checked)
+				{
+					appSettings.ChatDisabled = true;
+					activity.StopService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
+				}
+				else
+				{
+					appSettings.ChatDisabled = false;
+					activity.StartService(new Intent(activity.ApplicationContext, typeof(MessengerService)));
+				}
+
+				SetAppSettings(appSettings);
+				this.textViewChatState.Text = chatStateSwitch.Checked ? "w³¹czony" : "wy³¹czony";
+			},
+			() =>
+			{
+				this.chatStateSwitch.Checked = !chatStateSwitch.Checked;
+			});
 		}
 
 		internal void SetupMenu()
