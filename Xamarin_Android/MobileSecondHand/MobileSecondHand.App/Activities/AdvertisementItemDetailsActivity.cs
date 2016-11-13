@@ -165,7 +165,7 @@ namespace MobileSecondHand.App.Activities
 					AlertsService.ShowShortToast(this, "Og³oszenie zosta³o zg³oszone adminom");
 				};
 				string[] itemList = Resources.GetStringArray(Resource.Array.report_wrong_advert_reasons);
-				AlertsService.ShowSingleSelectListString(this, itemList, actionOnReasonSelected);
+				AlertsService.ShowSingleSelectListString(this, itemList, actionOnReasonSelected, dialogTitle:"Wybierz powód");
 			};
 			AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz zg³osiæ to og³oszenie jako naruszenie regulaminu?", reportActionConfirmed);
 		}

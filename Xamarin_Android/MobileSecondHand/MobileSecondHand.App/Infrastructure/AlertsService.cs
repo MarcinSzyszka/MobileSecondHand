@@ -54,7 +54,7 @@ namespace MobileSecondHand.App.Infrastructure
 			alert.Show();
 		}
 
-		public static void ShowSingleSelectListString(Context context, string[] items, Action<string> actionOnSelect, string selectedItemName = null)
+		public static void ShowSingleSelectListString(Context context, string[] items, Action<string> actionOnSelect, string selectedItemName = null, string dialogTitle = null)
 		{
 			var checkedItem = -1;
 			if (selectedItemName != null)
@@ -63,7 +63,9 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 			var alertDialog = default(AlertDialog);
 			AlertDialog.Builder buider = new AlertDialog.Builder(context);
-			buider.SetTitle("Wybierz element");
+			var title = dialogTitle != null ? dialogTitle : "Wybierz element";
+			buider.SetTitle(title);
+
 			buider.SetSingleChoiceItems(items, checkedItem, (sender, args) =>
 			{
 				actionOnSelect(items[args.Which]);

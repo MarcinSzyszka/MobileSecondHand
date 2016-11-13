@@ -305,7 +305,8 @@ namespace MobileSecondHand.App.SideMenu
 					default:
 						break;
 				}
-			});
+			},
+			dialogTitle:"Wybierz Ÿród³o");
 		}
 
 		private void TakePhotoFromStorage()
@@ -403,7 +404,7 @@ namespace MobileSecondHand.App.SideMenu
 				SetAppSettings(appSettings);
 
 				this.textViewNotificationsRadius.Text = selectedText;
-			});
+			}, dialogTitle: "Wybierz dystans");
 		}
 
 		private void NewsNotificationsLayout_Click(object sender, EventArgs e)

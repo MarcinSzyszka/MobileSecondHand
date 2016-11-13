@@ -325,7 +325,7 @@ namespace MobileSecondHand.App
 				RefreshAdvertisementList(true);
 			};
 			var kindNames = Enum.GetValues(typeof(AdvertisementsKind)).GetAllItemsDisplayNames();
-			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), methodAfterSelect, this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName());
+			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), methodAfterSelect, this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName(), "Wybierz listê og³oszeñ");
 
 		}
 
@@ -340,6 +340,7 @@ namespace MobileSecondHand.App
 		{
 			progress = new ProgressDialogHelper(this);
 			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
+			advertisementsListKindTextView.Click += (s, e) => ShowChoosingAdvertisementsKindDialog();
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerView);
 			mainListLayout = FindViewById<RelativeLayout>(Resource.Id.mainListLayout);
@@ -404,7 +405,7 @@ namespace MobileSecondHand.App
 				SetupSelectedSortingByView();
 			};
 			var sortingByNames = Enum.GetValues(typeof(SortingBy)).GetAllItemsDisplayNames();
-			AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName());
+			AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName(), dialogTitle:"Wybierz rodzaj sortowania");
 		}
 
 		private void BtnSelectUser_Click(object sender, EventArgs e)

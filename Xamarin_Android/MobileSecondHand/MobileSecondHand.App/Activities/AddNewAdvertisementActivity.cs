@@ -368,7 +368,7 @@ namespace MobileSecondHand.App.Activities
 					default:
 						break;
 				}
-			});
+			}, dialogTitle: "Wybierz Ÿród³o");
 		}
 
 		private void TakePhotoFromStorage(int photoNr)

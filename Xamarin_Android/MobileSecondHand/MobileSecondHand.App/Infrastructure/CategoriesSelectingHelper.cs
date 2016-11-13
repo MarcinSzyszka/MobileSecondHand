@@ -54,7 +54,7 @@ namespace MobileSecondHand.App.Infrastructure
 				var allKeywords = await this.categoryService.GetCategories();
 				var allKeywordsNames = allKeywords.Select(k => k.Value).ToArray();
 				this.progressDialogHelper.CloseProgressDialog();
-				AlertsService.ShowSingleSelectListString(ctx, allKeywordsNames, s => actionOnSelect(allKeywords.First(v => v.Value == s).Key, s), selectedItemName);
+				AlertsService.ShowSingleSelectListString(ctx, allKeywordsNames, s => actionOnSelect(allKeywords.First(v => v.Value == s).Key, s), selectedItemName, "Wybierz kategoriê");
 
 			}
 			catch (Exception exc)

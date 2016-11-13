@@ -48,7 +48,7 @@ namespace MobileSecondHand.App.Infrastructure
 		public void ShowSizeSingleSelectAndMakeAction(Action<ClothSize> actionOnSelect, string selectedItemName = null)
 		{
 			var allSizesNames = GetClothSizeNames();
-			AlertsService.ShowSingleSelectListString(ctx, allSizesNames, (s) => actionOnSelect(s.GetEnumValueByDisplayName<ClothSize>()), selectedItemName);
+			AlertsService.ShowSingleSelectListString(ctx, allSizesNames, (s) => actionOnSelect(s.GetEnumValueByDisplayName<ClothSize>()), selectedItemName, "Wybierz rozmiar");
 		}
 
 		private string[] GetClothSizeNames()
