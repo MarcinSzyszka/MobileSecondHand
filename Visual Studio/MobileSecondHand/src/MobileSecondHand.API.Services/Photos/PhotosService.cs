@@ -11,8 +11,8 @@ namespace MobileSecondHand.API.Services.Photos
 {
 	public class PhotosService : IPhotosService
 	{
-		double minPhotoMaxWidth = 250.0;
-		double resizedPhotoMaxSizeValue = 700.0;
+		double minPhotoMaxWidth = 300.0;
+		double resizedPhotoMaxSizeValue = 800.0;
 		double profilePhotoMaxSize = 150;
 		IAppFilesPathHelper appFilesPathHelper;
 		IAppFilesNamesHelper appFilesNamesHelper;

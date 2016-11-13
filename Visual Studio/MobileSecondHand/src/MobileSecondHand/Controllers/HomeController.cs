@@ -12,7 +12,6 @@ namespace MobileSecondHand.Controllers {
 		}
         public IActionResult Index()
         {
-			logger.LogInformation("Hello world");
             return View();
         }
 
