@@ -51,6 +51,7 @@ namespace MobileSecondHand.App.Infrastructure
 
 				alert.Dispose();
 			});
+			alert.SetCancelable(false);
 			alert.Show();
 		}
 
@@ -65,7 +66,6 @@ namespace MobileSecondHand.App.Infrastructure
 			AlertDialog.Builder buider = new AlertDialog.Builder(context);
 			var title = dialogTitle != null ? dialogTitle : "Wybierz element";
 			buider.SetTitle(title);
-
 			buider.SetSingleChoiceItems(items, checkedItem, (sender, args) =>
 			{
 				actionOnSelect(items[args.Which]);
