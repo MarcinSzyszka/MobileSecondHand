@@ -317,7 +317,7 @@ namespace MobileSecondHand.App
 
 		private void ShowChoosingAdvertisementsKindDialog()
 		{
-			Action<string> methodAfterSelect = async (s) =>
+			Action<string> methodAfterSelect = (s) =>
 			{
 				this.advertisementsSearchModel.AdvertisementsKind = s.GetEnumValueByDisplayName<AdvertisementsKind>();
 				this.advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
@@ -359,128 +359,145 @@ namespace MobileSecondHand.App
 
 			textViewSelectedTransactionKind = FindViewById<TextView>(Resource.Id.textViewSelectedTransactionKind);
 			var btnTransaction = FindViewById<ImageView>(Resource.Id.btnSelectTransactionKind);
-			btnTransaction.Click += (s, e) =>
-			{
-				Action<string> action = (transactionKindName) =>
-				{
-					var selectedKind = transactionKindName.GetEnumValueByDisplayName<TransactionKind>();
-					this.advertisementsSearchModel.TransactionKind = selectedKind;
-					SetupSelectedTransactionKind();
-				};
-				var transactionKindsNames = Enum.GetValues(typeof(TransactionKind)).GetAllItemsDisplayNames();
-				AlertsService.ShowSingleSelectListString(this, transactionKindsNames.ToArray(), action, this.textViewSelectedTransactionKind.Text);
-			};
+			textViewSelectedTransactionKind.Click += BtnTransaction_Click;
+			btnTransaction.Click += BtnTransaction_Click;
 
 			textViewSelectedAdvertsStatus = FindViewById<TextView>(Resource.Id.textViewSelectedAdvertsStatus);
 			var btnAdvertsStatus = FindViewById<ImageView>(Resource.Id.btnSelectAdvertsStatus);
-			btnAdvertsStatus.Click += (s, e) =>
-			{
-				Action<string> action = (status) =>
-				{
-					this.advertisementsSearchModel.ExpiredAdvertisements = status == expiredStatus ? true : false;
-					SetupSelectedAdvertStatus();
-				};
-				var statuses = new string[] { activeStatus, expiredStatus };
-				AlertsService.ShowSingleSelectListString(this, statuses, action, this.textViewSelectedAdvertsStatus.Text);
-			};
+			textViewSelectedAdvertsStatus.Click += BtnAdvertsStatus_Click;
+			btnAdvertsStatus.Click += BtnAdvertsStatus_Click;
 
 			var btnSelectCategories = FindViewById<ImageView>(Resource.Id.btnSelectCategoryForMainList);
 			this.textViewSelectCategories = FindViewById<TextView>(Resource.Id.textViewSelectedCategoryForMainList);
-
-			btnSelectCategories.Click += async (s, e) =>
-			{
-				Func<System.Collections.Generic.IDictionary<int, string>, Action<System.Collections.Generic.List<string>>> methodToExecuteAfterCategoriesSelect = (allKeywords) =>
-				{
-					return (selectedItemsNames) =>
-					{
-						this.advertisementsSearchModel.CategoriesModel.Clear();
-						if (selectedItemsNames.Count != allKeywords.Count)
-						{
-							foreach (var itemName in selectedItemsNames)
-							{
-								this.advertisementsSearchModel.CategoriesModel.Add(allKeywords.First(k => k.Value == itemName));
-							}
-						}
-
-						SetupSelectedCategoryView();
-					};
-				};
-
-				try
-				{
-					var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
-					await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect);
-				}
-				catch
-				{
-				}
-
-			};
-
+			textViewSelectCategories.Click += BtnSelectCategories_Click;
+			btnSelectCategories.Click += BtnSelectCategories_Click;
 
 			this.textViewSelectedSize = FindViewById<TextView>(Resource.Id.textViewSelectedSizes);
 			this.btnSize = FindViewById<ImageView>(Resource.Id.btnSize);
-			btnSize.Click += (s, e) =>
-			{
-				var selectedSizesNames = new List<String>();
-				foreach (var size in this.advertisementsSearchModel.Sizes)
-				{
-					selectedSizesNames.Add(size.GetDisplayName());
-				}
-				Action<List<ClothSize>> actionAfterSelect = (selectedSizes) =>
-				{
-					this.advertisementsSearchModel.Sizes = selectedSizes;
-					SetupSelectedSizesView();
-				};
-				this.sizeSelectingHelper.ShowSizesListAndMakeAction(selectedSizesNames, actionAfterSelect);
-			};
+			textViewSelectedSize.Click += BtnSize_Click;
+			btnSize.Click += BtnSize_Click;
 
 
 			var btnDistance = FindViewById<ImageView>(Resource.Id.btnDistance);
 			this.textViewSelectedDistance = FindViewById<TextView>(Resource.Id.textViewSelectedDistance);
-			btnDistance.Click += (sender, args) =>
-			{
-				string[] itemList = Resources.GetStringArray(Resource.Array.notifications_radius);
-				AlertsService.ShowSingleSelectListString(this, itemList, selectedText =>
-				{
-					var resultRadius = 0;
-					var selectedRadius = selectedText.Split(new char[] { ' ' })[0];
-					int.TryParse(selectedRadius, out resultRadius);
-					if (resultRadius == 0)
-					{
-						resultRadius = ValueConsts.MAX_DISTANCE_VALUE;
-					}
-					advertisementsSearchModel.CoordinatesModel.MaxDistance = resultRadius;
+			textViewSelectedDistance.Click += BtnDistance_Click;
+			btnDistance.Click += BtnDistance_Click;
 
-					this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "bez ograniczeñ";
-				});
-			};
-
-
-			var btnSelectUser = FindViewById<ImageView>(Resource.Id.btnSelectUser);
-			btnSelectUser.Click += (s, e) =>
-					{
-						var intent = new Intent(this, typeof(FindUserActivity));
-						intent.PutExtra(ActivityStateConsts.CALLING_ACTIVITY_NAME, ActivityStateConsts.MAIN_ACTIVITY_NAME);
-						StartActivityForResult(intent, FindUserActivity.FIND_USER_REQUEST_CODE);
-					};
 			this.textViewSelectedUser = FindViewById<TextView>(Resource.Id.textViewSelectedUser);
+			var btnSelectUser = FindViewById<ImageView>(Resource.Id.btnSelectUser);
+			textViewSelectedUser.Click += BtnSelectUser_Click;
+			btnSelectUser.Click += BtnSelectUser_Click;
+
 
 			var btnSorting = FindViewById<ImageView>(Resource.Id.btnSorting);
 			this.textViewSelectedSorting = FindViewById<TextView>(Resource.Id.textViewSelectedSorting);
-			btnSorting.Click += (s, e) =>
-					{
-						Action<string> actionAfterSelect = (selctedSortingByName) =>
-				{
-					this.advertisementsSearchModel.SortingBy = selctedSortingByName.GetEnumValueByDisplayName<SortingBy>();
-					SetupSelectedSortingByView();
-				};
-						var sortingByNames = Enum.GetValues(typeof(SortingBy)).GetAllItemsDisplayNames();
-						AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName());
-					};
+			textViewSelectedSorting.Click += BtnSorting_Click;
+			btnSorting.Click += BtnSorting_Click;
 
 		}
 
+		private void BtnSorting_Click(object sender, EventArgs e)
+		{
+			Action<string> actionAfterSelect = (selctedSortingByName) =>
+			{
+				this.advertisementsSearchModel.SortingBy = selctedSortingByName.GetEnumValueByDisplayName<SortingBy>();
+				SetupSelectedSortingByView();
+			};
+			var sortingByNames = Enum.GetValues(typeof(SortingBy)).GetAllItemsDisplayNames();
+			AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName());
+		}
+
+		private void BtnSelectUser_Click(object sender, EventArgs e)
+		{
+			var intent = new Intent(this, typeof(FindUserActivity));
+			intent.PutExtra(ActivityStateConsts.CALLING_ACTIVITY_NAME, ActivityStateConsts.MAIN_ACTIVITY_NAME);
+			StartActivityForResult(intent, FindUserActivity.FIND_USER_REQUEST_CODE);
+		}
+
+		private void BtnDistance_Click(object sender, EventArgs e)
+		{
+			string[] itemList = Resources.GetStringArray(Resource.Array.notifications_radius);
+			AlertsService.ShowSingleSelectListString(this, itemList, selectedText =>
+			{
+				var resultRadius = 0;
+				var selectedRadius = selectedText.Split(new char[] { ' ' })[0];
+				int.TryParse(selectedRadius, out resultRadius);
+				if (resultRadius == 0)
+				{
+					resultRadius = ValueConsts.MAX_DISTANCE_VALUE;
+				}
+				advertisementsSearchModel.CoordinatesModel.MaxDistance = resultRadius;
+
+				this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "bez ograniczeñ";
+			});
+		}
+
+		private void BtnSize_Click(object sender, EventArgs e)
+		{
+			var selectedSizesNames = new List<String>();
+			foreach (var size in this.advertisementsSearchModel.Sizes)
+			{
+				selectedSizesNames.Add(size.GetDisplayName());
+			}
+			Action<List<ClothSize>> actionAfterSelect = (selectedSizes) =>
+			{
+				this.advertisementsSearchModel.Sizes = selectedSizes;
+				SetupSelectedSizesView();
+			};
+			this.sizeSelectingHelper.ShowSizesListAndMakeAction(selectedSizesNames, actionAfterSelect);
+		}
+
+		private async void BtnSelectCategories_Click(object sender, EventArgs e)
+		{
+			Func<System.Collections.Generic.IDictionary<int, string>, Action<System.Collections.Generic.List<string>>> methodToExecuteAfterCategoriesSelect = (allKeywords) =>
+			{
+				return (selectedItemsNames) =>
+				{
+					this.advertisementsSearchModel.CategoriesModel.Clear();
+					if (selectedItemsNames.Count != allKeywords.Count)
+					{
+						foreach (var itemName in selectedItemsNames)
+						{
+							this.advertisementsSearchModel.CategoriesModel.Add(allKeywords.First(k => k.Value == itemName));
+						}
+					}
+
+					SetupSelectedCategoryView();
+				};
+			};
+
+			try
+			{
+				var userSelectesKeywordsNames = this.advertisementsSearchModel.CategoriesModel.Select(c => c.Value).ToList();
+				await this.categoriesHelper.ShowCategoriesListAndMakeAction(userSelectesKeywordsNames, methodToExecuteAfterCategoriesSelect);
+			}
+			catch
+			{
+			}
+		}
+
+		private void BtnAdvertsStatus_Click(object sender, EventArgs e)
+		{
+			Action<string> action = (status) =>
+			{
+				this.advertisementsSearchModel.ExpiredAdvertisements = status == expiredStatus ? true : false;
+				SetupSelectedAdvertStatus();
+			};
+			var statuses = new string[] { activeStatus, expiredStatus };
+			AlertsService.ShowSingleSelectListString(this, statuses, action, this.textViewSelectedAdvertsStatus.Text);
+		}
+
+		private void BtnTransaction_Click(object sender, EventArgs e)
+		{
+			Action<string> action = (transactionKindName) =>
+			{
+				var selectedKind = transactionKindName.GetEnumValueByDisplayName<TransactionKind>();
+				this.advertisementsSearchModel.TransactionKind = selectedKind;
+				SetupSelectedTransactionKind();
+			};
+			var transactionKindsNames = Enum.GetValues(typeof(TransactionKind)).GetAllItemsDisplayNames();
+			AlertsService.ShowSingleSelectListString(this, transactionKindsNames.ToArray(), action, this.textViewSelectedTransactionKind.Text);
+		}
 
 		private async Task DownloadAndShowAdvertisements(bool resetList)
 		{
