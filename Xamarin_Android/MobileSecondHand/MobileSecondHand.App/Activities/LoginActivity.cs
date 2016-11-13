@@ -37,6 +37,7 @@ namespace MobileSecondHand.App.Activities
 		private View focusView;
 		private ProgressDialogHelper progress;
 		CheckBox acceptCheckboxLogin;
+		TextView textViewReg;
 		private LoginButton facebookLoginBtn;
 
 		public LoginActivity()
@@ -71,9 +72,10 @@ namespace MobileSecondHand.App.Activities
 
 		private void SetupAcceptCheckbox()
 		{
+			textViewReg = FindViewById<TextView>(Resource.Id.textView2);
+			textViewReg.TextFormatted = Html.FromHtml("Akceptujê <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
+			textViewReg.MovementMethod = LinkMovementMethod.Instance;
 			acceptCheckboxLogin = FindViewById<CheckBox>(Resource.Id.acceptCheckboxLogin);
-			acceptCheckboxLogin.TextFormatted = Html.FromHtml("Akceptujê <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
-			acceptCheckboxLogin.MovementMethod = LinkMovementMethod.Instance;
 			acceptCheckboxLogin.CheckedChange += AcceptCheckboxLogin_CheckedChange;
 		}
 

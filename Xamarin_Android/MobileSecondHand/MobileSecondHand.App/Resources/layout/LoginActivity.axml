@@ -96,16 +96,24 @@
         <CheckBox
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Akceptuję Regulamin oraz Politykę Prywatności."
             android:id="@+id/acceptCheckboxLogin"
             android:layout_below="@+id/facebookLoginBtn"
-            android:layout_alignParentLeft="true"
-            android:layout_alignParentStart="true"
             android:layout_marginTop="20dp"
             android:layout_marginLeft="20dp"
             android:textColor="@color/colorPrimaryDark"
             android:textColorLink="@color/colorPrimary"
             android:textAppearance="?android:attr/textAppearanceSmall"
             android:paddingLeft="20dp" />
+        <TextView
+            android:text="Akceptuję regulamin i politykę prywatności"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/textView2"
+            android:layout_below="@+id/facebookLoginBtn"
+            android:layout_toRightOf="@+id/acceptCheckboxLogin"
+            android:layout_marginTop="27dp"
+            android:textColor="@color/colorPrimaryDark"
+            android:textColorLink="@color/colorPrimary" />
     </RelativeLayout>
 </LinearLayout>

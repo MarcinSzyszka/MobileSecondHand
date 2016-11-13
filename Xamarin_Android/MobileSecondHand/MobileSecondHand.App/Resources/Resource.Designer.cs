@@ -2536,8 +2536,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080077
 			public const int addNewAdvertisementScrollView = 2131230839;
 			
-			// aapt resource value: 0x7f08014f
-			public const int addToFavourites = 2131231055;
+			// aapt resource value: 0x7f080150
+			public const int addToFavourites = 2131231056;
 			
 			// aapt resource value: 0x7f08000b
 			public const int adjust_height = 2131230731;
@@ -2599,8 +2599,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800bd
 			public const int app_bar_with_circle_image_view = 2131230909;
 			
-			// aapt resource value: 0x7f080155
-			public const int applyFilterOptions = 2131231061;
+			// aapt resource value: 0x7f080156
+			public const int applyFilterOptions = 2131231062;
 			
 			// aapt resource value: 0x7f080043
 			public const int automatic = 2131230787;
@@ -2626,8 +2626,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08012a
 			public const int btnDistance = 2131231018;
 			
-			// aapt resource value: 0x7f08014c
-			public const int btnSaveNickName = 2131231052;
+			// aapt resource value: 0x7f08014d
+			public const int btnSaveNickName = 2131231053;
 			
 			// aapt resource value: 0x7f08011e
 			public const int btnSelectAdvertsStatus = 2131231006;
@@ -2692,20 +2692,20 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08002f
 			public const int center_vertical = 2131230767;
 			
-			// aapt resource value: 0x7f080152
-			public const int chat = 2131231058;
+			// aapt resource value: 0x7f080153
+			public const int chat = 2131231059;
 			
 			// aapt resource value: 0x7f080060
 			public const int checkbox = 2131230816;
 			
-			// aapt resource value: 0x7f080151
-			public const int choosingAdvertisementsList = 2131231057;
+			// aapt resource value: 0x7f080152
+			public const int choosingAdvertisementsList = 2131231058;
 			
 			// aapt resource value: 0x7f08013c
 			public const int chronometer = 2131231036;
 			
-			// aapt resource value: 0x7f080154
-			public const int clearFilterOptions = 2131231060;
+			// aapt resource value: 0x7f080155
+			public const int clearFilterOptions = 2131231061;
 			
 			// aapt resource value: 0x7f080035
 			public const int clip_horizontal = 2131230773;
@@ -2821,8 +2821,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08007e
 			public const int editTextDescription = 2131230846;
 			
-			// aapt resource value: 0x7f08014b
-			public const int editTextNickName = 2131231051;
+			// aapt resource value: 0x7f08014c
+			public const int editTextNickName = 2131231052;
 			
 			// aapt resource value: 0x7f080081
 			public const int editTextPrice = 2131230849;
@@ -2986,8 +2986,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08004f
 			public const int list_item = 2131230799;
 			
-			// aapt resource value: 0x7f080149
-			public const int logoLayout = 2131231049;
+			// aapt resource value: 0x7f08014a
+			public const int logoLayout = 2131231050;
 			
 			// aapt resource value: 0x7f080115
 			public const int mainListLayout = 2131230997;
@@ -3016,8 +3016,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080039
 			public const int mini = 2131230777;
 			
-			// aapt resource value: 0x7f08014e
-			public const int moreUserAdverts = 2131231054;
+			// aapt resource value: 0x7f08014f
+			public const int moreUserAdverts = 2131231055;
 			
 			// aapt resource value: 0x7f080018
 			public const int multiply = 2131230744;
@@ -3124,8 +3124,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080086
 			public const int rdBtnOnlyForSell = 2131230854;
 			
-			// aapt resource value: 0x7f080153
-			public const int refreshAdvertisementsOption = 2131231059;
+			// aapt resource value: 0x7f080154
+			public const int refreshAdvertisementsOption = 2131231060;
 			
 			// aapt resource value: 0x7f0800b1
 			public const int relativeLayout = 2131230897;
@@ -3157,8 +3157,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800d9
 			public const int relativeLayoutTextEdit = 2131230937;
 			
-			// aapt resource value: 0x7f080150
-			public const int report = 2131231056;
+			// aapt resource value: 0x7f080151
+			public const int report = 2131231057;
 			
 			// aapt resource value: 0x7f080032
 			public const int right = 2131230770;
@@ -3226,8 +3226,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800ac
 			public const int sellerNetworkState = 2131230892;
 			
-			// aapt resource value: 0x7f08014a
-			public const int setUserNameLayout = 2131231050;
+			// aapt resource value: 0x7f08014b
+			public const int setUserNameLayout = 2131231051;
 			
 			// aapt resource value: 0x7f080061
 			public const int shortcut = 2131230817;
@@ -3382,6 +3382,9 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080096
 			public const int textView9 = 2131230870;
 			
+			// aapt resource value: 0x7f080149
+			public const int textViewAcceptReg = 2131231049;
+			
 			// aapt resource value: 0x7f0800aa
 			public const int textViewAdvertStatus = 2131230890;
 			
@@ -3472,8 +3475,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080056
 			public const int title_template = 2131230806;
 			
-			// aapt resource value: 0x7f08014d
-			public const int toolbar = 2131231053;
+			// aapt resource value: 0x7f08014e
+			public const int toolbar = 2131231054;
 			
 			// aapt resource value: 0x7f080034
 			public const int top = 2131230772;

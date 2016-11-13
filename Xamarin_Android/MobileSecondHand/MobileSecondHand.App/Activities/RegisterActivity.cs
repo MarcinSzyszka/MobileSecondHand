@@ -27,6 +27,7 @@ namespace MobileSecondHand.App.Activities
 		private ISignInService signInService;
 		private ProgressDialogHelper progress;
 		private CheckBox acceptCheckboxLogin;
+		private TextView textViewAcceptReg;
 
 		public RegisterActivity()
 		{
@@ -55,8 +56,9 @@ namespace MobileSecondHand.App.Activities
 		private void SetupAcceptCheckbox()
 		{
 			acceptCheckboxLogin = FindViewById<CheckBox>(Resource.Id.acceptCheckboxRegister);
-			acceptCheckboxLogin.TextFormatted = Html.FromHtml("Akceptujê <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
-			acceptCheckboxLogin.MovementMethod = LinkMovementMethod.Instance;
+			textViewAcceptReg = FindViewById<TextView>(Resource.Id.textViewAcceptReg);
+			textViewAcceptReg.TextFormatted = Html.FromHtml("Akceptujê <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
+			textViewAcceptReg.MovementMethod = LinkMovementMethod.Instance;
 		}
 
 		private async Task SubmitRegistrationBtn_Click(object sender, EventArgs e)
