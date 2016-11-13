@@ -20,6 +20,7 @@ using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Settings;
+using MobileSecondHand.Services;
 using MobileSecondHand.Services.Advertisements;
 using MobileSecondHand.Services.Chat;
 using Newtonsoft.Json;
@@ -43,11 +44,17 @@ namespace MobileSecondHand.App.Receivers
 		ChatHubClientService chatHubServiceInstance;
 		bool checkingNewAdvertsFinished;
 		private int timerInterval;
+		CheckInternetConnectionService checkInternetConnectionService;
 
-		public override void OnReceive(Context context, Intent intent)
+		public override async void OnReceive(Context context, Intent intent)
 		{
 			bearerToken = SharedPreferencesHelper.GetBearerToken(context);
 			if (bearerToken == null)
+			{
+				return;
+			}
+			var isUserConnectedToInternet = await DoesUserHasInternetConnection();
+			if (!isUserConnectedToInternet)
 			{
 				return;
 			}
@@ -76,6 +83,12 @@ namespace MobileSecondHand.App.Receivers
 			}
 		}
 
+		private async Task<bool> DoesUserHasInternetConnection()
+		{
+			checkInternetConnectionService = new CheckInternetConnectionService();
+			return await checkInternetConnectionService.IsInternetConnectionActive();
+		}
+
 		private void TimerCallBackMethod(object state)
 		{
 			if (checkingNewAdvertsFinished || timerTick == 12)//timerTick == 12 == 2 min
@@ -102,7 +115,10 @@ namespace MobileSecondHand.App.Receivers
 					var coordinates = await CheckNewAdvertisementsAroundUserCurrentLocation();
 					await CheckNewAdvertisementsAroundUserHomeLocation(coordinates);
 				}
-				catch { }
+				catch
+				{
+					internetSpeedIsToLow = true;
+				}
 				finally
 				{
 					checkingNewAdvertsFinished = true;

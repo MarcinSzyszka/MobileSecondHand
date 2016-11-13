@@ -55,6 +55,7 @@
     <Compile Include="Chat\ChatHubClientService.cs" />
     <Compile Include="Chat\IMessagesService.cs" />
     <Compile Include="Chat\MessagesService.cs" />
+    <Compile Include="CheckInternetConnectionService.cs" />
     <Compile Include="Factories\HttpClientFactory.cs" />
     <Compile Include="Feedback\FeedbackService.cs" />
     <Compile Include="Feedback\IFeedbackService.cs" />
