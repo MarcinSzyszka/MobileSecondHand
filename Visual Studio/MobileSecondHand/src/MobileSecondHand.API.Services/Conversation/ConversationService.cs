@@ -25,7 +25,9 @@ namespace MobileSecondHand.API.Services.Conversation
 		public List<ChatMessageReadModel> GetMessages(string userId, int conversationId, int pageNumber)
 		{
 			var messagesViewModelList = new List<ChatMessageReadModel>();
-			List<ChatMessage> messagesDbList = this.conversationDbService.GetMessagesInConversation(conversationId, pageNumber);
+			List<ChatMessage> messagesDbList = this.conversationDbService.GetMessagesInConversation(conversationId, pageNumber).ToList();
+			var notReceivedMessagesIds = messagesDbList.Where(m => m.AuthorId != userId && !m.Received).ToList();
+			this.conversationDbService.UpdateReceivedPropertyInMessages(notReceivedMessagesIds);
 
 			foreach (var message in messagesDbList)
 			{
@@ -61,7 +63,7 @@ namespace MobileSecondHand.API.Services.Conversation
 			result.ConversationId = conversation.ConversationId;
 			result.InterlocutorId = addresseeId;
 			result.InterlocutorName = conversation.Users.First(u => u.UserId != userId).User.UserName;
-			result.InterlocutorPrifileImage = await this.photosService.GetUserProfilePhotoInBytes(conversation.Users.First(u => u.UserId != userId).User.UserProfilePhotoName); 
+			result.InterlocutorPrifileImage = await this.photosService.GetUserProfilePhotoInBytes(conversation.Users.First(u => u.UserId != userId).User.UserProfilePhotoName);
 
 			return result;
 		}

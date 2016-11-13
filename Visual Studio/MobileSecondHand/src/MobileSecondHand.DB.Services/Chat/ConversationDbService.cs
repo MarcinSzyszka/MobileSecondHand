@@ -38,7 +38,7 @@ namespace MobileSecondHand.DB.Services.Chat
 			return this.dbContext.Conversation.Include(c => c.Users).ThenInclude(s => s.User).FirstOrDefault(c => c.Users.Select(u => u.UserId).Contains(userId) && c.Users.Select(u => u.UserId).Contains(addresseeId));
 		}
 
-		public List<ChatMessage> GetMessagesInConversation(int conversationId, int pageNumber)
+		public IEnumerable<ChatMessage> GetMessagesInConversation(int conversationId, int pageNumber)
 		{
 			var messagesQuery = this.dbContext.ChatMessage
 												.Include(c => c.Author)
@@ -47,7 +47,7 @@ namespace MobileSecondHand.DB.Services.Chat
 												.Skip(MESSAGES_COUNT_PER_REQUEST * pageNumber)
 												.Take(MESSAGES_COUNT_PER_REQUEST);
 
-			return messagesQuery.ToList();
+			return messagesQuery;
 		}
 
 		public IDictionary<int, ChatMessage> GetNotReceivedMessagesDictionary(string userId)
@@ -79,6 +79,11 @@ namespace MobileSecondHand.DB.Services.Chat
 											.Where(m => conversationsIds.Contains(m.ConversationId) && !m.Received && m.AuthorId != userId)
 											.ToList();
 
+			UpdateReceivedPropertyInMessages(messages);
+		}
+
+		public void UpdateReceivedPropertyInMessages(List<ChatMessage> messages)
+		{
 			for (int i = 0; i < messages.Count; i++)
 			{
 				messages[i].Received = true;
@@ -130,7 +135,7 @@ namespace MobileSecondHand.DB.Services.Chat
 										.Include(c => c.Messages)
 										.Where(c => c.Users.Any(u => u.UserId == userId) && c.Messages.Count > 0)
 										.Select(c => new ConversationReadModel { ConversationId = c.ConversationId, Users = c.Users.Select(u => u.User).ToList(), Messages = c.Messages.OrderByDescending(m => m.Date).Take(1).ToList() }).ToList();
-								
+
 
 
 			return conversations.OrderByDescending(c => c.Messages.FirstOrDefault().Date).Skip(pageNumber * MESSAGES_COUNT_PER_REQUEST).Take(MESSAGES_COUNT_PER_REQUEST).ToList();
