@@ -151,7 +151,7 @@
                         android:paddingTop="5dp" />
                     <TextView
                         android:id="@+id/textViewChosedCategory"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textViewCategoryChosing"
                         android:layout_centerHorizontal="true"
@@ -196,7 +196,8 @@
                                 android:text="tylko sprzedaż"
                                 android:checked="true"
                                 android:textColor="@color/colorPrimaryDark"
-                                android:textAppearance="?android:attr/textAppearanceMedium" />
+                                android:textAppearance="?android:attr/textAppearanceMedium"
+                                android:visibility="visible" />
                             <RadioButton
                                 android:id="@+id/rdBtnForSellAndChange"
                                 android:layout_width="wrap_content"
@@ -255,7 +256,7 @@
                     <TextView
                         android:text="Wybierz"
                         android:textAppearance="?android:attr/textAppearanceMedium"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/textViewSize"
                         android:id="@+id/textViewSelectedSize"
@@ -263,7 +264,8 @@
                         android:layout_centerHorizontal="true"
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp"
-                        android:layout_marginTop="@dimen/settingRowMargin" />
+                        android:layout_marginTop="@dimen/settingRowMargin"
+                        android:gravity="center" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:id="@+id/layoutPhotos"
@@ -284,13 +286,18 @@
                         android:paddingBottom="5dp"
                         android:paddingTop="5dp" />
                     <Button
+						android:paddingRight="2dp"
+						android:paddingLeft="2dp"
+						android:layout_margin="5dp"
+                        android:background="@color/colorPrimary"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
+						android:textStyle="bold"
                         android:text="Dodaj zdjęcie"
                         android:id="@+id/buttonTakePicture1"
                         android:layout_centerHorizontal="true"
                         android:layout_below="@+id/photoView1Divider"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/advertisementRowBackground"
                         android:textAppearance="?android:attr/textAppearanceSmall" />
                     <ImageView
                         android:layout_width="match_parent"
@@ -301,7 +308,7 @@
                         android:layout_marginRight="50dp"
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/buttonTakePicture1"
-						 android:maxHeight="300dp"/>
+                        android:maxHeight="300dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -316,13 +323,18 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:paddingBottom="5dp"
                         android:visibility="gone" />
-                    <Button
+					<Button
+						android:paddingRight="2dp"
+						android:paddingLeft="2dp"
+						android:layout_margin="5dp"
+                        android:background="@color/colorPrimary"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
+						android:textStyle="bold"
                         android:text="Dodaj zdjęcie"
                         android:id="@+id/buttonTakePicture2"
                         android:layout_centerHorizontal="true"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/advertisementRowBackground"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:layout_below="@+id/photoView2Divider"
                         android:visibility="gone" />
@@ -336,7 +348,7 @@
                         android:adjustViewBounds="true"
                         android:layout_below="@+id/buttonTakePicture2"
                         android:visibility="gone"
-						 android:maxHeight="300dp" />
+                        android:maxHeight="300dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -351,13 +363,18 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:paddingBottom="5dp"
                         android:visibility="gone" />
-                    <Button
+					<Button
+						android:paddingRight="2dp"
+						android:paddingLeft="2dp"
+						android:layout_margin="5dp"
+                        android:background="@color/colorPrimary"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_height="30dp"
+						android:textStyle="bold"
                         android:text="Dodaj zdjęcie"
                         android:id="@+id/buttonTakePicture3"
                         android:layout_centerHorizontal="true"
-                        android:textColor="@color/colorPrimaryDark"
+                        android:textColor="@color/advertisementRowBackground"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:layout_below="@+id/photoView3Divider"
                         android:enabled="true"

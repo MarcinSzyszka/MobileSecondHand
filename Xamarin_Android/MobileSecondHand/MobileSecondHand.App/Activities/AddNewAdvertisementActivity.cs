@@ -191,10 +191,12 @@ namespace MobileSecondHand.App.Activities
 			btnChoseCategory = (ImageView)FindViewById(Resource.Id.btnAddAdvCategoryChosing);
 			btnChoseCategory.Click += async (s, e) => await BtnChoseCategory_Click(s, e);
 			textViewChodesdCategory = (TextView)FindViewById(Resource.Id.textViewChosedCategory);
+			textViewChodesdCategory.Click += async (s, e) => await BtnChoseCategory_Click(s, e);
 
 			btnChoseSize = (ImageView)FindViewById(Resource.Id.btnAddSize);
 			btnChoseSize.Click += BtnChoseSize_Click;
 			textViewChodesdSize = (TextView)FindViewById(Resource.Id.textViewSelectedSize);
+			textViewChodesdSize.Click += BtnChoseSize_Click;
 
 			mButtonTakePicture1.Click += MButtonTakePicture_Click;
 			mButtonTakePicture2.Click += MButtonTakePicture_Click;
