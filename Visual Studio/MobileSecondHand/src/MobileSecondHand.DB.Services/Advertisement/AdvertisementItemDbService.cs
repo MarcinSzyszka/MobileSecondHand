@@ -44,11 +44,18 @@ namespace MobileSecondHand.DB.Services.Advertisement
 		public IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber = -1)
 		{
 			IQueryable<AdvertisementItem> queryAdvertisements = default(IQueryable<AdvertisementItem>);
-			queryAdvertisements = GetAdvertisements().Where(a => a.UserId == userId);
+
 			if (pageNumber > -1)
 			{
-				queryAdvertisements = queryAdvertisements.Where(a => a.ExpirationDate >= DateTime.Now).OrderBy(a => a.ExpirationDate).Skip(20 * pageNumber).Take(20);
+				queryAdvertisements = GetAdvertisements().Where(a => a.UserId == userId && a.ExpirationDate >= DateTime.Now).OrderBy(a => a.ExpirationDate);
+				queryAdvertisements = queryAdvertisements.Skip(20 * pageNumber).Take(20);
 			}
+			else
+			{
+				//advertisement createdByUser - expired adverts should be returned because maybe user might want to restart them
+				queryAdvertisements = GetAdvertisements().Where(a => a.UserId == userId);
+			}
+
 
 			return queryAdvertisements;
 		}
