@@ -75,15 +75,6 @@ namespace MobileSecondHand.Services.Chat
 			invoke(hubProxy);
 		}
 
-
-		public static ChatHubClientService RecreateServiceInstance(string bearerToken)
-		{
-
-			serviceInstance = new ChatHubClientService(bearerToken);
-
-			return serviceInstance;
-		}
-
 		public void Reconnect()
 		{
 			Connect(hubConnection, async h =>

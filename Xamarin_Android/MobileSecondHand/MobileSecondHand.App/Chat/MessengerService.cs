@@ -40,15 +40,6 @@ namespace MobileSecondHand.App.Chat
 			return null;
 		}
 
-		public override bool OnUnbind(Intent intent)
-		{
-			this.chatHubClientService.Dispose();
-			timer.Dispose();
-			ServiceIsRunning = false;
-			this.signalRThread.Abort();
-			return base.OnUnbind(intent);
-		}
-
 		public override void OnDestroy()
 		{
 			this.chatHubClientService.Dispose();
