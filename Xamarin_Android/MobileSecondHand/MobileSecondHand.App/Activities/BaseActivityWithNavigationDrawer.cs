@@ -30,10 +30,15 @@ namespace MobileSecondHand.App.Activities
 		private DrawerLayout drawerLayout;
 		protected NavigationViewMenu navigationViewMenu;
 		protected ActionBarDrawerToggle drawerToggle;
-
+		public static bool IsInStack { get; private set; }
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+		}
+		protected override void OnDestroy()
+		{
+			IsInStack = false;
+			base.OnDestroy();
 		}
 
 		protected override void OnStart()
@@ -48,6 +53,7 @@ namespace MobileSecondHand.App.Activities
 					StartService(new Intent(this.ApplicationContext, typeof(MessengerService)));
 				}
 			}
+			IsInStack = true;
 		}
 
 

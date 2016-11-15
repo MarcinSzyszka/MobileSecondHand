@@ -42,8 +42,8 @@
                         android:layout_alignParentRight="true"
                         android:layout_alignParentTop="true"
                         android:background="#00ffffff"
-                        android:src="@drawable/settings_white" 
-						android:padding="10dp"/>
+                        android:src="@drawable/settings_white"
+                        android:padding="10dp" />
                 </RelativeLayout>
                 <RelativeLayout
                     android:layout_width="match_parent"
@@ -165,8 +165,7 @@
             android:layout_marginLeft="@dimen/settingRowMargin"
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
-            android:padding="2dp"
-            android:paddingBottom="5dp">
+            android:padding="2dp">
             <TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
@@ -192,9 +191,9 @@
                 android:id="@+id/imgBtnRadius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
+               android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
-                android:layout_alignTop="@+id/textView3"
+                android:layout_alignParentTop="true"
                 android:background="#00ffffff"
                 android:src="@drawable/settings" />
         </RelativeLayout>
