@@ -21,6 +21,7 @@ using MobileSecondHand.Services.Authentication;
 using Android.Support.V4.Content;
 using MobileSecondHand.Models.Settings;
 using MobileSecondHand.App.Chat;
+using Android.Media;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -43,6 +44,7 @@ namespace MobileSecondHand.App.Activities
 		private CircleImageView profileImageView;
 		RelativeLayout relativeLayoutSendMessage;
 		private AppSettingsModel appSettings;
+		private MediaPlayer player;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
@@ -56,7 +58,11 @@ namespace MobileSecondHand.App.Activities
 
 		public void AddMessage(ConversationMessage message)
 		{
-			this.RunOnUiThread(() => this.conversationMessagesListAdapter.AddReceivedMessage(message));
+			this.RunOnUiThread(() =>
+			{
+				player.Start();
+				this.conversationMessagesListAdapter.AddReceivedMessage(message);
+			});
 		}
 
 		protected override async void OnCreate(Bundle savedInstanceState)
@@ -77,6 +83,9 @@ namespace MobileSecondHand.App.Activities
 			SetupConversationToolbar();
 			pageNumber = 0;
 			GetExtras();
+			player = new MediaPlayer();
+			player.SetDataSource(this, Android.Net.Uri.Parse("android.resource://" + this.PackageName + "/raw/" + Resource.Raw.message_sound));
+			player.Prepare();
 			progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
 			await SetupIntelocutorInfo();
 			await GetAndDisplayMesages(savedInstanceState);
@@ -91,6 +100,7 @@ namespace MobileSecondHand.App.Activities
 				coversationsLayoutWrapper.Visibility = ViewStates.Gone;
 				pageNumber = 0;
 				GetExtras(intent);
+				ConversationActivity.ConversationActivityStateModel = GetStateModel(true);
 				progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
 				await SetupIntelocutorInfo();
 				await GetAndDisplayMesages(null);
@@ -128,6 +138,20 @@ namespace MobileSecondHand.App.Activities
 			}
 		}
 
+		public override void OnBackPressed()
+		{
+			if (!MainActivity.IsInStack)
+			{
+				var intent = new Intent(this, typeof(MainActivity));
+				StartActivity(intent);
+				Finish();
+			}
+			else
+			{
+				base.OnBackPressed();
+			}
+		}
+
 		private void SetupConversationToolbar()
 		{
 			this.toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar_with_circle_image_view);
@@ -137,43 +161,8 @@ namespace MobileSecondHand.App.Activities
 			SupportActionBar.SetHomeButtonEnabled(true);
 			SupportActionBar.SetDisplayHomeAsUpEnabled(true);
 			SupportActionBar.SetDisplayShowHomeEnabled(true);
-			toolbar.NavigationClick += (s, e) => this.Finish();
+			toolbar.NavigationClick += (s, e) => OnBackPressed();
 		}
-
-		//public override bool OnCreateOptionsMenu(IMenu menu)
-		//{
-		//	MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
-		//	if (menu != null)
-		//	{
-		//		menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
-		//		menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
-		//		menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
-		//		menu.FindItem(Resource.Id.chat).SetVisible(true);
-		//		menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(false);
-		//		menu.FindItem(Resource.Id.home).SetVisible(true);
-		//	}
-
-		//	return base.OnCreateOptionsMenu(menu);
-		//}
-
-		public override bool OnOptionsItemSelected(IMenuItem item)
-		{
-			var handled = false;
-			switch (item.ItemId)
-			{
-				case Resource.Id.home:
-					GoToMainPage();
-					handled = true;
-					break;
-				case Resource.Id.chat:
-					GoToChat();
-					handled = true;
-					break;
-			}
-
-			return handled;
-		}
-
 
 		public override bool DispatchKeyEvent(KeyEvent e)
 		{
@@ -258,13 +247,16 @@ namespace MobileSecondHand.App.Activities
 
 		private void EditTextMessage_KeyPress(object sender, View.KeyEventArgs e)
 		{
-			if (editTextMessage.Text.IsNotNullOrEmpty())
+			if (editTextMessage.Text.IsNotNullOrEmpty() && (e.KeyCode == Keycode.DpadCenter || e.KeyCode == Keycode.Enter))
 			{
-				if (e.KeyCode == Keycode.DpadCenter || e.KeyCode == Keycode.Enter)
-				{
-					SendMessage();
-				}
+				SendMessage();
+				e.Handled = true;
 			}
+			else
+			{
+				e.Handled = false;
+			}
+
 
 		}
 
