@@ -216,7 +216,7 @@ namespace MobileSecondHand.App.Receivers
 			var message = GetMessage(advertisementsKind);
 			var nMgr = (NotificationManager)context.GetSystemService(Context.NotificationService);
 			var notification = new Notification(Resource.Drawable.logo_icon, "Mobile Second Hand - nowoœci");
-			var notificationId = new System.Random().Next(1000);
+			var notificationId = advertisementsKind == AdvertisementsKind.AdvertisementsAroundUserCurrentLocation ? -1 : -2;
 			notification.Flags = NotificationFlags.AutoCancel;
 			notification.Sound = RingtoneManager.GetDefaultUri(RingtoneType.Notification);
 			var intent = new Intent(context, typeof(MainActivity));
