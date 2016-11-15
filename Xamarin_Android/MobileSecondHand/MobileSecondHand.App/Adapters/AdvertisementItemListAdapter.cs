@@ -18,6 +18,7 @@ namespace MobileSecondHand.App.Adapters
 		BitmapOperationService bitmapOperationService;
 		IInfiniteScrollListener infiniteScrollListener;
 		private AdvertisementsKind advertisementsKind;
+		private int createdCount;
 
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
 		public event EventHandler<FabOnAdvertisementItemRowClicked> DeleteAdvertisementItemClick;
@@ -26,6 +27,7 @@ namespace MobileSecondHand.App.Adapters
 
 		public AdvertisementItemListAdapter(Activity context, List<AdvertisementItemShort> advertisementItems, AdvertisementsKind advertisementsKind, IInfiniteScrollListener infiniteScrollListener)
 		{
+			createdCount = 0;
 			this.AdvertisementItems = advertisementItems;
 			this.context = context;
 			this.bitmapOperationService = new BitmapOperationService();
@@ -47,6 +49,7 @@ namespace MobileSecondHand.App.Adapters
 
 		public override async void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
 		{
+
 			var currentItem = this.AdvertisementItems[position];
 			AdvertisementItemViewHolder vh = holder as AdvertisementItemViewHolder;
 			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser || advertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
@@ -79,6 +82,12 @@ namespace MobileSecondHand.App.Adapters
 			vh.PriceTextView.Text = String.Format("{0} z³", currentItem.AdvertisementPrice);
 			vh.PhotoImageView.SetImageBitmap(await bitmapOperationService.GetScaledDownBitmapForDisplayAsync(currentItem.MainPhoto));
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
+			if (createdCount % 60 == 0)
+			{
+				//clean bitmaps after 60 attaches to avoid OOM Exception
+				GC.Collect();
+			}
+			createdCount++;
 		}
 
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
