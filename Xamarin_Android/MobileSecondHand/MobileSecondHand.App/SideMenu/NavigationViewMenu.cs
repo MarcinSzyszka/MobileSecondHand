@@ -306,7 +306,7 @@ namespace MobileSecondHand.App.SideMenu
 						break;
 				}
 			},
-			dialogTitle:"Wybierz Ÿród³o");
+			dialogTitle: "Wybierz Ÿród³o");
 		}
 
 		private void TakePhotoFromStorage()
@@ -409,8 +409,7 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void NewsNotificationsLayout_Click(object sender, EventArgs e)
 		{
-			var confirmMessage = String.Format("Czy na pewno chcesz {0} powiadomienia o nowoœciach?", notificationsStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
-			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			Action actionAfterSwitch = () =>
 			{
 				notificationsStateSwitch.Checked = !notificationsStateSwitch.Checked;
 				if (!notificationsStateSwitch.Checked)
@@ -423,34 +422,52 @@ namespace MobileSecondHand.App.SideMenu
 				}
 
 				SetAppSettings(appSettings);
-				this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "w³¹czone" : "wy³¹czone";
-			});
+				this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "W³¹czone" : "Wy³¹czone";
+			};
+
+			if (!notificationsStateSwitch.Checked)
+			{
+				actionAfterSwitch();
+			}
+			else
+			{
+				var confirmMessage = String.Format("Czy na pewno chcesz wy³¹czyæ powiadomienia o nowoœciach?");
+				AlertsService.ShowConfirmDialog(activity, confirmMessage, actionAfterSwitch);
+			}
+
 		}
 
 
 		private void NotificationsStateSwitch_Click(object sender, EventArgs e)
 		{
-			var confirmMessage = String.Format("Czy na pewno chcesz {0} powiadomienia o nowoœciach?", !notificationsStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
-			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			Action actionAfterSwitch = () =>
 			{
 				if (!notificationsStateSwitch.Checked)
 				{
 					appSettings.NotificationsDisabled = true;
-					//activity.StopService(new Intent(activity.ApplicationContext, typeof(NewsService)));
 				}
 				else
 				{
 					appSettings.NotificationsDisabled = false;
-					//activity.StartService(new Intent(activity.ApplicationContext, typeof(NewsService)));
 				}
 
 				SetAppSettings(appSettings);
-				this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "w³¹czone" : "wy³¹czone";
-			},
-			() =>
+				this.textViewNotificationsState.Text = notificationsStateSwitch.Checked ? "W³¹czone" : "Wy³¹czone";
+			};
+
+
+			if (notificationsStateSwitch.Checked)
 			{
-				this.notificationsStateSwitch.Checked = !notificationsStateSwitch.Checked;
-			});
+				actionAfterSwitch();
+			}
+			else
+			{
+				var confirmMessage = String.Format("Czy na pewno chcesz wy³¹czyæ powiadomienia o nowoœciach?");
+				AlertsService.ShowConfirmDialog(activity, confirmMessage, actionAfterSwitch, () =>
+				{
+					this.notificationsStateSwitch.Checked = !notificationsStateSwitch.Checked;
+				});
+			}
 		}
 
 		private void SetupChatStateView(BaseActivity activity)
@@ -464,8 +481,7 @@ namespace MobileSecondHand.App.SideMenu
 
 		private void ChatStateLayout_Click(object sender, EventArgs e)
 		{
-			var confirmMessage = String.Format("Czy na pewno chcesz {0} czat?", chatStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
-			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			Action actionAfterSwitch = () =>
 			{
 				chatStateSwitch.Checked = !chatStateSwitch.Checked;
 				if (!chatStateSwitch.Checked)
@@ -480,14 +496,23 @@ namespace MobileSecondHand.App.SideMenu
 				}
 
 				SetAppSettings(appSettings);
-				this.textViewChatState.Text = chatStateSwitch.Checked ? "w³¹czony" : "wy³¹czony";
-			});
+				this.textViewChatState.Text = chatStateSwitch.Checked ? "W³¹czony" : "Wy³¹czony";
+			};
+			if (chatStateSwitch.Checked)
+			{
+				actionAfterSwitch();
+			}
+			else
+			{
+				var confirmMessage = "Czy na pewno chcesz wy³¹czyæ czat?";
+				AlertsService.ShowConfirmDialog(activity, confirmMessage, actionAfterSwitch);
+
+			}
 		}
 
 		private void ChatStateSwitch_Click(object sender, EventArgs e)
 		{
-			var confirmMessage = String.Format("Czy na pewno chcesz {0} czat?", !chatStateSwitch.Checked ? "wy³¹czyæ" : "w³¹czyæ");
-			AlertsService.ShowConfirmDialog(activity, confirmMessage, () =>
+			Action actionAfterSwitch = () =>
 			{
 				if (!chatStateSwitch.Checked)
 				{
@@ -501,12 +526,22 @@ namespace MobileSecondHand.App.SideMenu
 				}
 
 				SetAppSettings(appSettings);
-				this.textViewChatState.Text = chatStateSwitch.Checked ? "w³¹czony" : "wy³¹czony";
-			},
-			() =>
+				this.textViewChatState.Text = chatStateSwitch.Checked ? "W³¹czony" : "Wy³¹czony";
+			};
+			if (chatStateSwitch.Checked)
 			{
-				this.chatStateSwitch.Checked = !chatStateSwitch.Checked;
-			});
+				actionAfterSwitch();
+			}
+			else
+			{
+				var confirmMessage = "Czy na pewno chcesz wy³¹czyæ czat?";
+				AlertsService.ShowConfirmDialog(activity, confirmMessage, actionAfterSwitch,
+				() =>
+				{
+					this.chatStateSwitch.Checked = !chatStateSwitch.Checked;
+				});
+			}
+
 		}
 
 		internal void SetupMenu()
@@ -541,7 +576,7 @@ namespace MobileSecondHand.App.SideMenu
 			}
 			else
 			{
-				result = "nieustawiona";
+				result = "Nieustawiona";
 			}
 
 			this.textViewHomeLocalization.Text = result;
@@ -565,7 +600,7 @@ namespace MobileSecondHand.App.SideMenu
 				this.textViewKeywords.Text = "Wszystkie";
 			}
 
-			this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "bez ograniczeñ";
+			this.textViewNotificationsRadius.Text = settingsModel.LocationSettings.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", settingsModel.LocationSettings.MaxDistance.ToString()) : "Bez ograniczeñ";
 
 		}
 
@@ -573,13 +608,13 @@ namespace MobileSecondHand.App.SideMenu
 		{
 			if (!appSettings.NotificationsDisabled)
 			{
-				this.textViewNotificationsState.Text = "w³¹czone";
+				this.textViewNotificationsState.Text = "W³¹czone";
 
 				this.notificationsStateSwitch.Checked = true;
 			}
 			else
 			{
-				this.textViewNotificationsState.Text = "wy³¹czone";
+				this.textViewNotificationsState.Text = "Wy³¹czone";
 				this.notificationsStateSwitch.Checked = false;
 			}
 		}
@@ -588,12 +623,12 @@ namespace MobileSecondHand.App.SideMenu
 		{
 			if (appSettings.ChatDisabled && !MessengerService.ServiceIsRunning)
 			{
-				this.textViewChatState.Text = "wy³¹czony";
+				this.textViewChatState.Text = "Wy³¹czony";
 				this.chatStateSwitch.Checked = false;
 			}
 			else
 			{
-				this.textViewChatState.Text = "w³¹czony";
+				this.textViewChatState.Text = "W³¹czony";
 				this.chatStateSwitch.Checked = true;
 			}
 		}

@@ -2602,8 +2602,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0800bd
 			public const int app_bar_with_circle_image_view = 2131230909;
 			
-			// aapt resource value: 0x7f08015e
-			public const int applyFilterOptions = 2131231070;
+			// aapt resource value: 0x7f08015f
+			public const int applyFilterOptions = 2131231071;
 			
 			// aapt resource value: 0x7f080043
 			public const int automatic = 2131230787;
@@ -2695,8 +2695,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f08002f
 			public const int center_vertical = 2131230767;
 			
-			// aapt resource value: 0x7f08015b
-			public const int chat = 2131231067;
+			// aapt resource value: 0x7f08015c
+			public const int chat = 2131231068;
 			
 			// aapt resource value: 0x7f080060
 			public const int checkbox = 2131230816;
@@ -2707,8 +2707,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080144
 			public const int chronometer = 2131231044;
 			
-			// aapt resource value: 0x7f08015d
-			public const int clearFilterOptions = 2131231069;
+			// aapt resource value: 0x7f08015e
+			public const int clearFilterOptions = 2131231070;
 			
 			// aapt resource value: 0x7f080035
 			public const int clip_horizontal = 2131230773;
@@ -3130,8 +3130,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f080086
 			public const int rdBtnOnlyForSell = 2131230854;
 			
-			// aapt resource value: 0x7f08015c
-			public const int refreshAdvertisementsOption = 2131231068;
+			// aapt resource value: 0x7f08015d
+			public const int refreshAdvertisementsOption = 2131231069;
 			
 			// aapt resource value: 0x7f08010f
 			public const int relLayoutAppInfos = 2131230991;
@@ -3261,6 +3261,9 @@ namespace MobileSecondHand.App
 			
 			// aapt resource value: 0x7f080013
 			public const int showCustom = 2131230739;
+			
+			// aapt resource value: 0x7f08015b
+			public const int showFavouritesList = 2131231067;
 			
 			// aapt resource value: 0x7f080014
 			public const int showHome = 2131230740;

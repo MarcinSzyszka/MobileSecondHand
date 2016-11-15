@@ -96,6 +96,7 @@ namespace MobileSecondHand.App.Activities
 			MenuInflater.Inflate(Resource.Menu.mainActivityMenu, menu);
 			if (menu != null)
 			{
+				menu.FindItem(Resource.Id.showFavouritesList).SetVisible(false);
 				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(true);
 				menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(false);
 				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);

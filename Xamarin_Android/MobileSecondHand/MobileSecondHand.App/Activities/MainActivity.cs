@@ -107,7 +107,14 @@ namespace MobileSecondHand.App
 		{
 			if (sortingOptionsLayout.Visibility != ViewStates.Visible)
 			{
-				base.OnBackPressed();
+				if (this.advertisementsSearchModel.AdvertisementsKind != AdvertisementsKind.AdvertisementsAroundUserCurrentLocation)
+				{
+					ShowAdvertisementList(AdvertisementsKind.AdvertisementsAroundUserCurrentLocation);
+				}
+				else
+				{
+					base.OnBackPressed();
+				}
 			}
 			else
 			{
@@ -180,7 +187,7 @@ namespace MobileSecondHand.App
 
 		private void SetupSelectedMaxDistanceView()
 		{
-			this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "bez ograniczeñ";
+			this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "Bez ograniczeñ";
 		}
 
 		private void SetupSelectedUserView()
@@ -265,6 +272,7 @@ namespace MobileSecondHand.App
 			if (isOnOptionsLayout)
 			{
 				SupportActionBar.Title = "Filtry";
+				menu.FindItem(Resource.Id.showFavouritesList).SetVisible(false);
 				this.menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(true);
 				this.menu.FindItem(Resource.Id.clearFilterOptions).SetVisible(true);
 				this.menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
@@ -274,7 +282,8 @@ namespace MobileSecondHand.App
 			else
 			{
 				SupportActionBar.Title = "Og³oszenia";
-				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(true);
+				menu.FindItem(Resource.Id.showFavouritesList).SetVisible(true);
+				menu.FindItem(Resource.Id.refreshAdvertisementsOption).SetVisible(false);
 				menu.FindItem(Resource.Id.chat).SetVisible(true);
 				menu.FindItem(Resource.Id.choosingAdvertisementsList).SetVisible(true);
 				menu.FindItem(Resource.Id.applyFilterOptions).SetVisible(false);
@@ -289,9 +298,12 @@ namespace MobileSecondHand.App
 			var handled = false;
 			switch (item.ItemId)
 			{
-				case Resource.Id.refreshAdvertisementsOption:
-					RefreshAdvertisementList(true);
-					handled = true;
+				//case Resource.Id.refreshAdvertisementsOption:
+				//	RefreshAdvertisementList(true);
+				//	handled = true;
+				//	break;
+				case Resource.Id.showFavouritesList:
+					ShowAdvertisementList(AdvertisementsKind.FavouritesAdvertisements);
 					break;
 				case Resource.Id.chat:
 					var intent = new Intent(this, typeof(ConversationsListActivity));
@@ -315,14 +327,19 @@ namespace MobileSecondHand.App
 			return handled;
 		}
 
+		private void ShowAdvertisementList(AdvertisementsKind advertisementsKind)
+		{
+			this.advertisementsSearchModel.AdvertisementsKind = advertisementsKind;
+			this.advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
+			this.advertisementItemListAdapter.InfiniteScrollDisabled = false;
+			RefreshAdvertisementList(true);
+		}
+
 		private void ShowChoosingAdvertisementsKindDialog()
 		{
 			Action<string> methodAfterSelect = (s) =>
 			{
-				this.advertisementsSearchModel.AdvertisementsKind = s.GetEnumValueByDisplayName<AdvertisementsKind>();
-				this.advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
-				this.advertisementItemListAdapter.InfiniteScrollDisabled = false;
-				RefreshAdvertisementList(true);
+				ShowAdvertisementList(s.GetEnumValueByDisplayName<AdvertisementsKind>());
 			};
 			var kindNames = Enum.GetValues(typeof(AdvertisementsKind)).GetAllItemsDisplayNames();
 			AlertsService.ShowSingleSelectListString(this, kindNames.ToArray(), methodAfterSelect, this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName(), "Wybierz listê og³oszeñ");
@@ -405,7 +422,7 @@ namespace MobileSecondHand.App
 				SetupSelectedSortingByView();
 			};
 			var sortingByNames = Enum.GetValues(typeof(SortingBy)).GetAllItemsDisplayNames();
-			AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName(), dialogTitle:"Wybierz rodzaj sortowania");
+			AlertsService.ShowSingleSelectListString(this, sortingByNames.ToArray(), actionAfterSelect, this.advertisementsSearchModel.SortingBy.GetDisplayName(), dialogTitle: "Wybierz rodzaj sortowania");
 		}
 
 		private void BtnSelectUser_Click(object sender, EventArgs e)
@@ -429,7 +446,7 @@ namespace MobileSecondHand.App
 				}
 				advertisementsSearchModel.CoordinatesModel.MaxDistance = resultRadius;
 
-				this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "bez ograniczeñ";
+				this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "Bez ograniczeñ";
 			});
 		}
 
