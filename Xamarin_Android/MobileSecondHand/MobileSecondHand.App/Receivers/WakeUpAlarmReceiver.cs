@@ -53,7 +53,7 @@ namespace MobileSecondHand.App.Receivers
 			{
 				return;
 			}
-			var isUserConnectedToInternet = await DoesUserHasInternetConnection();
+			var isUserConnectedToInternet = await DoesUserHasInternetConnection(bearerToken);
 			if (!isUserConnectedToInternet)
 			{
 				return;
@@ -63,7 +63,7 @@ namespace MobileSecondHand.App.Receivers
 			_wakeLock = powerManager.NewWakeLock(WakeLockFlags.Partial, "MSH");
 			_wakeLock.Acquire();
 			timerTick = 1;
-			timerInterval = 1000 * 10;
+			timerInterval = 1000 * 5;
 			timer = new System.Threading.Timer(new TimerCallback(TimerCallBackMethod));
 			timer.Change(timerInterval, timerInterval);
 
@@ -71,6 +71,10 @@ namespace MobileSecondHand.App.Receivers
 			if (!appsettings.ChatDisabled)
 			{
 				chatHubServiceInstance = ChatHubClientService.GetServiceInstance(bearerToken);
+				if (!chatHubServiceInstance.IsConnected())
+				{
+					chatHubServiceInstance.Reconnect();
+				}
 			}
 			if (!appsettings.NotificationsDisabled)
 			{
@@ -83,17 +87,17 @@ namespace MobileSecondHand.App.Receivers
 			}
 		}
 
-		private async Task<bool> DoesUserHasInternetConnection()
+		private async Task<bool> DoesUserHasInternetConnection(string bearerToken)
 		{
-			checkInternetConnectionService = new CheckInternetConnectionService();
+			checkInternetConnectionService = new CheckInternetConnectionService(bearerToken);
 			return await checkInternetConnectionService.IsInternetConnectionActive();
 		}
 
 		private void TimerCallBackMethod(object state)
 		{
-			if (checkingNewAdvertsFinished || timerTick == 12)//timerTick == 12 == 2 min
+			if (checkingNewAdvertsFinished)
 			{
-				if (appsettings.ChatDisabled || chatHubServiceInstance.IsConnected())
+				if (appsettings.ChatDisabled || chatHubServiceInstance.IsConnected() || timerTick == 12)//timerTick == 12 == 1 min
 				{
 					timer.Dispose();
 					_wakeLock.Release();

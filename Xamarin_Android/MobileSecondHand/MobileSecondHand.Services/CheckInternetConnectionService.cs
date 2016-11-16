@@ -13,9 +13,9 @@ namespace MobileSecondHand.Services
 	{
 		private HttpClient client;
 
-		public CheckInternetConnectionService()
+		public CheckInternetConnectionService(string bearerToken)
 		{
-			this.client = HttpClientFactory.GetHttpClient();
+			this.client = HttpClientFactory.GetHttpClientForCheckingConnection(bearerToken);
 		}
 
 		public async Task<bool> IsInternetConnectionActive()
@@ -26,7 +26,7 @@ namespace MobileSecondHand.Services
 			}
 			catch (Exception)
 			{
-				//timeout exception after 20 sec
+				//timeout exception after 5 sec
 				return false;
 			}
 

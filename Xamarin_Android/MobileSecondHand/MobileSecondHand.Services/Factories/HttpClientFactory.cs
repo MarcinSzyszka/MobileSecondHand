@@ -7,6 +7,8 @@ namespace MobileSecondHand.Services.Factories
 	public class HttpClientFactory
 	{
 		static HttpClient client;
+		static HttpClient checkingConnectionClient;
+
 		public static HttpClient GetHttpClient(string bearerToken)
 		{
 			if (client == null)
@@ -21,6 +23,19 @@ namespace MobileSecondHand.Services.Factories
 				client.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
 			}
 			return client;
+		}
+
+		public static HttpClient GetHttpClientForCheckingConnection(string bearerToken)
+		{
+			if (checkingConnectionClient == null)
+			{
+				checkingConnectionClient = new HttpClient();
+				checkingConnectionClient.Timeout = new TimeSpan(0, 0, 0, 5, 0);
+				checkingConnectionClient.BaseAddress = new Uri(WebApiConsts.WEB_API_URL);
+				checkingConnectionClient.DefaultRequestHeaders.Add(WebApiConsts.AUTHORIZATION_HEADER_NAME, WebApiConsts.AUTHORIZATION_HEADER_BEARER_VALUE_NAME + bearerToken);
+			}
+
+			return checkingConnectionClient;
 		}
 
 		public static HttpClient GetHttpClient()
