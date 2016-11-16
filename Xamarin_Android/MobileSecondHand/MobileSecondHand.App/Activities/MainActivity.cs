@@ -571,7 +571,7 @@ namespace MobileSecondHand.App
 					if (settingsMOdel != null && settingsMOdel.LocationSettings.Latitude > 0.0D)
 					{
 						this.advertisementsSearchModel.CoordinatesModel.Latitude = settingsMOdel.LocationSettings.Latitude;
-						this.advertisementsSearchModel.CoordinatesModel.Latitude = settingsMOdel.LocationSettings.Longitude;
+						this.advertisementsSearchModel.CoordinatesModel.Longitude = settingsMOdel.LocationSettings.Longitude;
 					}
 					else
 					{
