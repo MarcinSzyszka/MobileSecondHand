@@ -63,6 +63,11 @@ namespace MobileSecondHand.App.Activities
 
 			if (conversations != null && conversations.Count > 0)
 			{
+				if (this.conversationsRecyclerView.Visibility == ViewStates.Gone)
+				{
+					this.conversationsRecyclerView.Visibility = ViewStates.Visible;
+					this.textViewNoConversations.Visibility = ViewStates.Gone;
+				}
 				if (conversationsListAdapter == null || resetList)
 				{
 					conversationsListAdapter = new ConversationsListAdapter(conversations, this);
