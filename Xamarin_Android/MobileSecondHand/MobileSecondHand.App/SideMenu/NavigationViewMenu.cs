@@ -498,7 +498,7 @@ namespace MobileSecondHand.App.SideMenu
 				SetAppSettings(appSettings);
 				this.textViewChatState.Text = chatStateSwitch.Checked ? "W³¹czony" : "Wy³¹czony";
 			};
-			if (chatStateSwitch.Checked)
+			if (!chatStateSwitch.Checked)
 			{
 				actionAfterSwitch();
 			}
