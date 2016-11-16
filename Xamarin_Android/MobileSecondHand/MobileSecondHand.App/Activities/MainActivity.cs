@@ -58,6 +58,7 @@ namespace MobileSecondHand.App
 		string expiredStatus = "Zakoñczone";
 		Action<bool> RefreshAdvertisementList;
 		private AdvertisementSearchModelCopier searchModelCopier;
+		private TextView textViewNoAdverts;
 
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
@@ -356,6 +357,7 @@ namespace MobileSecondHand.App
 		private void SetupViews()
 		{
 			progress = new ProgressDialogHelper(this);
+			textViewNoAdverts = FindViewById<TextView>(Resource.Id.textViewNoAdverts);
 			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
 			advertisementsListKindTextView.Click += (s, e) => ShowChoosingAdvertisementsKindDialog();
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
@@ -546,6 +548,25 @@ namespace MobileSecondHand.App
 					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, new List<AdvertisementItemShort>(), this.advertisementsSearchModel.AdvertisementsKind, this);
 				}
 				advertisementItemListAdapter.InfiniteScrollDisabled = true;
+			}
+
+			SetRecyclerVisibility(advertisements);
+		}
+
+		private void SetRecyclerVisibility(List<AdvertisementItemShort> advertisements)
+		{
+			if (advertisements.Count == 0)
+			{
+				if (advertisementItemListAdapter.ItemCount == 0)
+				{
+					mainListSwipeLayout.Visibility = ViewStates.Gone;
+					textViewNoAdverts.Visibility = ViewStates.Visible;
+				}
+			}
+			else if (mainListSwipeLayout.Visibility == ViewStates.Gone)
+			{
+				mainListSwipeLayout.Visibility = ViewStates.Visible;
+				textViewNoAdverts.Visibility = ViewStates.Gone;
 			}
 		}
 

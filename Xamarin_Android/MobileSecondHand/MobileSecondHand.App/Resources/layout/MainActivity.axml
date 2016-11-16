@@ -7,31 +7,31 @@
     android:minHeight="25px"
     android:minWidth="25px"
     android:orientation="vertical">
-    <android.support.v4.widget.DrawerLayout
+	<android.support.v4.widget.DrawerLayout
         android:id="@+id/drawer_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:minHeight="25px"
         android:minWidth="25px"
         android:orientation="vertical">
-        <RelativeLayout
+		<RelativeLayout
             android:id="@+id/mainListLayoutWrapper"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
             android:animateLayoutChanges="true">
-            <include
+			<include
                 layout="@layout/appbar"
                 android:layout_alignParentTop="true"
                 android:layout_gravity="top" />
-            <RelativeLayout
+			<RelativeLayout
                 android:id="@+id/mainListLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:visibility="visible"
                 android:layout_below="@+id/app_bar">
-                <TextView
+				<TextView
                     android:id="@+id/advertisementsKindList"
                     android:layout_width="fill_parent"
                     android:layout_height="wrap_content"
@@ -42,7 +42,7 @@
                     android:text="Ogłoszenia wokół Twojej aktualnej lokalizacji"
                     android:textAppearance="?android:attr/textAppearanceSmall"
                     android:textColor="@color/colorPrimaryDark" />
-                <com.refractored.fab.FloatingActionButton
+				<com.refractored.fab.FloatingActionButton
                     android:id="@+id/fab"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -55,7 +55,7 @@
                     tools:fab_colorNormal="@color/colorAccent"
                     tools:fab_colorPressed="#DCE775"
                     tools:fab_colorRipple="#F0F4C3" />
-                <com.refractored.fab.FloatingActionButton
+				<com.refractored.fab.FloatingActionButton
                     android:id="@+id/fabFilter"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -68,32 +68,41 @@
                     tools:fab_colorNormal="@color/colorAccent"
                     tools:fab_colorPressed="#DCE775"
                     tools:fab_colorRipple="#F0F4C3" />
-                <android.support.v4.widget.SwipeRefreshLayout
+				<android.support.v4.widget.SwipeRefreshLayout
                     android:id="@+id/mainListSwipeLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:layout_below="@+id/advertisementsKindList">
-                    <android.support.v7.widget.RecyclerView
+					<android.support.v7.widget.RecyclerView
                         android:id="@+id/advertisementsRecyclerView"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:minHeight="25px"
                         android:minWidth="25px" />
-                </android.support.v4.widget.SwipeRefreshLayout>
-            </RelativeLayout>
-            <android.support.v4.widget.NestedScrollView
+				</android.support.v4.widget.SwipeRefreshLayout>
+				<TextView
+					 android:text="Brak ogłoszeń"
+					 android:textAppearance="?android:attr/textAppearanceMedium"
+					 android:layout_width="match_parent"
+					 android:layout_height="match_parent"
+					 android:layout_below="@id/mainListSwipeLayout"
+					 android:id="@+id/textViewNoAdverts"
+					 android:visibility="gone"
+					 android:gravity="center" />
+			</RelativeLayout>
+			<android.support.v4.widget.NestedScrollView
                 android:id="@+id/layoutSortingOptions"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_gravity="right|top"
                 android:visibility="gone"
                 android:layout_below="@+id/app_bar">
-                <RelativeLayout
+				<RelativeLayout
                     android:id="@+id/blabkabka"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:paddingBottom="10dp">
-                    <TextView
+					<TextView
                         android:id="@+id/textViewAdvertStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -106,7 +115,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark"
                         android:visibility="visible" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedAdvertsStatus"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -118,7 +127,7 @@
                         android:text="Trwające"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnSelectAdvertsStatus"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -128,7 +137,7 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewTransaction"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -141,7 +150,7 @@
                         android:text="Rodzaj transakcji"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedTransactionKind"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -153,7 +162,7 @@
                         android:text="Wszystkie"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnSelectTransactionKind"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -163,7 +172,7 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewCategory"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -176,7 +185,7 @@
                         android:text="Kategorie"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedCategoryForMainList"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -188,7 +197,7 @@
                         android:text="Wszystkie kategorie"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnSelectCategoryForMainList"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -198,7 +207,7 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textView1223"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -213,7 +222,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginTop="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedSizes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -225,7 +234,7 @@
                         android:text="Wszystkie rozmiary"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnSize"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -236,7 +245,7 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textView117"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -251,7 +260,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginTop="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedDistance"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -263,7 +272,7 @@
                         android:text="Bez ograniczeń"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnDistance"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -274,7 +283,7 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textView127"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -289,7 +298,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginTop="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedUser"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -301,7 +310,7 @@
                         android:text="Wszyscy"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnSelectUser"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -312,7 +321,7 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textView17"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -327,7 +336,7 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginTop="10dp"
                         android:paddingBottom="5dp" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSelectedSorting"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -341,7 +350,7 @@
                         android:textColor="@color/colorPrimaryDark"
                         android:paddingBottom="20dp"
                         android:layout_marginRight="50dp" />
-                    <ImageView
+					<ImageView
                         android:id="@+id/btnSorting"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -352,15 +361,15 @@
                         android:src="@drawable/settings"
                         android:layout_marginTop="10dp"
                         android:layout_marginRight="10dp" />
-                </RelativeLayout>
-            </android.support.v4.widget.NestedScrollView>
-        </RelativeLayout>
-        <android.support.design.widget.NavigationView
+				</RelativeLayout>
+			</android.support.v4.widget.NestedScrollView>
+		</RelativeLayout>
+		<android.support.design.widget.NavigationView
             android:id="@+id/nav_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="start"
             tools:headerLayout="@layout/headerdrawerlayout"
             android:visibility="invisible" />
-    </android.support.v4.widget.DrawerLayout>
+	</android.support.v4.widget.DrawerLayout>
 </FrameLayout>
