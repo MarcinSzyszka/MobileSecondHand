@@ -126,6 +126,7 @@ namespace MobileSecondHand.App.Activities
 			this.sellerName = FindViewById<TextView>(Resource.Id.textViewUserNameAdvertDetails);
 			this.textViewAdvertStatus = FindViewById<TextView>(Resource.Id.textViewAdvertStatus);
 			this.userPhoto = FindViewById<CircleImageView>(Resource.Id.profile_image_on_advert_det);
+			this.userPhoto.Click += (s, e) => TogleLayouts();
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
 
