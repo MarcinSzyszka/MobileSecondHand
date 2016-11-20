@@ -358,6 +358,7 @@ namespace MobileSecondHand.App
 		{
 			progress = new ProgressDialogHelper(this);
 			textViewNoAdverts = FindViewById<TextView>(Resource.Id.textViewNoAdverts);
+			textViewNoAdverts.Click += (s, e) => RefreshAdvertisementList(true);
 			advertisementsListKindTextView = FindViewById<TextView>(Resource.Id.advertisementsKindList);
 			advertisementsListKindTextView.Click += (s, e) => ShowChoosingAdvertisementsKindDialog();
 			advertisementsListKindTextView.Text = this.advertisementsSearchModel.AdvertisementsKind.GetDisplayName();
