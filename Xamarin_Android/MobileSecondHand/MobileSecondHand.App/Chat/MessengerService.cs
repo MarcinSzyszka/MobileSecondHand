@@ -6,6 +6,7 @@ using System.Text;
 using System.Threading;
 using Android.App;
 using Android.Content;
+using Android.Hardware.Display;
 using Android.Media;
 using Android.OS;
 using Android.Runtime;
@@ -25,13 +26,19 @@ namespace MobileSecondHand.App.Chat
 	[Service]
 	public class MessengerService : Service
 	{
+		private int timerTickCount;
 		private SharedPreferencesHelper sharedPreferencesHelper;
 		ChatHubClientService chatHubClientService;
 		private string bearerToken;
 		private Thread signalRThread;
 		private int lastMessageId;
 		private Timer timer;
-
+		private PowerManager powewrManager;
+		private int timerInterval;
+		private DisplayManager displayManager;
+		private DateTime? lastScreenTurnOffDate;
+		private DateTime lastConnectionDate;
+		private static int outsidePendingWorks;
 		public static bool ServiceIsRunning { get; private set; }
 
 		public override IBinder OnBind(Intent intent)
@@ -62,25 +69,67 @@ namespace MobileSecondHand.App.Chat
 		private void DoWork()
 		{
 			this.signalRThread = new Thread(() =>
-			{
-				this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
-				this.bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
-				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
-				this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
+				{
+					timerInterval = 1000 * 10;
+					displayManager = (DisplayManager)GetSystemService(Context.DisplayService);
+					powewrManager = (PowerManager)GetSystemService(Context.PowerService);
+					this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
+					this.bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
+					this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+					lastConnectionDate = DateTime.Now;
+					this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
 
-				timer = new Timer(new TimerCallback(TimerCallBackMethod));
-				timer.Change(0, 1000 * 60 * 1);
-			}
+					timer = new Timer(new TimerCallback(TimerCallBackMethod));
+					timer.Change(timerInterval, timerInterval);
+				}
 		);
 			signalRThread.Start();
 		}
 
 		private void TimerCallBackMethod(object state)
 		{
-			if (!this.chatHubClientService.IsConnected())
+			if (IsScreenOff())
 			{
-				this.chatHubClientService.Reconnect();
+				SetLastTurnOffScreenDate();
+
+				if (this.chatHubClientService.IsConnected())
+				{
+					StopConnectionAfterTimeout();
+				}
+				else if (lastConnectionDate.AddMinutes(10) < DateTime.Now)
+				{
+					lastConnectionDate = DateTime.Now;
+					this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+				}
 			}
+			else
+			{
+				lastConnectionDate = DateTime.Now;
+				lastScreenTurnOffDate = null;
+				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+			}
+		}
+
+		private void StopConnectionAfterTimeout()
+		{
+			if (outsidePendingWorks == 0 && (lastConnectionDate.AddSeconds(30) < DateTime.Now) && (lastScreenTurnOffDate.HasValue && lastScreenTurnOffDate.Value.AddSeconds(30) < DateTime.Now))
+			{
+				this.chatHubClientService.StopConnection();
+			}
+		}
+
+		private void SetLastTurnOffScreenDate()
+		{
+			if (!lastScreenTurnOffDate.HasValue)
+			{
+				lastScreenTurnOffDate = DateTime.Now;
+			}
+		}
+
+		private bool IsScreenOff()
+		{
+			var displays = displayManager.GetDisplays();
+			return displays.Any(display => display.State == DisplayState.Off);
 		}
 
 		private void ShowNotification(string conversationMessage)
@@ -118,6 +167,19 @@ namespace MobileSecondHand.App.Chat
 
 			lastMessageId = message.Id;
 			this.chatHubClientService.MessageReceived(message.Id);
+		}
+
+		public static void AddOutsidePendingWork()
+		{
+			outsidePendingWorks++;
+		}
+
+		public static void RemoveOutsidePendingWork()
+		{
+			if (outsidePendingWorks > 0)
+			{
+				outsidePendingWorks--;
+			}
 		}
 	}
 }

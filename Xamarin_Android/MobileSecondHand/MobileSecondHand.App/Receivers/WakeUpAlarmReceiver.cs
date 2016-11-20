@@ -70,11 +70,8 @@ namespace MobileSecondHand.App.Receivers
 			this.appsettings = SharedPreferencesHelper.GetAppSettings(this.context);
 			if (!appsettings.ChatDisabled)
 			{
+				MessengerService.AddOutsidePendingWork();
 				chatHubServiceInstance = ChatHubClientService.GetServiceInstance(bearerToken);
-				if (!chatHubServiceInstance.IsConnected())
-				{
-					chatHubServiceInstance.Reconnect();
-				}
 			}
 			if (!appsettings.NotificationsDisabled)
 			{
@@ -99,6 +96,7 @@ namespace MobileSecondHand.App.Receivers
 			{
 				if (appsettings.ChatDisabled || chatHubServiceInstance.IsConnected() || timerTick == 12)//timerTick == 12 == 1 min
 				{
+					MessengerService.RemoveOutsidePendingWork();
 					timer.Dispose();
 					_wakeLock.Release();
 				}

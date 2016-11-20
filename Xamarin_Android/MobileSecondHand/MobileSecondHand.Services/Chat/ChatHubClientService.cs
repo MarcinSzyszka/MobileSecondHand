@@ -32,6 +32,10 @@ namespace MobileSecondHand.Services.Chat
 			{
 				serviceInstance = new ChatHubClientService(bearerToken);
 			}
+			else if (!serviceInstance.IsConnected())
+			{
+				serviceInstance.Reconnect();
+			}
 
 			return serviceInstance;
 		}
@@ -90,5 +94,9 @@ namespace MobileSecondHand.Services.Chat
 		}
 
 
+		public void StopConnection()
+		{
+			hubConnection.Stop();
+		}
 	}
 }
