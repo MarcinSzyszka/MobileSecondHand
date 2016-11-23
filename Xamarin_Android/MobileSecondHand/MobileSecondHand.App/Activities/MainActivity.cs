@@ -106,7 +106,11 @@ namespace MobileSecondHand.App
 
 		public override void OnBackPressed()
 		{
-			if (sortingOptionsLayout.Visibility != ViewStates.Visible)
+			if (IsDrawerOpen())
+			{
+				base.OnBackPressed();
+			}
+			else if (sortingOptionsLayout.Visibility != ViewStates.Visible)
 			{
 				if (this.advertisementsSearchModel.AdvertisementsKind != AdvertisementsKind.AdvertisementsAroundUserCurrentLocation)
 				{
@@ -119,10 +123,7 @@ namespace MobileSecondHand.App
 			}
 			else
 			{
-				Action actionOnConfirm = () =>
-				{
-					ApplyFilterOptions();
-				};
+				Action actionOnConfirm = ApplyFilterOptions;
 				Action actionOnDismiss = () =>
 				{
 					this.advertisementsSearchModel = searchModelCopier.RestorePreviousValues();

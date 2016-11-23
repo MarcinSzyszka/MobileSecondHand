@@ -94,7 +94,7 @@ namespace MobileSecondHand.App.Receivers
 		{
 			if (checkingNewAdvertsFinished)
 			{
-				if (appsettings.ChatDisabled || chatHubServiceInstance.IsConnected() || timerTick == 12)//timerTick == 12 == 1 min
+				if (appsettings.ChatDisabled || chatHubServiceInstance.IsConnected() || timerTick == 7)//timerTick == 7 == 35 sec
 				{
 					MessengerService.RemoveOutsidePendingWork();
 					timer.Dispose();

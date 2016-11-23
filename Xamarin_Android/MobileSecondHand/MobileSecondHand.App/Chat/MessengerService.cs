@@ -26,14 +26,14 @@ namespace MobileSecondHand.App.Chat
 	[Service]
 	public class MessengerService : Service
 	{
-		private int timerTickCount;
+		private int timeoutInSeconds;
 		private SharedPreferencesHelper sharedPreferencesHelper;
 		ChatHubClientService chatHubClientService;
 		private string bearerToken;
 		private Thread signalRThread;
 		private int lastMessageId;
 		private Timer timer;
-		private PowerManager powewrManager;
+		private PowerManager powerManager;
 		private int timerInterval;
 		private DisplayManager displayManager;
 		private DateTime? lastScreenTurnOffDate;
@@ -70,9 +70,10 @@ namespace MobileSecondHand.App.Chat
 		{
 			this.signalRThread = new Thread(() =>
 				{
+					timeoutInSeconds = 20;
 					timerInterval = 1000 * 10;
 					displayManager = (DisplayManager)GetSystemService(Context.DisplayService);
-					powewrManager = (PowerManager)GetSystemService(Context.PowerService);
+					powerManager = (PowerManager)GetSystemService(Context.PowerService);
 					this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
 					this.bearerToken = (string)this.sharedPreferencesHelper.GetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN);
 					this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
@@ -106,13 +107,16 @@ namespace MobileSecondHand.App.Chat
 			{
 				lastConnectionDate = DateTime.Now;
 				lastScreenTurnOffDate = null;
-				this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+				if (!this.chatHubClientService.IsConnected())
+				{
+					this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
+				}
 			}
 		}
 
 		private void StopConnectionAfterTimeout()
 		{
-			if (outsidePendingWorks == 0 && (lastConnectionDate.AddSeconds(30) < DateTime.Now) && (lastScreenTurnOffDate.HasValue && lastScreenTurnOffDate.Value.AddSeconds(30) < DateTime.Now))
+			if (outsidePendingWorks == 0 && (lastConnectionDate.AddSeconds(timeoutInSeconds) < DateTime.Now) && (lastScreenTurnOffDate.HasValue && lastScreenTurnOffDate.Value.AddSeconds(timeoutInSeconds) < DateTime.Now))
 			{
 				this.chatHubClientService.StopConnection();
 			}
@@ -128,8 +132,15 @@ namespace MobileSecondHand.App.Chat
 
 		private bool IsScreenOff()
 		{
-			var displays = displayManager.GetDisplays();
-			return displays.Any(display => display.State == DisplayState.Off);
+
+			if (Build.VERSION.SdkInt >= BuildVersionCodes.KitkatWatch)
+			{
+				return !powerManager.IsInteractive;
+			}
+			else
+			{
+				return !powerManager.IsScreenOn;
+			}
 		}
 
 		private void ShowNotification(string conversationMessage)

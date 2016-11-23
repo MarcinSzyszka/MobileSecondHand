@@ -31,6 +31,18 @@ namespace MobileSecondHand.App.Activities
 		protected NavigationViewMenu navigationViewMenu;
 		protected ActionBarDrawerToggle drawerToggle;
 		public static bool IsInStack { get; private set; }
+		public override void OnBackPressed()
+		{
+			if (IsDrawerOpen())
+			{
+				drawerLayout.CloseDrawers();
+			}
+			else
+			{
+				base.OnBackPressed();
+			}
+
+		}
 		protected override void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
@@ -74,6 +86,11 @@ namespace MobileSecondHand.App.Activities
 
 		}
 
+		protected bool IsDrawerOpen()
+		{
+			return drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view));
+		}
+
 		private void SetupSideMenu()
 		{
 			ScrollView navView = null;
@@ -97,17 +114,7 @@ namespace MobileSecondHand.App.Activities
 			SetupSideMenu();
 		}
 
-		public override void OnBackPressed()
-		{
-			if (drawerLayout.IsDrawerOpen(FindViewById(Resource.Id.nav_view)))
-			{
-				drawerLayout.CloseDrawers();
-			}
-			else
-			{
-				base.OnBackPressed();
-			}
+		
 
-		}
 	}
 }
