@@ -22,14 +22,12 @@
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:src="@drawable/logo_user" />
-
         <RelativeLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="false"
             android:layout_toRightOf="@+id/profile_image_on_conversations_listt"
             android:layout_centerVertical="true">
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -38,7 +36,6 @@
                 android:id="@+id/conversationInterlocutorNameTextView"
                 android:textColor="@color/colorPrimaryDark"
                 android:layout_marginLeft="5dp" />
-
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -49,8 +46,8 @@
                 android:layout_alignParentStart="false"
                 android:textColor="@color/colorPrimary"
                 android:layout_below="@+id/conversationInterlocutorNameTextView"
-                android:layout_marginLeft="5dp" />
-
+                android:layout_marginLeft="5dp"
+                android:singleLine="true" />
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
