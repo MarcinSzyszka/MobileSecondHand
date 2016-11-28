@@ -729,11 +729,11 @@ namespace MobileSecondHand.App
 			this.textViewSelectedAdvertsStatus.Text = this.advertisementsSearchModel.ExpiredAdvertisements ? expiredStatus : activeStatus;
 		}
 
-		private async void ApplyFilterOptions()
+		private void ApplyFilterOptions()
 		{
 			TogleLayouts();
 			ChangeFabOpenFilterOptionsDependsOnSelectedOptions();
-			await DownloadAndShowAdvertisements(true);
+			RefreshAdvertisementList(true);
 		}
 
 		private void ChangeFabOpenFilterOptionsDependsOnSelectedOptions()
