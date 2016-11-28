@@ -93,7 +93,7 @@ namespace MobileSecondHand.API.Services.Photos
 		private async Task<byte[]> GetBytesArray(string photoName)
 		{
 			byte[] photo;
-			using (var fs = new FileStream(photoName, FileMode.Open))
+			using (var fs = new FileStream(photoName, FileMode.Open, FileAccess.Read, FileShare.Read))
 			{
 				photo = new byte[fs.Length];
 				await fs.ReadAsync(photo, 0, photo.Length);
