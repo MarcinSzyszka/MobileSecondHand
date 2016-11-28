@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.API.Models.Shared.Chat;
 using MobileSecondHand.Models.Chat;
 using MobileSecondHand.Models.Consts;
@@ -10,7 +12,8 @@ using Newtonsoft.Json;
 
 namespace MobileSecondHand.Services.Chat
 {
-	public class MessagesService : IMessagesService {
+	public class MessagesService : IMessagesService
+	{
 		private HttpClient client;
 
 		public MessagesService(string bearerToken)
@@ -18,7 +21,8 @@ namespace MobileSecondHand.Services.Chat
 			this.client = HttpClientFactory.GetHttpClient(bearerToken);
 		}
 
-		public async Task<List<ConversationMessage>> GetMessages(int conversationId, int pageNumber) {
+		public async Task<List<ConversationMessage>> GetMessages(int conversationId, int pageNumber)
+		{
 			List<ConversationMessage> messagesList = new List<ConversationMessage>();
 
 			HttpResponseMessage response;
@@ -30,8 +34,9 @@ namespace MobileSecondHand.Services.Chat
 			{
 				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
 			}
-			
-			if (response.IsSuccessStatusCode) {
+
+			if (response.IsSuccessStatusCode)
+			{
 				var responseString = await response.Content.ReadAsStringAsync();
 				messagesList = JsonConvert.DeserializeObject<List<ConversationMessage>>(responseString);
 			}
@@ -45,7 +50,7 @@ namespace MobileSecondHand.Services.Chat
 			HttpResponseMessage response;
 			try
 			{
-				 response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationInfoModel", addresseeId));
+				response = await client.GetAsync(String.Format("{0}/{1}/{2}", WebApiConsts.CONVERSATION_CONTROLLER, "GetConversationInfoModel", addresseeId));
 			}
 			catch
 			{
@@ -81,6 +86,29 @@ namespace MobileSecondHand.Services.Chat
 			}
 
 			return conversations;
+		}
+
+		public async Task<bool> DeleteConversation(int conversationId)
+		{
+			HttpResponseMessage response;
+			try
+			{
+				var model = new SingleIdModelForPostRequests { Id = conversationId };
+				var stringContent = new StringContent(JsonConvert.SerializeObject(model), Encoding.UTF8, "application/json");
+
+				response = await client.PostAsync($"{WebApiConsts.CONVERSATION_CONTROLLER}/DeleteConversation", stringContent);
+			}
+			catch
+			{
+				response = new HttpResponseMessage(System.Net.HttpStatusCode.InternalServerError);
+			}
+
+			if (response.IsSuccessStatusCode)
+			{
+				return true;
+			}
+
+			return false;
 		}
 	}
 }

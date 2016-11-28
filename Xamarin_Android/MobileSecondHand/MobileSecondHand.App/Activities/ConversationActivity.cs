@@ -164,6 +164,41 @@ namespace MobileSecondHand.App.Activities
 
 			return base.OnCreateOptionsMenu(menu);
 		}
+
+		public override bool OnOptionsItemSelected(IMenuItem item)
+		{
+			var handled = false;
+			switch (item.ItemId)
+			{
+				case Resource.Id.deleteConversation:
+					DeleteConversation();
+					break;
+			}
+
+			return handled;
+		}
+
+		private void DeleteConversation()
+		{
+			Action actionOnConfirm = async () =>
+			{
+				this.progress.ShowProgressDialog("Trwa oznaczanie rozmowy jako usuniêtej...");
+				var result = await messagesService.DeleteConversation(this.conversationInfoModel.ConversationId);
+				this.progress.CloseProgressDialog();
+				if (result)
+				{
+					AlertsService.ShowShortToast(this, "Rozmowa zosta³a oznaczona jako usuniêta.");
+					this.Finish();
+				}
+				else
+				{
+					AlertsService.ShowShortToast(this, "Nie uda³o siê usun¹æ rozmowy. Spróbuj ponownie póŸniej.");
+				}
+			};
+
+			AlertsService.ShowConfirmDialog(this, "Czy chcesz usun¹æ tê rozmowê? Nie bêdzie ona widoczna na liœcie rozmów dopóki Ty i Twój rozmówca nie skontaktujecie siê ponownie.", actionOnConfirm);
+		}
+
 		private void SetupConversationToolbar()
 		{
 			this.toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar_with_circle_image_view);

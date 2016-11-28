@@ -9,5 +9,6 @@ namespace MobileSecondHand.Services.Chat
 		Task<List<ConversationMessage>> GetMessages(int conversationId, int pageNumber);
 		Task<ConversationInfoModel> GetConversationInfoModel(string addresseeId);
 		Task<List<ConversationItemModel>> GetConversations(int pageNumber);
+		Task<bool> DeleteConversation(int conversationId);
 	}
 }
