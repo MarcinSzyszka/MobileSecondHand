@@ -5,6 +5,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using MobileSecondHand.API.Models.Shared;
 using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.Conversation;
 
@@ -24,6 +25,26 @@ namespace MobileSecondHand.Controllers
 			this.identityService = identityService;
 			this.logger = loggerFactory.CreateLogger<ConversationController>();
 		}
+
+		[HttpPost]
+		[Route("DeleteConversation")]
+		public IActionResult DeleteConversation([FromBody]SingleIdModelForPostRequests conversationIdModel)
+		{
+			try
+			{
+				var userId = this.identityService.GetUserId(User.Identity);
+				var success = this.conversationService.DeleteConversation(userId, conversationIdModel.Id);
+
+				return Json(success);
+			}
+			catch (Exception exc)
+			{
+				this.logger.LogError("Wyst¹pi³ b³¹d podczas oznaczania rozmowy jako usunietej: " + exc);
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				return Json(false);
+			}
+		}
+
 
 		[HttpGet]
 		[Route("GetMessages/{conversationId}/{pageNumber}")]

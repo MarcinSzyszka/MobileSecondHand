@@ -21,6 +21,17 @@ namespace MobileSecondHand.DB.Services.Chat
 			this.dbContext = new MobileSecondHandContext(mobileSecondHandContextOptions.DbContextOptions);
 		}
 
+		public Conversation GetByIdWithUsers(int conversationId)
+		{
+			return this.dbContext.Conversation.Include(c => c.Users).FirstOrDefault(c => c.ConversationId == conversationId);
+		}
+		public void SaveUserToConversation(UserToConversation conversation)
+		{
+			this.dbContext.Entry(conversation).State = EntityState.Modified;
+
+			this.dbContext.SaveChanges();
+		}
+
 		public Conversation CreateConversation(string userId, string addresseeId)
 		{
 			var conversation = new Conversation();
@@ -133,7 +144,7 @@ namespace MobileSecondHand.DB.Services.Chat
 			var conversations = this.dbContext.Conversation
 										.Include(c => c.Users).ThenInclude(u => u.User)
 										.Include(c => c.Messages)
-										.Where(c => c.Users.Any(u => u.UserId == userId) && c.Messages.Count > 0)
+										.Where(c => c.Users.Any(u => u.UserId == userId) && !c.Users.First(u => u.UserId == userId).Deleted && c.Messages.Count > 0)
 										.Select(c => new ConversationReadModel { ConversationId = c.ConversationId, Users = c.Users.Select(u => u.User).ToList(), Messages = c.Messages.OrderByDescending(m => m.Date).Take(1).ToList() }).ToList();
 
 

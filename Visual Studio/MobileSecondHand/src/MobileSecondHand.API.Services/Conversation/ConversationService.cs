@@ -22,6 +22,17 @@ namespace MobileSecondHand.API.Services.Conversation
 			this.photosService = photosService;
 		}
 
+		public bool DeleteConversation(string userId, int conversationId)
+		{
+			var conversation = this.conversationDbService.GetByIdWithUsers(conversationId);
+			var userToConversation = conversation.Users.First(u => u.UserId == userId);
+			userToConversation.Deleted = true;
+
+			this.conversationDbService.SaveUserToConversation(userToConversation);
+
+			return true;
+		}
+
 		public List<ChatMessageReadModel> GetMessages(string userId, int conversationId, int pageNumber)
 		{
 			var messagesViewModelList = new List<ChatMessageReadModel>();
@@ -75,15 +86,33 @@ namespace MobileSecondHand.API.Services.Conversation
 		/// <returns>Message read model</returns>
 		public ChatMessageReadModel AddMessageToConversation(ChatMessageSaveModel chatMessageSaveModel)
 		{
+			UpdateConversationIfIsMarkedAsDeleted(chatMessageSaveModel.ConversationId);
+
 			var messageDbModel = new ChatMessage();
 			messageDbModel.AuthorId = chatMessageSaveModel.SenderId;
-			messageDbModel.Content = chatMessageSaveModel.Content;
 			messageDbModel.ConversationId = chatMessageSaveModel.ConversationId;
+			messageDbModel.Content = chatMessageSaveModel.Content;
 			messageDbModel.Date = DateTime.Now;
 
 			messageDbModel = this.conversationDbService.SaveMessage(messageDbModel);
 
 			return MapChatMessageToReadModel(chatMessageSaveModel.AddresseeId, messageDbModel);
+		}
+
+		private void UpdateConversationIfIsMarkedAsDeleted(int conversationId)
+		{
+			var conversation = this.conversationDbService.GetByIdWithUsers(conversationId);
+			if (conversation.Users.Any(c => c.Deleted))
+			{
+				foreach (var user in conversation.Users)
+				{
+					if (user.Deleted)
+					{
+						user.Deleted = false;
+						this.conversationDbService.SaveUserToConversation(user);
+					}
+				}
+			}
 		}
 
 		public void MarkMessageAsReceived(int messageId)

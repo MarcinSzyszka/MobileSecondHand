@@ -5,13 +5,13 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.5",
       "compile": {
-        "bin/Release/MobileSecondHand.API.Models.Shared.dll": {}
+        "bin/Debug/MobileSecondHand.API.Models.Shared.dll": {}
       },
       "runtime": {
-        "bin/Release/MobileSecondHand.API.Models.Shared.dll": {}
+        "bin/Debug/MobileSecondHand.API.Models.Shared.dll": {}
       },
       "contentFiles": {
-        "bin/Release/MobileSecondHand.API.Models.Shared.pdb": {
+        "bin/Debug/MobileSecondHand.API.Models.Shared.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true
@@ -22,16 +22,16 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.6",
       "compile": {
-        "bin/Release/MobileSecondHand.API.Models.dll": {}
+        "bin/Debug/MobileSecondHand.API.Models.dll": {}
       },
       "runtime": {
         "../../packages/Microsoft.IdentityModel.Logging.1.0.0/lib/net451/Microsoft.IdentityModel.Logging.dll": {},
         "../../packages/Microsoft.IdentityModel.Tokens.5.0.0/lib/net451/Microsoft.IdentityModel.Tokens.dll": {},
         "../../packages/Newtonsoft.Json.9.0.1/lib/net45/Newtonsoft.Json.dll": {},
-        "bin/Release/MobileSecondHand.API.Models.dll": {}
+        "bin/Debug/MobileSecondHand.API.Models.dll": {}
       },
       "contentFiles": {
-        "bin/Release/MobileSecondHand.API.Models.pdb": {
+        "bin/Debug/MobileSecondHand.API.Models.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true
@@ -42,7 +42,7 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.6",
       "compile": {
-        "bin/Release/MobileSecondHand.API.Services.dll": {}
+        "bin/Debug/MobileSecondHand.API.Services.dll": {}
       },
       "runtime": {
         "../../packages/Microsoft.AspNetCore.Authentication.1.0.0/lib/net451/Microsoft.AspNetCore.Authentication.dll": {},
@@ -90,10 +90,10 @@
         "../../packages/System.Interactive.Async.3.0.0/lib/net45/System.Interactive.Async.dll": {},
         "../../packages/System.Text.Encodings.Web.4.0.0/lib/netstandard1.0/System.Text.Encodings.Web.dll": {},
         "../packages/System.Web.Helpers.dll.1.0.0/lib/Net40/System.Web.Helpers.dll": {},
-        "bin/Release/MobileSecondHand.API.Services.dll": {}
+        "bin/Debug/MobileSecondHand.API.Services.dll": {}
       },
       "contentFiles": {
-        "bin/Release/MobileSecondHand.API.Services.pdb": {
+        "bin/Debug/MobileSecondHand.API.Services.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true
@@ -104,7 +104,7 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.6",
       "compile": {
-        "bin/Release/MobileSecondHand.DB.Models.dll": {}
+        "bin/Debug/MobileSecondHand.DB.Models.dll": {}
       },
       "runtime": {
         "../../packages/Microsoft.AspNetCore.Authentication.1.0.0/lib/net451/Microsoft.AspNetCore.Authentication.dll": {},
@@ -144,10 +144,10 @@
         "../../packages/System.Diagnostics.DiagnosticSource.4.0.0/lib/net46/System.Diagnostics.DiagnosticSource.dll": {},
         "../../packages/System.Interactive.Async.3.0.0/lib/net45/System.Interactive.Async.dll": {},
         "../../packages/System.Text.Encodings.Web.4.0.0/lib/netstandard1.0/System.Text.Encodings.Web.dll": {},
-        "bin/Release/MobileSecondHand.DB.Models.dll": {}
+        "bin/Debug/MobileSecondHand.DB.Models.dll": {}
       },
       "contentFiles": {
-        "bin/Release/MobileSecondHand.DB.Models.pdb": {
+        "bin/Debug/MobileSecondHand.DB.Models.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true
@@ -158,7 +158,7 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.6",
       "compile": {
-        "bin/Release/MobileSecondHand.DB.Services.dll": {}
+        "bin/Debug/MobileSecondHand.DB.Services.dll": {}
       },
       "runtime": {
         "../../packages/Microsoft.AspNetCore.Authentication.1.0.0/lib/net451/Microsoft.AspNetCore.Authentication.dll": {},
@@ -199,10 +199,10 @@
         "../../packages/System.Diagnostics.DiagnosticSource.4.0.0/lib/net46/System.Diagnostics.DiagnosticSource.dll": {},
         "../../packages/System.Interactive.Async.3.0.0/lib/net45/System.Interactive.Async.dll": {},
         "../../packages/System.Text.Encodings.Web.4.0.0/lib/netstandard1.0/System.Text.Encodings.Web.dll": {},
-        "bin/Release/MobileSecondHand.DB.Services.dll": {}
+        "bin/Debug/MobileSecondHand.DB.Services.dll": {}
       },
       "contentFiles": {
-        "bin/Release/MobileSecondHand.DB.Services.pdb": {
+        "bin/Debug/MobileSecondHand.DB.Services.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true
@@ -213,15 +213,15 @@
       "type": "project",
       "framework": ".NETFramework,Version=v4.6",
       "compile": {
-        "bin/Release/MobileSecondHand.COMMON.dll": {}
+        "bin/Debug/MobileSecondHand.COMMON.dll": {}
       },
       "runtime": {
         "../../packages/Microsoft.Extensions.DependencyInjection.1.0.0/lib/netstandard1.1/Microsoft.Extensions.DependencyInjection.dll": {},
         "../../packages/Microsoft.Extensions.DependencyInjection.Abstractions.1.0.0/lib/netstandard1.0/Microsoft.Extensions.DependencyInjection.Abstractions.dll": {},
-        "bin/Release/MobileSecondHand.COMMON.dll": {}
+        "bin/Debug/MobileSecondHand.COMMON.dll": {}
       },
       "contentFiles": {
-        "bin/Release/MobileSecondHand.COMMON.pdb": {
+        "bin/Debug/MobileSecondHand.COMMON.pdb": {
           "buildAction": "None",
           "codeLanguage": "any",
           "copyToOutput": true

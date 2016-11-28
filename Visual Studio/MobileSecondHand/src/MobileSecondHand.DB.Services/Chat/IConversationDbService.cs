@@ -19,5 +19,7 @@ namespace MobileSecondHand.DB.Services.Chat
 		void UpdateReceivedPropertyInMessages(List<ChatMessage> messages);
 		void MarkMessageAsReceived(int messageId);
 		List<ConversationReadModel> GetConversationsWithLastMessage(string userId, int pageNumber);
+		Conversation GetByIdWithUsers(int conversationId);
+		void SaveUserToConversation(UserToConversation conversation);
 	}
 }

@@ -12,5 +12,6 @@ namespace MobileSecondHand.API.Services.Conversation
 		IEnumerable<ChatMessageReadModel> GetNotReceivedMessagesAndMarkThemReceived(string userId);
 		void MarkMessageAsReceived(int messageId);
 		Task<List<ConversationItemModel>> GetConversations(string userId, int pageNumber);
+		bool DeleteConversation(string userId, int conversationId);
 	}
 }
