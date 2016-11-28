@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Android.App;
 using Android.Content;
+using Android.Graphics;
 using Android.OS;
 using Android.Support.V7.Widget;
 using Android.Views;
@@ -189,7 +190,19 @@ namespace MobileSecondHand.App
 
 		private void SetupSelectedMaxDistanceView()
 		{
-			this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "Bez ograniczeñ";
+			var text = String.Empty;
+			if (advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE)
+			{
+				text = $"{advertisementsSearchModel.CoordinatesModel.MaxDistance} km";
+				this.textViewSelectedDistance.SetTypeface(null, TypefaceStyle.Bold);
+			}
+			else
+			{
+				text = "Bez ograniczeñ";
+				this.textViewSelectedDistance.SetTypeface(null, TypefaceStyle.Normal);
+			}
+
+			this.textViewSelectedDistance.Text = text;
 		}
 
 		private void SetupSelectedUserView()
@@ -197,10 +210,12 @@ namespace MobileSecondHand.App
 			if (advertisementsSearchModel.UserInfo == null)
 			{
 				this.textViewSelectedUser.Text = "Wszyscy";
+				this.textViewSelectedUser.SetTypeface(null, TypefaceStyle.Normal);
 			}
 			else
 			{
 				this.textViewSelectedUser.Text = advertisementsSearchModel.UserInfo.UserName;
+				this.textViewSelectedUser.SetTypeface(null, TypefaceStyle.Bold);
 			}
 		}
 
@@ -210,6 +225,7 @@ namespace MobileSecondHand.App
 			if (advertisementsSearchModel.CategoriesModel.Count == 0)
 			{
 				text = "Wszystkie kategorie";
+				this.textViewSelectCategories.SetTypeface(null, TypefaceStyle.Normal);
 			}
 			else
 			{
@@ -220,6 +236,7 @@ namespace MobileSecondHand.App
 				}
 
 				text = sb.ToString();
+				this.textViewSelectCategories.SetTypeface(null, TypefaceStyle.Bold);
 			}
 
 			this.textViewSelectCategories.Text = text;
@@ -449,8 +466,7 @@ namespace MobileSecondHand.App
 					resultRadius = ValueConsts.MAX_DISTANCE_VALUE;
 				}
 				advertisementsSearchModel.CoordinatesModel.MaxDistance = resultRadius;
-
-				this.textViewSelectedDistance.Text = advertisementsSearchModel.CoordinatesModel.MaxDistance < ValueConsts.MAX_DISTANCE_VALUE ? String.Format("{0} km", advertisementsSearchModel.CoordinatesModel.MaxDistance.ToString()) : "Bez ograniczeñ";
+				SetupSelectedMaxDistanceView();
 			});
 		}
 
@@ -700,6 +716,14 @@ namespace MobileSecondHand.App
 
 		private void SetupSelectedSortingByView()
 		{
+			if (this.advertisementsSearchModel.SortingBy == SortingBy.sortByNearest)
+			{
+				this.textViewSelectedSorting.SetTypeface(null, TypefaceStyle.Normal);
+			}
+			else
+			{
+				this.textViewSelectedSorting.SetTypeface(null, TypefaceStyle.Bold);
+			}
 			this.textViewSelectedSorting.Text = this.advertisementsSearchModel.SortingBy.GetDisplayName();
 		}
 
@@ -708,6 +732,7 @@ namespace MobileSecondHand.App
 			if (this.advertisementsSearchModel.Sizes.Count == 0)
 			{
 				this.textViewSelectedSize.Text = "Wszystkie rozmiary";
+				this.textViewSelectedSize.SetTypeface(null, TypefaceStyle.Normal);
 			}
 			else
 			{
@@ -716,16 +741,33 @@ namespace MobileSecondHand.App
 				{
 					this.textViewSelectedSize.Text += size.GetDisplayName() + "\r\n";
 				}
+				this.textViewSelectedSize.SetTypeface(null, TypefaceStyle.Bold);
 			}
 		}
 
 
 		public void SetupSelectedTransactionKind()
 		{
+			if (this.advertisementsSearchModel.TransactionKind == TransactionKind.All)
+			{
+				this.textViewSelectedTransactionKind.SetTypeface(null, TypefaceStyle.Normal);
+			}
+			else
+			{
+				this.textViewSelectedTransactionKind.SetTypeface(null, TypefaceStyle.Bold);
+			}
 			this.textViewSelectedTransactionKind.Text = this.advertisementsSearchModel.TransactionKind.GetDisplayName();
 		}
 		public void SetupSelectedAdvertStatus()
 		{
+			if (this.advertisementsSearchModel.ExpiredAdvertisements)
+			{
+				this.textViewSelectedAdvertsStatus.SetTypeface(null, TypefaceStyle.Bold);
+			}
+			else
+			{
+				this.textViewSelectedAdvertsStatus.SetTypeface(null, TypefaceStyle.Normal);
+			}
 			this.textViewSelectedAdvertsStatus.Text = this.advertisementsSearchModel.ExpiredAdvertisements ? expiredStatus : activeStatus;
 		}
 
