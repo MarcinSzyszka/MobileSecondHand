@@ -310,10 +310,10 @@ namespace MobileSecondHand.App.Activities
 		private bool AdvertisementItemDataIsValidate()
 		{
 			bool isValidate = true;
-			if (advertisementTitle.Text.Length < 10)
+			if (advertisementTitle.Text.Length < 5)
 			{
 				isValidate = false;
-				advertisementTitle.Error = "Tytu³ musi zawieraæ min. 10 znaków";
+				advertisementTitle.Error = "Tytu³ musi zawieraæ min. 5 znaków";
 				focusView = advertisementTitle;
 			}
 			else if (advertisementDescription.Text.Length < 10)
