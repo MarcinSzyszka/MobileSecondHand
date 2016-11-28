@@ -17,18 +17,25 @@ using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.Chat;
 
-namespace MobileSecondHand.App.Adapters {
-	public class ConversationMessagesListAdapter : RecyclerView.Adapter {
+namespace MobileSecondHand.App.Adapters
+{
+	public class ConversationMessagesListAdapter : RecyclerView.Adapter
+	{
 		private IInfiniteScrollListener infiniteScrollListener;
+		private bool newMessageAddedWasRaised;
+
 		public override int ItemCount { get { return this.Messages.Count; } }
 		public bool InfiniteScrollDisabled { get; set; }
 		public List<ConversationMessage> Messages { get; set; } = new List<ConversationMessage>();
 		public event EventHandler NewMessageAdded;
-		public ConversationMessagesListAdapter(IInfiniteScrollListener infiniteScrollListener) {
+		public event EventHandler FirstMessageAdded;
+		public ConversationMessagesListAdapter(IInfiniteScrollListener infiniteScrollListener)
+		{
 			this.infiniteScrollListener = infiniteScrollListener;
 		}
 
-		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+		public override void OnBindViewHolder(RecyclerView.ViewHolder holder, int position)
+		{
 			var currentItem = this.Messages[position];
 			ConversationMessageViewHolder vh = holder as ConversationMessageViewHolder;
 			SetLayotParameters(currentItem, vh);
@@ -38,7 +45,8 @@ namespace MobileSecondHand.App.Adapters {
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);
 		}
 
-		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType) {
+		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
+		{
 			View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.ConversationMessageRowView, parent, false);
 			ConversationMessageViewHolder vh = new ConversationMessageViewHolder(itemView);
 			return vh;
@@ -48,6 +56,11 @@ namespace MobileSecondHand.App.Adapters {
 		{
 			this.Messages.AddRange(messages);
 			this.NotifyDataSetChanged();
+			if (!newMessageAddedWasRaised && FirstMessageAdded != null)
+			{
+				FirstMessageAdded(this, EventArgs.Empty);
+				newMessageAddedWasRaised = true;
+			}
 		}
 
 		public void AddReceivedMessage(ConversationMessage message)
@@ -58,11 +71,18 @@ namespace MobileSecondHand.App.Adapters {
 			{
 				NewMessageAdded(this, EventArgs.Empty);
 			}
+			if (!newMessageAddedWasRaised && FirstMessageAdded != null)
+			{
+				FirstMessageAdded(this, EventArgs.Empty);
+				newMessageAddedWasRaised = true;
+			}
 		}
 
-		private static void SetLayotParameters(ConversationMessage currentItem, ConversationMessageViewHolder vh) {
+		private static void SetLayotParameters(ConversationMessage currentItem, ConversationMessageViewHolder vh)
+		{
 			RelativeLayout.LayoutParams parameters = new RelativeLayout.LayoutParams(LinearLayout.LayoutParams.WrapContent, LinearLayout.LayoutParams.WrapContent);
-			if (currentItem.UserWasSender) {
+			if (currentItem.UserWasSender)
+			{
 				parameters.AddRule(LayoutRules.AlignParentLeft);
 				parameters.SetMargins(10, 5, 50, 15);
 				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_user_message_background_border);
@@ -70,7 +90,8 @@ namespace MobileSecondHand.App.Adapters {
 				vh.MessageHeader.SetTextColor(color);
 				vh.MessageContent.SetTextColor(color);
 			}
-			else {
+			else
+			{
 				parameters.AddRule(LayoutRules.AlignParentRight);
 				parameters.SetMargins(50, 5, 10, 15);
 				vh.MessageLayout.Background = ContextCompat.GetDrawable(Application.Context, Resource.Drawable.conversation_sender_message_background_border);

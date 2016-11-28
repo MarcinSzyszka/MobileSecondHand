@@ -45,6 +45,7 @@ namespace MobileSecondHand.App.Activities
 		RelativeLayout relativeLayoutSendMessage;
 		private AppSettingsModel appSettings;
 		private MediaPlayer player;
+		private IMenu menu;
 
 		public static ConversationActivityStateModel ConversationActivityStateModel { get; private set; } = new ConversationActivityStateModel(false, 0);
 		public static ConversationActivity ActivityInstance { get; private set; }
@@ -102,6 +103,7 @@ namespace MobileSecondHand.App.Activities
 				GetExtras(intent);
 				ConversationActivity.ConversationActivityStateModel = GetStateModel(true);
 				progress.ShowProgressDialog("Trwa pobieranie wiadomoœci...");
+				menu.FindItem(Resource.Id.deleteConversation).SetVisible(false);
 				await SetupIntelocutorInfo();
 				await GetAndDisplayMesages(null);
 				coversationsLayoutWrapper.Visibility = ViewStates.Visible;
@@ -151,7 +153,17 @@ namespace MobileSecondHand.App.Activities
 				base.OnBackPressed();
 			}
 		}
+		public override bool OnCreateOptionsMenu(IMenu menu)
+		{
+			MenuInflater.Inflate(Resource.Menu.conversationMenu, menu);
+			if (menu != null)
+			{
+				this.menu = menu;
+				menu.FindItem(Resource.Id.deleteConversation).SetVisible(false);
+			}
 
+			return base.OnCreateOptionsMenu(menu);
+		}
 		private void SetupConversationToolbar()
 		{
 			this.toolbar = FindViewById<Android.Support.V7.Widget.Toolbar>(Resource.Id.app_bar_with_circle_image_view);
@@ -235,9 +247,18 @@ namespace MobileSecondHand.App.Activities
 		{
 			this.conversationMessagesListAdapter = new ConversationMessagesListAdapter(this);
 			this.conversationMessagesListAdapter.NewMessageAdded += ConversationMessagesListAdapter_NewMessageAdded;
+			this.conversationMessagesListAdapter.FirstMessageAdded += ConversationMessagesListAdapter_MessageAdded;
 			await GetAndSetMessages(savedInstanceState);
 			this.conversationMessagesRecyclerView.SetAdapter(conversationMessagesListAdapter);
 			this.conversationMessagesRecyclerView.RequestLayout();
+		}
+
+		private void ConversationMessagesListAdapter_MessageAdded(object sender, EventArgs e)
+		{
+			if (!menu.FindItem(Resource.Id.deleteConversation).IsVisible)
+			{
+				menu.FindItem(Resource.Id.deleteConversation).SetVisible(true);
+			}
 		}
 
 		private void ConversationMessagesListAdapter_NewMessageAdded(object sender, EventArgs e)
