@@ -55,14 +55,15 @@ namespace MobileSecondHand.Services.Chat
 			MessageReceived(chatHubProxy, proxy => proxy.Invoke("MessageReceived", messageId.ToString()));
 		}
 
-		public void GetNotReceivedMessages()
-		{
-			chatHubProxy.Invoke("GetNotReceivedMessages");
-		}
 
 		public void RegisterReceiveMessages(Action<string> updateChatMessage)
 		{
-			chatHubProxy.On<string>("ReceiveMessage", (messageObject) => updateChatMessage(messageObject));
+			chatHubProxy.On<string>("ReceiveMessage", updateChatMessage);
+		}
+
+		public void RegisterNotReceivedMessagesChecked(Action setCheckedNotReceivedMessages)
+		{
+			chatHubProxy.On("NotReceivedMessagesChecked", setCheckedNotReceivedMessages);
 		}
 
 		private void Connect(HubConnection hubObject, Action<HubConnection> hubConnection)
@@ -98,5 +99,7 @@ namespace MobileSecondHand.Services.Chat
 		{
 			hubConnection.Stop();
 		}
+
+
 	}
 }

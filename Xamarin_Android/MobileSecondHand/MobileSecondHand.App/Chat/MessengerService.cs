@@ -39,6 +39,7 @@ namespace MobileSecondHand.App.Chat
 		private DateTime? lastScreenTurnOffDate;
 		private DateTime lastConnectionDate;
 		private static int outsidePendingWorks;
+		private DateTime notReceivedMessagesCheckedTime;
 		public static bool ServiceIsRunning { get; private set; }
 
 		public override IBinder OnBind(Intent intent)
@@ -70,8 +71,8 @@ namespace MobileSecondHand.App.Chat
 		{
 			this.signalRThread = new Thread(() =>
 				{
-					timeoutInSeconds = 20;
-					timerInterval = 1000 * 10;
+					timeoutInSeconds = 15;
+					timerInterval = 1000 * 5;
 					displayManager = (DisplayManager)GetSystemService(Context.DisplayService);
 					powerManager = (PowerManager)GetSystemService(Context.PowerService);
 					this.sharedPreferencesHelper = new SharedPreferencesHelper(Application.ApplicationContext);
@@ -79,12 +80,19 @@ namespace MobileSecondHand.App.Chat
 					this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
 					lastConnectionDate = DateTime.Now;
 					this.chatHubClientService.RegisterReceiveMessages(ShowNotification);
+					this.chatHubClientService.RegisterNotReceivedMessagesChecked(SetCheckedNotReceivedMessages);
+
 
 					timer = new Timer(new TimerCallback(TimerCallBackMethod));
 					timer.Change(timerInterval, timerInterval);
 				}
 		);
 			signalRThread.Start();
+		}
+
+		private void SetCheckedNotReceivedMessages()
+		{
+			notReceivedMessagesCheckedTime = DateTime.Now;
 		}
 
 		private void TimerCallBackMethod(object state)
@@ -116,7 +124,9 @@ namespace MobileSecondHand.App.Chat
 
 		private void StopConnectionAfterTimeout()
 		{
-			if (outsidePendingWorks == 0 && (lastConnectionDate.AddSeconds(timeoutInSeconds) < DateTime.Now) && (lastScreenTurnOffDate.HasValue && lastScreenTurnOffDate.Value.AddSeconds(timeoutInSeconds) < DateTime.Now))
+			if (outsidePendingWorks == 0 &&
+				((lastConnectionDate.AddSeconds(timeoutInSeconds) < DateTime.Now) && (lastScreenTurnOffDate.HasValue && lastScreenTurnOffDate.Value.AddSeconds(timeoutInSeconds) < DateTime.Now)) ||
+				((lastScreenTurnOffDate.HasValue && lastScreenTurnOffDate.Value.AddSeconds(timeoutInSeconds) < DateTime.Now) && (notReceivedMessagesCheckedTime > lastConnectionDate)))
 			{
 				this.chatHubClientService.StopConnection();
 			}

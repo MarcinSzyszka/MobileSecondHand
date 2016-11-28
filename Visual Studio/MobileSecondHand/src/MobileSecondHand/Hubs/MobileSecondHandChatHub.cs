@@ -45,13 +45,6 @@ namespace MobileSecondHand.Hubs
 			this.conversationService = conversationService;
 		}
 
-		public override Task OnReconnected()
-		{
-			//ConnectUser("recconect ");
-
-			return base.OnReconnected();
-		}
-
 		public void MessageReceived(string messageIdString)
 		{
 			var messageId = 0;
@@ -101,34 +94,21 @@ namespace MobileSecondHand.Hubs
 			return base.OnConnected();
 		}
 
-		private void ConnectUser(string info = "")
+		private void ConnectUser()
 		{
-			string userId = ReadUserIdFromToken();
-			if (userId != String.Empty)
+			var userId = ReadUserIdFromToken();
+			if (userId != string.Empty)
 			{
 				this.chatHubCacheService.AddConnectedClient(new UserConnection { ConnectionId = Context.ConnectionId, UserId = userId });
 			}
 
-			//using (var sw = new StreamWriter(@"C:\Users\marcianno\Desktop\logs.txt", true))
-			//{
-
-			//	if (userId == "ef15eb21-d31a-4325-bedb-cc8173a98073")
-			//	{
-			//		sw.WriteLine("Htc się podłączył: " + Context.ConnectionId + " " + info);
-			//	}
-			//	else
-			//	{
-			//		sw.WriteLine("Samsung się podłączył: " + Context.ConnectionId + " " + info);
-			//	}
-
-			//	sw.WriteLine();
-			//}
-
-			IEnumerable<ChatMessageReadModel> messages = this.conversationService.GetNotReceivedMessagesAndMarkThemReceived(userId);
+			var messages = this.conversationService.GetNotReceivedMessagesAndMarkThemReceived(userId);
 			foreach (var chatMessage in messages)
 			{
 				base.Clients.Client(Context.ConnectionId).ReceiveMessage(JsonConvert.SerializeObject(chatMessage));
 			}
+
+			base.Clients.Client(Context.ConnectionId).NotReceivedMessagesChecked();
 		}
 
 		public override Task OnDisconnected(bool stopCalled)
