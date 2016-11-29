@@ -193,6 +193,10 @@ namespace MobileSecondHand
 				},
 				new Category
 				{
+					Name = "Bluzy"
+				},
+				new Category
+				{
 					Name = "Bluzki"
 				},
 				new Category
@@ -201,7 +205,27 @@ namespace MobileSecondHand
 				},
 				new Category
 				{
+					Name = "Fartuchy kuchenne"
+				},
+				new Category
+				{
+					Name = "Garsonki/Kostiumy"
+				},
+				new Category
+				{
+					Name = "Golfy"
+				},
+				new Category
+				{
+					Name = "Kombinezony"
+				},
+				new Category
+				{
 					Name = "Koszule"
+				},
+				new Category
+				{
+					Name = "Kurtki/Płaszcze"
 				},
 				new Category
 				{
@@ -209,11 +233,23 @@ namespace MobileSecondHand
 				},
 				new Category
 				{
-					Name = "Marynarki"
+					Name = "Marynarki/Żakiety"
 				},
 				new Category
 				{
-					Name = "Spódnice/spódniczki"
+					Name = "Materiały krawieckie"
+				},
+				new Category
+				{
+					Name = "Odzież dziecięca"
+				},
+				new Category
+				{
+					Name = "Spódnice/Spódniczki"
+				},
+				new Category
+				{
+					Name = "Stroje kąpielowe"
 				},
 				new Category
 				{
@@ -222,6 +258,26 @@ namespace MobileSecondHand
 				new Category
 				{
 					Name = "Swetry"
+				},
+				new Category
+				{
+					Name = "Torby/Walizki turystyczne"
+				},
+				new Category
+				{
+					Name = "Torebki"
+				},
+				new Category
+				{
+					Name = "T-Shirty/Koszulki"
+				},
+				new Category
+				{
+					Name = "Tuniki"
+				},
+				new Category
+				{
+					Name = "Inne"
 				});
 
 			dbCtx.SaveChanges();
