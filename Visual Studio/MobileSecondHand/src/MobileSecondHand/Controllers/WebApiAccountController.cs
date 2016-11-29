@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using MobileSecondHand.API.Models.Shared.Security;
 using Microsoft.Extensions.Logging;
+using MobileSecondHand.API.Services.Conversation;
 
 namespace MobileSecondHand.Controllers
 {
@@ -17,12 +18,14 @@ namespace MobileSecondHand.Controllers
 		IApplicationSignInManager applicationSignInManager;
 		IIdentityService identityService;
 		private ILogger logger;
+		IConversationService conversationService;
 
-		public WebApiAccountController(IApplicationSignInManager applicationSignInManager, IIdentityService identityService, ILoggerFactory loggerFactory)
+		public WebApiAccountController(IApplicationSignInManager applicationSignInManager, IIdentityService identityService, ILoggerFactory loggerFactory, IConversationService conversationService)
 		{
 			this.applicationSignInManager = applicationSignInManager;
 			this.identityService = identityService;
-			this.logger = loggerFactory.CreateLogger<WebApiAccountController>(); ;
+			this.logger = loggerFactory.CreateLogger<WebApiAccountController>();
+			this.conversationService = conversationService;
 		}
 
 		[HttpPost]
@@ -89,6 +92,17 @@ namespace MobileSecondHand.Controllers
 				if (!nameIsSet)
 				{
 					Response.StatusCode = (int)HttpStatusCode.Conflict;
+				}
+				else
+				{
+					try
+					{
+						var sent = await this.conversationService.SendHelloMessageToNewUser(userId);
+					}
+					catch (Exception exc)
+					{
+						this.logger.LogError("Wiadomosc powitalna nie zostala wysłana: " + exc);
+					}
 				}
 				return Json("ok");
 			}

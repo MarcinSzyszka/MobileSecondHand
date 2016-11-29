@@ -61,6 +61,18 @@ namespace MobileSecondHand.API.Services.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Cześć. Jestem Marcin. Cieszę się, że dołączyłaś/eś do grona użytkowników &quot;Mobile Second Hand&quot; :).
+        ///Aplikacja ta ma pomóc Ci pozbyć się ubrań, których już nie nosisz i z drugiej strony umożliwić Ci powiększenie garderoby o ciuchy, których ktoś inny chce się pozbyć.
+        ///To w jaki sposób dokonacie transakcji (osobiście czy przez pocztę) zależy tylko od Was. Aplikacja w żaden sposób nie determinuje jak mają być przeprowadzane transakcje i za jaką końcową cenę.
+        ///Tą drogą będę Ci przesyłał ważne informacje na temat  [rest of string was truncated]&quot;;.
+        /// </summary>
+        internal static string helloMSH {
+            get {
+                return ResourceManager.GetString("helloMSH", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to &lt;RSAKeyValue&gt;&lt;Modulus&gt;yKnir5Cz4KbOQvFuO07jAHabi3lZhw0vNFXoICmC2hMNhiV9auBnBkH8iD7edc1my/pva54rqZAdoBAr64d+vB+7WJFFwtINwj/hSEkOZg6z6oxfPKI+LvTPWF/CRUr9eGNzYXj/b+6q9RfUTXe2D2ztKs5xZ4IzkXeAL6lGAJOdJkr/HOSCWkxHI3XcK/3dST9QKojg+iAWh9ICfPZMoxtk+BQzJ/q7qsVxqirdVsSXJeOtv8QrhFMYUVNZp/qC0bTcuSUTLuhJEC+zuxrwghcMTLQEpHJZE6BRlcvhqF2NimDcj10M44r96PeFP2vhY+FiL8ZkV6JhG5vJtkj+Vw==&lt;/Modulus&gt;&lt;Exponent&gt;AQAB&lt;/Exponent&gt;&lt;P&gt;7B57nV0eOJGpt/3RTtW8KpwGCshMgA+2lYOWHHR/0S+KIEaICl4RJEdObzyV/fylTlraxdkLWTrNvP+rCVwTqREMx1dVHil0t5Z50pa91i8m [rest of string was truncated]&quot;;.
         /// </summary>
         internal static string RsaProvider {

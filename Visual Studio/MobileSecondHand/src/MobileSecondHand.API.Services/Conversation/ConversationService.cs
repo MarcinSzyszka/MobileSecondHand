@@ -3,7 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using MobileSecondHand.API.Models.Chat;
+using MobileSecondHand.API.Models.Config;
 using MobileSecondHand.API.Models.Shared.Chat;
+using MobileSecondHand.API.Services.Authentication;
 using MobileSecondHand.API.Services.Photos;
 using MobileSecondHand.COMMON.Extensions;
 using MobileSecondHand.DB.Models.Chat;
@@ -15,11 +17,38 @@ namespace MobileSecondHand.API.Services.Conversation
 	{
 		IConversationDbService conversationDbService;
 		IPhotosService photosService;
+		IApplicationUserManager applicationUserManager;
+		AppConfiguration appConfiguration;
 
-		public ConversationService(IConversationDbService conversationDbService, IPhotosService photosService)
+		public ConversationService(IConversationDbService conversationDbService, IPhotosService photosService, IApplicationUserManager applicationUserManager, AppConfiguration appConfiguration)
 		{
 			this.conversationDbService = conversationDbService;
 			this.photosService = photosService;
+			this.applicationUserManager = applicationUserManager;
+			this.appConfiguration = appConfiguration;
+		}
+
+		public async Task<bool> SendHelloMessageToNewUser(string addresseeId)
+		{
+			var isSent = false;
+			var sender = await applicationUserManager.GetUserByEmail(appConfiguration.AutomaticChatMessagesSenderEmail);
+
+			if (sender != null)
+			{
+				var conversation = await GetConversationInfoModel(sender.Id, addresseeId);
+				var helloMessage = new ChatMessageSaveModel
+				{
+					ConversationId = conversation.ConversationId,
+					SenderId = sender.Id,
+					AddresseeId = addresseeId,
+					Content = Properties.Resources.helloMSH
+				};
+
+				AddMessageToConversation(helloMessage);
+				isSent = true;
+			}
+
+			return isSent;
 		}
 
 		public bool DeleteConversation(string userId, int conversationId)

@@ -9,5 +9,6 @@ namespace MobileSecondHand.API.Models.Config
 	public class AppConfiguration
 	{
 		public string FileRepositoryPath { get; set; }
+		public string AutomaticChatMessagesSenderEmail { get; set; }
 	}
 }

@@ -78,6 +78,7 @@ namespace MobileSecondHand
 			});
 			var appConfig = new AppConfiguration();
 			appConfig.FileRepositoryPath = Configuration.GetSection("FileRepository")["Path"];
+			appConfig.AutomaticChatMessagesSenderEmail = Configuration.GetSection("AutomaticChatMessages")["SenderEmail"];
 			var mailSection = Configuration.GetSection("EmailSettings");
 			EmailSenderSettings mailSetting = new EmailSenderSettings(mailSection["SmtpUserName"], mailSection["SmtpUserPassword"], mailSection["SmtpServerAddress"], Int32.Parse(mailSection["SmtpServerPortNumber"]));
 			services.AddSingleton<EmailSenderSettings>(mailSetting);
