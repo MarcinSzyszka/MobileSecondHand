@@ -5,15 +5,15 @@
     android:fillViewport="true"
     android:id="@+id/navWievSvrollLayout"
     android:visibility="invisible">
-    <LinearLayout
+	<LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical"
         android:weightSum="1">
-        <RelativeLayout
+		<RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
-            <LinearLayout
+			<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
@@ -21,11 +21,11 @@
                 android:layout_alignParentTop="true"
                 android:background="@color/colorPrimary"
                 android:orientation="vertical">
-                <RelativeLayout
+				<RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="1">
-                    <refractored.controls.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+					<refractored.controls.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
                         android:id="@+id/profile_image"
                         android:layout_width="150dp"
                         android:layout_height="150dp"
@@ -34,7 +34,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="20dp"
                         android:src="@drawable/logo_user" />
-                    <ImageButton
+					<ImageButton
                         android:id="@+id/imgBtnProfileImage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -44,13 +44,13 @@
                         android:background="#00ffffff"
                         android:src="@drawable/settings_white"
                         android:padding="10dp" />
-                </RelativeLayout>
-                <RelativeLayout
+				</RelativeLayout>
+				<RelativeLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_weight="2"
                     android:layout_marginLeft="@dimen/settingRowMargin">
-                    <TextView
+					<TextView
                         android:id="@+id/textViewUserName"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -58,10 +58,10 @@
                         android:text="nazwa_usera"
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/windowBackground" />
-                </RelativeLayout>
-            </LinearLayout>
-        </RelativeLayout>
-        <TextView
+				</RelativeLayout>
+			</LinearLayout>
+		</RelativeLayout>
+		<TextView
             android:id="@+id/textViewConversations"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -72,7 +72,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark" />
-        <RelativeLayout
+		<RelativeLayout
             android:id="@+id/relLayoutChat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/textViewChat"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -92,7 +92,7 @@
                 android:text="Stan chatu:  "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
-            <TextView
+			<TextView
                 android:id="@+id/textViewChatState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,7 +101,7 @@
                 android:layout_below="@+id/textViewChat"
                 android:text="aktywny"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <android.support.v7.widget.SwitchCompat
+			<android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchChatState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -109,8 +109,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:checked="true" />
-        </RelativeLayout>
-        <TextView
+		</RelativeLayout>
+		<TextView
             android:id="@+id/textView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -121,7 +121,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark" />
-        <RelativeLayout
+		<RelativeLayout
             android:id="@+id/relLayoutNewsNotifications"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -130,7 +130,7 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/editTextState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -139,7 +139,7 @@
                 android:text="Stan powiadomień: "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
-            <TextView
+			<TextView
                 android:id="@+id/textViewNotificationsState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -148,7 +148,7 @@
                 android:layout_below="@+id/editTextState"
                 android:text="aktywne"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <android.support.v7.widget.SwitchCompat
+			<android.support.v7.widget.SwitchCompat
                 android:id="@+id/switchNotificationsState"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -156,8 +156,8 @@
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:checked="true" />
-        </RelativeLayout>
-        <RelativeLayout
+		</RelativeLayout>
+		<RelativeLayout
             android:id="@+id/relLayoutNewsRadius"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -166,38 +166,36 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/textView3"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentLeft="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/editTextState"
-                android:layout_centerInParent="true"
+                android:layout_alignParentTop="true"
                 android:text="Promień: "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
-            <TextView
+			<TextView
                 android:id="@+id/textViewNotificationsRadius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_centerInParent="true"
-                android:layout_toEndOf="@+id/textView3"
-                android:layout_toRightOf="@+id/textView3"
+				android:layout_alignParentLeft="true"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/textView3"
                 android:text="3 km"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <ImageButton
+			<ImageButton
                 android:id="@+id/imgBtnRadius"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-               android:layout_alignParentEnd="true"
+				android:layout_alignParentEnd="true"
                 android:layout_alignParentRight="true"
                 android:layout_alignParentTop="true"
                 android:background="#00ffffff"
                 android:src="@drawable/settings" />
-        </RelativeLayout>
-        <RelativeLayout
+		</RelativeLayout>
+		<RelativeLayout
             android:id="@+id/relLayoutNewsCategories"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -210,7 +208,7 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/textView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -220,7 +218,7 @@
                 android:text="Kategorie: "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
-            <TextView
+			<TextView
                 android:id="@+id/textViewKeywords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -229,7 +227,7 @@
                 android:layout_below="@+id/textView7"
                 android:text="koszule\nButy\nswetry\nsukienki"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <ImageButton
+			<ImageButton
                 android:id="@+id/imgBtnKeywords"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -238,8 +236,8 @@
                 android:layout_alignParentTop="true"
                 android:background="#00ffffff"
                 android:src="@drawable/settings" />
-        </RelativeLayout>
-        <RelativeLayout
+		</RelativeLayout>
+		<RelativeLayout
             android:id="@+id/relLayoutNewsSizes"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -252,7 +250,7 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/textView71"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -262,7 +260,7 @@
                 android:text="Rozmiary: "
                 android:textAppearance="?android:attr/textAppearanceSmall"
                 android:textStyle="bold" />
-            <TextView
+			<TextView
                 android:id="@+id/textViewNotificationsSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -271,7 +269,7 @@
                 android:layout_below="@+id/textView71"
                 android:text="L\XL"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <ImageButton
+			<ImageButton
                 android:id="@+id/imgBtnNotificationsSize"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -280,8 +278,8 @@
                 android:layout_alignParentTop="true"
                 android:background="#00ffffff"
                 android:src="@drawable/settings" />
-        </RelativeLayout>
-        <TextView
+		</RelativeLayout>
+		<TextView
             android:id="@+id/textView5"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -292,7 +290,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark" />
-        <RelativeLayout
+		<RelativeLayout
             android:id="@+id/relLayoutHomeLocation"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -302,7 +300,7 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/textViewHomeLocalization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -313,7 +311,7 @@
                 android:layout_marginRight="35dp"
                 android:text="jakiś adres"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <ImageButton
+			<ImageButton
                 android:id="@+id/imgBtnHomeLocalization"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -322,8 +320,8 @@
                 android:layout_alignParentTop="true"
                 android:background="#00ffffff"
                 android:src="@drawable/settings" />
-        </RelativeLayout>
-        <TextView
+		</RelativeLayout>
+		<TextView
             android:id="@+id/textView522"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -334,7 +332,7 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:textStyle="bold"
             android:textColor="@color/colorPrimaryDark" />
-        <RelativeLayout
+		<RelativeLayout
             android:id="@+id/relLayoutAppInfos"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -344,7 +342,7 @@
             android:layout_marginRight="@dimen/settingRowMargin"
             android:background="@drawable/setting_row"
             android:padding="2dp">
-            <TextView
+			<TextView
                 android:id="@+id/textView1213"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -355,7 +353,7 @@
                 android:layout_marginRight="35dp"
                 android:text="Informacje i kontakt"
                 android:textAppearance="?android:attr/textAppearanceSmall" />
-            <ImageButton
+			<ImageButton
                 android:id="@+id/imgAppInfo"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -364,6 +362,6 @@
                 android:layout_alignParentTop="true"
                 android:background="#00ffffff"
                 android:src="@drawable/info" />
-        </RelativeLayout>
-    </LinearLayout>
+		</RelativeLayout>
+	</LinearLayout>
 </ScrollView>
