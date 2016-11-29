@@ -198,7 +198,7 @@ namespace MobileSecondHand.Services.Authentication
 		private async Task<TokenModel> GetTokenFromApi<T>(T modelToSend, string action)
 		{
 			var stringContent = new StringContent(JsonConvert.SerializeObject(modelToSend), Encoding.UTF8, "application/json");
-			HttpResponseMessage response;
+			HttpResponseMessage response = null;
 			try
 			{
 				response = await client.PostAsync(WebApiConsts.WEB_API_ACCOUNT_CONTROLLER + action, stringContent);
@@ -209,7 +209,15 @@ namespace MobileSecondHand.Services.Authentication
 			}
 			if (response.StatusCode != System.Net.HttpStatusCode.OK)
 			{
-				return null;
+				if (response.StatusCode == System.Net.HttpStatusCode.NotImplemented)
+				{
+					return new TokenModel();
+				}
+				else
+				{
+					return null;
+				}
+
 			}
 			var responseContentString = await response.Content.ReadAsStringAsync();
 			var tokenModel = JsonConvert.DeserializeObject<TokenModel>(responseContentString);

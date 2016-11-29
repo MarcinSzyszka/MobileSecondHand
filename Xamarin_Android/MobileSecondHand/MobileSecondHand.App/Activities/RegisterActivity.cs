@@ -49,7 +49,12 @@ namespace MobileSecondHand.App.Activities
 			passwordInput = FindViewById<EditText>(Resource.Id.inputPasswordRegistration);
 			confirmPasswordInput = FindViewById<EditText>(Resource.Id.inputConfirmPasswordRegistration);
 			submitRegistrationBtn = FindViewById<Button>(Resource.Id.buttonSubmitRegistration);
-			submitRegistrationBtn.Click += async (s, e) => await SubmitRegistrationBtn_Click(s, e);
+			submitRegistrationBtn.Click += async (s, e) =>
+			{
+				submitRegistrationBtn.Enabled = false;
+				await SubmitRegistrationBtn_Click(s, e);
+				submitRegistrationBtn.Enabled = true;
+			};
 			SetupAcceptCheckbox();
 		}
 
@@ -100,9 +105,16 @@ namespace MobileSecondHand.App.Activities
 			var tokenModel = await this.signInService.RegisterUser(registerModel);
 			if (tokenModel != null)
 			{
-				var preferenceHelper = new SharedPreferencesHelper(this);
-				preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
-				GoToStartActivity();
+				if (String.IsNullOrEmpty(tokenModel.Token))
+				{
+					AlertsService.ShowLongToast(this, "Podany email ju¿ istnieje w bazie u¿ytkowników!");
+				}
+				else
+				{
+					var preferenceHelper = new SharedPreferencesHelper(this);
+					preferenceHelper.SetSharedPreference<string>(SharedPreferencesKeys.BEARER_TOKEN, tokenModel.Token);
+					GoToStartActivity();
+				}
 			}
 			else
 			{
