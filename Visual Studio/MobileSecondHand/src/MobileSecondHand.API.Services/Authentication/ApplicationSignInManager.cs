@@ -167,7 +167,12 @@ namespace MobileSecondHand.API.Services.Authentication
 		}
 		private async Task<ApplicationUser> CreateUser(RegisterModel registerViewModel)
 		{
-			ApplicationUser user = new ApplicationUser { UserName = registerViewModel.Email, Email = registerViewModel.Email };
+			var user = await applicationUserManager.GetUserByEmail(registerViewModel.Email);
+			if (user != null)
+			{
+				throw new NotSupportedException("User o podanym email'u już istnieje");
+			}
+			user = new ApplicationUser { UserName = registerViewModel.Email, Email = registerViewModel.Email };
 			IdentityResult result = await applicationUserManager.CreateAsync(user, registerViewModel.Password);
 			if (!result.Succeeded)
 			{

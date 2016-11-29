@@ -72,6 +72,12 @@ namespace MobileSecondHand.Controllers
 				var token = await this.applicationSignInManager.Register(registerViewModel);
 				return Json(token);
 			}
+			catch (NotSupportedException exc)
+			{
+				this.logger.LogError("Ktoś próbował się zarejestrować ponownie na istniejący już adres emial" + exc);
+				Response.StatusCode = (int)HttpStatusCode.NotImplemented;
+				return Json(new ErrorResponse { ErrorMessage = exc.Message });
+			}
 			catch (Exception exc)
 			{
 				this.logger.LogError("Wystąpił błąd podczas standradowej rejestracji" + exc);
