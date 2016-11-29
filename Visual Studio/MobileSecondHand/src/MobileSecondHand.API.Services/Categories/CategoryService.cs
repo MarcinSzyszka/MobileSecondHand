@@ -20,7 +20,7 @@ namespace MobileSecondHand.API.Services.Categories
 		{
 			var resultDic = new Dictionary<int, string>();
 
-			var categories = this.categoryDbService.GetCategories().ToList();
+			var categories = this.categoryDbService.GetCategories().OrderBy(c => c.Name).ToList();
 
 			foreach (var category in categories)
 			{
