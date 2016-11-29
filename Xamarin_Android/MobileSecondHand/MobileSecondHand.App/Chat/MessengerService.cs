@@ -105,7 +105,7 @@ namespace MobileSecondHand.App.Chat
 				{
 					StopConnectionAfterTimeout();
 				}
-				else if (lastConnectionDate.AddMinutes(10) < DateTime.Now)
+				else if (lastConnectionDate.AddMinutes(12) < DateTime.Now)
 				{
 					lastConnectionDate = DateTime.Now;
 					this.chatHubClientService = ChatHubClientService.GetServiceInstance(bearerToken);
