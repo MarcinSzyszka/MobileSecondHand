@@ -199,7 +199,7 @@ namespace MobileSecondHand.API.Services.Authentication
 			tokenDescriptor.Audience = tokenAuthorizationOptions.Audience;
 			tokenDescriptor.SigningCredentials = tokenAuthorizationOptions.SigningCredentials;
 			tokenDescriptor.Subject = identity;
-			tokenDescriptor.Expires = DateTime.MaxValue;
+			tokenDescriptor.Expires = DateTime.Now.AddYears(2);
 
 			return tokenDescriptor;
 		}
