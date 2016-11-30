@@ -282,7 +282,7 @@ namespace MobileSecondHand.App.Activities
 			{
 				userPhoto.SetImageBitmap(await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(advertisement.SellerProfileImage));
 			}
-			textViewAdvertStatus.Text = String.Format("Og³oszenie {0} {1}", advertisement.IsActive ? "aktywne do" : "zakoñczone ", advertisement.ExpirationDate.ToShortDateString());
+			textViewAdvertStatus.Text = String.Format("Og³oszenie {0} {1}", advertisement.IsActive ? "aktywne do" : "zakoñczone ", advertisement.ExpirationDate.ToString(@"dd\.MM\.yyyy HH:mm"));
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 		}
 
