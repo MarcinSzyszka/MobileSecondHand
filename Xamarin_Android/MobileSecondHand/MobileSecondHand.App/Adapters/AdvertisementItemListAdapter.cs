@@ -22,6 +22,8 @@ namespace MobileSecondHand.App.Adapters
 
 		public event EventHandler<ShowAdvertisementDetailsEventArgs> AdvertisementItemClick;
 		public event EventHandler<FabOnAdvertisementItemRowClicked> DeleteAdvertisementItemClick;
+		public event EventHandler<FabOnAdvertisementItemRowClicked> EditAdvertisementItemClick;
+
 		public bool InfiniteScrollDisabled { get; set; }
 		public List<AdvertisementItemShort> AdvertisementItems { get; private set; }
 
@@ -55,13 +57,23 @@ namespace MobileSecondHand.App.Adapters
 			if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser || advertisementsKind == AdvertisementsKind.FavouritesAdvertisements)
 			{
 				vh.DeleteAdvertisementFab.Visibility = ViewStates.Visible;
-				if (currentItem.IsExpired && advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser)
+				if (advertisementsKind == AdvertisementsKind.AdvertisementsCreatedByUser)
 				{
-					vh.DeleteAdvertisementFab.SetImageResource(Resource.Drawable.restart);
+					if (currentItem.IsExpired)
+					{
+						vh.DeleteAdvertisementFab.SetImageResource(Resource.Drawable.restart);
+						vh.EditAdvertisementFab.Visibility = ViewStates.Invisible;
+					}
+					else
+					{
+						vh.EditAdvertisementFab.Visibility = ViewStates.Visible;
+						vh.EditAdvertisementFab.BringToFront();
+					}
 				}
 			}
 			else
 			{
+				vh.EditAdvertisementFab.Visibility = ViewStates.Invisible;
 				vh.DeleteAdvertisementFab.Visibility = ViewStates.Invisible;
 			}
 
@@ -93,7 +105,7 @@ namespace MobileSecondHand.App.Adapters
 		public override RecyclerView.ViewHolder OnCreateViewHolder(ViewGroup parent, int viewType)
 		{
 			View itemView = LayoutInflater.From(parent.Context).Inflate(Resource.Layout.AdvertisementItemRowView, parent, false);
-			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick, OnDeleteAdvertisementClick);
+			AdvertisementItemViewHolder vh = new AdvertisementItemViewHolder(itemView, OnAdvertisementItemClick, OnDeleteAdvertisementClick, OnEditAdvertisementClick);
 			return vh;
 		}
 
@@ -116,6 +128,18 @@ namespace MobileSecondHand.App.Adapters
 					clickArgs.Action = Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.MarkAsExpired;
 				}
 				DeleteAdvertisementItemClick(this, clickArgs);
+			}
+		}
+
+		private void OnEditAdvertisementClick(int positionId)
+		{
+			if (EditAdvertisementItemClick != null)
+			{
+				var clickArgs = new FabOnAdvertisementItemRowClicked();
+				clickArgs.Id = this.AdvertisementItems[positionId].Id;
+				clickArgs.Action = Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.Edit;
+
+				EditAdvertisementItemClick(this, clickArgs);
 			}
 		}
 

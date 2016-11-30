@@ -14,6 +14,7 @@ namespace MobileSecondHand.App.Consts
 {
 	public class ExtrasKeys
 	{
+		public const string ADVERTISEMENT_ITEM_EDIT_MODEL = "advertisementItemEditModel";
 		public const string ADVERTISEMENT_ITEM_ID = "advertisementItemId";
 
 		public const string ADVERTISEMENT_ITEM_DISTANCE = "advertisementItemDistance";

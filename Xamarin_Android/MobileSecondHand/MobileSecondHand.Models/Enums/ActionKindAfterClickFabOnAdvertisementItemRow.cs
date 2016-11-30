@@ -14,6 +14,8 @@ namespace MobileSecondHand.Models.Enums
 		[DisplayName("Czy na pewno chcesz usunąć z ulubionych to ogłoszenie?")]
 		DeleteFromFavourites = 2,
 		[DisplayName("Czy na pewno chcesz aktywować to ogłoszenie?")]
-		Restart = 3
+		Restart = 3,
+		[DisplayName("Czy na pewno chcesz edytować to ogłoszenie?")]
+		Edit = 4
 	}
 }

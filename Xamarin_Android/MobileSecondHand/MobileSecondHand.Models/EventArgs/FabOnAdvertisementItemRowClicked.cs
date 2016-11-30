@@ -11,5 +11,6 @@ namespace MobileSecondHand.Models.EventArgs
 	{
 		public int Id { get; set; }
 		public ActionKindAfterClickFabOnAdvertisementItemRow Action { get; set; }
+		public bool IsExpired { get; set; }
 	}
 }

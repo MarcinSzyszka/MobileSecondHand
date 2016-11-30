@@ -11,6 +11,37 @@
         android:layout_margin="10dp"
         android:background="@color/advertisementRowBackground"
         android:id="@+id/relativeLayout">
+        <ImageView
+            android:id="@+id/fab_editAdvertisement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:src="@drawable/edit_pen"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp" />
+        <ImageView
+            android:id="@+id/fab_remove_advertisement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|right"
+            android:src="@drawable/kasowanie_ogloszenia"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="10dp"
+            android:layout_marginTop="10dp" />
+    <!--<com.refractored.fab.FloatingActionButton
+            android:id="@+id/fab_editAdvertisement"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="top|left"
+            android:src="@drawable/edit_pen"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            tools:fab_colorNormal="@color/colorAccent"
+            tools:fab_colorPressed="#DCE775"
+            tools:fab_colorRipple="#F0F4C3" />
         <com.refractored.fab.FloatingActionButton
             android:id="@+id/fab_remove_advertisement"
             android:layout_width="wrap_content"
@@ -21,7 +52,7 @@
             android:layout_alignParentRight="true"
             tools:fab_colorNormal="@color/colorPrimary"
             tools:fab_colorPressed="#DCE775"
-            tools:fab_colorRipple="#F0F4C3" />
+            tools:fab_colorRipple="#F0F4C3" />-->
         <ImageView
             android:src="@drawable/localization"
             android:layout_width="wrap_content"

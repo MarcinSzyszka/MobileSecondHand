@@ -41,6 +41,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Advertisement\AdvertisementEditModel.cs" />
     <Compile Include="Chat\ConversationMessage.cs" />
     <Compile Include="Consts\WebApiConsts.cs" />
     <Compile Include="Enums\ActionKindAfterClickFabOnAdvertisementItemRow.cs" />

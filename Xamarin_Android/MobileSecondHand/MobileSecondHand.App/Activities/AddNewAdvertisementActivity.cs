@@ -17,6 +17,8 @@ using MobileSecondHand.API.Models.Shared.Extensions;
 using MobileSecondHand.API.Models.Shared.Categories;
 using MobileSecondHand.API.Models.Shared.Advertisements;
 using Newtonsoft.Json;
+using MobileSecondHand.App.Consts;
+using MobileSecondHand.Models.Advertisement;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -55,8 +57,10 @@ namespace MobileSecondHand.App.Activities
 		CategoryInfoModel categoryInfoModel;
 		private ClothSize size;
 		private Action CreateAdvertMenuItemClicked;
+		bool isEditingMode;
+		private AdvertisementEditModel editModel;
 
-		protected override void OnCreate(Bundle savedInstanceState)
+		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
 			this.bitmapOperationService = new BitmapOperationService();
@@ -70,6 +74,34 @@ namespace MobileSecondHand.App.Activities
 			SetupViews();
 			photosPaths = new List<string>();
 			tempPhotosPaths = new List<string>();
+			await GetExtrasIsExistAndFillForm();
+		}
+
+		private async Task GetExtrasIsExistAndFillForm()
+		{
+			var editMOdelString = Intent.GetStringExtra(ExtrasKeys.ADVERTISEMENT_ITEM_EDIT_MODEL);
+			if (String.IsNullOrEmpty(editMOdelString))
+			{
+				//not edit
+				return;
+			}
+			Title = "Edycja og³oszenia";
+			this.editModel = JsonConvert.DeserializeObject<AdvertisementEditModel>(editMOdelString);
+			categoryInfoModel = editModel.CategoryInfoModel;
+			textViewChodesdCategory.Text = categoryInfoModel.Name;
+			advertisementTitle.Text = editModel.Title;
+			advertisementDescription.Text = editModel.Description;
+			advertisementPrice.Text = editModel.Price.ToString();
+			size = editModel.Size;
+			textViewChodesdSize.Text = editModel.Size.GetDisplayName();
+			rdBtnOnlyForSell.Selected = editModel.IsOnlyForSell;
+			photosPaths = editModel.PhotosPaths;
+			for (int i = 0; i < photosPaths.Count; i++)
+			{
+				var photoNr = i + 1;
+				await SetPhoto(photoNr);
+			}
+
 		}
 
 		protected override async void OnActivityResult(int requestCode, [GeneratedEnum] Result resultCode, Intent data)
@@ -261,7 +293,8 @@ namespace MobileSecondHand.App.Activities
 							{
 								System.IO.File.Delete(tempPath);
 							}
-							AlertsService.ShowLongToast(this, "Pomyœlnie utworzone nowe og³oszenie");
+							var message = editModel == null ? "Pomyœlnie utworzone nowe og³oszenie" : "Pomyœlnie zaktualizowano og³oszenie";
+							AlertsService.ShowLongToast(this, message);
 
 							this.Finish();
 						}
@@ -273,7 +306,7 @@ namespace MobileSecondHand.App.Activities
 				}
 				else
 				{
-					Toast.MakeText(this, "Wspólrzêdne lokalizacji s¹ zerowe", ToastLength.Long).Show();
+					Toast.MakeText(this, "Nie mogê ustaliæ wspó³rzêdnych. Upewnij siê, ¿e masz w³¹czon¹ lokalizacje.", ToastLength.Long).Show();
 				}
 			}
 		}
@@ -294,6 +327,7 @@ namespace MobileSecondHand.App.Activities
 		{
 			var location = this.gpsLocationService.GetLocation();
 			NewAdvertisementItem model = new NewAdvertisementItem();
+			model.Id = editModel != null ? editModel.Id : -1;
 			model.AdvertisementTitle = advertisementTitle.Text;
 			model.AdvertisementDescription = advertisementDescription.Text;
 			model.Size = this.size;

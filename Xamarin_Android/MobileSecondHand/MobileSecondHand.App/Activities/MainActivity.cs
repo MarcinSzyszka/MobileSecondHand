@@ -26,6 +26,8 @@ using MobileSecondHand.API.Models.Shared.Security;
 using MobileSecondHand.API.Models.Shared.Consts;
 using Android.Support.V4.Widget;
 using MobileSecondHand.App.SideMenu;
+using System.IO;
+using MobileSecondHand.Models.Advertisement;
 
 namespace MobileSecondHand.App
 {
@@ -545,6 +547,7 @@ namespace MobileSecondHand.App
 					advertisementItemListAdapter = new AdvertisementItemListAdapter(this, advertisements, this.advertisementsSearchModel.AdvertisementsKind, this);
 					advertisementItemListAdapter.AdvertisementItemClick += AdvertisementItemListAdapter_AdvertisementItemClick;
 					advertisementItemListAdapter.DeleteAdvertisementItemClick += AdvertisementItemListAdapter_DeleteAdvertisementItemClick;
+					advertisementItemListAdapter.EditAdvertisementItemClick += AdvertisementItemListAdapter_EditAdvertisementItemClick;
 					var mLayoutManager = new GridLayoutManager(this, 2);
 					advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
 					advertisementsRecyclerView.SetAdapter(advertisementItemListAdapter);
@@ -566,6 +569,7 @@ namespace MobileSecondHand.App
 
 			SetRecyclerVisibility(advertisements);
 		}
+
 
 		private void SetRecyclerVisibility(List<AdvertisementItemShort> advertisements)
 		{
@@ -645,6 +649,64 @@ namespace MobileSecondHand.App
 			StartActivity(intent);
 		}
 
+		private void AdvertisementItemListAdapter_EditAdvertisementItemClick(object sender, FabOnAdvertisementItemRowClicked clickArgs)
+		{
+			if (clickArgs.Id == 0)
+			{
+				AlertsService.ShowLongToast(this, "Wyst¹pi³ b³¹d");
+				return;
+			}
+
+			var message = clickArgs.Action.GetDisplayName();
+
+			AlertsService.ShowConfirmDialog(this, message, GetPrepareToAdvertisementEditAction(clickArgs.Id));
+		}
+
+		private Action GetPrepareToAdvertisementEditAction(int advertId)
+		{
+			return async () =>
+			{
+				progress.ShowProgressDialog("Trwa przygotowanie do edycji...");
+				var imagesPaths = new List<string>();
+				var advertisement = await this.advertisementItemService.GetAdvertisementDetails(advertId);
+				foreach (var photo in advertisement.Photos)
+				{
+					String timeStamp = DateTime.Now.ToString();
+					String imageFileName = "JPEG_" + timeStamp + "_";
+					Java.IO.File storageDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures);
+
+					Java.IO.File image = Java.IO.File.CreateTempFile(
+							imageFileName,  /* prefix */
+							".jpg",         /* suffix */
+							storageDir      /* directory */
+					);
+					File.WriteAllBytes(image.AbsolutePath, photo);
+					imagesPaths.Add(image.AbsolutePath);
+				}
+				progress.CloseProgressDialog();
+				var addAdvertisementIntent = new Intent(this, typeof(AddNewAdvertisementActivity));
+				AdvertisementEditModel advertEditModel = GetAdvertisementEditModel(advertisement, imagesPaths);
+				var editMOdelString = JsonConvert.SerializeObject(advertEditModel);
+				addAdvertisementIntent.PutExtra(ExtrasKeys.ADVERTISEMENT_ITEM_EDIT_MODEL, editMOdelString);
+				StartActivity(addAdvertisementIntent);
+			};
+		}
+
+		private AdvertisementEditModel GetAdvertisementEditModel(AdvertisementItemDetails advertisement, List<string> imagesPaths)
+		{
+			var editMOdel = new AdvertisementEditModel();
+			editMOdel.Id = advertisement.Id;
+			editMOdel.CategoryInfoModel = advertisement.CategoryInfoModel;
+			editMOdel.Description = advertisement.Description;
+			editMOdel.IsOnlyForSell = advertisement.IsOnlyForSell;
+			editMOdel.PhotosPaths = imagesPaths;
+			editMOdel.Price = advertisement.Price;
+			editMOdel.Size = advertisement.Size;
+			editMOdel.Title = advertisement.Title;
+
+			return editMOdel;
+		}
+
 		private void AdvertisementItemListAdapter_DeleteAdvertisementItemClick(object sender, FabOnAdvertisementItemRowClicked clickArgs)
 		{
 			if (clickArgs.Id == 0)
@@ -660,21 +722,39 @@ namespace MobileSecondHand.App
 				var success = false;
 				if (clickArgs.Action == Models.Enums.ActionKindAfterClickFabOnAdvertisementItemRow.Restart)
 				{
-					success = await this.advertisementItemService.RestartAdvertisement(clickArgs.Id);
+					Action actionOnConfirmEditFirst = () =>
+					{
+						GetPrepareToAdvertisementEditAction(clickArgs.Id)();
+					};
+
+					Action actionOnCancelEditFirst = async () =>
+					{
+						success = await this.advertisementItemService.RestartAdvertisement(clickArgs.Id);
+						if (success)
+						{
+							AlertsService.ShowLongToast(this, "Pomyœlnie zakoñczono tê operacjê.");
+							RefreshAdvertisementList(true);
+						}
+						else
+						{
+							AlertsService.ShowLongToast(this, "Nie uda³o siê wykonaæ tej operacji.");
+						}
+					};
+
+					AlertsService.ShowConfirmDialog(this, "Czy chcesz wczeœniej zaktualizowaæ treœæ lub zdjêcia?", actionOnConfirmEditFirst, actionOnCancelEditFirst);
 				}
 				else
 				{
 					success = await this.advertisementItemService.DeleteAdvertisement(clickArgs.Id, this.advertisementsSearchModel.AdvertisementsKind);
-				}
-
-				if (success)
-				{
-					AlertsService.ShowLongToast(this, "Pomyœlnie zakoñczono tê operacjê.");
-					RefreshAdvertisementList(true);
-				}
-				else
-				{
-					AlertsService.ShowLongToast(this, "Nie uda³o siê wykonaæ tej operacji.");
+					if (success)
+					{
+						AlertsService.ShowLongToast(this, "Pomyœlnie zakoñczono tê operacjê.");
+						RefreshAdvertisementList(true);
+					}
+					else
+					{
+						AlertsService.ShowLongToast(this, "Nie uda³o siê wykonaæ tej operacji.");
+					}
 				}
 			});
 
