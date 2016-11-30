@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MobileSecondHand.API.Models.Shared.Categories;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 
 namespace MobileSecondHand.API.Models.Shared.Advertisements
@@ -12,6 +13,7 @@ namespace MobileSecondHand.API.Models.Shared.Advertisements
 		public string Title { get; set; }
 		public string Description { get; set; }
 		public ClothSize Size { get; set; }
+		public CategoryInfoModel CategoryInfoModel { get; set; }
 		public int Price { get; set; }
 		public List<byte[]> Photos { get; set; }
 		public bool IsOnlyForSell { get; set; }

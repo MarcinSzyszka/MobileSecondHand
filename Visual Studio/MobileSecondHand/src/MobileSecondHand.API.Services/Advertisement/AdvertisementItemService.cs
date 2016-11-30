@@ -43,40 +43,40 @@ namespace MobileSecondHand.API.Services.Advertisement
 
 		public void CreateNewAdvertisementItem(NewAdvertisementItem newAdvertisementModel, string userId)
 		{
-			var advertisementItemDescription = String.Concat(newAdvertisementModel.AdvertisementTitle, ' ', newAdvertisementModel.AdvertisementDescription);
-			var categoryKeywords = this.keywordsService.RecognizeAndGetKeywordsDbModels<CategoryKeyword>(advertisementItemDescription);
-			var colorKeywords = this.keywordsService.RecognizeAndGetKeywordsDbModels<ColorKeyword>(advertisementItemDescription);
-
-			var model = new AdvertisementItem
+			AdvertisementItem model = null;
+			if (newAdvertisementModel.Id > 0)
 			{
-				UserId = userId,
-				Title = newAdvertisementModel.AdvertisementTitle,
-				Description = newAdvertisementModel.AdvertisementDescription,
-				Size = newAdvertisementModel.Size,
-				Price = newAdvertisementModel.AdvertisementPrice,
-				CreationDate = DateTime.Now,
-				ExpirationDate = GetExpirationDate(),
-				Latitude = newAdvertisementModel.Latitude,
-				Longitude = newAdvertisementModel.Longitude,
-				IsOnlyForSell = newAdvertisementModel.IsOnlyForSell,
-				CategoryId = newAdvertisementModel.Category.Id,
-				AdvertisementPhotos = CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosNames)
-			};
+				model = this.advertisementItemDbService.GetByIdWithPhotos(newAdvertisementModel.Id);
+				model.Title = newAdvertisementModel.AdvertisementTitle;
+				model.Description = newAdvertisementModel.AdvertisementDescription;
+				model.Size = newAdvertisementModel.Size;
+				model.Price = newAdvertisementModel.AdvertisementPrice;
+				model.ExpirationDate = GetExpirationDate();
+				model.Latitude = newAdvertisementModel.Latitude;
+				model.Longitude = newAdvertisementModel.Longitude;
+				model.IsOnlyForSell = newAdvertisementModel.IsOnlyForSell;
+				model.CategoryId = newAdvertisementModel.Category.Id;
+				model.AdvertisementPhotos.AddRange(CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosNames));
 
-			foreach (var category in categoryKeywords)
+			}
+			else
 			{
-				model.CategoryKeywords.Add(new CategoryKeywordToAdvertisement
+				model = new AdvertisementItem
 				{
-					AdvertisementItem = model,
-					CategoryKeyword = category
-				});
+					UserId = userId,
+					Title = newAdvertisementModel.AdvertisementTitle,
+					Description = newAdvertisementModel.AdvertisementDescription,
+					Size = newAdvertisementModel.Size,
+					Price = newAdvertisementModel.AdvertisementPrice,
+					CreationDate = DateTime.Now,
+					ExpirationDate = GetExpirationDate(),
+					Latitude = newAdvertisementModel.Latitude,
+					Longitude = newAdvertisementModel.Longitude,
+					IsOnlyForSell = newAdvertisementModel.IsOnlyForSell,
+					CategoryId = newAdvertisementModel.Category.Id,
+					AdvertisementPhotos = CreateAdvertisementPhotosModels(newAdvertisementModel.PhotosNames)
+				};
 			}
-
-			foreach (var color in colorKeywords)
-			{
-				model.ColorKeywords.Add(new ColorKeywordToAdvertisement { AdvertisementItem = model, ColorKeyword = color });
-			}
-
 
 			this.advertisementItemDbService.SaveNewAdvertisementItem(model);
 		}
@@ -318,6 +318,7 @@ namespace MobileSecondHand.API.Services.Advertisement
 			viewModel.Title = advertisementFromDb.Title;
 			viewModel.Description = advertisementFromDb.Description;
 			viewModel.Size = advertisementFromDb.Size;
+			viewModel.CategoryInfoModel = new Models.Shared.Categories.CategoryInfoModel { Id = advertisementFromDb.CategoryId, Name = advertisementFromDb.Category.Name };
 			viewModel.Price = advertisementFromDb.Price;
 			viewModel.IsOnlyForSell = advertisementFromDb.IsOnlyForSell;
 			viewModel.SellerId = advertisementFromDb.UserId;

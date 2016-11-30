@@ -17,14 +17,14 @@ namespace MobileSecondHand.DB.Services.Advertisement
 		public AdvertisementItemDbService(MobileSecondHandContext context)
 		{
 			this.dbContext = context;
-			var a = dbContext.GetHashCode();
 		}
 
 		public AdvertisementItem GetByIdWithDetails(int advertisementId)
 		{
 			return dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos)
-												.Include(a => a.User)
-												.FirstOrDefault(a => a.Id == advertisementId);
+											  .Include(a => a.Category)
+											  .Include(a => a.User)
+											  .FirstOrDefault(a => a.Id == advertisementId);
 		}
 
 		public IQueryable<AdvertisementItem> GetAdvertisements()
@@ -73,28 +73,37 @@ namespace MobileSecondHand.DB.Services.Advertisement
 
 		public void SaveNewAdvertisementItem(AdvertisementItem advertisementItem)
 		{
-			dbContext.AdvertisementItem.Add(advertisementItem);
-			dbContext.Entry(advertisementItem).State = EntityState.Added;
-			foreach (var keyword in advertisementItem.CategoryKeywords)
+			if (advertisementItem.Id > 0)
 			{
-				if (keyword.CategoryKeyword.Id > 0)
+				var oldPhotos = advertisementItem.AdvertisementPhotos.Where(a => a.AdvertisementPhotoId > 0);
+				foreach (var photo in oldPhotos)
 				{
-					dbContext.Entry(keyword.CategoryKeyword).State = EntityState.Unchanged;
+					dbContext.Entry(photo).State = EntityState.Deleted;
 				}
+				var newPhotos = advertisementItem.AdvertisementPhotos.Where(a => a.AdvertisementPhotoId == 0);
+				foreach (var photo in newPhotos)
+				{
+					dbContext.Entry(photo).State = EntityState.Added;
+				}
+				dbContext.Entry(advertisementItem).State = EntityState.Modified;
 			}
-			foreach (var keyword in advertisementItem.ColorKeywords)
+			else
 			{
-				if (keyword.ColorKeyword.Id > 0)
-				{
-					dbContext.Entry(keyword.ColorKeyword).State = EntityState.Unchanged;
-				}
+				dbContext.AdvertisementItem.Add(advertisementItem);
+				dbContext.Entry(advertisementItem).State = EntityState.Added;
 			}
+
 			dbContext.SaveChanges();
 		}
 
 		public AdvertisementItem GetById(int advertisementId)
 		{
 			return this.dbContext.AdvertisementItem.FirstOrDefault(a => a.Id == advertisementId);
+		}
+
+		public AdvertisementItem GetByIdWithPhotos(int advertisementId)
+		{
+			return this.dbContext.AdvertisementItem.Include(a => a.AdvertisementPhotos).FirstOrDefault(a => a.Id == advertisementId);
 		}
 
 		public void SaveAdvertisementItem(AdvertisementItem advertisement)

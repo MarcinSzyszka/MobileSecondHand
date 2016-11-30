@@ -13,6 +13,7 @@ namespace MobileSecondHand.DB.Services.Advertisement {
 		IQueryable<AdvertisementItem> GetUserAdvertisements(string userId, int pageNumber = -1);
 		IQueryable<AdvertisementItem> GetAdvertisementsFromDeclaredAreaSinceLastCheck(DateTime lastCheckDate, string userId, CoordinatesForSearchingAdvertisementsModel coordinatesForSearchModel);
 		AdvertisementItem GetById(int advertisementId);
+		AdvertisementItem GetByIdWithPhotos(int advertisementId);
 		void SaveAdvertisementItem(AdvertisementItem advertisement);
 		UserToFavouriteAdvertisement GetUserFavouriteAdvertisement(string userId, int advertisementId);
 		void SaveUserFavouriteAdvertisement(UserToFavouriteAdvertisement favouriteAdvertisement);
