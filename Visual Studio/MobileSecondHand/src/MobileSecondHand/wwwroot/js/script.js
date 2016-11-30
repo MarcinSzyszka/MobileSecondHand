@@ -227,16 +227,16 @@ $(document).ready(function(){
 
 (function ($) {
     $(document).ready(function () {
-        $('.go-to-shop').bind("click", function (evt) {
-            evt.preventDefault();
-            evt.stopPropagation();
-            var infoContainer = $(".mfInfo");
-            infoContainer.addClass('success');
-            infoContainer.first().text('Juz niedlugo do pobrania!');
-            setTimeout(function () {
-                infoContainer.removeClass('success');
-            }, 2000);
-        });
+        //$('.go-to-shop').bind("click", function (evt) {
+        //    evt.preventDefault();
+        //    evt.stopPropagation();
+        //    var infoContainer = $(".mfInfo");
+        //    infoContainer.addClass('success');
+        //    infoContainer.first().text('Juz niedlugo do pobrania!');
+        //    setTimeout(function () {
+        //        infoContainer.removeClass('success');
+        //    }, 2000);
+        //});
 
 
         function emailIsMatch(email) {
