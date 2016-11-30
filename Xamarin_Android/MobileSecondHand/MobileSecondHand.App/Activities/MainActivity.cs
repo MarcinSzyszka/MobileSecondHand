@@ -317,10 +317,6 @@ namespace MobileSecondHand.App
 			var handled = false;
 			switch (item.ItemId)
 			{
-				//case Resource.Id.refreshAdvertisementsOption:
-				//	RefreshAdvertisementList(true);
-				//	handled = true;
-				//	break;
 				case Resource.Id.showFavouritesList:
 					ShowAdvertisementList(AdvertisementsKind.FavouritesAdvertisements);
 					break;
