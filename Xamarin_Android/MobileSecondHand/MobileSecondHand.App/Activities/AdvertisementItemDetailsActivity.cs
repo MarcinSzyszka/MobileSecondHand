@@ -22,6 +22,7 @@ using MobileSecondHand.Services.Chat;
 using MobileSecondHand.Services.Feedback;
 using Newtonsoft.Json;
 using Refractored.Controls;
+using MobileSecondHand.API.Models.Shared.Extensions;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -41,6 +42,7 @@ namespace MobileSecondHand.App.Activities
 		private TextView title;
 		private TextView description;
 		private TextView sellerName;
+		TextView textViewSizeValue;
 		TextView textViewAdvertStatus;
 		private ImageView startConversationBtn;
 		private TextView distanceTextView;
@@ -129,7 +131,7 @@ namespace MobileSecondHand.App.Activities
 			this.userPhoto.Click += (s, e) => TogleLayouts();
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
 			this.userAdvertsLayout = FindViewById<RelativeLayout>(Resource.Id.userAdvertisementsRecyclerViewWrapper);
-
+			textViewSizeValue = FindViewById<TextView>(Resource.Id.textViewSizeValue);
 			advertisementsRecyclerView = FindViewById<RecyclerView>(Resource.Id.advertisementsRecyclerViewOnAdvertDetails);
 			var mLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.Vertical);
 			advertisementsRecyclerView.SetLayoutManager(mLayoutManager);
@@ -166,7 +168,7 @@ namespace MobileSecondHand.App.Activities
 					AlertsService.ShowShortToast(this, "Og³oszenie zosta³o zg³oszone adminom");
 				};
 				string[] itemList = Resources.GetStringArray(Resource.Array.report_wrong_advert_reasons);
-				AlertsService.ShowSingleSelectListString(this, itemList, actionOnReasonSelected, dialogTitle:"Wybierz powód");
+				AlertsService.ShowSingleSelectListString(this, itemList, actionOnReasonSelected, dialogTitle: "Wybierz powód");
 			};
 			AlertsService.ShowConfirmDialog(this, "Czy na pewno chcesz zg³osiæ to og³oszenie jako naruszenie regulaminu?", reportActionConfirmed);
 		}
@@ -255,6 +257,7 @@ namespace MobileSecondHand.App.Activities
 		private async void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance)
 		{
 			distanceTextView.Text = String.Format("{0} km", distance);
+			textViewSizeValue.Text = advertisement.Size.GetDisplayName();
 			if (advertisement.IsSellerOnline)
 			{
 				sellerNetworkStateInfoImageView.SetImageDrawable(ContextCompat.GetDrawable(this, Resource.Drawable.userOnline));
