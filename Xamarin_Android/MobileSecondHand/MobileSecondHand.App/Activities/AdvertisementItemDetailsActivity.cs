@@ -55,6 +55,7 @@ namespace MobileSecondHand.App.Activities
 		private bool firstEntryOnUserAdvertisementsList;
 		private RecyclerView photosRecyclerView;
 		private IMenu menu;
+		private Button btnContactBottom;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
@@ -127,6 +128,7 @@ namespace MobileSecondHand.App.Activities
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.sellerName = FindViewById<TextView>(Resource.Id.textViewUserNameAdvertDetails);
 			this.textViewAdvertStatus = FindViewById<TextView>(Resource.Id.textViewAdvertStatus);
+			this.btnContactBottom = FindViewById<Button>(Resource.Id.btnContactBottom);
 			this.userPhoto = FindViewById<CircleImageView>(Resource.Id.profile_image_on_advert_det);
 			this.userPhoto.Click += (s, e) => TogleLayouts();
 			this.nestedScrollViewLayout = FindViewById<NestedScrollView>(Resource.Id.nestedScrollViewLayout);
@@ -283,6 +285,7 @@ namespace MobileSecondHand.App.Activities
 				userPhoto.SetImageBitmap(await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(advertisement.SellerProfileImage));
 			}
 			textViewAdvertStatus.Text = String.Format("Og³oszenie {0} {1}", advertisement.IsActive ? "aktywne do" : "zakoñczone ", advertisement.ExpirationDate.ToString(@"dd\.MM\.yyyy HH:mm"));
+			btnContactBottom.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 			startConversationBtn.Click += async (s, e) => await StartConversationBtn_Click(s, e);
 		}
 

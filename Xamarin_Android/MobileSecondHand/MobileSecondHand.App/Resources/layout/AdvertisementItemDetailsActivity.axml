@@ -180,13 +180,25 @@
                         android:layout_below="@+id/textView12"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp" />
+					<Button
+					  android:text="Skontaktuj się"
+					  android:layout_width="wrap_content"
+					  android:layout_height="30dp"
+					  android:layout_below="@+id/advertisementDetailsDescription"
+					  android:id="@+id/btnContactBottom"
+					  android:layout_centerHorizontal="true"
+					  android:background="@color/colorPrimary"
+					  android:layout_marginBottom="5dp"
+					  android:textColor="@color/advertisementRowBackground"
+					  android:textStyle="bold"
+					  android:layout_marginTop="10dp" />
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:text=""
                         android:id="@+id/textViewAdvertStatus"
-                        android:layout_below="@+id/advertisementDetailsDescription"
+                        android:layout_below="@+id/btnContactBottom"
                         android:background="@color/colorPrimary"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:gravity="center"
@@ -232,7 +244,6 @@
                         android:layout_marginBottom="5dp"
                         android:layout_below="@+id/textViewUserNameAdvertDetails"
                         android:src="@drawable/logo_user" />
-
                     <TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
@@ -247,7 +258,6 @@
                         android:layout_below="@+id/distanceDetailsTextView"
                         android:layout_alignParentStart="false"
                         android:layout_marginTop="@dimen/settingRowMargin" />
-
                     <TextView
                         android:id="@+id/textViewSizeValue"
                         android:layout_width="wrap_content"
