@@ -36,7 +36,6 @@ namespace MobileSecondHand.App.Activities
 		private Button buttonRegistration;
 		private View focusView;
 		private ProgressDialogHelper progress;
-		CheckBox acceptCheckboxLogin;
 		TextView textViewReg;
 		private LoginButton facebookLoginBtn;
 
@@ -73,15 +72,8 @@ namespace MobileSecondHand.App.Activities
 		private void SetupAcceptCheckbox()
 		{
 			textViewReg = FindViewById<TextView>(Resource.Id.textView2);
-			textViewReg.TextFormatted = Html.FromHtml("Akceptujê <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
+			textViewReg.TextFormatted = Html.FromHtml("Loguj¹c siê przez facebook akceptujesz <a href='" + WebApiConsts.WEB_API_URL + "file/reg'>Regulamin</a> oraz <a href='" + WebApiConsts.WEB_API_URL + "file/privpolicy'>Politykê Prywatnoœci</a>.");
 			textViewReg.MovementMethod = LinkMovementMethod.Instance;
-			acceptCheckboxLogin = FindViewById<CheckBox>(Resource.Id.acceptCheckboxLogin);
-			acceptCheckboxLogin.CheckedChange += AcceptCheckboxLogin_CheckedChange;
-		}
-
-		private void AcceptCheckboxLogin_CheckedChange(object sender, CompoundButton.CheckedChangeEventArgs e)
-		{
-			facebookLoginBtn.Enabled = e.IsChecked;
 		}
 
 		private void SetupGoToRegistration()
@@ -94,6 +86,7 @@ namespace MobileSecondHand.App.Activities
 		{
 			var registerIntent = new Intent(this, typeof(RegisterActivity));
 			StartActivity(registerIntent);
+			Finish();
 		}
 
 		private void SetupStandardLogin()
@@ -157,8 +150,6 @@ namespace MobileSecondHand.App.Activities
 		{
 			callbackManager = CallbackManagerFactory.Create();
 			facebookLoginBtn = FindViewById<LoginButton>(Resource.Id.facebookLoginBtn);
-			facebookLoginBtn.Enabled = false;
-			facebookLoginBtn.Click += FacebookLoginBtn_Click;
 			facebookLoginBtn.SetReadPermissions("public_profile", "email");
 			var loginCallback = new FacebookCallback<LoginResult>
 			{
@@ -198,14 +189,6 @@ namespace MobileSecondHand.App.Activities
 				}
 			};
 			facebookLoginBtn.RegisterCallback(this.callbackManager, loginCallback);
-		}
-
-		private void FacebookLoginBtn_Click(object sender, EventArgs e)
-		{
-			if (!acceptCheckboxLogin.Checked)
-			{
-				AlertsService.ShowShortToast(this, "Musisz zaakceptowaæ regulamin oraz politykê prywatnoœci.");
-			}
 		}
 
 		private void SetUserNameInAppSettings(string userName)
