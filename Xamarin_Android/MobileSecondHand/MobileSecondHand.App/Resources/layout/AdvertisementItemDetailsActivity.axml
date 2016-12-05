@@ -7,14 +7,14 @@
     android:minHeight="25px"
     android:minWidth="25px"
     android:orientation="vertical">
-    <RelativeLayout
+	<RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-        <include
+		<include
             layout="@layout/appbar"
             android:layout_alignParentTop="true"
             android:layout_gravity="top" />
-        <android.support.v4.widget.NestedScrollView
+		<android.support.v4.widget.NestedScrollView
             android:id="@+id/nestedScrollViewLayout"
             android:fillViewport="true"
             android:layout_width="match_parent"
@@ -23,15 +23,15 @@
             android:minWidth="25px"
             android:orientation="vertical"
             android:layout_below="@+id/app_bar">
-            <LinearLayout
+			<LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:orientation="vertical">
-                <RelativeLayout
+				<RelativeLayout
                     android:id="@+id/advertisementDetailsWrapperLayout"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent">
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -44,7 +44,7 @@
                         android:gravity="center"
                         android:background="@color/headerBackground"
                         android:textColor="@color/colorPrimaryDark" />
-                    <android.support.v7.widget.RecyclerView
+					<android.support.v7.widget.RecyclerView
                         android:id="@+id/photosRecyclerViewOnAdvertDetails"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
@@ -54,7 +54,7 @@
                         android:layout_below="@+id/textView1032"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:visibility="visible" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -67,7 +67,7 @@
                         android:gravity="center"
                         android:background="@color/headerBackground"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -80,7 +80,7 @@
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:gravity="center" />
-                    <TextView
+					<TextView
                         android:id="@+id/advertisementDetailsTitle"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -91,7 +91,7 @@
                         android:text="Tytuł ogłoszenia"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/advertisementDetailsDescription"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
                         android:text="Treść ogłoszenia"
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/advertisementDeatilsPrice"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -112,7 +112,7 @@
                         android:textAppearance="?android:attr/textAppearanceLarge"
                         android:textColor="@color/colorPrimaryDark"
                         android:layout_marginTop="5dp" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -125,7 +125,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:id="@+id/forSellOrChangeInfo"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -137,7 +137,7 @@
                         android:layout_alignParentLeft="false"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -148,7 +148,7 @@
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark"
                         android:gravity="center" />
-                    <TextView
+					<TextView
                         android:id="@+id/distanceDetailsTextView"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -159,7 +159,7 @@
                         android:layout_alignParentRight="false"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -172,7 +172,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <ImageView
+					<ImageView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:id="@+id/imageView3"
@@ -181,18 +181,20 @@
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp" />
 					<Button
-					  android:text="Skontaktuj się"
-					  android:layout_width="wrap_content"
-					  android:layout_height="30dp"
-					  android:layout_below="@+id/advertisementDetailsDescription"
-					  android:id="@+id/btnContactBottom"
-					  android:layout_centerHorizontal="true"
-					  android:background="@color/colorPrimary"
-					  android:layout_marginBottom="5dp"
-					  android:textColor="@color/advertisementRowBackground"
-					  android:textStyle="bold"
-					  android:layout_marginTop="10dp" />
-                    <TextView
+                        android:text="Skontaktuj się"
+                        android:layout_width="wrap_content"
+                        android:layout_height="30dp"
+                        android:layout_below="@+id/advertisementDetailsDescription"
+                        android:id="@+id/btnContactBottom"
+                        android:layout_centerHorizontal="true"
+                        android:background="@color/colorPrimary"
+                        android:layout_marginBottom="5dp"
+                        android:textColor="@color/advertisementRowBackground"
+                        android:textStyle="bold"
+                        android:layout_marginTop="10dp"
+						android:paddingLeft="3dp"
+						android:paddingRight="3dp"  />
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceSmall"
@@ -205,7 +207,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/advertisementRowBackground" />
-                    <ImageView
+					<ImageView
                         android:src="@drawable/sendmessage"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -216,7 +218,7 @@
                         android:layout_marginTop="41dp"
                         android:layout_marginBottom="2dp"
                         android:padding="10dp" />
-                    <ImageView
+					<ImageView
                         android:src="@drawable/useronline"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -225,7 +227,7 @@
                         android:layout_alignParentLeft="true"
                         android:layout_marginLeft="50dp"
                         android:layout_marginTop="45dp" />
-                    <TextView
+					<TextView
                         android:text="nazwa sprzedajacego"
                         android:textAppearance="?android:attr/textAppearanceSmall"
                         android:layout_width="wrap_content"
@@ -236,7 +238,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_marginTop="5dp"
                         android:textColor="@color/colorPrimaryDark" />
-                    <refractored.controls.CircleImageView
+					<refractored.controls.CircleImageView
                         android:id="@+id/profile_image_on_advert_det"
                         android:layout_width="75dp"
                         android:layout_height="75dp"
@@ -244,7 +246,7 @@
                         android:layout_marginBottom="5dp"
                         android:layout_below="@+id/textViewUserNameAdvertDetails"
                         android:src="@drawable/logo_user" />
-                    <TextView
+					<TextView
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:textAppearance="?android:attr/textAppearanceMedium"
@@ -258,7 +260,7 @@
                         android:layout_below="@+id/distanceDetailsTextView"
                         android:layout_alignParentStart="false"
                         android:layout_marginTop="@dimen/settingRowMargin" />
-                    <TextView
+					<TextView
                         android:id="@+id/textViewSizeValue"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -268,21 +270,21 @@
                         android:layout_below="@+id/textViewSizeOnDet"
                         android:layout_centerHorizontal="true"
                         android:layout_marginTop="5dp" />
-                </RelativeLayout>
-            </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
-        <RelativeLayout
+				</RelativeLayout>
+			</LinearLayout>
+		</android.support.v4.widget.NestedScrollView>
+		<RelativeLayout
             android:id="@+id/userAdvertisementsRecyclerViewWrapper"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:visibility="gone"
             android:layout_below="@+id/app_bar">
-            <android.support.v7.widget.RecyclerView
+			<android.support.v7.widget.RecyclerView
                 android:id="@+id/advertisementsRecyclerViewOnAdvertDetails"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:minHeight="25dp"
                 android:minWidth="25dp" />
-        </RelativeLayout>
-    </RelativeLayout>
+		</RelativeLayout>
+	</RelativeLayout>
 </FrameLayout>

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -45,12 +46,12 @@ namespace MobileSecondHand.Services.Advertisements
 			return advertisementList;
 		}
 
-		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber, string userId)
+		public async Task<List<AdvertisementItemShort>> GetUserAdvertisements(int pageNumber, string userId, double lat, double lon)
 		{
 			HttpResponseMessage response;
 			try
 			{
-				response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisements/" + pageNumber + "/" + userId);
+				response = await client.GetAsync(WebApiConsts.ADVERTISEMENT_CONTROLLER + "GetUserAdvertisementsNewVersion/" + pageNumber + "/" + userId + "/" + lat.ToString(new CultureInfo("en-US")) + "/" + lon.ToString(new CultureInfo("en-US")));
 			}
 			catch
 			{

@@ -56,10 +56,12 @@ namespace MobileSecondHand.App.Activities
 		private RecyclerView photosRecyclerView;
 		private IMenu menu;
 		private Button btnContactBottom;
+		GpsLocationService gpsLocationService;
 
 		protected override async void OnCreate(Bundle savedInstanceState)
 		{
 			base.OnCreate(savedInstanceState);
+			gpsLocationService = new GpsLocationService(this, null);
 			this.advertisementItemService = new AdvertisementItemService(bearerToken);
 			feedbackService = new FeedbackService(bearerToken);
 			messagesService = new MessagesService(bearerToken);
@@ -208,7 +210,8 @@ namespace MobileSecondHand.App.Activities
 		private async Task DownloadAndShowAdvertisements()
 		{
 			progress.ShowProgressDialog("Pobieranie og³oszeñ. Proszê czekaæ...");
-			List<AdvertisementItemShort> advertisements = await this.advertisementItemService.GetUserAdvertisements(userAdvertsPageNumber, this.advertisement.SellerId);
+			var coordinates = gpsLocationService.GetCoordinatesModel();
+			List<AdvertisementItemShort> advertisements = await this.advertisementItemService.GetUserAdvertisements(userAdvertsPageNumber, this.advertisement.SellerId, coordinates.Latitude, coordinates.Longitude);
 
 			if (advertisements.Count > 0)
 			{
