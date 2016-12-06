@@ -217,6 +217,26 @@ namespace MobileSecondHand.Controllers
 			}
 		}
 
+
+		[HttpGet]
+		[Route("GetUserAdvertisementsNewVersion/{pageNumber}/{userId}/{lat:double}/{lon:double}")]
+		public async Task<IActionResult> GetUserAdvertisementsNewVersion(int pageNumber, string userId, double lat, double lon)
+		{
+			try
+			{
+				var advertisements = await this.advertisementItemService.GetUserAdvertisements(userId, pageNumber, lat, lon);
+				return Json(advertisements);
+			}
+			catch (Exception exc)
+			{
+				Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+				logger.LogError("Wystąpił wyjątek w trakcie pobierania ogłoszeń: " + exc);
+				return null;
+			}
+		}
+
+		
+
 		[HttpGet]
 		[Route("GetAdvertisementDetail/{advertisementId}")]
 		public async Task<IActionResult> GetAdvertisementDetail(int advertisementId)

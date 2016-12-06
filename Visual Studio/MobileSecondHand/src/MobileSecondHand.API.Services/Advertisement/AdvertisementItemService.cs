@@ -177,6 +177,15 @@ namespace MobileSecondHand.API.Services.Advertisement
 		}
 
 
+		public async Task<IEnumerable<AdvertisementItemShort>> GetUserAdvertisements(string userId, int pageNumber, double lat, double lon)
+		{
+			var coordinatesModel = new CoordinatesForAdvertisementsModel { Latitude = lat, Longitude = lon };
+			var advertisementsFromDb = this.advertisementItemDbService.GetUserAdvertisements(userId, pageNumber).ToList();
+			IEnumerable<AdvertisementItemShort> advertisementsViewModels = await MapDbModelsToShortViewModels(advertisementsFromDb, coordinatesModel);
+
+			return advertisementsViewModels;
+		}
+
 
 		public async Task<IEnumerable<AdvertisementItemShort>> GetUserAdvertisements(string userId, int pageNumber)
 		{
