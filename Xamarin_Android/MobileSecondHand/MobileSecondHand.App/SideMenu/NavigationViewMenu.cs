@@ -3,32 +3,22 @@ using System.Linq;
 using System.Text;
 using Android.Content;
 using Android.Widget;
-using Android.Support.V7.App;
 using Android.Support.V7.Widget;
 using MobileSecondHand.Models.Settings;
-using MobileSecondHand.App.Notifications;
 using MobileSecondHand.App.Chat;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.App.Consts;
-using MobileSecondHand.Services.Keywords;
-using MobileSecondHand.Services.Google_Api;
-using MobileSecondHand.App.Infrastructure.ActivityState;
 using MobileSecondHand.App.Activities;
 using Android.App;
-using MobileSecondHand.Services.Categories;
-using MobileSecondHand.Models.Consts;
 using MobileSecondHand.API.Models.Shared.Consts;
 using Refractored.Controls;
 using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Extensions;
 using Android.Provider;
-using Android.Content.PM;
-using Android.Runtime;
-using Android.Graphics;
 using MobileSecondHand.Services.Authentication;
 using System.Threading.Tasks;
 using System.Collections.Generic;
-using MobileSecondHand.App.Receivers;
+using MobileSecondHand.API.Services.Shared.GoogleApi;
 
 namespace MobileSecondHand.App.SideMenu
 {

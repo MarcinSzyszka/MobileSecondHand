@@ -301,6 +301,10 @@
       <Project>{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}</Project>
       <Name>MobileSecondHand.API.Models.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\..\Visual Studio\MobileSecondHand\MobileSecondHand.API.Services.Shared\MobileSecondHand.API.Services.Shared.csproj">
+      <Project>{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}</Project>
+      <Name>MobileSecondHand.API.Services.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MobileSecondHand.Models\MobileSecondHand.Models.csproj">
       <Project>{a06429c2-0fed-40a3-8721-d58cc20773ee}</Project>
       <Name>MobileSecondHand.Models</Name>

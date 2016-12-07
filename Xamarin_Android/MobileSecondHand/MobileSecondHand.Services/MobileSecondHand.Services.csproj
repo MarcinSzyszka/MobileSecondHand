@@ -61,8 +61,6 @@
     <Compile Include="Factories\HttpClientFactory.cs" />
     <Compile Include="Feedback\FeedbackService.cs" />
     <Compile Include="Feedback\IFeedbackService.cs" />
-    <Compile Include="Google Api\GoogleMapsAPIService.cs" />
-    <Compile Include="Google Api\IGoogleMapsAPIService.cs" />
     <Compile Include="Keywords\IKeyworsService.cs" />
     <Compile Include="Keywords\KeywordsService.cs" />
     <Compile Include="Location\IGpsClient.cs" />
