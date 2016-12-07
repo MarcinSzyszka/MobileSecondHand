@@ -18,6 +18,7 @@ namespace MobileSecondHand.DB.Models.Advertisement
 		public int Price { get; set; }
 		public double Latitude { get; set; }
 		public double Longitude { get; set; }
+		public string CityName { get; set; }
 		public bool IsBlockedByAdmin { get; set; }
 		public bool IsOnlyForSell { get; set; }
 		public DateTime CreationDate { get; set; }
