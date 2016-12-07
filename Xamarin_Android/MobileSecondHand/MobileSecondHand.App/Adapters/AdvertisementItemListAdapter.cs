@@ -9,6 +9,7 @@ using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.App.Holders;
 using MobileSecondHand.App.Infrastructure;
 using MobileSecondHand.Models.EventArgs;
+using MobileSecondHand.API.Models.Shared.Extensions;
 
 namespace MobileSecondHand.App.Adapters
 {
@@ -89,6 +90,7 @@ namespace MobileSecondHand.App.Adapters
 			{
 				vh.AdvertisementKindTextView.Text = "tylko sprzeda¿";
 			}
+			vh.SizeTextView.Text = $"Rozmiar: {currentItem.Size.GetDisplayName()}";
 			vh.DistanceTextView.Text = String.Format("{0} km", currentItem.Distance);
 			vh.TitleTextView.Text = currentItem.AdvertisementTitle;
 			vh.PriceTextView.Text = String.Format("{0} z³", currentItem.AdvertisementPrice);

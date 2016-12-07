@@ -89,13 +89,14 @@
             android:textAppearance="?android:attr/textAppearanceMedium"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/advertisementKind"
+            android:layout_below="@+id/textViewSizeAdvertsList"
             android:id="@+id/advertisementOnListTitle"
             android:textAlignment="center"
             android:singleLine="true"
             android:layout_margin="5dp"
             android:textColor="@color/colorPrimaryDark"
-            android:textSize="@dimen/mediumText" />
+            android:textSize="@dimen/mediumText"
+            android:textStyle="bold" />
         <TextView
             android:text="49 zł"
             android:textAppearance="?android:attr/textAppearanceLarge"
@@ -137,5 +138,15 @@
             android:layout_alignParentEnd="true"
             android:layout_marginTop="8dp"
             android:layout_marginRight="5dp" />
+        <TextView
+            android:text="Rozmiar L"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/advertisementKind"
+            android:id="@+id/textViewSizeAdvertsList"
+            android:textColor="@color/colorPrimaryDark"
+            android:layout_marginLeft="5dp"
+            android:textSize="12dp" />
     </RelativeLayout>
 </RelativeLayout>

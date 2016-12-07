@@ -17,6 +17,8 @@ namespace MobileSecondHand.App.Holders
 	{
 		public TextView DistanceTextView { get; set; }
 		public ImageView PhotoImageView { get; set; }
+
+		public TextView SizeTextView { get; set; }
 		public TextView PriceTextView { get; set; }
 		public TextView TitleTextView { get; set; }
 		public ImageView SellerChatStateImageView { get; set; }
@@ -30,6 +32,7 @@ namespace MobileSecondHand.App.Holders
 		public AdvertisementItemViewHolder(View itemView, Action<int> clickAction, Action<int> deleteAdvertisementAction, Action<int> editdvertisementAction) : base(itemView)
 		{
 			DistanceTextView = itemView.FindViewById<TextView>(Resource.Id.distanceTextView);
+			SizeTextView = itemView.FindViewById<TextView>(Resource.Id.textViewSizeAdvertsList);
 			TitleTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementOnListTitle);
 			PriceTextView = itemView.FindViewById<TextView>(Resource.Id.advertisementPriceListTextView);
 			PhotoImageView = itemView.FindViewById<ImageView>(Resource.Id.advertisementPhotoImageView);
