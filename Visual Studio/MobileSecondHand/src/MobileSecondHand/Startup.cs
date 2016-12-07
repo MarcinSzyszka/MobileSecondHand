@@ -17,6 +17,7 @@ using MobileSecondHand.API.Models.Config;
 using MobileSecondHand.API.Models.Security;
 using MobileSecondHand.API.Services.Configuration;
 using MobileSecondHand.API.Services.Mailing.Config;
+using MobileSecondHand.API.Services.Shared.GoogleApi;
 using MobileSecondHand.COMMON;
 using MobileSecondHand.COMMON.Configuration;
 using MobileSecondHand.DB.Models;
@@ -83,6 +84,7 @@ namespace MobileSecondHand
 			EmailSenderSettings mailSetting = new EmailSenderSettings(mailSection["SmtpUserName"], mailSection["SmtpUserPassword"], mailSection["SmtpServerAddress"], Int32.Parse(mailSection["SmtpServerPortNumber"]));
 			services.AddSingleton<EmailSenderSettings>(mailSetting);
 			services.AddSingleton<AppConfiguration>(appConfig);
+			services.AddSingleton<IGoogleMapsAPIService, GoogleMapsAPIService>();
 			DbServicesBootstrapper.RegisterServices(services);
 			ApiServicesBootstrapper.RegisterServices(services);
 			CommonServicesBootstrapper.RegisterServices(services);

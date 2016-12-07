@@ -16,6 +16,7 @@ using MobileSecondHand.API.Models.Shared.Enumerations;
 using MobileSecondHand.API.Models.Shared.Consts;
 using MobileSecondHand.API.Services.Photos;
 using MobileSecondHand.DB.Models.Feedback;
+using MobileSecondHand.API.Services.Shared.GoogleApi;
 
 namespace MobileSecondHand.API.Services.Advertisement
 {
@@ -28,17 +29,19 @@ namespace MobileSecondHand.API.Services.Advertisement
 		IKeywordsService keywordsService;
 		IChatHubCacheService chatHubCacheService;
 		ILastUsersChecksCacheService lastUsersChecksCacheService;
+		IGoogleMapsAPIService googleMapsAPIService;
 		const int ITEMS_PER_REQUEST = 20;
 
-		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IPhotosService advertisementItemPhotosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService, ILastUsersChecksCacheService lastUsersChecksCacheService)
+		public AdvertisementItemService(IAdvertisementItemDbService advertisementItemDbService, ICoordinatesCalculator coordinatesCalculator, IPhotosService photosService, IAppFilesPathHelper appFilesPathHelper, IKeywordsService keywordsService, IChatHubCacheService chatHubCacheService, ILastUsersChecksCacheService lastUsersChecksCacheService, IGoogleMapsAPIService googleMapsAPIService)
 		{
 			this.advertisementItemDbService = advertisementItemDbService;
 			this.coordinatesCalculator = coordinatesCalculator;
-			this.photosService = advertisementItemPhotosService;
+			this.photosService = photosService;
 			this.appFilesPathHelper = appFilesPathHelper;
 			this.keywordsService = keywordsService;
 			this.chatHubCacheService = chatHubCacheService;
 			this.lastUsersChecksCacheService = lastUsersChecksCacheService;
+			this.googleMapsAPIService = googleMapsAPIService;
 		}
 
 		public void CreateNewAdvertisementItem(NewAdvertisementItem newAdvertisementModel, string userId)
@@ -221,6 +224,15 @@ namespace MobileSecondHand.API.Services.Advertisement
 			var advertisementFromDb = this.advertisementItemDbService.GetByIdWithDetails(advertisementId);
 			if (advertisementFromDb != null)
 			{
+				try
+				{
+					await UpdateCityNameIfDoesNotSetYet(advertisementFromDb);
+				}
+				catch (Exception exc)
+				{
+					//wyjebało sie cos przy sprawdzaniu nazwy miasta
+				}
+
 				advertisementDetailsViewModel = await MapToDetailsViewModel(advertisementFromDb);
 			}
 
@@ -323,7 +335,9 @@ namespace MobileSecondHand.API.Services.Advertisement
 		private async Task<AdvertisementItemDetails> MapToDetailsViewModel(AdvertisementItem advertisementFromDb)
 		{
 			var viewModel = new AdvertisementItemDetails();
+
 			viewModel.Id = advertisementFromDb.Id;
+			viewModel.CityName = advertisementFromDb.CityName != "brak" ? advertisementFromDb.CityName : String.Empty;
 			viewModel.Title = advertisementFromDb.Title;
 			viewModel.Description = advertisementFromDb.Description;
 			viewModel.Size = advertisementFromDb.Size;
@@ -341,6 +355,24 @@ namespace MobileSecondHand.API.Services.Advertisement
 				viewModel.SellerProfileImage = await photosService.GetUserProfilePhotoInBytes(advertisementFromDb.User.UserProfilePhotoName);
 			}
 			return viewModel;
+		}
+
+		private async Task UpdateCityNameIfDoesNotSetYet(AdvertisementItem advertisementFromDb)
+		{
+			if (String.IsNullOrEmpty(advertisementFromDb.CityName))
+			{
+				var city = await googleMapsAPIService.GetCity(advertisementFromDb.Latitude, advertisementFromDb.Longitude);
+				if (!String.IsNullOrEmpty(city))
+				{
+					advertisementFromDb.CityName = city;
+				}
+				else
+				{
+					advertisementFromDb.CityName = "brak";
+				}
+
+				this.advertisementItemDbService.SaveAdvertisementItem(advertisementFromDb);
+			}
 		}
 
 		private async Task<List<byte[]>> GetPhotosList(List<AdvertisementPhoto> photos)

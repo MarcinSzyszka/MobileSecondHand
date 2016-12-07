@@ -268,6 +268,10 @@
       <Project>{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}</Project>
       <Name>MobileSecondHand.API.Models.Shared</Name>
     </ProjectReference>
+    <ProjectReference Include="..\..\MobileSecondHand.API.Services.Shared\MobileSecondHand.API.Services.Shared.csproj">
+      <Project>{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}</Project>
+      <Name>MobileSecondHand.API.Services.Shared</Name>
+    </ProjectReference>
     <ProjectReference Include="..\MobileSecondHand.API.Models\MobileSecondHand.API.Models.csproj">
       <Project>{F413839B-3271-4D47-9594-65BD01846E1E}</Project>
       <Name>MobileSecondHand.API.Models</Name>

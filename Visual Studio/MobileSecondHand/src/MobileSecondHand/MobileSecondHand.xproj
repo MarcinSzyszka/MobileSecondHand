@@ -23,6 +23,7 @@
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\MobileSecondHand.API.Models.Shared\MobileSecondHand.API.Models.Shared.csproj" />
+    <ProjectReference Include="..\..\MobileSecondHand.API.Services.Shared\MobileSecondHand.API.Services.Shared.csproj" />
     <ProjectReference Include="..\MobileSecondHand.API.Models\MobileSecondHand.API.Models.csproj" />
     <ProjectReference Include="..\MobileSecondHand.API.Services\MobileSecondHand.API.Services.csproj" />
     <ProjectReference Include="..\MobileSecondHand.DB.Models\MobileSecondHand.DB.Models.csproj" />

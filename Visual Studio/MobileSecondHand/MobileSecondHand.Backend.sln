@@ -38,6 +38,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.DB.Service
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.API.Models.Shared", "MobileSecondHand.API.Models.Shared\MobileSecondHand.API.Models.Shared.csproj", "{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MobileSecondHand.API.Services.Shared", "MobileSecondHand.API.Services.Shared\MobileSecondHand.API.Services.Shared.csproj", "{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,6 +86,10 @@ Global
 		{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6AD1699E-D5EB-4E94-8758-768A5C5D90AF}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -103,5 +109,6 @@ Global
 		{ADAE80F5-39F3-45A4-BDC0-E19902806331} = {49887E46-B003-4D51-8F98-6B1D48EA0DE4}
 		{AA9F8D73-0580-4655-8F35-E3094F967470} = {49887E46-B003-4D51-8F98-6B1D48EA0DE4}
 		{240C5D65-7FEC-4E90-A17A-7B8A2C8E942C} = {29A99949-E212-4618-AD0E-7B99777202DF}
+		{6AD1699E-D5EB-4E94-8758-768A5C5D90AF} = {29A99949-E212-4618-AD0E-7B99777202DF}
 	EndGlobalSection
 EndGlobal
