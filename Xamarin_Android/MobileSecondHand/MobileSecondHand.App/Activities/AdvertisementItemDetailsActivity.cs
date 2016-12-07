@@ -42,6 +42,7 @@ namespace MobileSecondHand.App.Activities
 		private TextView title;
 		private TextView description;
 		private TextView sellerName;
+		private TextView textViewCityName;
 		TextView textViewSizeValue;
 		TextView textViewAdvertStatus;
 		private ImageView startConversationBtn;
@@ -129,6 +130,7 @@ namespace MobileSecondHand.App.Activities
 			this.title = FindViewById<TextView>(Resource.Id.advertisementDetailsTitle);
 			this.description = FindViewById<TextView>(Resource.Id.advertisementDetailsDescription);
 			this.sellerName = FindViewById<TextView>(Resource.Id.textViewUserNameAdvertDetails);
+			this.textViewCityName = FindViewById<TextView>(Resource.Id.textViewCityName);
 			this.textViewAdvertStatus = FindViewById<TextView>(Resource.Id.textViewAdvertStatus);
 			this.btnContactBottom = FindViewById<Button>(Resource.Id.btnContactBottom);
 			this.userPhoto = FindViewById<CircleImageView>(Resource.Id.profile_image_on_advert_det);
@@ -261,6 +263,14 @@ namespace MobileSecondHand.App.Activities
 
 		private async void ShowAdvertisementDetails(AdvertisementItemDetails advertisement, double distance)
 		{
+			if (String.IsNullOrEmpty(advertisement.CityName))
+			{
+				textViewCityName.Visibility = ViewStates.Gone;
+			}
+			else
+			{
+				textViewCityName.Text = advertisement.CityName;
+			}
 			distanceTextView.Text = String.Format("{0} km", distance);
 			textViewSizeValue.Text = advertisement.Size.GetDisplayName();
 			if (advertisement.IsSellerOnline)
