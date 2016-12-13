@@ -332,9 +332,9 @@ namespace MobileSecondHand.App.SideMenu
 
 		private Java.IO.File CreateImageFile()
 		{
-			String timeStamp = DateTime.Now.ToString();
-			String imageFileName = "JPEG_" + timeStamp + "_";
-			Java.IO.File storageDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryPictures);
+			String timeStamp = DateTime.Now.ToString().Replace(" ", String.Empty).Replace("-", String.Empty).Replace(":", String.Empty);
+			String imageFileName = "JPEG" + timeStamp;
+			Java.IO.File storageDir = Android.OS.Environment.GetExternalStoragePublicDirectory(Android.OS.Environment.DirectoryDcim);
 
 			Java.IO.File image = Java.IO.File.CreateTempFile(
 					imageFileName,  /* prefix */

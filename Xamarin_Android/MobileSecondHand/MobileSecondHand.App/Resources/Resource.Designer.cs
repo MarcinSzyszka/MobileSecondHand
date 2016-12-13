@@ -3109,8 +3109,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0900f8
 			public const int profile_image = 2131296504;
 			
-			// aapt resource value: 0x7f0900b0
-			public const int profile_image_on_advert_det = 2131296432;
+			// aapt resource value: 0x7f0900af
+			public const int profile_image_on_advert_det = 2131296431;
 			
 			// aapt resource value: 0x7f0900c4
 			public const int profile_image_on_app_bar = 2131296452;
@@ -3262,8 +3262,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0900c1
 			public const int sellerChatState = 2131296449;
 			
-			// aapt resource value: 0x7f0900af
-			public const int sellerNetworkState = 2131296431;
+			// aapt resource value: 0x7f09009d
+			public const int sellerNetworkState = 2131296413;
 			
 			// aapt resource value: 0x7f090159
 			public const int setUserNameLayout = 2131296601;
@@ -3448,8 +3448,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f090083
 			public const int textViewChosedCategory = 2131296387;
 			
-			// aapt resource value: 0x7f09009d
-			public const int textViewCityName = 2131296413;
+			// aapt resource value: 0x7f0900b1
+			public const int textViewCityName = 2131296433;
 			
 			// aapt resource value: 0x7f0900fb
 			public const int textViewConversations = 2131296507;
@@ -3505,8 +3505,8 @@ namespace MobileSecondHand.App
 			// aapt resource value: 0x7f0900bd
 			public const int textViewSizeAdvertsList = 2131296445;
 			
-			// aapt resource value: 0x7f0900b1
-			public const int textViewSizeOnDet = 2131296433;
+			// aapt resource value: 0x7f0900b0
+			public const int textViewSizeOnDet = 2131296432;
 			
 			// aapt resource value: 0x7f0900aa
 			public const int textViewSizeValue = 2131296426;

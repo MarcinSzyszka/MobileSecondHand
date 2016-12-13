@@ -49,6 +49,11 @@ namespace MobileSecondHand.App.Adapters
 			{
 				vh.InterlocutorProfileImage.SetImageBitmap(await this.bitmapService.GetScaledDownBitmapForDisplayAsync(currentItem.InterLocutorProfileImage));
 			}
+			else
+			{
+				vh.InterlocutorProfileImage.SetImageResource(Resource.Drawable.logo_user);
+
+			}
 			vh.LastMessageDateTextView.Text = currentItem.LastMessageDate;
 
 			RaiseOnInfiniteScrollWhenItemIsLastInList(currentItem, vh);

@@ -46,7 +46,7 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 			catch (Exception exc)
 			{
-
+				AlertsService.ShowLongToast(ctx, "Wyst¹pi³ b³¹d podczas zapisu pliku z adresu URI");
 				return String.Empty;
 			}
 		}

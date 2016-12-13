@@ -37,7 +37,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:text="Zdjęcia (kliknij aby powiększyć)"
                         android:id="@+id/textView1032"
-                        android:layout_below="@+id/textViewCityName"
+                        android:layout_below="@+id/sellerNetworkState"
                         android:layout_marginTop="@dimen/settingRowMargin"
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
@@ -257,7 +257,7 @@
                         android:paddingTop="5dp"
                         android:paddingBottom="5dp"
                         android:textColor="@color/colorPrimaryDark"
-                        android:layout_below="@+id/distanceDetailsTextView"
+                        android:layout_below="@+id/textViewCityName"
                         android:layout_alignParentStart="false"
                         android:layout_marginTop="@dimen/settingRowMargin" />
                     <TextView
@@ -275,7 +275,7 @@
                         android:textAppearance="?android:attr/textAppearanceMedium"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/sellerNetworkState"
+                        android:layout_below="@+id/distanceDetailsTextView"
                         android:id="@+id/textViewCityName"
                         android:layout_centerHorizontal="true"
                         android:textColor="@color/colorPrimaryDark"
