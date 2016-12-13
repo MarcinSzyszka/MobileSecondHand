@@ -86,6 +86,9 @@
                 "MobileSecondHand.API.Services": {
                     "target": "project"
                 },
+                "MobileSecondHand.API.Services.Shared": {
+                    "target": "project"
+                },
                 "MobileSecondHand.DB.Models": {
                     "target": "project"
                 },
