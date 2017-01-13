@@ -19,6 +19,10 @@ using MobileSecondHand.API.Models.Shared.Advertisements;
 using Newtonsoft.Json;
 using MobileSecondHand.App.Consts;
 using MobileSecondHand.Models.Advertisement;
+using Java.IO;
+using Android.Media;
+using System.IO;
+using static Android.Graphics.Bitmap;
 
 namespace MobileSecondHand.App.Activities
 {
@@ -156,7 +160,8 @@ namespace MobileSecondHand.App.Activities
 
 		private async Task SetPhoto(int photoNr)
 		{
-			Bitmap resizedImage = await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(this.photosPaths[photoNr - 1]);
+			Bitmap resizedImage = await this.bitmapOperationService.GetScaledDownBitmapForDisplayAsync(this.photosPaths[photoNr - 1], true);
+
 			switch (photoNr)
 			{
 				case 1:

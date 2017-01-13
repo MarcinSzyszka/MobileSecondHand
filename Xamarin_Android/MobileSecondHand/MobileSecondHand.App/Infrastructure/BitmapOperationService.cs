@@ -8,6 +8,7 @@ using Android.App;
 using Android.Content;
 using Android.Content.Res;
 using Android.Graphics;
+using Android.Media;
 using Android.Net;
 using Android.OS;
 using Android.Provider;
@@ -16,6 +17,7 @@ using Android.Views;
 using Android.Widget;
 using Java.IO;
 using MobileSecondHand.App.Activities;
+using static Android.Graphics.Bitmap;
 
 namespace MobileSecondHand.App.Infrastructure
 {
@@ -51,7 +53,7 @@ namespace MobileSecondHand.App.Infrastructure
 			}
 		}
 
-		public async Task<byte[]> GetScaledDownPhotoByteArray(string path, bool isProfilePhoto = false)
+		public async Task<byte[]> GetScaledDownPhotoByteArray(string path, bool isProfilePhoto = false, bool takenFromCamera = false)
 		{
 			var maxValue = maxPhotoValue;
 			if (isProfilePhoto)
@@ -77,7 +79,10 @@ namespace MobileSecondHand.App.Infrastructure
 			options.InSampleSize = CalculateInSampleSize(options, width, height);
 			options.InJustDecodeBounds = false;
 			var scaledBitmap = await BitmapFactory.DecodeFileAsync(path, options);
-
+			if (takenFromCamera)
+			{
+				scaledBitmap = RotatetIfItIsNeeded(scaledBitmap, path);
+			}
 			byte[] imageArrayBytes;
 			using (var stream = new MemoryStream())
 			{
@@ -114,7 +119,7 @@ namespace MobileSecondHand.App.Infrastructure
 			return await BitmapFactory.DecodeByteArrayAsync(imageByteArray, 0, imageByteArray.Length, options);
 		}
 
-		public async Task<Bitmap> GetScaledDownBitmapForDisplayAsync(string path)
+		public async Task<Bitmap> GetScaledDownBitmapForDisplayAsync(string path, bool takenFromCamera = false)
 		{
 			var maxValue = maxPhotoValue;
 			var options = await GetBitmapOptionsOfImageAsync(path);
@@ -138,7 +143,13 @@ namespace MobileSecondHand.App.Infrastructure
 			// Decode bitmap with inSampleSize set
 			options.InJustDecodeBounds = false;
 
-			return await BitmapFactory.DecodeFileAsync(path, options);
+			var resizedImage =  await BitmapFactory.DecodeFileAsync(path, options);
+			if (takenFromCamera)
+			{
+				resizedImage = RotatetIfItIsNeeded(resizedImage, path);
+			}
+			return resizedImage;
+		
 		}
 
 		public async Task<Bitmap> GetNotScaledDownBitmapForDisplayAsync(string path)
@@ -156,6 +167,45 @@ namespace MobileSecondHand.App.Infrastructure
 			return await BitmapFactory.DecodeFileAsync(path, options);
 		}
 
+		private Bitmap RotatetIfItIsNeeded(Bitmap resizedImage, string path)
+		{
+			int rotate = 0;
+			try
+			{
+				ExifInterface exif = new ExifInterface(path);
+				int orientation = exif.GetAttributeInt(
+						ExifInterface.TagOrientation,
+						(int)Android.Media.Orientation.Normal);
+
+				switch (orientation)
+				{
+					case (int)Android.Media.Orientation.Rotate270:
+						rotate = 270;
+						break;
+					case (int)Android.Media.Orientation.Rotate180:
+						rotate = 180;
+						break;
+					case (int)Android.Media.Orientation.Rotate90:
+						rotate = 90;
+						break;
+				}
+
+
+				if (rotate > 0)
+				{
+					Matrix matrix = new Matrix();
+					matrix.PostRotate(rotate);
+					resizedImage = Bitmap.CreateBitmap(resizedImage, 0, 0, resizedImage.Width, resizedImage.Height, matrix, false);
+					matrix.Dispose();
+					using (var fs = new System.IO.FileStream(path, FileMode.Open, FileAccess.Write))
+					{
+						resizedImage.Compress(CompressFormat.Jpeg, 100, fs);
+					}
+				}
+			}
+			catch (Exception e){}
+			return resizedImage;
+		}
 
 		private int CalculateInSampleSize(BitmapFactory.Options options, float reqWidth, float reqHeight)
 		{

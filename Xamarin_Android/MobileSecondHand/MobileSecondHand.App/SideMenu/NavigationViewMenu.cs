@@ -251,7 +251,7 @@ namespace MobileSecondHand.App.SideMenu
 			try
 			{
 				this.progressDialogHelper.ShowProgressDialog("Zapisywanie zdjêcia profilowego");
-				var photoResized = await this.bitmapOperationService.GetScaledDownPhotoByteArray(profilePhotoPath, true);
+				var photoResized = await this.bitmapOperationService.GetScaledDownPhotoByteArray(profilePhotoPath, true, true);
 				var profileImagePath = System.IO.Path.Combine(Application.Context.FilesDir.AbsolutePath, "profilePicture.jpg");
 				System.IO.File.WriteAllBytes(profileImagePath, photoResized);
 				appSettings.ProfileImagePath = profileImagePath;
